@@ -2,13 +2,6 @@
   CineSlate
 </h1>
 
-<p align="center">
-  This is a fullstack web application for movie reviews. Goal is to practice new technical skills and software design concepts.
-</p>
-
-<h2 align="center">
-  Current Techstack
-</h2>
 <div align="center">
 <img height="50" src="https://user-images.githubusercontent.com/25181517/121405384-444d7300-c95d-11eb-959f-913020d3bf90.png">
 <img height="50" src="https://user-images.githubusercontent.com/25181517/121405754-b4f48f80-c95d-11eb-8893-fc325bde617f.png">
@@ -23,3 +16,7 @@
  <img height="50" src="https://user-images.githubusercontent.com/25181517/117207330-263ba280-adf4-11eb-9b97-0ac5b40bc3be.png">
 </div>
 <hr>
+
+<p align="center">
+  This is a fullstack web application for movie reviews. Goal is to practice new technical skills and software design concepts.
+</p>
