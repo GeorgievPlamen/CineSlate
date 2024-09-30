@@ -1,5 +1,5 @@
-using Application.Common.Interfaces;
-using Infrastructure.Repositories.Test;
+using Application.User.Interfaces;
+using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
@@ -9,7 +9,7 @@ public static class InfrastructureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         // var assembly = typeof(InfrastructureServices).Assembly;
-        services.AddScoped<ITestRepository, TestRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
