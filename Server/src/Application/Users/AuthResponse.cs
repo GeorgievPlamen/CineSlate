@@ -1,4 +1,4 @@
-namespace Application.User;
+namespace Application.Users;
 
 public record AuthResponse(
     Guid Id,

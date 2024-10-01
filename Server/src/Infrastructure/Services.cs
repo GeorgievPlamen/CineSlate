@@ -1,4 +1,4 @@
-using Application.User.Interfaces;
+using Application.Users.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +9,7 @@ public static class InfrastructureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         // var assembly = typeof(InfrastructureServices).Assembly;
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
 
         return services;
     }

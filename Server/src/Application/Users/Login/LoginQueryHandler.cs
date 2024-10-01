@@ -1,12 +1,13 @@
 using MediatR;
+using Domain.Users;
 
-namespace Application.User.Login;
+namespace Application.Users.Login;
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
 {
     public Task<AuthResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        Domain.User.User user = new()
+        User user = new()
         {
             Email = request.Email,
             Password = request.Password

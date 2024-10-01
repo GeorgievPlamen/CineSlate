@@ -1,12 +1,13 @@
-using Application.User.Interfaces;
+using Application.Users.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Domain.Users;
 
-namespace Application.User.Register;
+namespace Application.Users.Register;
 
-public class RegisterCommandHandler(IUserRepository userRepository, ILogger<RegisterCommandHandler> logger) : IRequestHandler<RegisterCommand, AuthResponse>
+public class RegisterCommandHandler(IUsersRepository userRepository, ILogger<RegisterCommandHandler> logger) : IRequestHandler<RegisterCommand, AuthResponse>
 {
-    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IUsersRepository _userRepository = userRepository;
     private readonly ILogger<RegisterCommandHandler> _logger = logger;
     public Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
@@ -14,7 +15,7 @@ public class RegisterCommandHandler(IUserRepository userRepository, ILogger<Regi
 
         _logger.LogInformation(users.ToString());
 
-        Domain.User.User user = new()
+        User user = new()
         {
             FirstName = request.FirstName,
             LastName = request.LastName,

@@ -1,15 +1,15 @@
 using Api.Controllers.Common;
-using Application.User.Login;
+using Application.Users.Login;
+using Application.Users.Register;
 using Api.User.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Application.User.Register;
 
-namespace Api.Controllers.User;
+namespace Api.Controllers.Users;
 
-public class UserController(ILogger<UserController> logger, ISender mediatr) : BaseController
+public class UsersController(ILogger<UsersController> logger, ISender mediatr) : BaseController
 {
-    private readonly ILogger<UserController> _logger = logger;
+    private readonly ILogger<UsersController> _logger = logger;
     private readonly ISender _mediatr = mediatr;
 
     [HttpPost("Register")]
