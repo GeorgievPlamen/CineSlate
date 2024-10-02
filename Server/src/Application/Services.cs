@@ -1,4 +1,5 @@
-using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,8 +12,9 @@ public static class ApplicationServices
         var assembly = typeof(ApplicationServices).Assembly;
 
         services.AddMediatR(assembly);
-
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(assembly);
 
         return services;
     }

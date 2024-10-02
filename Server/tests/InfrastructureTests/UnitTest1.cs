@@ -1,4 +1,4 @@
-namespace Infrastructure;
+namespace InfrastructureTests;
 
 public class UnitTest1
 {
