@@ -1,27 +1,25 @@
 using Api.Controllers.Common;
 using Application.Users.Login;
 using Application.Users.Register;
-using Api.User.Requests;
+using Api.Users.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers.Users;
 
-public class UsersController(ILogger<UsersController> logger, ISender mediatr) : BaseController
+public class UsersController(ILogger<UsersController> logger, ISender mediatr, IMapper mapper) : BaseController
 {
     private readonly ILogger<UsersController> _logger = logger;
     private readonly ISender _mediatr = mediatr;
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost("Register")]
     public async Task<IActionResult> Register(RegisterRequest registerRequest)
     {
         _logger.LogInformation("Received request: " + registerRequest.ToString());
 
-        var result = await _mediatr.Send(new RegisterCommand(
-            registerRequest.FirstName,
-            registerRequest.LastName,
-            registerRequest.Email,
-            registerRequest.Password));
+        var result = await _mediatr.Send(_mapper.Map<RegisterCommand>(registerRequest));
 
         _logger.LogInformation("Result from app: " + result.ToString());
 
@@ -33,7 +31,7 @@ public class UsersController(ILogger<UsersController> logger, ISender mediatr) :
     {
         _logger.LogInformation("Received request: " + loginRequest.ToString());
 
-        var result = await _mediatr.Send(new LoginQuery(loginRequest.Email, loginRequest.Password));
+        var result = await _mediatr.Send(_mapper.Map<LoginQuery>(loginRequest));
 
         _logger.LogInformation("Result from app: " + result.ToString());
 

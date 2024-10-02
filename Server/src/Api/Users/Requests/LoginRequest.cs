@@ -1,3 +1,3 @@
-namespace Api.User.Requests;
+namespace Api.Users.Requests;
 
 public record LoginRequest(string Email, string Password);
