@@ -46,12 +46,11 @@ public class ValidationPipelineBehaviour<TRequest, TResponse> :
 
         var failureResult = CreateFailureResult<TResponse>(errors);
 
-        return failureResult!;
+        return failureResult;
     }
 
-    private static T? CreateFailureResult<T>(List<Error> errors) where T : class
+    private static T CreateFailureResult<T>(List<Error> errors) where T : class
     {
-        // Check if the type is a Result<T> or inherits from it
         var resultType = typeof(T);
         if (resultType.IsGenericType && resultType.GetGenericTypeDefinition() == typeof(Result<>))
         {
@@ -64,7 +63,7 @@ public class ValidationPipelineBehaviour<TRequest, TResponse> :
                 return (T)failureMethod.Invoke(null, [errors])!;
             }
         }
-        return null;
+        throw new InvalidOperationException("Couldn't resolve type converison.");
     }
 
 }
