@@ -44,15 +44,6 @@ public class ValidationPipelineBehaviour<TRequest, TResponse> :
                 $"{validationFailure.PropertyName}: {validationFailure.AttemptedValue}"))
             .ToList();
 
-        // if (typeof(TResponse).IsAssignableTo(typeof(Result<>))
-        // {
-        //     var resultType = typeof(TResponse).GetGenericArguments()[0];
-        //     var failureResult = typeof(Result<>)
-        //         .MakeGenericType(resultType)
-        //         .GetMethod(nameof(Result<object>.Failure))!
-        //         .Invoke(null, errors);
-        // })
-
         var failureResult = CreateFailureResult<TResponse>(errors);
 
         return failureResult!;
