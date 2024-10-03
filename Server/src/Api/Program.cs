@@ -1,3 +1,4 @@
+using Api.Common.Exceptions;
 using Application;
 using Infrastructure;
 
@@ -7,6 +8,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -20,6 +23,7 @@ app.UseCors(options =>
 });
 
 app.MapControllers();
+app.UseExceptionHandler();
 
 app.MapGet("/", () =>
 {
