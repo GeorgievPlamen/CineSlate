@@ -23,6 +23,15 @@ public class UsersController(ILogger<UsersController> logger, ISender mediatr, I
 
         _logger.LogInformation("Result from app: " + result.ToString());
 
+        if (result.IsFailure)
+        {
+            return BadRequest(new ProblemDetails()
+            {
+                Title = result.Errors[0].Code,
+                Detail = result.Errors[0].Description,
+            });
+        }
+
         return Ok(result);
     }
 

@@ -3,36 +3,24 @@ using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Domain.Users;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Domain.Common;
 
 namespace Application.Users.Register;
 
 public class RegisterCommandHandler(
     IUsersRepository userRepository,
     ILogger<RegisterCommandHandler> logger,
-    IJwtGenerator jwtGenerator,
-    IValidator<RegisterCommand> validator) : IRequestHandler<RegisterCommand, AuthResponse>
+    IJwtGenerator jwtGenerator) : IRequestHandler<RegisterCommand, Result<AuthResponse>>
 {
     private readonly IUsersRepository _userRepository = userRepository;
     private readonly ILogger<RegisterCommandHandler> _logger = logger;
     private readonly IJwtGenerator _jwtGenerator = jwtGenerator;
-    private readonly IValidator<RegisterCommand> _validator = validator;
 
-    public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var users = _userRepository.GetUsers();
 
-        ValidationResult validationResult = await _validator.ValidateAsync(request);
-
-        _logger.LogInformation(validationResult.ToString());
-        System.Console.WriteLine(validationResult);
-
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(validationResult.ToString());
-        }
+        System.Console.WriteLine("Inside handler");
 
         _logger.LogInformation(users.ToString());
 
@@ -46,7 +34,8 @@ public class RegisterCommandHandler(
 
         string jwt = _jwtGenerator.GetToken(user.Id, user.FirstName, user.LastName);
 
-        AuthResponse result = new(user.Id, user.FirstName, user.LastName, user.Email, jwt);
+        AuthResponse authResponse = new(user.Id, user.FirstName, user.LastName, user.Email, jwt);
+        Result<AuthResponse> result = Result<AuthResponse>.Success(authResponse);
 
         return result;
     }

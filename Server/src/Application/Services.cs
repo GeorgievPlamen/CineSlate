@@ -1,3 +1,4 @@
+using Application.Common.PipelineBehaviours;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -15,6 +16,7 @@ public static class ApplicationServices
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
         return services;
     }

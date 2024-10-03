@@ -1,5 +1,6 @@
+using Domain.Common;
 using MediatR;
 
 namespace Application.Users.Register;
 
-public record RegisterCommand(string FirstName, string LastName, string Email, string Password) : IRequest<AuthResponse>;
+public record RegisterCommand(string FirstName, string LastName, string Email, string Password) : IRequest<Result<AuthResponse>>;

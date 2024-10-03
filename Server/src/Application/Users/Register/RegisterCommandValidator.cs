@@ -25,6 +25,6 @@ public partial class RegisterCommandValidator : AbstractValidator<RegisterComman
 
     }
 
-    [GeneratedRegex("/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,30}$/")]
+    [GeneratedRegex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,30}$")]
     private static partial Regex PasswordRegex();
 }
