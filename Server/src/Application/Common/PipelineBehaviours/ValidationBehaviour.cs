@@ -1,4 +1,5 @@
 using Domain.Common;
+using Domain.Users.Errors;
 using FluentValidation;
 using MediatR;
 
@@ -33,8 +34,8 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest>? vali
         var errors = validationResult.Errors
             .Select(validationFailure =>
             Error.Validation(
-                validationFailure.ErrorMessage,
-                $"{validationFailure.PropertyName}: {validationFailure.AttemptedValue}"))
+                validationFailure.PropertyName,
+                validationFailure.ErrorMessage))
             .ToList();
 
         var failureResult = CreateFailureResult<TResponse>(errors);

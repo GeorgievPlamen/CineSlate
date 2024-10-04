@@ -40,8 +40,8 @@ POST {{Api_HostAddress}}/users/register HTTP/1.1
 content-type: application/json
 
 {
-    "firstname": "John",
+    "firstname": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
     "lastname": "Doe",
-    "email": "john2@test.com",
-    "password": "SuperS3cre7!"
+    "email": "johnm",
+    "password": "badPassword"
 }

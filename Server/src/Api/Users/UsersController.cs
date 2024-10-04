@@ -5,6 +5,7 @@ using Api.Users.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Domain.Common;
 
 namespace Api.Users;
 
@@ -18,16 +19,7 @@ public class UsersController(ISender mediatr, IMapper mapper) : BaseController
     {
         var result = await _mediatr.Send(_mapper.Map<RegisterCommand>(registerRequest));
 
-        if (result.IsFailure)
-        {
-            return BadRequest(new ProblemDetails()
-            {
-                Title = result.Errors[0].Code,
-                Detail = result.Errors[0].Description,
-            });
-        }
-
-        return Ok(result);
+        return result.IsFailure ? Problem(result.Errors) : Ok(result);
     }
 
     [HttpPost("Login")]
