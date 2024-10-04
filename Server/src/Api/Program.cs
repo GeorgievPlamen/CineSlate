@@ -1,6 +1,19 @@
 using Api.Common.Exceptions;
 using Application;
 using Infrastructure;
+using Serilog;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+    .Build();
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
+Log.Information("Starting web application");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +23,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddSerilog();
 
 var app = builder.Build();
 
