@@ -9,20 +9,14 @@ namespace Application.Users.Register;
 
 public class RegisterCommandHandler(
     IUsersRepository userRepository,
-    ILogger<RegisterCommandHandler> logger,
     IJwtGenerator jwtGenerator) : IRequestHandler<RegisterCommand, Result<AuthResponse>>
 {
     private readonly IUsersRepository _userRepository = userRepository;
-    private readonly ILogger<RegisterCommandHandler> _logger = logger;
     private readonly IJwtGenerator _jwtGenerator = jwtGenerator;
 
     public async Task<Result<AuthResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var users = _userRepository.GetUsers();
-
-        System.Console.WriteLine("Inside handler");
-
-        _logger.LogInformation(users.ToString());
 
         User user = new()
         {

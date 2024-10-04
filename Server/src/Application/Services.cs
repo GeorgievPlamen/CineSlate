@@ -16,7 +16,8 @@ public static class ApplicationServices
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(assembly);
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
         return services;
     }

@@ -4,25 +4,18 @@ using MediatR;
 
 namespace Application.Common.PipelineBehaviours;
 
-public class ValidationPipelineBehaviour<TRequest, TResponse> :
+public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest>? validator) :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : class
 {
-    private readonly IValidator<TRequest>? _validator;
-
-    public ValidationPipelineBehaviour(IValidator<TRequest>? validator)
-    {
-        _validator = validator;
-    }
+    private readonly IValidator<TRequest>? _validator = validator;
 
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        System.Console.WriteLine("Inside Pipeline");
-
         if (_validator is null)
         {
 
