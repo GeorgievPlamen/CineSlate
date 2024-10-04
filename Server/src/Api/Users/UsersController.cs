@@ -5,7 +5,6 @@ using Api.Users.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using Domain.Common;
 
 namespace Api.Users;
 
