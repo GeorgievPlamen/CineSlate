@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database;
 
-public class CineSlateContext : DbContext
+public class CineSlateContext(DbContextOptions options) : DbContext(options)
 {
-    public CineSlateContext(DbContextOptions options) : base(options)
-    {
-    }
-
     public DbSet<User> Users { get; set; }
 }

@@ -1,4 +1,4 @@
-using Domain.Common;
+using Application.Common;
 using MediatR;
 
 namespace Application.Users.Register;

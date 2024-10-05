@@ -1,4 +1,6 @@
-namespace Domain.Common;
+using Domain.Common;
+
+namespace Application.Common;
 
 public class Result<T>
 {

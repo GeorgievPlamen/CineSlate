@@ -1,9 +1,8 @@
 using Application.Users.Interfaces;
 using Application.Common.Interfaces;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Domain.Users;
-using Domain.Common;
+using Application.Common;
 
 namespace Application.Users.Register;
 

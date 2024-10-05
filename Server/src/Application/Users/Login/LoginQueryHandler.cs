@@ -1,10 +1,9 @@
 using MediatR;
 using Application.Common.Interfaces;
 using Application.Users.Interfaces;
-using Domain.Common;
 using Domain.Users.Errors;
 using Microsoft.Extensions.Logging;
-using Domain.Users;
+using Application.Common;
 
 namespace Application.Users.Login;
 
