@@ -44,11 +44,21 @@ In section "General"
 
 - add a name (Cineslate)
 
-In section "Connection"
+### In section "Connection"
 
 - Host name/address = postgres
 - username = postgres
 - password = from env (default = secretpassword)
+
+### Add sln (optional)
+
+    cd Server
+    dotnet new sln
+    dotnet sln add **/**/*.csproj
+
+### Add volumes (optional)
+
+If you want data to be persisted between containers, uncomment the volume's inside the docker compose file.
 
 ## References
 
