@@ -34,6 +34,22 @@ When you're ready, start your application by running:
 
 Application will be available at http://localhost:8080.
 
+PG Admin will be available at http://localhost:5050/browser.
+
+Login with email and password from env file.
+
+Add new server from quick menu or right click Servers -> Register -> Server
+
+In section "General"
+
+- add a name (Cineslate)
+
+In section "Connection"
+
+- Host name/address = postgres
+- username = postgres
+- password = from env (default = secretpassword)
+
 ## References
 
 - [Docker's .NET guide](https://docs.docker.com/language/dotnet/)
