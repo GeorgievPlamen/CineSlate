@@ -1,0 +1,60 @@
+services:
+  cineslate:
+    container_name: cineslate_server
+    build:
+      context: ./Server
+      target: final
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=secretpassword;
+    command: >
+      sh -c "dotnet Api.dll"
+
+  db:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    user: postgres
+    #    volumes:
+    #      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${PSQL_PSW}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - "5050:80"
+    restart: always
+
+  migrate:
+    container_name: cineslate_migrations
+    build:
+      context: ./Server
+      dockerfile: Dockerfile.migrations
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=secretpassword;
+    command: >
+      sh -c "dotnet ef database update --project /source/src/Infrastructure/Infrastructure.csproj --startup-project /source/src/Api/Api.csproj"
+
+#volumes:
+#  db-data:

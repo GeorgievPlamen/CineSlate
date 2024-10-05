@@ -20,3 +20,22 @@
 <p align="center">
   This is a fullstack web application for movie reviews. Goal is to practice new technical skills and software design concepts.
 </p>
+
+## Setup and build
+
+Create a .env file in root folder containing:
+
+    PSQL_PSW=secretpassword
+    PGADMIN_MAIL=admin@email.com
+    PGADMIN_PW=secretpassword
+
+When you're ready, start your application by running:
+`docker compose up --build`.
+
+Application will be available at http://localhost:8080.
+
+## References
+
+- [Docker's .NET guide](https://docs.docker.com/language/dotnet/)
+- The [dotnet-docker](https://github.com/dotnet/dotnet-docker/tree/main/samples)
+  repository has many relevant samples and docs.

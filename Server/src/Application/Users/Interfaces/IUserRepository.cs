@@ -1,6 +1,9 @@
+using Domain.Users;
+
 namespace Application.Users.Interfaces;
 
 public interface IUsersRepository
 {
-    List<Domain.Users.User> GetUsers();
+    Task<List<User>> GetUsersAsync();
+    Task AddUserAsync(User user);
 }

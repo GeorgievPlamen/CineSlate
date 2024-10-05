@@ -2,7 +2,9 @@ using Application.Common.Interfaces;
 using Application.Users.Interfaces;
 using Infrastructure.Common;
 using Infrastructure.Common.Models;
+using Infrastructure.Database;
 using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,8 @@ public static class InfrastructureServices
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddDbContext<CineSlateContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("CineSlate")));
 
         return services;
     }

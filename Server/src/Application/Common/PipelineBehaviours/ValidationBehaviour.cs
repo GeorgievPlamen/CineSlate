@@ -1,30 +1,28 @@
 using Domain.Common;
-using Domain.Users.Errors;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Common.PipelineBehaviours;
 
-public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest>? validator) :
+public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : class
 {
-    private readonly IValidator<TRequest>? _validator = validator;
+    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (_validator is null)
+        if (!_validators.Any())
         {
-
             return await next();
         }
 
 
-        var validationResult = await _validator.ValidateAsync(request);
+        var validationResult = await _validators.First().ValidateAsync(request);
 
         if (validationResult.IsValid)
         {
@@ -57,6 +55,7 @@ public class ValidationBehaviour<TRequest, TResponse>(IValidator<TRequest>? vali
                 return (T)failureMethod.Invoke(null, [errors])!;
             }
         }
+
         throw new InvalidOperationException("Couldn't resolve type converison.");
     }
 

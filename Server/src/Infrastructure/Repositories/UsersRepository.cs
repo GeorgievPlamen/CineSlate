@@ -1,14 +1,25 @@
 using Application.Users.Interfaces;
+using Domain.Users;
+using Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UsersRepository : IUsersRepository
+public class UsersRepository(CineSlateContext dbContext) : IUsersRepository
 {
-    private readonly List<Domain.Users.User> _users = [
-        new() { Email = "johnDoe@test.com", FirstName = "John", LastName = "Doe", Password = "johnss3cre7" },
-        new() { Email = "janeDane@test.com", FirstName = "Jane", LastName = "Dane", Password = "jane0o0" }];
-    public List<Domain.Users.User> GetUsers()
+    // private readonly List<User> _users = [
+    //     new() { Email = "JohnDoe@test.com", FirstName = "John", LastName = "Doe", Password = "Johns3cret!" },
+    //     new() { Email = "JaneDane@test.com", FirstName = "Jane", LastName = "Dane", Password = "Janes3cret!" }];
+    private readonly CineSlateContext _dbContext = dbContext;
+
+    public async Task AddUserAsync(User user)
     {
-        return _users;
+        await _dbContext.AddAsync(user);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<User>> GetUsersAsync()
+    {
+        return await _dbContext.Users.ToListAsync();
     }
 }

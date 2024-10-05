@@ -16,8 +16,6 @@ public class RegisterCommandHandler(
 
     public async Task<Result<AuthResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var users = _userRepository.GetUsers();
-
         User user = new()
         {
             FirstName = request.FirstName,
@@ -25,6 +23,8 @@ public class RegisterCommandHandler(
             Email = request.Email,
             Password = request.Password,
         };
+
+        await _userRepository.AddUserAsync(user);
 
         string jwt = _jwtGenerator.GetToken(user.Id, user.FirstName, user.LastName);
 
