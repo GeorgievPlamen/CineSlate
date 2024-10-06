@@ -19,4 +19,8 @@ public class UsersRepository(CineSlateContext dbContext) : IUsersRepository
     {
         return await _dbContext.Users.ToListAsync();
     }
+    public async Task<User?> GetUserAsync(string email)
+    {
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
 }

@@ -23,16 +23,24 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity u
             return Result<AuthResponse>.Failure(UserErrors.UserNotFound);
         }
 
+        bool hasValidPassword = _userIdentity.ValidatePassword(request.Password, foundUser.PasswordHash);
+
+        if (!hasValidPassword)
+        {
+            return Result<AuthResponse>.Failure(UserErrors.UserNotFound);
+        }
+
         var token = _userIdentity.GenerateJwtToken(
             foundUser.Id,
-            foundUser.FirstName,
-            foundUser.LastName,
+            foundUser.Name.First,
+            foundUser.Name.Last,
+            foundUser.Email,
             foundUser.Role);
 
         AuthResponse result = new(
             foundUser.Id,
-            foundUser.FirstName,
-            foundUser.LastName,
+            foundUser.Name.First,
+            foundUser.Name.Last,
             foundUser.Email,
             token);
 

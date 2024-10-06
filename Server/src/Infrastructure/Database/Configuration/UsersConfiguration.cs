@@ -17,14 +17,6 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(u => u.FirstName)
-            .IsRequired()
-            .HasMaxLength(50);
-
-        builder.Property(u => u.LastName)
-            .IsRequired()
-            .HasMaxLength(50);
-
         builder.Property(u => u.Role)
             .IsRequired()
             .HasMaxLength(20);
@@ -32,5 +24,23 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.PasswordHash)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(u => u.CreatedBy)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(u => u.UpdatedBy)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        var name = builder.ComplexProperty(u => u.Name);
+
+        name.Property(n => n!.First)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        name.Property(n => n!.Last)
+            .IsRequired()
+            .HasMaxLength(50);
     }
 }

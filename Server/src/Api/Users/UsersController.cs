@@ -28,6 +28,6 @@ public class UsersController(ISender mediatr, IMapper mapper) : BaseController
     {
         var result = await _mediatr.Send(_mapper.Map<LoginQuery>(loginRequest));
 
-        return Ok(result);
+        return result.IsFailure ? Problem(result.Errors) : Ok(result);
     }
 }

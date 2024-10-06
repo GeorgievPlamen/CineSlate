@@ -10,12 +10,14 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 namespace Infrastructure.Common;
 
-public class UserIdentity(IDateTimeProvider dateTimeProvider, IOptions<JwtSettings> jwtOptions) : IUserIdentity
+public class UserIdentity(
+    IDateTimeProvider dateTimeProvider,
+    IOptions<JwtSettings> jwtOptions) : IUserIdentity
 {
     private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
 
-    public string GenerateJwtToken(Guid userId, string firstName, string lastName, string role)
+    public string GenerateJwtToken(Guid userId, string firstName, string lastName, string email, string role)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret))
@@ -23,6 +25,7 @@ public class UserIdentity(IDateTimeProvider dateTimeProvider, IOptions<JwtSettin
 
         Claim[] claims = [
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, email),
             new Claim(JwtRegisteredClaimNames.GivenName, firstName),
             new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

@@ -1,15 +1,18 @@
+using Domain.Common.Models;
 using Domain.Users.Config;
 
 namespace Domain.Users;
 
-public class User
+public class User : Entity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string PasswordHash { get; set; } = null!;
-    public string Role { get; private set; } = UserRoles.UserRole;
+    public Name Name { get; private set; } = null!;
+    public string Email { get; private set; } = null!;
+    public string PasswordHash { get; private set; } = null!;
+    public string Role { get; private set; } = null!;
+
+    private User()
+    {
+    }
     public void SetRole(RoleTypes role)
     {
         Role = role switch
@@ -19,4 +22,13 @@ public class User
             _ => UserRoles.UserRole
         };
     }
+
+    public static User CreateUser(Name name, string email, string passwordHash, string role = UserRoles.UserRole)
+        => new()
+        {
+            Name = name,
+            Email = email,
+            PasswordHash = passwordHash,
+            Role = role,
+        };
 }

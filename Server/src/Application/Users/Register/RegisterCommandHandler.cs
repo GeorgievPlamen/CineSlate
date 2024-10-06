@@ -3,6 +3,7 @@ using MediatR;
 using Domain.Users;
 using Application.Common;
 using Domain.Users.Errors;
+using Domain.Common;
 
 namespace Application.Users.Register;
 
@@ -15,20 +16,19 @@ public class RegisterCommandHandler(
 
     public async Task<Result<Unit>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        string passwordHash = _userIdentity.HashPassword(request.Password);
-
-        User user = new()
+        var existingUser = await _userRepository.GetUserAsync(request.Email);
+        if (existingUser is not null)
         {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            PasswordHash = passwordHash,
-        };
+            return Result<Unit>.Failure(UserErrors.AlreadyRegistered);
+        }
 
-        bool hasRegistered = await _userRepository.AddUserAsync(user);
+        string passwordHash = _userIdentity.HashPassword(request.Password);
+        User user = User.CreateUser(new Name(request.FirstName, request.LastName), request.Email, passwordHash);
 
-        return hasRegistered ?
+        bool isSuccess = await _userRepository.AddUserAsync(user);
+
+        return isSuccess ?
         Result<Unit>.Success(Unit.Value) :
-        Result<Unit>.Failure(UserErrors.AlreadyRegistered);
+        Result<Unit>.Failure(Error.ServerError());
     }
 }
