@@ -1,9 +1,11 @@
-//@Api_HostAddress = http://localhost:5000/api 
-@Api_HostAddress = http://localhost:8080/api 
+@Api_HostAddress = http://localhost:5000/api 
+//@Api_HostAddress = http://localhost:8080/api 
 // 5000 for local development.
 // 8080 for docker development.
 
-###
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODJkM2QxNi05ZmM0LTQ5ZDAtOWVlMi0xMzYyMDIyNzE3M2MiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMDhkMjY4NGUtZmM1Mi00N2Q0LWEyN2EtYmVjMjMxNDQ4MDhmIiwiZXhwIjoxNzI4MjAzMTEwLCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.QI0DIVq62SDRqGjj7NwFczF3vgP7zDPOOHRcpHVYvgI
+
+### Login Success
 
 POST {{Api_HostAddress}}/users/login HTTP/1.1
 content-type: application/json
@@ -13,7 +15,7 @@ content-type: application/json
     "password": "SuperS3cre7!"
 }
 
-###
+### Login Fail
 
 POST {{Api_HostAddress}}/users/login HTTP/1.1
 content-type: application/json
@@ -23,7 +25,7 @@ content-type: application/json
     "password": "Sup3r"
 }
 
-###
+### Register Success
 
 POST {{Api_HostAddress}}/users/register HTTP/1.1
 content-type: application/json
@@ -35,19 +37,7 @@ content-type: application/json
     "password": "SuperS3cre7!"
 }
 
-###
-
-POST {{Api_HostAddress}}/users/register HTTP/1.1
-content-type: application/json
-
-{
-    "firstname": "John",
-    "lastname": "Doe",
-    "email": "john2@test.com",
-    "password": "badPassword"
-}
-
-###
+### Register Fail
 
 POST {{Api_HostAddress}}/users/register HTTP/1.1
 content-type: application/json
@@ -58,3 +48,14 @@ content-type: application/json
     "email": "johnm",
     "password": "badPassword"
 }
+
+### Movies List
+
+GET {{Api_HostAddress}}/movies/
+content-type: application/json
+Authorization: {{Token}}
+### Reviews Add
+
+Post {{Api_HostAddress}}/reviews/add?review=testing HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODJkM2QxNi05ZmM0LTQ5ZDAtOWVlMi0xMzYyMDIyNzE3M2MiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMDhkMjY4NGUtZmM1Mi00N2Q0LWEyN2EtYmVjMjMxNDQ4MDhmIiwiZXhwIjoxNzI4MjAzMTEwLCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.QI0DIVq62SDRqGjj7NwFczF3vgP7zDPOOHRcpHVYvgI

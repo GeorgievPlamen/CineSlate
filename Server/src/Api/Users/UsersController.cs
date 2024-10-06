@@ -5,9 +5,11 @@ using Api.Users.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Users;
 
+[AllowAnonymous]
 public class UsersController(ISender mediatr, IMapper mapper) : BaseController
 {
     private readonly ISender _mediatr = mediatr;

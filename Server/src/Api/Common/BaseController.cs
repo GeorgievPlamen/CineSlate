@@ -1,4 +1,5 @@
 using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -6,6 +7,7 @@ namespace Api.Controllers.Common;
 
 [ApiController]
 [Route("/api/[controller]")]
+[Authorize]
 public abstract class BaseController : ControllerBase
 {
     protected IActionResult Problem(IReadOnlyList<Error> errors)
