@@ -1,6 +1,6 @@
-namespace Application.Users;
+namespace Application.Users.Login;
 
-public record AuthResponse(
+public record LoginResponse(
     Guid Id,
     string FirstName,
     string LastName,

@@ -6,12 +6,12 @@ using Application.Common;
 namespace Application.Users.Login;
 
 public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity userIdentity) :
-    IRequestHandler<LoginQuery, Result<AuthResponse>>
+    IRequestHandler<LoginQuery, Result<LoginResponse>>
 {
     private readonly IUsersRepository _usersRepository = usersRepository;
     private readonly IUserIdentity _userIdentity = userIdentity;
 
-    public async Task<Result<AuthResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var users = await _usersRepository.GetUsersAsync();
 
@@ -20,14 +20,14 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity u
 
         if (foundUser is null)
         {
-            return Result<AuthResponse>.Failure(UserErrors.UserNotFound);
+            return Result<LoginResponse>.Failure(UserErrors.UserNotFound);
         }
 
         bool hasValidPassword = _userIdentity.ValidatePassword(request.Password, foundUser.PasswordHash);
 
         if (!hasValidPassword)
         {
-            return Result<AuthResponse>.Failure(UserErrors.UserNotFound);
+            return Result<LoginResponse>.Failure(UserErrors.UserNotFound);
         }
 
         var token = _userIdentity.GenerateJwtToken(
@@ -37,13 +37,13 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity u
             foundUser.Email,
             foundUser.Role);
 
-        AuthResponse result = new(
+        LoginResponse result = new(
             foundUser.Id,
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email,
             token);
 
-        return Result<AuthResponse>.Success(result);
+        return Result<LoginResponse>.Success(result);
     }
 }
