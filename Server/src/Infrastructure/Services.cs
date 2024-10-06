@@ -24,7 +24,7 @@ public static class InfrastructureServices
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
-        services.AddSingleton<IJwtGenerator, JwtGenerator>();
+        services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()

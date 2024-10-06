@@ -1,31 +1,29 @@
 using MediatR;
-using Application.Common.Interfaces;
 using Application.Users.Interfaces;
 using Domain.Users.Errors;
 using Application.Common;
 
 namespace Application.Users.Login;
 
-public class LoginQueryHandler(IUsersRepository usersRepository, IJwtGenerator jwtGenerator) :
+public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity userIdentity) :
     IRequestHandler<LoginQuery, Result<AuthResponse>>
 {
     private readonly IUsersRepository _usersRepository = usersRepository;
-    private readonly IJwtGenerator _jwtGenerator = jwtGenerator;
+    private readonly IUserIdentity _userIdentity = userIdentity;
 
     public async Task<Result<AuthResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var users = await _usersRepository.GetUsersAsync();
 
         var foundUser = users.Find(
-            u => u.Email == request.Email &&
-            u.Password == request.Password);
+            u => u.Email == request.Email);
 
         if (foundUser is null)
         {
             return Result<AuthResponse>.Failure(UserErrors.UserNotFound);
         }
 
-        var token = _jwtGenerator.GetToken(
+        var token = _userIdentity.GenerateJwtToken(
             foundUser.Id,
             foundUser.FirstName,
             foundUser.LastName,
