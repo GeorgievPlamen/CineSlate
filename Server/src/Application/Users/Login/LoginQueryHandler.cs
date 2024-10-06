@@ -2,26 +2,19 @@ using MediatR;
 using Application.Common.Interfaces;
 using Application.Users.Interfaces;
 using Domain.Users.Errors;
-using Microsoft.Extensions.Logging;
 using Application.Common;
 
 namespace Application.Users.Login;
 
-public class LoginQueryHandler(IUsersRepository usersRepository, IJwtGenerator jwtGenerator, ILogger<LoginQueryHandler> logger) :
+public class LoginQueryHandler(IUsersRepository usersRepository, IJwtGenerator jwtGenerator) :
     IRequestHandler<LoginQuery, Result<AuthResponse>>
 {
     private readonly IUsersRepository _usersRepository = usersRepository;
     private readonly IJwtGenerator _jwtGenerator = jwtGenerator;
-    private readonly ILogger<LoginQueryHandler> _logger = logger;
 
     public async Task<Result<AuthResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var users = await _usersRepository.GetUsersAsync();
-
-        foreach (var user in users)
-        {
-            _logger.LogInformation($"{user.FirstName} {user.LastName} {user.Email}");
-        }
 
         var foundUser = users.Find(
             u => u.Email == request.Email &&
@@ -35,7 +28,8 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IJwtGenerator j
         var token = _jwtGenerator.GetToken(
             foundUser.Id,
             foundUser.FirstName,
-            foundUser.LastName);
+            foundUser.LastName,
+            foundUser.Role);
 
         AuthResponse result = new(
             foundUser.Id,

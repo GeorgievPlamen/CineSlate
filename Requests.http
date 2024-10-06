@@ -1,9 +1,9 @@
-@Api_HostAddress = http://localhost:5000/api 
-//@Api_HostAddress = http://localhost:8080/api 
+//@Api_HostAddress = http://localhost:5000/api 
+@Api_HostAddress = http://localhost:8080/api 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODJkM2QxNi05ZmM0LTQ5ZDAtOWVlMi0xMzYyMDIyNzE3M2MiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMDhkMjY4NGUtZmM1Mi00N2Q0LWEyN2EtYmVjMjMxNDQ4MDhmIiwiZXhwIjoxNzI4MjAzMTEwLCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.QI0DIVq62SDRqGjj7NwFczF3vgP7zDPOOHRcpHVYvgI
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODJkM2QxNi05ZmM0LTQ5ZDAtOWVlMi0xMzYyMDIyNzE3M2MiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMzE5NGJiYjYtNzVhMC00NDVlLTg2OWMtNGU2ZjIwYjczOWU2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiIiwiZXhwIjoxNzI4MjA2ODE5LCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.rh6e9ydAPukBhzCKd9hF68D5sUHegiv_WxBGgrK7NPU
 
 ### Login Success
 
@@ -54,8 +54,15 @@ content-type: application/json
 GET {{Api_HostAddress}}/movies/
 content-type: application/json
 Authorization: {{Token}}
+
 ### Reviews Add
 
 Post {{Api_HostAddress}}/reviews/add?review=testing HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxODJkM2QxNi05ZmM0LTQ5ZDAtOWVlMi0xMzYyMDIyNzE3M2MiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMDhkMjY4NGUtZmM1Mi00N2Q0LWEyN2EtYmVjMjMxNDQ4MDhmIiwiZXhwIjoxNzI4MjAzMTEwLCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.QI0DIVq62SDRqGjj7NwFczF3vgP7zDPOOHRcpHVYvgI
+Authorization: {{Token}}
+
+### Admin Test
+
+GET {{Api_HostAddress}}/admin HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}

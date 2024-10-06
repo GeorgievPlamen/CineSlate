@@ -5,7 +5,7 @@ namespace Api.Movies;
 
 public class MoviesController : BaseController
 {
-    [HttpGet()]
+    [HttpGet]
     public IActionResult GetMovies()
     {
         return Ok("movies list");
