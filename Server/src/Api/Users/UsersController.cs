@@ -16,17 +16,17 @@ public class UsersController(ISender mediatr, IMapper mapper) : BaseController
     private readonly IMapper _mapper = mapper;
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register(RegisterRequest registerRequest)
+    public async Task<IActionResult> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
     {
-        var result = await _mediatr.Send(_mapper.Map<RegisterCommand>(registerRequest));
+        var result = await _mediatr.Send(_mapper.Map<RegisterCommand>(registerRequest), cancellationToken);
 
         return result.IsFailure ? Problem(result.Errors) : Ok(result);
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> Login(LoginRequest loginRequest)
+    public async Task<IActionResult> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
     {
-        var result = await _mediatr.Send(_mapper.Map<LoginQuery>(loginRequest));
+        var result = await _mediatr.Send(_mapper.Map<LoginQuery>(loginRequest), cancellationToken);
 
         return result.IsFailure ? Problem(result.Errors) : Ok(result);
     }

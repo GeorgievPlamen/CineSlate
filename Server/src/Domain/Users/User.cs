@@ -23,10 +23,10 @@ public class User : Entity
         };
     }
 
-    public static User CreateUser(Name name, string email, string passwordHash, string role = UserRoles.UserRole)
+    public static User CreateUser(string firstName, string lastName, string email, string passwordHash, string role = UserRoles.UserRole)
         => new()
         {
-            Name = name,
+            Name = new(firstName, lastName),
             Email = email,
             PasswordHash = passwordHash,
             Role = role,

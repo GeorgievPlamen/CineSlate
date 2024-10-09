@@ -13,7 +13,7 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity u
 
     public async Task<Result<LoginResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var users = await _usersRepository.GetUsersAsync();
+        var users = await _usersRepository.GetUsersAsync(cancellationToken);
 
         var foundUser = users.Find(
             u => u.Email == request.Email);
