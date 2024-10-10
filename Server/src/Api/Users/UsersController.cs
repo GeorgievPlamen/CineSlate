@@ -20,7 +20,7 @@ public class UsersController(ISender mediatr, IMapper mapper) : BaseController
     {
         var result = await _mediatr.Send(_mapper.Map<RegisterCommand>(registerRequest), cancellationToken);
 
-        return result.IsFailure ? Problem(result.Errors) : Ok(result);
+        return result.IsFailure ? Problem(result.Errors) : Ok(result.Value);
     }
 
     [HttpPost("Login")]
@@ -28,6 +28,6 @@ public class UsersController(ISender mediatr, IMapper mapper) : BaseController
     {
         var result = await _mediatr.Send(_mapper.Map<LoginQuery>(loginRequest), cancellationToken);
 
-        return result.IsFailure ? Problem(result.Errors) : Ok(result);
+        return result.IsFailure ? Problem(result.Errors) : Ok(result.Value);
     }
 }
