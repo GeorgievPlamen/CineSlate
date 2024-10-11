@@ -1,25 +1,13 @@
-import axios from "axios";
 import { ActionFunctionArgs, Form } from "react-router-dom";
+import { login } from "../../api/api";
 
 export async function loginAction({ request }: ActionFunctionArgs) {
-  let post;
-  try {
-    post = await axios.post(
-      "http://localhost:8080/api/users/login",
-      await request.formData(),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
+  const result = await login(await request.formData());
+  console.log(result);
 
-  console.log(post);
+  sessionStorage.setItem("JWT", result?.token);
 
-  return { post };
+  return { result };
 }
 
 function Login() {

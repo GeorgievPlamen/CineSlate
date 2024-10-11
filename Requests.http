@@ -1,5 +1,5 @@
-//@Api_HostAddress = http://localhost:5000/api 
-@Api_HostAddress = http://localhost:8080/api 
+//@Api_HostAddress = http://localhost:5000/api/
+@Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
@@ -7,7 +7,7 @@
 
 ### Login Success
 
-POST {{Api_HostAddress}}/users/login HTTP/1.1
+POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
@@ -17,7 +17,7 @@ content-type: application/json
 
 ### Login Fail
 
-POST {{Api_HostAddress}}/users/login HTTP/1.1
+POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
@@ -27,7 +27,7 @@ content-type: application/json
 
 ### Register Success
 
-POST {{Api_HostAddress}}/users/register HTTP/1.1
+POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
@@ -39,7 +39,7 @@ content-type: application/json
 
 ### Register Fail
 
-POST {{Api_HostAddress}}/users/register HTTP/1.1
+POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
@@ -51,18 +51,18 @@ content-type: application/json
 
 ### Movies List
 
-GET {{Api_HostAddress}}/movies/
+GET {{Api_HostAddress}}movies
 content-type: application/json
 Authorization: {{Token}}
 
 ### Reviews Add
 
-Post {{Api_HostAddress}}/reviews/add?review=testing HTTP/1.1
+Post {{Api_HostAddress}}reviews/add?review=testing HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
 ### Admin Test
 
-GET {{Api_HostAddress}}/admin HTTP/1.1
+GET {{Api_HostAddress}}admin HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
