@@ -1,5 +1,5 @@
 interface Props {
-  readonly isError: boolean;
+  readonly isError: boolean | undefined;
   readonly message: string;
 }
 

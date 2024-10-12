@@ -10,21 +10,31 @@ import { userErrors } from './userErrors';
 import ValidationError from '../../components/ValidationError';
 import Linebreak from '../../components/Linebreak';
 import Spinner from '../../components/Spinner';
+import { User } from './userType';
+import { useAppDispatch } from '../../store/reduxHooks';
+import { setUser } from './userSlice';
 
-export async function loginAction({ request }: ActionFunctionArgs) {
+interface LoginResponse {
+  user?: User | null;
+  errors?: userErrors[] | null | string;
+}
+
+export async function loginAction({
+  request,
+}: ActionFunctionArgs): Promise<LoginResponse> {
   try {
     const input = await request.formData();
 
     const errors = validateLogin(input);
-    if (errors.length > 0) return errors;
+    if (errors.length > 0) return { errors };
 
-    const result = await userApi.login(input);
-    sessionStorage.setItem('JWT', result?.token);
-    return null;
+    const user = await userApi.login(input);
+    sessionStorage.setItem('JWT', user?.token);
+
+    return { user };
   } catch (error) {
-    if (isProblemDetails(error)) {
-      return getErrorDetails(error);
-    }
+    if (isProblemDetails(error)) return { errors: getErrorDetails(error) };
+    throw error;
   }
 }
 
@@ -53,7 +63,14 @@ function validateEmail(email: string | null | undefined): boolean {
 }
 
 function Login() {
-  const errors = useActionData() as userErrors[];
+  const dispatch = useAppDispatch();
+  const response = useActionData() as LoginResponse;
+
+  console.log(response);
+
+  if (response?.user) {
+    dispatch(setUser(response.user));
+  }
 
   const navigation = useNavigation();
 
@@ -74,7 +91,7 @@ function Login() {
           className="text-dark h-8 rounded-md px-2 focus:outline-none"
         />
         <ValidationError
-          isError={errors?.includes(userErrors.InvalidEmail)}
+          isError={response?.errors?.includes(userErrors.InvalidEmail)}
           message={userErrors.InvalidEmail}
         />
       </div>
@@ -89,12 +106,12 @@ function Login() {
           className="text-dark h-8 rounded-md px-2 focus:outline-none"
         />
         <ValidationError
-          isError={errors?.includes(userErrors.PasswordMissing)}
+          isError={response?.errors?.includes(userErrors.PasswordMissing)}
           message={userErrors.PasswordMissing}
         />
       </div>
       <ValidationError
-        isError={errors?.includes(userErrors.NotFound)}
+        isError={response?.errors?.includes(userErrors.NotFound)}
         message={userErrors.NotFound}
       />
       <Linebreak />

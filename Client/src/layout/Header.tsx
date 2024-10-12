@@ -3,9 +3,12 @@ import CineSlateLogo from '../assets/images/cineslateLogo.png';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from '../store/reduxHooks';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
+  const user = useAppSelector((state) => state.users.user);
+
   const handleBounce = () => {
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 1500);
@@ -80,15 +83,21 @@ function Header() {
             </NavLink>
           </li>
         </ul>
-        <NavLink
-          to="login"
-          className={({ isActive }) =>
-            'text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500' +
-            ` ${isActive ? 'bg-indigo-700' : null}`
-          }
-        >
-          Sign in
-        </NavLink>
+        {user?.firstName.length > 0 ? (
+          <p className="text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500">
+            {user?.firstName}
+          </p>
+        ) : (
+          <NavLink
+            to="login"
+            className={({ isActive }) =>
+              'text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500' +
+              ` ${isActive ? 'bg-indigo-700' : null}`
+            }
+          >
+            Sign in
+          </NavLink>
+        )}
       </nav>
     </header>
   );
