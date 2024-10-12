@@ -36,7 +36,7 @@ function Header() {
           />
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className="bg-whitesmoke absolute right-0 rounded-full pr-2 text-gray-400"
+            className="bg-whitesmoke absolute right-0 cursor-pointer rounded-full pr-2 text-gray-400"
           />
         </div>
         <ul className="flex gap-4">
