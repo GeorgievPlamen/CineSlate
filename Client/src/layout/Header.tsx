@@ -27,12 +27,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            style={{
-              WebkitAppearance: 'none',
-              MozAppearance: 'textfield',
-              appearance: 'none',
-            }}
-            className="bg-whitesmoke text-grayPayns flex-grow appearance-none rounded-full pl-2 focus:outline-none"
+            className="bg-whitesmoke text-grayPayns h-8 flex-grow rounded-full pl-2 focus:outline-none"
           />
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
@@ -92,7 +87,7 @@ function Header() {
             ` ${isActive ? 'bg-indigo-700' : null}`
           }
         >
-          Login
+          Sign in
         </NavLink>
       </nav>
     </header>

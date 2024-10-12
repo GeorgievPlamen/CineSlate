@@ -8,6 +8,8 @@ import { getErrorDetails, isProblemDetails } from '../../api/errors';
 import { userApi } from './userApi';
 import { userErrors } from './userErrors';
 import ValidationError from '../../components/ValidationError';
+import Linebreak from '../../components/Linebreak';
+import Spinner from '../../components/Spinner';
 
 export async function loginAction({ request }: ActionFunctionArgs) {
   try {
@@ -62,7 +64,7 @@ function Login() {
       className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light flex w-80 flex-col items-center gap-3 rounded-xl border p-4 shadow-xl"
     >
       <div className="flex w-full flex-col">
-        <label htmlFor="email" className="font-bold">
+        <label htmlFor="email" className="mb-1 ml-1 font-bold">
           Email
         </label>
         <input
@@ -76,7 +78,7 @@ function Login() {
         />
       </div>
       <div className="flex w-full flex-col">
-        <label htmlFor="password" className="font-bold">
+        <label htmlFor="password" className="mb-1 ml-1 font-bold">
           Password
         </label>
         <input
@@ -93,13 +95,15 @@ function Login() {
         isError={errors?.includes(userErrors.NotFound)}
         message={userErrors.NotFound}
       />
+      <Linebreak />
       <button
         type="submit"
-        className="border-whitesmoke text-whitesmoke h-8 w-full rounded-full border-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400"
+        className="text-whitesmoke flex h-8 w-full items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400"
       >
-        {navigation.state === 'submitting' ? 'Loading...' : 'Login'}
+        {navigation.state === 'submitting' ? <Spinner /> : 'Sign in'}
       </button>
     </Form>
   );
 }
 export default Login;
+// "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
