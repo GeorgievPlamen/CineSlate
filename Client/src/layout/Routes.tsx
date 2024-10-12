@@ -1,11 +1,12 @@
 import { createBrowserRouter, Link } from 'react-router-dom';
 import Home from '../features/Home';
-import Login, { loginAction } from '../features/Users/Login';
+import Login from '../features/Users/Login';
 import Layout from './Layout';
 import Movies from '../features/Movies/Movies';
 import Critics from '../features/Critics/Critics';
 import Stories from '../features/Stories/Stories';
 import Quizzess from '../features/Quizzes/Quizzess';
+import { loginAction } from '../features/Users/loginAction';
 
 const router = createBrowserRouter([
   {
