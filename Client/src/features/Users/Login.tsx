@@ -46,7 +46,7 @@ function validatePassword(password: string) {
 }
 
 function validateEmail(email: string | null | undefined): boolean {
-  if (!email) return false; // Check if the email is null or undefined
+  if (!email) return false;
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -61,7 +61,7 @@ function Login() {
     <Form
       noValidate
       method="post"
-      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light flex w-80 flex-col items-center gap-3 rounded-xl border p-4 shadow-xl"
+      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border p-4 shadow-xl"
     >
       <div className="flex w-full flex-col">
         <label htmlFor="email" className="mb-1 ml-1 font-bold">
@@ -70,6 +70,7 @@ function Login() {
         <input
           type="email"
           name="email"
+          id="email"
           className="text-dark h-8 rounded-md px-2 focus:outline-none"
         />
         <ValidationError
@@ -84,6 +85,7 @@ function Login() {
         <input
           type="password"
           name="password"
+          id="password"
           className="text-dark h-8 rounded-md px-2 focus:outline-none"
         />
         <ValidationError
@@ -106,4 +108,3 @@ function Login() {
   );
 }
 export default Login;
-// "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
