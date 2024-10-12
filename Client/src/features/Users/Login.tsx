@@ -45,31 +45,41 @@ function Login() {
     <Form
       noValidate
       method="post"
-      className="m-auto flex w-72 flex-col items-center gap-3 rounded border border-white"
+      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light flex w-72 flex-col items-center gap-3 rounded border p-2 shadow-xl"
     >
-      {actionData === userErrors.NotFound ? (
-        <p className="inline text-red-400">{userErrors.NotFound}</p>
-      ) : null}
-      <div className="mb-2 flex w-60 flex-col first:mt-2">
-        <label htmlFor="email" className="mb-1">
+      <div className="flex w-full flex-col">
+        <label htmlFor="email" className="">
           Email
         </label>
-        <input type="email" name="email" className="rounded text-black" />
+        <input type="email" name="email" className="text-dark rounded-md" />
         {actionData === userErrors.InvalidEmail ? (
-          <p className="inline text-red-400">{userErrors.InvalidEmail}</p>
+          <p className="text-error inline text-sm font-extralight">
+            {userErrors.InvalidEmail}
+          </p>
         ) : null}
       </div>
-      <div className="mb-2 flex w-60 flex-col">
-        <label htmlFor="password" className="mb-1">
+      <div className="flex w-full flex-col">
+        <label htmlFor="password" className="">
           Password
         </label>
-        <input type="password" name="password" className="rounded text-black" />
+        <input
+          type="password"
+          name="password"
+          className="text-dark rounded-md"
+        />
       </div>
+      <p className="">
+        {actionData === userErrors.NotFound ? (
+          <p className="text-error inline text-sm font-extralight">
+            {userErrors.NotFound}
+          </p>
+        ) : null}
+      </p>
       <button
         type="submit"
-        className="mb-3 mt-3 w-60 rounded bg-white text-black"
+        className="border-whitesmoke text-whitesmoke h-8 w-full rounded-full border-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400"
       >
-        {navigation.state === 'submitting' ? 'Loading...' : 'Sign in'}
+        {navigation.state === 'submitting' ? 'Loading...' : 'Login'}
       </button>
     </Form>
   );

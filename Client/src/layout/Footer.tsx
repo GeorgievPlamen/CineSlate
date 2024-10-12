@@ -1,4 +1,8 @@
 function Footer() {
-  return <footer className="text-xl text-center">Footer ™</footer>;
+  return (
+    <footer className="bg-indigoTropical flex justify-center py-2">
+      Footer ™
+    </footer>
+  );
 }
 export default Footer;
