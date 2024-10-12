@@ -3,7 +3,7 @@ import CineSlateLogo from '../assets/images/cineslateLogo.png';
 
 function Header() {
   return (
-    <header className="flex justify-center border py-2">
+    <header className="flex justify-center py-2">
       <nav className="flex w-2/3 items-center justify-around">
         <Link to="/">
           <img
