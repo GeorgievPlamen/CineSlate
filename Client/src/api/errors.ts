@@ -22,3 +22,14 @@ export interface HttpStatusCode {
   code: number;
   text: string;
 }
+
+export function getErrorDetails(error: ProblemDetails) {
+  switch (error.status.code) {
+    case 400:
+      return error.status.text;
+    case 404:
+      return error.detail;
+    default:
+      return error.status.text;
+  }
+}
