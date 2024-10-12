@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -10,8 +12,8 @@ function Header() {
   };
 
   return (
-    <header className="bg-indigoTropical dark:shadow-light flex justify-center py-2 shadow-xl">
-      <nav className="flex w-2/3 items-center justify-around">
+    <header className="bg-indigoTropical dark:shadow-light flex border py-2 shadow-xl">
+      <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
             src={CineSlateLogo}
@@ -20,7 +22,23 @@ function Header() {
             onClick={handleBounce}
           />
         </NavLink>
-        <input placeholder="Search Movies" type="search" name="search" />
+        <div className="bg-whitesmoke w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full">
+          <input
+            placeholder="Search Movies"
+            type="search"
+            name="search"
+            style={{
+              WebkitAppearance: 'none',
+              MozAppearance: 'textfield',
+              appearance: 'none',
+            }}
+            className="bg-whitesmoke text-grayPayns flex-grow appearance-none rounded-full pl-2 focus:outline-none"
+          />
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="bg-whitesmoke absolute right-0 rounded-full pr-2 text-gray-400"
+          />
+        </div>
         <ul className="flex gap-4">
           <li>
             <NavLink
@@ -70,7 +88,7 @@ function Header() {
         <NavLink
           to="login"
           className={({ isActive }) =>
-            'text-whitesmoke rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500' +
+            'text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500' +
             ` ${isActive ? 'bg-indigo-700' : null}`
           }
         >

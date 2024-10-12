@@ -7,25 +7,40 @@ import {
 import { getErrorDetails, isProblemDetails } from '../../api/errors';
 import { userApi } from './userApi';
 import { userErrors } from './userErrors';
+import ValidationError from '../../components/ValidationError';
 
 export async function loginAction({ request }: ActionFunctionArgs) {
   try {
     const input = await request.formData();
 
-    const email = input.get('email') as string;
-    console.log(email);
-    const isValid = validateEmail(email);
-    console.log(isValid);
-    if (!isValid) return userErrors.InvalidEmail;
+    const errors = validateLogin(input);
+    if (errors.length > 0) return errors;
+
     const result = await userApi.login(input);
-    console.log(result);
     sessionStorage.setItem('JWT', result?.token);
-    return { result };
+    return null;
   } catch (error) {
     if (isProblemDetails(error)) {
       return getErrorDetails(error);
     }
   }
+}
+
+function validateLogin(formData: FormData) {
+  const errors: userErrors[] = [];
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  if (validateEmail(email) === false) errors.push(userErrors.InvalidEmail);
+  if (validatePassword(password) === false)
+    errors.push(userErrors.PasswordMissing);
+
+  return errors;
+}
+
+function validatePassword(password: string) {
+  if (!password) return false;
+  else return true;
 }
 
 function validateEmail(email: string | null | undefined): boolean {
@@ -36,8 +51,7 @@ function validateEmail(email: string | null | undefined): boolean {
 }
 
 function Login() {
-  const actionData = useActionData();
-  console.log(actionData);
+  const errors = useActionData() as userErrors[];
 
   const navigation = useNavigation();
 
@@ -54,13 +68,12 @@ function Login() {
         <input
           type="email"
           name="email"
-          className="text-dark h-8 rounded-md px-2"
+          className="text-dark h-8 rounded-md px-2 focus:outline-none"
         />
-        {actionData === userErrors.InvalidEmail ? (
-          <p className="text-error inline text-sm font-extralight">
-            {userErrors.InvalidEmail}
-          </p>
-        ) : null}
+        <ValidationError
+          isError={errors?.includes(userErrors.InvalidEmail)}
+          message={userErrors.InvalidEmail}
+        />
       </div>
       <div className="flex w-full flex-col">
         <label htmlFor="password" className="font-bold">
@@ -69,16 +82,17 @@ function Login() {
         <input
           type="password"
           name="password"
-          className="text-dark h-8 rounded-md px-2"
+          className="text-dark h-8 rounded-md px-2 focus:outline-none"
+        />
+        <ValidationError
+          isError={errors?.includes(userErrors.PasswordMissing)}
+          message={userErrors.PasswordMissing}
         />
       </div>
-      <p className="">
-        {actionData === userErrors.NotFound ? (
-          <p className="text-error inline text-sm font-extralight">
-            {userErrors.NotFound}
-          </p>
-        ) : null}
-      </p>
+      <ValidationError
+        isError={errors?.includes(userErrors.NotFound)}
+        message={userErrors.NotFound}
+      />
       <button
         type="submit"
         className="border-whitesmoke text-whitesmoke h-8 w-full rounded-full border-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400"
