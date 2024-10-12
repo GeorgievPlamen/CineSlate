@@ -45,13 +45,17 @@ function Login() {
     <Form
       noValidate
       method="post"
-      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light flex w-72 flex-col items-center gap-3 rounded border p-2 shadow-xl"
+      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light flex w-80 flex-col items-center gap-3 rounded-xl border p-4 shadow-xl"
     >
       <div className="flex w-full flex-col">
-        <label htmlFor="email" className="">
+        <label htmlFor="email" className="font-bold">
           Email
         </label>
-        <input type="email" name="email" className="text-dark rounded-md" />
+        <input
+          type="email"
+          name="email"
+          className="text-dark h-8 rounded-md px-2"
+        />
         {actionData === userErrors.InvalidEmail ? (
           <p className="text-error inline text-sm font-extralight">
             {userErrors.InvalidEmail}
@@ -59,13 +63,13 @@ function Login() {
         ) : null}
       </div>
       <div className="flex w-full flex-col">
-        <label htmlFor="password" className="">
+        <label htmlFor="password" className="font-bold">
           Password
         </label>
         <input
           type="password"
           name="password"
-          className="text-dark rounded-md"
+          className="text-dark h-8 rounded-md px-2"
         />
       </div>
       <p className="">

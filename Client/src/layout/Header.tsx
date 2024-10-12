@@ -12,10 +12,7 @@ function Header() {
   return (
     <header className="bg-indigoTropical dark:shadow-light flex justify-center py-2 shadow-xl">
       <nav className="flex w-2/3 items-center justify-around">
-        <NavLink
-          to="/"
-          className="flex w-min items-center justify-center border"
-        >
+        <NavLink to="/" className="flex w-min items-center justify-center">
           <img
             src={CineSlateLogo}
             alt="Cineslate Logo"
