@@ -3,6 +3,7 @@ import { isProblemDetails, getErrorDetails } from '../../api/errors';
 import { userApi } from './userApi';
 import { userErrors } from './userErrors';
 import { User } from './userType';
+import { SESSION_JWT } from '../../config';
 
 export interface LoginResponse {
   user?: User | null;
@@ -19,7 +20,7 @@ export async function loginAction({
     if (errors.length > 0) return { errors };
 
     const user = await userApi.login(input);
-    sessionStorage.setItem('JWT', user?.token);
+    sessionStorage.setItem(SESSION_JWT, user?.token);
 
     return { user };
   } catch (error) {

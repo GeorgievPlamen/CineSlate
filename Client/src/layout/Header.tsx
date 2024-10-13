@@ -15,7 +15,7 @@ function Header() {
   };
 
   return (
-    <header className="bg-indigoTropical dark:shadow-light flex border py-2 shadow-xl">
+    <header className="flex border bg-indigoTropical py-2 shadow-xl dark:shadow-light">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
@@ -25,16 +25,16 @@ function Header() {
             onClick={handleBounce}
           />
         </NavLink>
-        <div className="bg-whitesmoke w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full">
+        <div className="w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
           <input
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="bg-whitesmoke text-grayPayns h-8 flex-grow rounded-full pl-2 focus:outline-none"
+            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-grayPayns focus:outline-none"
           />
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className="bg-whitesmoke absolute right-0 cursor-pointer rounded-full pr-2 text-gray-400"
+            className="absolute right-0 cursor-pointer rounded-full bg-whitesmoke pr-2 text-gray-400"
           />
         </div>
         <ul className="flex gap-4">
@@ -42,7 +42,7 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'text-whitesmoke rounded px-4 py-1 hover:bg-indigo-600 active:bg-indigo-500' +
+                'rounded px-4 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
                 ` ${isActive ? 'bg-indigo-700' : null}`
               }
             >
@@ -53,7 +53,7 @@ function Header() {
             <NavLink
               to="/critics"
               className={({ isActive }) =>
-                'text-whitesmoke rounded px-2 py-1 hover:bg-indigo-600 active:bg-indigo-500' +
+                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
                 ` ${isActive ? 'bg-indigo-700' : null}`
               }
             >
@@ -64,7 +64,7 @@ function Header() {
             <NavLink
               to="/stories"
               className={({ isActive }) =>
-                'text-whitesmoke rounded px-2 py-1 hover:bg-indigo-600 active:bg-indigo-500' +
+                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
                 ` ${isActive ? 'bg-indigo-700' : null}`
               }
             >
@@ -75,7 +75,7 @@ function Header() {
             <NavLink
               to="/quizzes"
               className={({ isActive }) =>
-                'text-whitesmoke rounded px-2 py-1 hover:bg-indigo-600 active:bg-indigo-500' +
+                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
                 ` ${isActive ? 'bg-indigo-700' : null}`
               }
             >
@@ -83,15 +83,15 @@ function Header() {
             </NavLink>
           </li>
         </ul>
-        {user?.firstName.length > 0 ? (
-          <p className="text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500">
+        {user?.firstName?.length > 0 ? (
+          <p className="mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-indigo-700 active:bg-indigo-500">
             {user?.firstName}
           </p>
         ) : (
           <NavLink
             to="login"
             className={({ isActive }) =>
-              'text-whitesmoke mx-2 rounded px-2 py-1 hover:bg-indigo-700 active:bg-indigo-500' +
+              'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-indigo-700 active:bg-indigo-500' +
               ` ${isActive ? 'bg-indigo-700' : null}`
             }
           >
