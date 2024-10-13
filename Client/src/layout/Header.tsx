@@ -31,7 +31,7 @@ function Header() {
             name="search"
             className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-grayPayns focus:outline-none"
           />
-          <MagnifyingGlassIcon className="absolute right-0 size-8 cursor-pointer rounded-full bg-whitesmoke pr-2 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
         </div>
         <ul className="flex gap-4">
           <li>

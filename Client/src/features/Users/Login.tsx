@@ -11,7 +11,7 @@ import Spinner from '../../components/Spinner';
 import { useAppDispatch } from '../../store/reduxHooks';
 import { setUser } from './userSlice';
 import { LoginResponse } from './loginAction';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { EyeIcon } from '@heroicons/react/16/solid';
 
 function Login() {
@@ -19,6 +19,7 @@ function Login() {
   const navigation = useNavigation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [passwordInputType, setPasswordInputType] = useState('password');
 
   useEffect(() => {
     if (response?.user) {
@@ -26,6 +27,14 @@ function Login() {
       navigate('/movies');
     }
   }, [dispatch, navigate, response]);
+
+  function handlePasswordVisability() {
+    if (passwordInputType === 'password') {
+      setPasswordInputType('text');
+    } else {
+      setPasswordInputType('password');
+    }
+  }
 
   return (
     <Form
@@ -52,12 +61,20 @@ function Login() {
         <label htmlFor="password" className="mb-1 ml-1 font-bold">
           Password
         </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          className="h-8 rounded-md px-2 text-dark focus:outline-none"
-        />
+        <div className="relative flex items-center">
+          <input
+            type={passwordInputType}
+            name="password"
+            id="password"
+            className="h-8 w-full rounded-md pl-2 pr-8 text-dark focus:outline-none"
+          />
+          <EyeIcon
+            type="button"
+            onClick={() => handlePasswordVisability()}
+            aria-description="Show or hide text inside the password input field."
+            className="absolute right-1 size-6 cursor-pointer text-gray-400"
+          />
+        </div>
         <ValidationError
           isError={response?.errors?.includes(userErrors.PasswordMissing)}
           message={userErrors.PasswordMissing}
@@ -68,7 +85,6 @@ function Login() {
         message={userErrors.NotFound}
       />
       <Linebreak />
-      <EyeIcon />
       <button
         type="submit"
         className="flex h-8 w-full items-center justify-center rounded-full bg-indigo-600 text-whitesmoke hover:bg-indigo-500 active:bg-indigo-400"
