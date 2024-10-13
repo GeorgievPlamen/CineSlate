@@ -40,7 +40,7 @@ public static class InfrastructureServices
             });
         services.AddDbContext<CineSlateContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("CineSlate")));
-        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddHttpContextAccessor();
 
         return services;

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class UsersRepository(CineSlateContext dbContext) : IUsersRepository
+public class UserRepository(CineSlateContext dbContext) : IUserRepository
 {
     private readonly CineSlateContext _dbContext = dbContext;
 

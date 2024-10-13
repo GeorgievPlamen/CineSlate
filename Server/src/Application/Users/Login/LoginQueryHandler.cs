@@ -5,10 +5,10 @@ using Application.Common;
 
 namespace Application.Users.Login;
 
-public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity userIdentity) :
+public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity userIdentity) :
     IRequestHandler<LoginQuery, Result<LoginResponse>>
 {
-    private readonly IUsersRepository _usersRepository = usersRepository;
+    private readonly IUserRepository _usersRepository = usersRepository;
     private readonly IUserIdentity _userIdentity = userIdentity;
 
     public async Task<Result<LoginResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -38,7 +38,6 @@ public class LoginQueryHandler(IUsersRepository usersRepository, IUserIdentity u
             foundUser.Role);
 
         LoginResponse result = new(
-            foundUser.Id,
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email,

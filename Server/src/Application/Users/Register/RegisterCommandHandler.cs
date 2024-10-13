@@ -9,10 +9,10 @@ namespace Application.Users.Register;
 
 public class RegisterCommandHandler(
     IUserIdentity userIdentity,
-    IUsersRepository userRepository) : IRequestHandler<RegisterCommand, Result<Unit>>
+    IUserRepository userRepository) : IRequestHandler<RegisterCommand, Result<Unit>>
 {
     private readonly IUserIdentity _userIdentity = userIdentity;
-    private readonly IUsersRepository _userRepository = userRepository;
+    private readonly IUserRepository _userRepository = userRepository;
 
     public async Task<Result<Unit>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {

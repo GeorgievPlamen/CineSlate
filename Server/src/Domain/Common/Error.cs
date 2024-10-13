@@ -2,7 +2,7 @@ namespace Domain.Common;
 
 public record Error(string Code, ErrorType Type = ErrorType.ServerError, string? Description = null)
 {
-    public static Error BadRequest(string message, string? details)
+    public static Error BadRequest(string message = "Bad Request", string? details = null)
         => new(message, ErrorType.BadRequest, details);
 
     public static Error Validation(string message, string? details)
