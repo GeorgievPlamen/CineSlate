@@ -7,7 +7,7 @@ function ValidationError({ isError, message }: Props) {
   if (isError)
     return (
       <p
-        className="text-error inline text-sm font-extralight"
+        className="inline text-sm font-extralight text-error"
         aria-live="polite"
       >
         {message}

@@ -7,6 +7,7 @@ import Critics from '../features/Critics/Critics';
 import Stories from '../features/Stories/Stories';
 import Quizzess from '../features/Quizzes/Quizzess';
 import { loginAction } from '../features/Users/loginAction';
+import Register from '../features/Users/Register';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />,
         action: loginAction,
+      },
+      {
+        path: '/register',
+        element: <Register />,
       },
     ],
   },
