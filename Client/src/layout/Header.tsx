@@ -1,9 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector } from '../store/reduxHooks';
+import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -32,10 +31,7 @@ function Header() {
             name="search"
             className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-grayPayns focus:outline-none"
           />
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="absolute right-0 cursor-pointer rounded-full bg-whitesmoke pr-2 text-gray-400"
-          />
+          <MagnifyingGlassIcon className="absolute right-0 size-8 cursor-pointer rounded-full bg-whitesmoke pr-2 text-gray-400" />
         </div>
         <ul className="flex gap-4">
           <li>

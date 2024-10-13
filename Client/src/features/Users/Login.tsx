@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../store/reduxHooks';
 import { setUser } from './userSlice';
 import { LoginResponse } from './loginAction';
 import { useEffect } from 'react';
+import { EyeIcon } from '@heroicons/react/16/solid';
 
 function Login() {
   const response = useActionData() as LoginResponse;
@@ -30,7 +31,7 @@ function Login() {
     <Form
       noValidate
       method="post"
-      className="border-whitesmoke bg-grayFrench dark:bg-bluePersian dark:shadow-light mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border p-4 shadow-xl"
+      className="mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-grayFrench p-4 shadow-xl dark:bg-bluePersian dark:shadow-light"
     >
       <div className="flex w-full flex-col">
         <label htmlFor="email" className="mb-1 ml-1 font-bold">
@@ -40,7 +41,7 @@ function Login() {
           type="email"
           name="email"
           id="email"
-          className="text-dark h-8 rounded-md px-2 focus:outline-none"
+          className="h-8 rounded-md px-2 text-dark focus:outline-none"
         />
         <ValidationError
           isError={response?.errors?.includes(userErrors.InvalidEmail)}
@@ -55,7 +56,7 @@ function Login() {
           type="password"
           name="password"
           id="password"
-          className="text-dark h-8 rounded-md px-2 focus:outline-none"
+          className="h-8 rounded-md px-2 text-dark focus:outline-none"
         />
         <ValidationError
           isError={response?.errors?.includes(userErrors.PasswordMissing)}
@@ -67,9 +68,10 @@ function Login() {
         message={userErrors.NotFound}
       />
       <Linebreak />
+      <EyeIcon />
       <button
         type="submit"
-        className="text-whitesmoke flex h-8 w-full items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-400"
+        className="flex h-8 w-full items-center justify-center rounded-full bg-indigo-600 text-whitesmoke hover:bg-indigo-500 active:bg-indigo-400"
       >
         {navigation.state === 'submitting' ? <Spinner /> : 'Sign in'}
       </button>
