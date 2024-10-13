@@ -36,7 +36,7 @@ function validateLogin(formData: FormData) {
 
   if (validateEmail(email) === false) errors.push(userErrors.InvalidEmail);
   if (validatePassword(password) === false)
-    errors.push(userErrors.PasswordMissing);
+    errors.push(userErrors.MissingPassword);
 
   return errors;
 }

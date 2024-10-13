@@ -4,9 +4,14 @@ import ValidationError from '../ValidationError';
 import { userErrors } from '../../features/Users/userErrors';
 import { UserFieldErrorProps } from './UserFieldErrorProps';
 
-function PasswordField({ errors }: UserFieldErrorProps) {
+interface Props extends UserFieldErrorProps {
+  readonly isConfirmPassword?: boolean;
+}
+function PasswordField({ errors, isConfirmPassword }: Props) {
+  const fieldName = isConfirmPassword ? 'secondPassword' : 'password';
+  console.log(fieldName);
   const [passwordInputType, setPasswordInputType] = useState('password');
-
+  console.log(passwordInputType);
   function handlePasswordVisability() {
     if (passwordInputType === 'password') {
       setPasswordInputType('text');
@@ -16,27 +21,27 @@ function PasswordField({ errors }: UserFieldErrorProps) {
   }
 
   function getMessageBasedOn(errors: string | userErrors[] | null | undefined) {
-    if (errors?.includes(userErrors.PasswordMissing)) {
-      return userErrors.PasswordMissing.toString();
+    if (errors?.includes(userErrors.MissingPassword)) {
+      return userErrors.MissingPassword.toString();
     }
 
     if (errors?.includes(userErrors.InvalidPassword)) {
       return userErrors.InvalidPassword.toString();
     }
 
-    return 'Unknown Error';
+    return '';
   }
 
   return (
     <div className="flex w-full flex-col">
-      <label htmlFor="password" className="mb-1 ml-1 font-bold">
-        Password
+      <label htmlFor={fieldName} className="mb-1 ml-1 font-bold">
+        {isConfirmPassword ? 'Confirm password' : 'Password'}
       </label>
       <div className="relative flex items-center">
         <input
           type={passwordInputType}
-          name="password"
-          id="password"
+          name={fieldName}
+          id={fieldName}
           className="h-8 w-full rounded-md pl-2 pr-8 text-dark focus:outline-none"
         />
         <EyeIcon
@@ -47,10 +52,7 @@ function PasswordField({ errors }: UserFieldErrorProps) {
         />
       </div>
       <ValidationError
-        isError={
-          errors?.includes(userErrors.PasswordMissing) ||
-          errors?.includes(userErrors.InvalidPassword)
-        }
+        isError={getMessageBasedOn(errors).length > 0}
         message={getMessageBasedOn(errors)}
       />
     </div>
