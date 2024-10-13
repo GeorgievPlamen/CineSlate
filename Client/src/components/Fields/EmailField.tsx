@@ -3,6 +3,17 @@ import ValidationError from '../ValidationError';
 import { UserFieldErrorProps } from './UserFieldErrorProps';
 
 function EmailField({ errors }: UserFieldErrorProps) {
+  function getMessageBasedOn(errors: string | userErrors[] | null | undefined) {
+    if (errors?.includes(userErrors.InvalidEmail)) {
+      return userErrors.InvalidEmail.toString();
+    }
+
+    if (errors?.includes(userErrors.EmailInUse)) {
+      return userErrors.EmailInUse.toString();
+    }
+
+    return '';
+  }
   return (
     <div className="flex w-full flex-col">
       <label htmlFor="email" className="mb-1 ml-1 font-bold">
@@ -15,8 +26,8 @@ function EmailField({ errors }: UserFieldErrorProps) {
         className="h-8 rounded-md px-2 text-dark focus:outline-none"
       />
       <ValidationError
-        isError={errors?.includes(userErrors.InvalidEmail)}
-        message={userErrors.InvalidEmail}
+        isError={getMessageBasedOn(errors).length > 0}
+        message={getMessageBasedOn(errors)}
       />
     </div>
   );

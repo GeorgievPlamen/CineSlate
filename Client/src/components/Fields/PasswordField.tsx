@@ -8,10 +8,8 @@ interface Props extends UserFieldErrorProps {
   readonly isConfirmPassword?: boolean;
 }
 function PasswordField({ errors, isConfirmPassword }: Props) {
-  const fieldName = isConfirmPassword ? 'secondPassword' : 'password';
-  console.log(fieldName);
+  const fieldName = isConfirmPassword ? 'confirmPassword' : 'password';
   const [passwordInputType, setPasswordInputType] = useState('password');
-  console.log(passwordInputType);
   function handlePasswordVisability() {
     if (passwordInputType === 'password') {
       setPasswordInputType('text');
@@ -25,8 +23,12 @@ function PasswordField({ errors, isConfirmPassword }: Props) {
       return userErrors.MissingPassword.toString();
     }
 
-    if (errors?.includes(userErrors.InvalidPassword)) {
+    if (!isConfirmPassword && errors?.includes(userErrors.InvalidPassword)) {
       return userErrors.InvalidPassword.toString();
+    }
+
+    if (isConfirmPassword && errors?.includes(userErrors.PasswordsMatch)) {
+      return userErrors.PasswordsMatch.toString();
     }
 
     return '';

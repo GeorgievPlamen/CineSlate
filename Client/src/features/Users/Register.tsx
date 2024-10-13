@@ -2,14 +2,15 @@ import { Form, NavLink, useActionData } from 'react-router-dom';
 import EmailField from '../../components/Fields/EmailField';
 import PasswordField from '../../components/Fields/PasswordField';
 import Heading2 from '../../components/Heading2';
-import { userErrors } from './userErrors';
 import SubmitButton from '../../components/Buttons/SubmitButton';
 import Linebreak from '../../components/Linebreak';
 import NameField from '../../components/Fields/NameField';
+import { UserResponse } from './UserResponse';
+import useHandleUserResponse from '../../hooks/useHandleUserResponse';
 
 function Register() {
-  const errors = useActionData() as userErrors[];
-
+  const response = useActionData() as UserResponse;
+  useHandleUserResponse(response);
   return (
     <Form
       noValidate
@@ -17,11 +18,11 @@ function Register() {
       className="mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-grayFrench p-4 shadow-xl dark:bg-bluePersian dark:shadow-light"
     >
       <Heading2 title="Register" />
-      <NameField type="First Name" errors={errors} />
-      <NameField type="Last Name" errors={errors} />
-      <EmailField errors={errors} />
-      <PasswordField errors={errors} />
-      <PasswordField errors={errors} isConfirmPassword />
+      <NameField errors={response?.errors} />
+      <NameField errors={response?.errors} isLastName />
+      <EmailField errors={response?.errors} />
+      <PasswordField errors={response?.errors} />
+      <PasswordField errors={response?.errors} isConfirmPassword />
       <Linebreak />
       <SubmitButton text="Register" />
       <div className="flex w-full justify-end text-center">

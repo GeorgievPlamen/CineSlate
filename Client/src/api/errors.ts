@@ -26,6 +26,7 @@ export interface HttpStatusCode {
 export function getErrorDetails(error: ProblemDetails) {
   switch (error.status.code) {
     case 400:
+      if (error.detail) return error.detail;
       return error.status.text;
     case 404:
       return error.detail;

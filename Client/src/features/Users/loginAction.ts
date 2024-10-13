@@ -2,17 +2,13 @@ import { ActionFunctionArgs } from 'react-router-dom';
 import { isProblemDetails, getErrorDetails } from '../../api/errors';
 import { userApi } from './userApi';
 import { userErrors } from './userErrors';
-import { User } from './userType';
 import { SESSION_JWT } from '../../config';
-
-export interface LoginResponse {
-  user?: User | null;
-  errors?: userErrors[] | null | string;
-}
+import { validate } from '../../utils/validate';
+import { UserResponse } from './UserResponse';
 
 export async function loginAction({
   request,
-}: ActionFunctionArgs): Promise<LoginResponse> {
+}: ActionFunctionArgs): Promise<UserResponse> {
   try {
     const input = await request.formData();
     const errors = validateLogin(input);
@@ -34,21 +30,8 @@ function validateLogin(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  if (validateEmail(email) === false) errors.push(userErrors.InvalidEmail);
-  if (validatePassword(password) === false)
-    errors.push(userErrors.MissingPassword);
+  if (validate.email(email) === false) errors.push(userErrors.InvalidEmail);
+  if (!password) errors.push(userErrors.MissingPassword);
 
   return errors;
-}
-
-function validatePassword(password: string) {
-  if (!password) return false;
-  else return true;
-}
-
-function validateEmail(email: string | null | undefined): boolean {
-  if (!email) return false;
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
 }

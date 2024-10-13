@@ -8,6 +8,7 @@ import Stories from '../features/Stories/Stories';
 import Quizzess from '../features/Quizzes/Quizzess';
 import { loginAction } from '../features/Users/loginAction';
 import Register from '../features/Users/Register';
+import { registerAction } from '../features/Users/registerAction';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
+        action: registerAction,
       },
     ],
   },

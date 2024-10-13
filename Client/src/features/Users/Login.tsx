@@ -1,27 +1,17 @@
-import { Form, NavLink, useActionData, useNavigate } from 'react-router-dom';
+import { Form, NavLink, useActionData } from 'react-router-dom';
 import { userErrors } from './userErrors';
 import ValidationError from '../../components/ValidationError';
 import Linebreak from '../../components/Linebreak';
-import { useAppDispatch } from '../../store/reduxHooks';
-import { setUser } from './userSlice';
-import { LoginResponse } from './loginAction';
-import { useEffect } from 'react';
 import Heading2 from '../../components/Heading2';
 import EmailField from '../../components/Fields/EmailField';
 import PasswordField from '../../components/Fields/PasswordField';
 import SubmitButton from '../../components/Buttons/SubmitButton';
+import { UserResponse } from './UserResponse';
+import useHandleUserResponse from '../../hooks/useHandleUserResponse';
 
 function Login() {
-  const response = useActionData() as LoginResponse;
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (response?.user) {
-      dispatch(setUser(response.user));
-      navigate('/movies');
-    }
-  }, [dispatch, navigate, response]);
+  const response = useActionData() as UserResponse;
+  useHandleUserResponse(response);
 
   return (
     <Form
