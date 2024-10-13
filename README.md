@@ -32,7 +32,9 @@ Create a .env file in root folder containing:
 When you're ready, start your application by running:
 `docker compose up --build`.
 
-Application will be available at http://localhost:8080.
+React client will be available at http://localhost:3030.
+
+Server will be available at http://localhost:8080.
 
 PG Admin will be available at http://localhost:5050/browser.
 
