@@ -1,12 +1,12 @@
 import { Form, NavLink, useActionData } from 'react-router-dom';
-import EmailField from '../../components/Fields/EmailField';
-import PasswordField from '../../components/Fields/PasswordField';
-import Heading2 from '../../components/Heading2';
-import SubmitButton from '../../components/Buttons/SubmitButton';
-import Linebreak from '../../components/Linebreak';
-import NameField from '../../components/Fields/NameField';
 import { UserResponse } from './UserResponse';
-import useHandleUserResponse from '../../hooks/useHandleUserResponse';
+import SubmitButton from '../../app/components/Buttons/SubmitButton';
+import EmailField from '../../app/components/Fields/EmailField';
+import NameField from '../../app/components/Fields/NameField';
+import PasswordField from '../../app/components/Fields/PasswordField';
+import Heading2 from '../../app/components/Heading2';
+import Linebreak from '../../app/components/Linebreak';
+import useHandleUserResponse from '../../app/hooks/useHandleUserResponse';
 
 function Register() {
   const response = useActionData() as UserResponse;

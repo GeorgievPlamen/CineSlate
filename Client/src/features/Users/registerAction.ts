@@ -1,10 +1,10 @@
 import { ActionFunctionArgs } from 'react-router-dom';
-import { getErrorDetails, isProblemDetails } from '../../api/errors';
 import { userErrors } from './userErrors';
-import { validate } from '../../utils/validate';
 import { userApi } from './userApi';
-import { SESSION_JWT } from '../../config';
 import { UserResponse } from './UserResponse';
+import { isProblemDetails, getErrorDetails } from '../../app/api/errors';
+import { SESSION_JWT } from '../../app/config';
+import { validate } from '../../app/utils/validate';
 
 export async function registerAction({
   request,

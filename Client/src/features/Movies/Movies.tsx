@@ -1,4 +1,4 @@
-import { movies } from '../../api/api';
+import { movies } from '../../app/api/api';
 
 function Movies() {
   return <button onClick={() => movies()}>Get Movies</button>;

@@ -1,14 +1,14 @@
 import { createBrowserRouter, Link } from 'react-router-dom';
-import Home from '../features/Home';
-import Login from '../features/Users/Login';
 import Layout from './Layout';
-import Movies from '../features/Movies/Movies';
-import Critics from '../features/Critics/Critics';
-import Stories from '../features/Stories/Stories';
-import Quizzess from '../features/Quizzes/Quizzess';
-import { loginAction } from '../features/Users/loginAction';
-import Register from '../features/Users/Register';
-import { registerAction } from '../features/Users/registerAction';
+import Critics from '../../features/Critics/Critics';
+import Home from '../../features/Home';
+import Movies from '../../features/Movies/Movies';
+import Quizzess from '../../features/Quizzes/Quizzess';
+import Stories from '../../features/Stories/Stories';
+import Login from '../../features/Users/Login';
+import { loginAction } from '../../features/Users/loginAction';
+import Register from '../../features/Users/Register';
+import { registerAction } from '../../features/Users/registerAction';
 
 const router = createBrowserRouter([
   {
