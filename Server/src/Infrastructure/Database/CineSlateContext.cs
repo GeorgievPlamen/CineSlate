@@ -21,7 +21,7 @@ public class CineSlateContext(
     }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var entry in ChangeTracker.Entries<Entity>())
+        foreach (var entry in ChangeTracker.Entries<IEntity>())
         {
             var email = _httpContextAccessor.HttpContext?.User?.FindFirst(
                 JwtRegisteredClaimNames.Email)?.Value ??

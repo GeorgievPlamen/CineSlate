@@ -1,5 +1,5 @@
-//@Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+//@Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
@@ -11,7 +11,7 @@ POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
-    "email": "john2@test.com",
+    "email": "john@test.com",
     "password": "SuperS3cre7!"
 }
 
@@ -21,7 +21,7 @@ POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
-    "email": "john2@test.com",
+    "email": "123123@test.com",
     "password": "Sup3r"
 }
 
@@ -33,7 +33,7 @@ content-type: application/json
 {
     "firstname": "John",
     "lastname": "Doe",
-    "email": "john2@test.com",
+    "email": "john@test.com",
     "password": "SuperS3cre7!"
 }
 

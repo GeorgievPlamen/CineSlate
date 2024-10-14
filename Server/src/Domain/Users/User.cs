@@ -1,16 +1,17 @@
 using Domain.Common.Models;
 using Domain.Users.Config;
+using Domain.Users.ValueObjects;
 
 namespace Domain.Users;
 
-public class User : Entity
+public class User : Entity<UserId>
 {
     public Name Name { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
     public string Role { get; private set; } = null!;
 
-    private User()
+    private User(UserId id) : base(id)
     {
     }
     public void SetRole(RoleTypes role)
@@ -24,7 +25,7 @@ public class User : Entity
     }
 
     public static User CreateUser(string firstName, string lastName, string email, string passwordHash, string role = UserRoles.UserRole)
-        => new()
+        => new(new UserId())
         {
             Name = new(firstName, lastName),
             Email = email,

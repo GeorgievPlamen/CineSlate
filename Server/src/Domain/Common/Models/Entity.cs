@@ -1,8 +1,8 @@
 namespace Domain.Common.Models;
 
-public abstract class Entity : IEquatable<Entity>
+public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>,IEntity where TId : notnull
 {
-    public Guid Id { get; set; }
+    public TId Id { get; set; } = id;
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset UpdatedAt { get; private set; }
     public string? CreatedBy { get; private set; }
@@ -10,20 +10,20 @@ public abstract class Entity : IEquatable<Entity>
 
     public override bool Equals(object? obj)
     {
-        return obj is Entity entity && Id!.Equals(entity.Id);
+        return obj is Entity<TId> entity && Id!.Equals(entity.Id);
     }
 
-    public bool Equals(Entity? other)
+    public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
     }
 
-    public static bool operator ==(Entity left, Entity right)
+    public static bool operator ==(Entity<TId> left, Entity<TId> right)
     {
         return Equals(left, right);
     }
 
-    public static bool operator !=(Entity left, Entity right)
+    public static bool operator !=(Entity<TId> left, Entity<TId> right)
     {
         return Equals(left, right);
     }

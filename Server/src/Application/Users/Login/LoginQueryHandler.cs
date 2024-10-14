@@ -31,7 +31,7 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
         }
 
         var token = _userIdentity.GenerateJwtToken(
-            foundUser.Id,
+            foundUser.Id.Value,
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email,

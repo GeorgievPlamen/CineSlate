@@ -8,6 +8,8 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.Property(u => u.Id)
+            .HasConversion(id => id.Value, value=> new(value));
 
         builder
             .HasIndex(u => u.Email)
