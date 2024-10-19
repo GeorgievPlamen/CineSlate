@@ -32,6 +32,8 @@ Create a .env file in root folder containing:
 When you're ready, start your application by running:
 `docker compose up --build`.
 
+CD into Client - npm run dev
+
 React client will be available at http://localhost:3030.
 
 Server will be available at http://localhost:8080.
