@@ -9,7 +9,7 @@ public class User : Entity<UserId>
     public Name Name { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
-    public string Role { get; private set; } = null!;
+    public string Role { get; private set; } = null!; // TODO refactor this
 
     private User(UserId id) : base(id)
     {
