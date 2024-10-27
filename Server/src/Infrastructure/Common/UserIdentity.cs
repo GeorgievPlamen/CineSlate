@@ -44,21 +44,21 @@ public class UserIdentity(
 
     public string HashPassword(string password)
     {
-        byte[] salt = new byte[16];
+        var salt = new byte[16];
 
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(salt);
 
-        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+        var base64password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
             salt: salt,
             prf: KeyDerivationPrf.HMACSHA256,
             iterationCount: 100000,
             numBytesRequested: 16));
 
-        var base64 = Convert.ToBase64String(salt);
+        var base64salt = Convert.ToBase64String(salt);
 
-        return $"{base64}.{hashed}";
+        return $"{base64salt}.{base64password}";
     }
 
     public bool ValidatePassword(string password, string storedPassword)
