@@ -47,6 +47,7 @@ public class UserIdentity(
         byte[] salt = new byte[16];
 
         using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(salt);
 
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,

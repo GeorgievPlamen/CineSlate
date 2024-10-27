@@ -1,11 +1,10 @@
 using Api.Controllers.Common;
-using Domain.Users.Config;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Admin;
 
-[Authorize(Roles = UserRoles.AdminRole)]
+[Authorize(Roles = "Admin")]
 public class AdminController : BaseController
 {
     [HttpGet]

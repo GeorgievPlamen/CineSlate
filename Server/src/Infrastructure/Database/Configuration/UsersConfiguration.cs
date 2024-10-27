@@ -21,7 +21,8 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Role)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .HasConversion<string>();
 
         builder.Property(u => u.PasswordHash)
             .IsRequired()

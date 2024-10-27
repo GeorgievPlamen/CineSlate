@@ -35,7 +35,7 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email,
-            foundUser.Role);
+            foundUser.Role.ToString());
 
         LoginResponse result = new(
             foundUser.Name.First,
