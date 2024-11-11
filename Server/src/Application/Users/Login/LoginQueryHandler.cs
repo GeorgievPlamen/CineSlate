@@ -6,12 +6,12 @@ using Application.Common;
 namespace Application.Users.Login;
 
 public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity userIdentity) :
-    IRequestHandler<LoginQuery, Result<LoginResponse>>
+    IRequestHandler<LoginCommand, Result<LoginResponse>>
 {
     private readonly IUserRepository _usersRepository = usersRepository;
     private readonly IUserIdentity _userIdentity = userIdentity;
 
-    public async Task<Result<LoginResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var users = await _usersRepository.GetUsersAsync(cancellationToken);
 

@@ -1,4 +1,5 @@
 using Api.Common.Exceptions;
+using Api.Middleware;
 using Api.Users;
 using Application;
 using Infrastructure;
@@ -44,6 +45,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseExceptionHandler();
+app.UseMiddleware<TraceMiddleware>();
 
 app.MapGet("/", () =>
 {

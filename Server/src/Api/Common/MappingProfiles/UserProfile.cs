@@ -9,7 +9,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<LoginRequest, LoginQuery>();
+        CreateMap<LoginRequest, LoginCommand>();
         CreateMap<RegisterRequest, RegisterCommand>();
     }
 }
