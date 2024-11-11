@@ -1,4 +1,5 @@
 using Api.Common.Exceptions;
+using Api.Users;
 using Application;
 using Infrastructure;
 using Serilog;
@@ -48,5 +49,7 @@ app.MapGet("/", () =>
 {
     return Results.Ok("Hello there :)");
 });
+
+app.MapUsers();
 
 app.Run();

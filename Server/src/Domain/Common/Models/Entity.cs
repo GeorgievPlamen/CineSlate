@@ -38,9 +38,9 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>,IEntity wher
         CreatedBy = email;
         CreatedAt = createdAt;
     }
-    public void SetUpdated(string email, DateTimeOffset createdAt)
+    public void SetUpdated(string email, DateTimeOffset updatedAt)
     {
         UpdatedBy = email;
-        UpdatedAt = createdAt;
+        UpdatedAt = updatedAt;
     }
 }
