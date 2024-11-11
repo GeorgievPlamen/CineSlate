@@ -16,7 +16,7 @@ public static class UsersEndpoint
         users.MapGet("/me", GetMeAsync).RequireAuthorization();
 
         users.MapPost("/login", LoginAsync);
-        users.MapPost("/register", RegisterAsync);
+        users.MapPost("/register", RegisterAsync).WithName("Register");
     }
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
@@ -34,5 +34,5 @@ public static class UsersEndpoint
             request.LastName,
             request.Email,
             request.Password),
-            cancellationToken));
+            cancellationToken),"Register");
 }

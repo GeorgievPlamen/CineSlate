@@ -25,7 +25,8 @@ Log.Information("Starting web application");
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddAuthorization();
+builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -46,7 +47,6 @@ app.UseCors(options =>
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
 app.UseExceptionHandler();
 app.UseMiddleware<TraceMiddleware>();
 
