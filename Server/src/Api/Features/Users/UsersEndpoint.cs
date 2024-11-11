@@ -1,12 +1,11 @@
-
 using Api.Common;
-using Api.Users.Requests;
+using Api.Features.Users.Requests;
 using Application.Users.Login;
 using Application.Users.Me;
 using Application.Users.Register;
 using MediatR;
 
-namespace Api.Users;
+namespace Api.Features.Users;
 
 public static class UsersEndpoint
 {
@@ -22,7 +21,7 @@ public static class UsersEndpoint
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
         => Response<MeResponse>.Match(await mediatr.Send(new MeQuery(), cancellationToken));
-    
+
     public static async Task<IResult> LoginAsync(LoginRequest request, ISender mediatr, CancellationToken cancellationToken)
         => Response<LoginResponse>.Match(await mediatr.Send(new LoginCommand(
             request.Email,

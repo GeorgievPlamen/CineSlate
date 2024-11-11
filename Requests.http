@@ -3,11 +3,11 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MzcxNWIzNC1lOTc2LTRmNjMtYTdhYS1hNzJmOWYzM2FhM2MiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiZTBhYWEwY2ItMWZiYy00YTI4LWIyNmItYWYzYjEwM2VlNDMxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczMTM0ODg0OCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.hNlsa-xTxmfLzBsU92U22K3MzLjwQoQd9Qp9F618gcA
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MzcxNWIzNC1lOTc2LTRmNjMtYTdhYS1hNzJmOWYzM2FhM2MiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiYzg1OTE0MTctNThhNi00NDA4LTg3ZDktNzRkMTAwMmMwZmQ3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczMTM1MTA4MiwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.M_oy-SWyzim2xg2XxHd6w_bESc5C3CT3H8AG2_N2qFY
 
 ### Login Success
 
-POST {{Api_HostAddress}}users2/login HTTP/1.1
+POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
@@ -17,7 +17,7 @@ content-type: application/json
 
 ### Login Fail
 
-POST {{Api_HostAddress}}users2/login HTTP/1.1
+POST {{Api_HostAddress}}users/login HTTP/1.1
 content-type: application/json
 
 {
@@ -49,18 +49,6 @@ content-type: application/json
     "password": "badPassword"
 }
 
-### Register Fail
-
-POST {{Api_HostAddress}}users2/register HTTP/1.1
-content-type: application/json
-
-{
-    "firstname": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
-    "lastname": "Doe",
-    "email": "johnm",
-    "password": "badPassword"
-}
-
 ### Movies List
 
 GET {{Api_HostAddress}}movies
@@ -69,23 +57,18 @@ Authorization: {{Token}}
 
 ### Reviews Add
 
-Post {{Api_HostAddress}}reviews/add?review=testing HTTP/1.1
+GET {{Api_HostAddress}}reviews
 content-type: application/json
 Authorization: {{Token}}
 
 ### Admin Test
 
-GET {{Api_HostAddress}}admin HTTP/1.1
+GET {{Api_HostAddress}}admin 
 content-type: application/json
 Authorization: {{Token}}
 
 ### Me 
 
 GET {{Api_HostAddress}}users/me HTTP/1.1
-content-type: application/json
-Authorization: {{Token}}
-### Me 
-
-GET {{Api_HostAddress}}users2/me HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}

@@ -1,6 +1,9 @@
 using Api.Common.Exceptions;
+using Api.Features.Admin;
+using Api.Features.Movies;
+using Api.Features.Reviews;
+using Api.Features.Users;
 using Api.Middleware;
-using Api.Users;
 using Application;
 using Infrastructure;
 using Serilog;
@@ -53,5 +56,8 @@ app.MapGet("/", () =>
 });
 
 app.MapUsers();
+app.MapMovies();
+app.MapReviews();
+app.MapAdmin();
 
 app.Run();
