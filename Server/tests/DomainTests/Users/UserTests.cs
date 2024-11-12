@@ -6,7 +6,7 @@ namespace DomainTests.Users;
 public class UserTests
 {
     [Fact]
-    public void CreateUser_Returns_User_When_Valid()
+    public void Create_ShouldCreateUser_WhenValidParams()
     {
         // Arrange
         // Act

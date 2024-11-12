@@ -12,7 +12,7 @@ public class RegisterCommandValidatorTests
     private const string Password = "Secre7Pa$$w0rd"; 
 
     [Fact]
-    public void Validator_Should_Pass_When_Valid_Command()
+    public void ValidatE_ShouldPass_WhenValidCommand()
     {
         // Arrange
         var command = new RegisterCommand(FirstName,LastName,Email,Password);
@@ -25,7 +25,7 @@ public class RegisterCommandValidatorTests
     }
 
     [Fact]
-    public void Validator_Should_Fail_When_FirstName_ExceedsMaximumLength()
+    public void Validate_ShouldFail_WhenFirstNameExceedsMaximumLength()
     {
         // Arrange
         var command = new RegisterCommand(
@@ -42,7 +42,7 @@ public class RegisterCommandValidatorTests
     }
 
     [Fact]
-    public void Validator_Should_Fail_When_LastName_ExceedsMaximumLength()
+    public void Validate_ShouldFail_WhenLastNameExceedsMaximumLength()
     {
         // Arrange
         var command = new RegisterCommand(
@@ -60,7 +60,7 @@ public class RegisterCommandValidatorTests
     }
 
     [Fact]
-    public void Validator_Should_Fail_When_Password_DoesNotMeetCriteria()
+    public void Validate_ShouldFail_WhenPasswordDoesNotMeetCriteria()
     {
         // Arrange
         var command = new RegisterCommand(FirstName,LastName,Email,"simplepassword");
