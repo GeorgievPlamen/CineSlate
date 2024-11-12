@@ -31,12 +31,10 @@ public class RegisterCommandValidatorTests
         var command = new RegisterCommand(
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
             ,LastName,Email,Password);
-        // Act
 
+        // Act
         var result = _sut.TestValidate(command);
 
-        System.Console.WriteLine(result);
-    
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.FirstName);
     }
@@ -49,12 +47,10 @@ public class RegisterCommandValidatorTests
             FirstName,
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
             ,Email,Password);
-        // Act
 
+        // Act
         var result = _sut.TestValidate(command);
 
-        System.Console.WriteLine(result);
-    
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.LastName);
     }
@@ -64,12 +60,10 @@ public class RegisterCommandValidatorTests
     {
         // Arrange
         var command = new RegisterCommand(FirstName,LastName,Email,"simplepassword");
-        // Act
 
+        // Act
         var result = _sut.TestValidate(command);
 
-        System.Console.WriteLine(result);
-    
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Password);
     }
