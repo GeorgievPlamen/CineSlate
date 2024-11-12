@@ -12,7 +12,7 @@ public class RegisterCommandValidatorTests
     private const string Password = "Secre7Pa$$w0rd"; 
 
     [Fact]
-    public void ValidatE_ShouldPass_WhenValidCommand()
+    public void Validate_ShouldPass_WhenValidCommand()
     {
         // Arrange
         var command = new RegisterCommand(FirstName,LastName,Email,Password);
