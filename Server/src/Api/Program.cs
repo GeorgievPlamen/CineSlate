@@ -26,7 +26,14 @@ Log.Information("Starting web application");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthorization();
-builder.Services.AddCors();
+builder.Services.AddCors(opt => 
+{
+    opt.AddDefaultPolicy(p => p
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()
+        .WithOrigins("http://localhost:3000","http://localhost:3030"));
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -36,15 +43,7 @@ builder.Services.AddSerilog();
 
 var app = builder.Build();
 
-app.UseCors(options =>
-{
-    options
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials()
-        .WithOrigins("http://localhost:3000","http://localhost:3030");
-});
-
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();

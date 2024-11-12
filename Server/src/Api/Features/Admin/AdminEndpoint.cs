@@ -1,11 +1,12 @@
+using Domain.Users.Enums;
+
 namespace Api.Features.Admin;
 
 public static class AdminEndpoint
 {
     public static void MapAdmin(this WebApplication app)
     {
-        // TODO: Add admin policy
-        var admin = app.MapGroup("api/admin").RequireAuthorization();
+        var admin = app.MapGroup("api/admin").RequireAuthorization(policy => policy.RequireRole(Roles.Admin.ToString()));
 
         admin.MapGet("/", () => TypedResults.Ok("For admins only"));
     }

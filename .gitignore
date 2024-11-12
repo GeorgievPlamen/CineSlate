@@ -31,6 +31,9 @@ dist-ssr
 # dotenv files
 .env
 
+# dotnet test files
+*.info
+
 # User-specific files
 *.rsuser
 *.suo

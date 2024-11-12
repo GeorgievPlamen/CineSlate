@@ -1,7 +1,6 @@
 using Domain.Common.Models;
 using Domain.Users.Enums;
 using Domain.Users.ValueObjects;
-
 namespace Domain.Users;
 
 public class User : Entity<UserId>
@@ -13,7 +12,7 @@ public class User : Entity<UserId>
 
     private User(UserId id) : base(id) {}
 
-    public static User CreateUser(string firstName, string lastName, string email, string passwordHash, Roles role = Roles.User)
+    public static User Create(string firstName, string lastName, string email, string passwordHash, Roles role = Roles.User)
         => new(new UserId())
         {
             Name = new(firstName, lastName),
