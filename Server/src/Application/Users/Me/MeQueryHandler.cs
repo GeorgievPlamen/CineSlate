@@ -19,17 +19,13 @@ public class MeRequestHandler(
     public async Task<Result<MeResponse>> Handle(MeQuery request, CancellationToken cancellationToken)
     {
         if (_httpContextAccessor.HttpContext is null) 
-        {
             return Result<MeResponse>.Failure(Error.ServerError());
-        }
 
         var email = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
         var foundUser = await _userRepository.GetUserAsync(email.Value,cancellationToken);
 
         if (foundUser is null)
-        {
             return Result<MeResponse>.Failure(UserErrors.UserNotFound);
-        }
 
         MeResponse result = new(
             foundUser.Name.First,

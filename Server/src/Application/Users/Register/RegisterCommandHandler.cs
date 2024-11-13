@@ -34,7 +34,7 @@ public class RegisterCommandHandler(
         bool isSuccess = await _userRepository.AddUserAsync(user, cancellationToken);
 
         return isSuccess ?
-        Result<Unit>.Success(Unit.Value) :
-        Result<Unit>.Failure(Error.ServerError());
+            Result<Unit>.Success(Unit.Value) :
+            Result<Unit>.Failure(Error.ServerError());
     }
 }
