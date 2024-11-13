@@ -1,14 +1,83 @@
+using Application.Users.Interfaces;
+using Application.Users.Register;
+using Domain.Users;
+using Domain.Users.Enums;
+using FluentAssertions;
+using NSubstitute;
+using NSubstitute.ReturnsExtensions;
+using Xunit.Abstractions;
+
 namespace ApplicationTests.Users.Register;
 
 public class RegisterCommandHandlerTests
 {
-    [Fact]
-    public void TestName()
+    private readonly RegisterCommandHandler _sut;
+    private readonly RegisterCommand _command = new ("John","Doe","john.doe@test.com","fakePassword");
+    private readonly IUserIdentity _userIdentity = Substitute.For<IUserIdentity>();
+    private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
+    private readonly User _user = User.Create("John","Doe","john.doe@test.com","password.hash",Roles.User);
+
+    public RegisterCommandHandlerTests(ITestOutputHelper testOutputHelper)
     {
-        // Given
+        _sut = new(_userIdentity,_userRepository);
+    }
+
+    [Fact]
+    public async Task Handler_ShouldReturnSuccess_WhenValidParameters()
+    {
+        // Arrange
+        _userRepository.GetUserAsync(
+            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            .ReturnsNull();
+
+        _userRepository.AddUserAsync(
+            Arg.Any<User>(),Arg.Any<CancellationToken>())
+            .Returns(true);
     
-        // When
+        _userIdentity.HashPassword(Arg.Any<string>()).Returns("password.hash");
+
+        // Act
+        var result = await _sut.Handle(_command,CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handler_ShouldReturnFailure_WhenUserAlreadyRegistered()
+    {
+        // Arrange
+        _userRepository.GetUserAsync(
+            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            .Returns(_user);
     
-        // Then
+        // Act
+        var result = await _sut.Handle(_command,CancellationToken.None);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Errors.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public async Task Handler_ShouldReturnFailure_WhenUserCouldNotBeAdded()
+    {
+        // Arrange
+        _userRepository.GetUserAsync(
+            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            .ReturnsNull();
+
+        _userRepository.AddUserAsync(
+            Arg.Any<User>(),Arg.Any<CancellationToken>())
+            .Returns(false);
+    
+        _userIdentity.HashPassword(Arg.Any<string>()).Returns("password.hash");
+    
+        // Act
+        var result = await _sut.Handle(_command,CancellationToken.None);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Errors.Should().NotBeEmpty();
     }
 }

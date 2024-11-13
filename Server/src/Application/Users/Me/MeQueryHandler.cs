@@ -8,26 +8,30 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Users.Me;
 
-public class MeRequestHandler(
+public class MeQueryHandler(
     IHttpContextAccessor httpContextAccessor,
     IUserRepository userRepository) :
     IRequestHandler<MeQuery, Result<MeResponse>>
 {
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly HttpContext? _httpContext = httpContextAccessor?.HttpContext;
     private readonly IUserRepository _userRepository = userRepository;
 
     public async Task<Result<MeResponse>> Handle(MeQuery request, CancellationToken cancellationToken)
     {
-        if (_httpContextAccessor.HttpContext is null) 
+        if (_httpContext is null) 
             return Result<MeResponse>.Failure(Error.ServerError());
 
-        var email = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email);
+        var email = _httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+
+        if (email is null)
+            return Result<MeResponse>.Failure(UserErrors.UserNotFound);
+
         var foundUser = await _userRepository.GetUserAsync(email.Value,cancellationToken);
 
         if (foundUser is null)
             return Result<MeResponse>.Failure(UserErrors.UserNotFound);
 
-        MeResponse result = new(
+        var result = new MeResponse(
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email);
