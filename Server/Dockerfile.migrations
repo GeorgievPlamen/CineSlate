@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrations
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS migrations
 
 RUN dotnet tool install --global dotnet-ef
 
