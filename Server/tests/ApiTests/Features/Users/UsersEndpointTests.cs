@@ -1,7 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using Api.Features.Users.Requests;
+using Domain.Users;
 using TestUtilities;
+using TestUtilities.Fakers;
 
 namespace ApiTests.Features.Users;
 
@@ -26,7 +28,10 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
     public async Task Login_ShouldReturnOk200_WhenValid()
     {
         // Arrange
-        var request = new LoginRequest("john.doe@example.com", "Password123!");
+        var user = UserFaker.GenerateValid();
+        var request = new LoginRequest(user.Email, Constants.ValidPassword);
+
+        await api.SeedDatabaseAsync([user]);
 
         // Act
         var response = await _httpClient.PostAsJsonAsync("/api/users/login", request);

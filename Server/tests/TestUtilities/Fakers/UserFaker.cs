@@ -12,7 +12,7 @@ public static class UserFaker
             f.Person.FirstName,
             f.Person.LastName,
             f.Person.Email,
-            Constants.ValidPassword,
+            Constants.ValidPasswordHash,
             Roles.User))
         .Generate();
 }

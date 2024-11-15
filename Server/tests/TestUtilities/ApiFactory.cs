@@ -26,7 +26,6 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         var context = scope.ServiceProvider.GetRequiredService<CineSlateContext>();
         context.AddRange(entities);
         await context.SaveChangesAsync();
-        // TODO test
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
