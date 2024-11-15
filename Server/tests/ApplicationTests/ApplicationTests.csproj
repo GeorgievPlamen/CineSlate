@@ -9,6 +9,11 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>lcov</CoverletOutputFormat>
+    <CoverletOutput>./lcov.info</CoverletOutput>
+  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
