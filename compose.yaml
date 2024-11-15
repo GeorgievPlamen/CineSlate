@@ -11,7 +11,7 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=secretpassword;
+      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=cineslate;Username=postgres;Password=secretpassword;
     command: >
       sh -c "dotnet Api.dll"
     develop:
@@ -72,7 +72,7 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=secretpassword;
+      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=cineslate;Username=postgres;Password=secretpassword;
     command: >
       sh -c "dotnet ef database update --project /source/src/Infrastructure/Infrastructure.csproj --startup-project /source/src/Api/Api.csproj"
 

@@ -26,6 +26,7 @@
 Create a .env file in root folder containing:
 
     PSQL_PSW=secretpassword
+    PSQL_DB=cineslate
     PGADMIN_MAIL=admin@email.com
     PGADMIN_PW=secretpassword
 
@@ -63,6 +64,12 @@ In section "General"
 ### Add volumes (optional)
 
 If you want data to be persisted between containers, uncomment the volume's inside the docker compose file.
+
+### Add migrations
+
+cd Server/src
+
+dotnet ef migrations add {name} -s ./Api -p ./Infrastructure -o ./Database/Migrations
 
 ## References
 
