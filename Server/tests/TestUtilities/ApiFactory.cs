@@ -1,4 +1,5 @@
 using Api.Common;
+using Domain.Common.Models;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -18,6 +19,15 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         .WithUsername("postgres")
         .WithPassword("secretpassword")
         .Build();
+
+    public async Task SeedDatabaseAsync(IEntity[] entities)
+    {
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<CineSlateContext>();
+        context.AddRange(entities);
+        await context.SaveChangesAsync();
+        // TODO test
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
