@@ -1,25 +1,24 @@
 using Application.Users.Register;
+using Domain.Users;
 using FluentValidation.TestHelper;
+using TestUtilities.Fakers;
 
 namespace ApplicationTests.Users.Register;
 
 public class RegisterCommandValidatorTests
 {
     private readonly RegisterCommandValidator _sut = new();
-    private const string FirstName = "John"; 
-    private const string LastName = "Doe"; 
-    private const string Email = "john.doe@test.com"; 
-    private const string Password = "Secre7Pa$$w0rd"; 
+    private readonly User _user = UserFaker.GenerateValid();
 
     [Fact]
     public void Validate_ShouldPass_WhenValidCommand()
     {
         // Arrange
-        var command = new RegisterCommand(FirstName,LastName,Email,Password);
+        var command = new RegisterCommand(_user.Name.First,_user.Name.Last,_user.Email,_user.PasswordHash);
 
         // Act
         var result = _sut.TestValidate(command);
-    
+
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
@@ -30,7 +29,7 @@ public class RegisterCommandValidatorTests
         // Arrange
         var command = new RegisterCommand(
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            ,LastName,Email,Password);
+            ,_user.Name.Last,_user.Email,_user.PasswordHash);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -44,9 +43,9 @@ public class RegisterCommandValidatorTests
     {
         // Arrange
         var command = new RegisterCommand(
-            FirstName,
+            _user.Name.First,
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            ,Email,Password);
+            ,_user.Email,_user.PasswordHash);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -59,7 +58,7 @@ public class RegisterCommandValidatorTests
     public void Validate_ShouldFail_WhenPasswordDoesNotMeetCriteria()
     {
         // Arrange
-        var command = new RegisterCommand(FirstName,LastName,Email,"simplepassword");
+        var command = new RegisterCommand(_user.Name.First,_user.Name.Last,_user.Email,"simplepassword");
 
         // Act
         var result = _sut.TestValidate(command);

@@ -2,11 +2,11 @@ using System.Security.Claims;
 using Application.Users.Interfaces;
 using Application.Users.Me;
 using Domain.Users;
-using Domain.Users.Enums;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using TestUtilities.Fakers;
 
 namespace ApplicationTests.Users.Me;
 
@@ -15,7 +15,7 @@ public class MeQueryHandlerTests
     private readonly MeQueryHandler _sut;
     private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
-    private readonly User _user = User.Create("John","Doe","john.doe@test.com","password.hash",Roles.User);
+    private readonly User _user = UserFaker.GenerateValid();
 
 
     public MeQueryHandlerTests()

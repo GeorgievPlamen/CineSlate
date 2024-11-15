@@ -1,25 +1,25 @@
 using Application.Users.Interfaces;
 using Application.Users.Register;
 using Domain.Users;
-using Domain.Users.Enums;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using Xunit.Abstractions;
+using TestUtilities.Fakers;
 
 namespace ApplicationTests.Users.Register;
 
 public class RegisterCommandHandlerTests
 {
     private readonly RegisterCommandHandler _sut;
-    private readonly RegisterCommand _command = new ("John","Doe","john.doe@test.com","fakePassword");
+    private readonly RegisterCommand _command;
     private readonly IUserIdentity _userIdentity = Substitute.For<IUserIdentity>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
-    private readonly User _user = User.Create("John","Doe","john.doe@test.com","password.hash",Roles.User);
+    private readonly User _user = UserFaker.GenerateValid();
 
-    public RegisterCommandHandlerTests(ITestOutputHelper testOutputHelper)
+    public RegisterCommandHandlerTests()
     {
         _sut = new(_userIdentity,_userRepository);
+        _command = new (_user.Name.First,_user.Name.Last,_user.Email,_user.PasswordHash);
     }
 
     [Fact]
