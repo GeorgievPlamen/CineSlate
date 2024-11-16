@@ -16,11 +16,11 @@ public class HealthzTest(ApiFactory api) : IClassFixture<ApiFactory>
         // Act
         var response = await _httpClient.GetAsync("/");
         var content = await response.Content.ReadFromJsonAsync<string>();
-    
+
         // Assert
         response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        content.Should().Match("Hello there :)"); 
+        content.Should().Match("Hello there :)");
     }
 
     [Fact]
@@ -28,11 +28,11 @@ public class HealthzTest(ApiFactory api) : IClassFixture<ApiFactory>
     {
         // Act
         var response = await _httpClient.GetAsync("/");
-        response.Headers.TryGetValues("Set-Cookie",out IEnumerable<string>? cookies);
-        var traceId = cookies?.FirstOrDefault(x => x.Contains("TraceId"));
-    
+        response.Headers.TryGetValues("TraceId", out IEnumerable<string>? traceIds);
+        var traceId = traceIds?.FirstOrDefault();
+
         // Assert
-        cookies.Should().NotBeNullOrEmpty();
+        traceIds.Should().NotBeNullOrEmpty();
         traceId.Should().NotBeNullOrEmpty();
     }
 }
