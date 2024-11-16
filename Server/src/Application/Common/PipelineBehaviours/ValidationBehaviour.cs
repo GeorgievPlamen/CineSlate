@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Domain.Common;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Common.PipelineBehaviours;
 
+[ExcludeFromCodeCoverage]
 public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

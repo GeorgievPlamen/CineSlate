@@ -18,19 +18,12 @@ public static class Response<T>
 
     private static IResult Problem(IReadOnlyList<Error> errors)
     {
-        if (errors.Count is 0)
-        {
-            return TypedResults.Problem();
-        }
-
         if (errors.All(error => error.Type == ErrorType.Validation))
-        {
             return ValidationProblem(errors);
-        }
 
         return Problem(errors[0]);
     }
-    
+
     private static ProblemHttpResult Problem(Error firstError)
     {
         var statusCode = firstError.Type switch

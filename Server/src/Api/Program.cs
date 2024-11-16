@@ -1,4 +1,4 @@
-using Api.Common.Exceptions;
+using Api.Common;
 using Api.Features.Admin;
 using Api.Features.Movies;
 using Api.Features.Reviews;
@@ -26,13 +26,13 @@ Log.Information("Starting web application");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthorization();
-builder.Services.AddCors(opt => 
+builder.Services.AddCors(opt =>
 {
     opt.AddDefaultPolicy(p => p
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins("http://localhost:3000","http://localhost:3030"));
+        .WithOrigins("http://localhost:3000", "http://localhost:3030"));
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();

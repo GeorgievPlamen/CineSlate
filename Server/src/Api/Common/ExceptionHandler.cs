@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Common.Exceptions;
+namespace Api.Common;
 
 public class ExceptionHandler : IExceptionHandler
 {
