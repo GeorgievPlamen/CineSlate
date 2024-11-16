@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
+import DropdownButton from '../components/Buttons/DropdownButton';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -81,12 +82,12 @@ function Header() {
           </li>
         </ul>
         {user?.firstName?.length > 0 ? (
-          <div onClick={() => sessionStorage.clear()}>
-            <p className="mx-2 flex rounded px-2 py-1 text-whitesmoke hover:bg-indigo-700 active:bg-indigo-500">
+          <DropdownButton>
+            <>
               {user?.firstName}
               <UserCircleIcon className="size-6 pl-1" />
-            </p>
-          </div>
+            </>
+          </DropdownButton>
         ) : (
           <NavLink
             to="login"
