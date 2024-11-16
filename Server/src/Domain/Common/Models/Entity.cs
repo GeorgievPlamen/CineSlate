@@ -1,8 +1,8 @@
 namespace Domain.Common.Models;
 
-public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>,IEntity where TId : notnull
+public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IEntity where TId : notnull
 {
-    public TId Id { get; set; } = id;
+    public TId Id { get; private set; } = id;
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset UpdatedAt { get; private set; }
     public string? CreatedBy { get; private set; }
@@ -25,7 +25,7 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>,IEntity wher
 
     public static bool operator !=(Entity<TId> left, Entity<TId> right)
     {
-        return Equals(left, right);
+        return !Equals(left, right);
     }
 
     public override int GetHashCode()

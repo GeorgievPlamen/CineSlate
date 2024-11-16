@@ -6,14 +6,9 @@ public class UserId : ValueObject
 {
     public Guid Value { get; init; }
 
-    public UserId()
-    {
-        Value = Guid.NewGuid();
-    }
-    public UserId(Guid guid)
-    {
-        Value = guid;
-    }    
+    private UserId() { }
+    public static UserId Create() => new() { Value = Guid.NewGuid() };
+    public static UserId Create(Guid value) => new() { Value = Guid.Parse(value.ToString()) };
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

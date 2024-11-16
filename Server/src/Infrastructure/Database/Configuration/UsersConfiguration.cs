@@ -1,4 +1,5 @@
 using Domain.Users;
+using Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +10,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(u => u.Id)
-            .HasConversion(id => id.Value, value=> new(value));
+            .HasConversion(id => id.Value, value => UserId.Create(value));
 
         builder
             .HasIndex(u => u.Email)
