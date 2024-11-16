@@ -31,7 +31,7 @@ Create a .env file in root folder containing:
     PGADMIN_PW=secretpassword
 
 When you're ready, start your application by running:
-`docker compose up --build`.
+`docker compose up --build -w`
 
 CD into Client - npm run dev
 

@@ -3,6 +3,7 @@ using Api.Features.Users.Requests;
 using Application.Users.Login;
 using Application.Users.Me;
 using Application.Users.Register;
+using Domain.Users.ValueObjects;
 using MediatR;
 
 namespace Api.Features.Users;
@@ -15,8 +16,8 @@ public static class UsersEndpoint
 
         users.MapGet("/me", GetMeAsync).RequireAuthorization();
 
-        users.MapPost("/login", LoginAsync);
-        users.MapPost("/register", RegisterAsync).WithName("Register");
+        users.MapPost("/login", LoginAsync).WithName("login");
+        users.MapPost("/register", RegisterAsync);
     }
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
@@ -29,10 +30,10 @@ public static class UsersEndpoint
             cancellationToken));
 
     public static async Task<IResult> RegisterAsync(RegisterRequest request, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Unit>.Match(await mediatr.Send(new RegisterCommand(
+        => Response<UserId>.Match(await mediatr.Send(new RegisterCommand(
             request.FirstName,
             request.LastName,
             request.Email,
             request.Password),
-            cancellationToken),"Register");
+            cancellationToken), "login");
 }

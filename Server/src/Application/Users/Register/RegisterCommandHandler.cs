@@ -4,23 +4,24 @@ using Domain.Users;
 using Application.Common;
 using Domain.Users.Errors;
 using Domain.Common;
+using Domain.Users.ValueObjects;
 
 namespace Application.Users.Register;
 
 public class RegisterCommandHandler(
     IUserIdentity userIdentity,
-    IUserRepository userRepository) : IRequestHandler<RegisterCommand, Result<Unit>>
+    IUserRepository userRepository) : IRequestHandler<RegisterCommand, Result<UserId>>
 {
     private readonly IUserIdentity _userIdentity = userIdentity;
     private readonly IUserRepository _userRepository = userRepository;
 
-    public async Task<Result<Unit>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UserId>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var existingUser = await _userRepository.GetUserAsync(request.Email, cancellationToken);
 
         if (existingUser is not null)
         {
-            return Result<Unit>.Failure(UserErrors.AlreadyRegistered);
+            return Result<UserId>.Failure(UserErrors.AlreadyRegistered);
         }
 
         string passwordHash = _userIdentity.HashPassword(request.Password);
@@ -34,7 +35,7 @@ public class RegisterCommandHandler(
         bool isSuccess = await _userRepository.AddUserAsync(user, cancellationToken);
 
         return isSuccess ?
-            Result<Unit>.Success(Unit.Value) :
-            Result<Unit>.Failure(Error.ServerError());
+            Result<UserId>.Success(user.Id) :
+            Result<UserId>.Failure(Error.ServerError());
     }
 }
