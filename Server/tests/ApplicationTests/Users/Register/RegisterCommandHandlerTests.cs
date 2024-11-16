@@ -18,26 +18,26 @@ public class RegisterCommandHandlerTests
 
     public RegisterCommandHandlerTests()
     {
-        _sut = new(_userIdentity,_userRepository);
-        _command = new (_user.Name.First,_user.Name.Last,_user.Email,_user.PasswordHash);
+        _sut = new(_userIdentity, _userRepository);
+        _command = new(_user.Name.First, _user.Name.Last, _user.Email, _user.PasswordHash);
     }
 
     [Fact]
-    public async Task Handler_ShouldReturnSuccess_WhenValidParameters()
+    public async Task Handler_ShouldReturnSuccess_WhenValid()
     {
         // Arrange
         _userRepository.GetUserAsync(
-            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            Arg.Any<string>(), Arg.Any<CancellationToken>())
             .ReturnsNull();
 
         _userRepository.AddUserAsync(
-            Arg.Any<User>(),Arg.Any<CancellationToken>())
+            Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(true);
-    
+
         _userIdentity.HashPassword(Arg.Any<string>()).Returns("password.hash");
 
         // Act
-        var result = await _sut.Handle(_command,CancellationToken.None);
+        var result = await _sut.Handle(_command, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -48,11 +48,11 @@ public class RegisterCommandHandlerTests
     {
         // Arrange
         _userRepository.GetUserAsync(
-            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(_user);
-    
+
         // Act
-        var result = await _sut.Handle(_command,CancellationToken.None);
+        var result = await _sut.Handle(_command, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -64,17 +64,17 @@ public class RegisterCommandHandlerTests
     {
         // Arrange
         _userRepository.GetUserAsync(
-            Arg.Any<string>(),Arg.Any<CancellationToken>())
+            Arg.Any<string>(), Arg.Any<CancellationToken>())
             .ReturnsNull();
 
         _userRepository.AddUserAsync(
-            Arg.Any<User>(),Arg.Any<CancellationToken>())
+            Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(false);
-    
+
         _userIdentity.HashPassword(Arg.Any<string>()).Returns("password.hash");
-    
+
         // Act
-        var result = await _sut.Handle(_command,CancellationToken.None);
+        var result = await _sut.Handle(_command, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();

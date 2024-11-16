@@ -9,12 +9,13 @@ public class RegisterCommandValidatorTests
 {
     private readonly RegisterCommandValidator _sut = new();
     private readonly User _user = UserFaker.GenerateValid();
+    private const string ValidPassword = "Password123!";
 
     [Fact]
     public void Validate_ShouldPass_WhenValidCommand()
     {
         // Arrange
-        var command = new RegisterCommand(_user.Name.First,_user.Name.Last,_user.Email,_user.PasswordHash);
+        var command = new RegisterCommand(_user.Name.First, _user.Name.Last, _user.Email, ValidPassword);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -29,7 +30,7 @@ public class RegisterCommandValidatorTests
         // Arrange
         var command = new RegisterCommand(
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            ,_user.Name.Last,_user.Email,_user.PasswordHash);
+            , _user.Name.Last, _user.Email, ValidPassword);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -45,7 +46,7 @@ public class RegisterCommandValidatorTests
         var command = new RegisterCommand(
             _user.Name.First,
             "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            ,_user.Email,_user.PasswordHash);
+            , _user.Email, ValidPassword);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -58,7 +59,7 @@ public class RegisterCommandValidatorTests
     public void Validate_ShouldFail_WhenPasswordDoesNotMeetCriteria()
     {
         // Arrange
-        var command = new RegisterCommand(_user.Name.First,_user.Name.Last,_user.Email,"simplepassword");
+        var command = new RegisterCommand(_user.Name.First, _user.Name.Last, _user.Email, "simplepassword");
 
         // Act
         var result = _sut.TestValidate(command);
