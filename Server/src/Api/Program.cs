@@ -6,6 +6,7 @@ using Api.Features.Users;
 using Api.Middleware;
 using Application;
 using Infrastructure;
+using Scalar.AspNetCore;
 using Serilog;
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
@@ -40,9 +41,13 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.MapScalarApiReference();
+
+app.MapOpenApi();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

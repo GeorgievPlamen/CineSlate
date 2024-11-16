@@ -39,6 +39,8 @@ React client will be available at http://localhost:3030.
 
 Server will be available at http://localhost:8080.
 
+Requests can be tried at http://localhost:8080/scalar/v1.
+
 PG Admin will be available at http://localhost:5050/browser.
 
 Login with email and password from env file.
