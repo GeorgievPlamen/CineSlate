@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { SESSION_JWT } from '../config';
 import { useAppDispatch } from '../store/reduxHooks';
-import { userApi } from '../../features/Users/userApi';
+import { userApiAxios } from '../../features/Users/userApiAxios';
 import { setUser } from '../../features/Users/userSlice';
 
 function Background() {
@@ -11,7 +11,7 @@ function Background() {
   useEffect(() => {
     if (jwt) {
       async function getMe() {
-        const user = await userApi.me();
+        const user = await userApiAxios.me();
         dispatch(setUser(user));
       }
 

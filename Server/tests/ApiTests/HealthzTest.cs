@@ -14,7 +14,7 @@ public class HealthzTest(ApiFactory api) : IClassFixture<ApiFactory>
     public async Task Root_ShouldReturnOk_WhenApiIsAlive()
     {
         // Act
-        var response = await _httpClient.GetAsync("/");
+        var response = await _httpClient.GetAsync("/api");
         var content = await response.Content.ReadFromJsonAsync<string>();
 
         // Assert
@@ -27,7 +27,7 @@ public class HealthzTest(ApiFactory api) : IClassFixture<ApiFactory>
     public async Task Root_ShouldReturnOkWithTraceId_WhenApiIsAlive()
     {
         // Act
-        var response = await _httpClient.GetAsync("/");
+        var response = await _httpClient.GetAsync("/api");
         response.Headers.TryGetValues("TraceId", out IEnumerable<string>? traceIds);
         var traceId = traceIds?.FirstOrDefault();
 

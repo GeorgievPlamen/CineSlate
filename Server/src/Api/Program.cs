@@ -54,7 +54,7 @@ app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseMiddleware<TraceMiddleware>();
 
-app.MapGet("/", () =>
+app.MapGet("api/", () =>
 {
     return Results.Ok("Hello there :)");
 });

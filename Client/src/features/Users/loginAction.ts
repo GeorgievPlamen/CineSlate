@@ -1,5 +1,5 @@
 import { ActionFunctionArgs } from 'react-router-dom';
-import { userApi } from './userApi';
+import { userApiAxios } from './userApiAxios';
 import { userErrors } from './userErrors';
 import { UserResponse } from './UserResponse';
 import { getErrorDetails, isProblemDetails } from '../../app/api/errors';
@@ -15,7 +15,7 @@ export async function loginAction({
 
     if (errors.length > 0) return { errors };
 
-    const user = await userApi.login(input);
+    const user = await userApiAxios.login(input);
     sessionStorage.setItem(SESSION_JWT, user?.token);
 
     return { user };
