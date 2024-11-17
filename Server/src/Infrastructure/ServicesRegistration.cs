@@ -26,6 +26,8 @@ public static class InfrastructureServices
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
+        services.AddHttpClient();
+        services.AddHttpContextAccessor();
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
             {
@@ -42,7 +44,6 @@ public static class InfrastructureServices
             options.UseNpgsql(configuration.GetConnectionString("CineSlate")));
 
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddHttpContextAccessor();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IMoviesClient, TMDBClient>();

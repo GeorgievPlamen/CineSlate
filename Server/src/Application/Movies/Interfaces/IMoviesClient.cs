@@ -2,5 +2,5 @@ namespace Application.Movies.Interfaces;
 
 public interface IMoviesClient
 {
-    void GetPopularMoviesByPage(int pageNumber);
+    Task GetPopularMoviesByPage(int pageNumber);
 }

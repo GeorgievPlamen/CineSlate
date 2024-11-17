@@ -1,5 +1,5 @@
-# @Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+# @Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 

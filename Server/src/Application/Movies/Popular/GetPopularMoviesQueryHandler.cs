@@ -11,7 +11,7 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMapper ma
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
     {
-        // moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
+        moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
 
         int[] genreIds = [878, 28, 12];
 
