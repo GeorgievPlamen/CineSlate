@@ -40,7 +40,7 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'rounded px-4 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
+                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
                 ` ${isActive ? 'bg-indigo-700' : null}`
               }
             >

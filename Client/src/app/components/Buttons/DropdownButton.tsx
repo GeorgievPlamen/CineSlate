@@ -7,7 +7,6 @@ interface Props {
 
 export default function DropdownButton({ children }: Props) {
   const [isListActive, setIsListActive] = useState(false);
-  console.log(isListActive);
 
   return (
     <div className="relative mx-2">
