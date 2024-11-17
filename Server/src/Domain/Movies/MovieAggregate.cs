@@ -26,7 +26,7 @@ public class MovieAggregate : AggregateRoot<MovieId>
             Title = title,
             Description = description,
             ReleaseDate = releaseDate,
-            PosterPath = posterPath,
+            PosterPath = "https://image.tmdb.org/t/p/w500/" + posterPath,
             _genres = genres.ToList()
         };
 };

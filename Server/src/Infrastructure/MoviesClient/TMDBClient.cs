@@ -27,7 +27,7 @@ public class TMDBClient : IMoviesClient
             await response.Content.ReadAsStringAsync(),
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
-        if (popularMovies is null) return new([]);
+        if (popularMovies is null || popularMovies.Results is null) return new([]);
 
         return new(popularMovies.Results.Select(
             x => new ExternalMovie(x.Id, x.Title, x.Overview, x.Release_date, x.Poster_path, [.. x.Genre_ids])).ToList(),

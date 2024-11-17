@@ -30,6 +30,10 @@ Create a .env file in root folder containing:
     PGADMIN_MAIL=admin@email.com
     PGADMIN_PW=secretpassword
 
+You will need an api key from TMDB -> https://www.themoviedb.org/settings/api
+
+Add the key to appSettings under ApiSettings: TMDBKey.
+
 When you're ready, start your application by running:
 `docker compose up --build -w`
 
