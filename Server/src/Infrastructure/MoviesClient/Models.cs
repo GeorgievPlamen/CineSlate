@@ -15,3 +15,10 @@ public record TMDBMovie(
     bool Video,
     double Vote_average,
     int Vote_count);
+
+public record TMDBPopularMovies(
+    int Page,
+    TMDBMovie[] Results,
+    int Total_Pages,
+    int Total_Results
+);

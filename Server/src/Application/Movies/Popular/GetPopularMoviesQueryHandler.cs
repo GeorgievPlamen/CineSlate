@@ -1,28 +1,43 @@
 using Application.Common;
 using Application.Movies.Interfaces;
-using AutoMapper;
+using Domain.Common;
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
 using MediatR;
 
 namespace Application.Movies.Popular;
 
-public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMapper mapper) : IRequestHandler<GetPopularMoviesQuery, Result<Paged<Movie>>>
+public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequestHandler<GetPopularMoviesQuery, Result<Paged<Movie>>>
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
     {
-        await moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
+        var popularMovies = await moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
 
-        int[] genreIds = [878, 28, 12];
+        if (popularMovies.Values.Count == 0)
+            return Result<Paged<Movie>>.Failure(Error.ServerError());
 
-        var movie = MovieAggregate.Create(
-            MovieId.Create(912649),
-            "Venom: The Last Dance",
-            "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
-            DateOnly.Parse("2024-10-22"),
-            "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
-            genreIds.Select(x => Genre.Create(x)));
+        var movieAggregates = popularMovies.Values.Select(x => MovieAggregate.Create(
+            MovieId.Create(x.Id),
+            x.Title,
+            x.Description,
+            x.ReleaseDate,
+            x.PosterPath,
+            x.GenreIds.Select(g => Genre.Create(g)))).ToList();
 
-        return Result<Paged<Movie>>.Success(new([mapper.Map<Movie>(movie)], 1, false, false));
+
+        var movies = movieAggregates.Select(x => new Movie(
+            x.Id.Value,
+            x.Title,
+            x.Description,
+            x.ReleaseDate,
+            x.PosterPath,
+            x.Genres)).ToList();
+
+        return Result<Paged<Movie>>.Success(new(
+            movies,
+            popularMovies.CurrentPage,
+            popularMovies.HasNextPage,
+            popularMovies.HasPreviousPage,
+            popularMovies.TotalCount));
     }
 }

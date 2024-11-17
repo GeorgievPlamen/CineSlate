@@ -11,20 +11,22 @@ public class Genre : ValueObject
     {
         return id switch
         {
-            28 => new Genre() { Value = "Action" },
             12 => new Genre() { Value = "Adventure" },
+            14 => new Genre() { Value = "Fantasy" },
             16 => new Genre() { Value = "Animation" },
+            18 => new Genre() { Value = "Drama" },
+            27 => new Genre() { Value = "Horror" },
+            28 => new Genre() { Value = "Action" },
             35 => new Genre() { Value = "Comedy" },
+            36 => new Genre() { Value = "History" },
+            53 => new Genre() { Value = "Thriller" },
             80 => new Genre() { Value = "Crime" },
             99 => new Genre() { Value = "Documentary" },
-            18 => new Genre() { Value = "Drama" },
-            10751 => new Genre() { Value = "Family" },
-            14 => new Genre() { Value = "Fantasy" },
-            36 => new Genre() { Value = "History" },
-            27 => new Genre() { Value = "Horror" },
-            10402 => new Genre() { Value = "Music" },
-            9648 => new Genre() { Value = "Mystery" },
             878 => new Genre() { Value = "Science Fiction" },
+            9648 => new Genre() { Value = "Mystery" },
+            10402 => new Genre() { Value = "Music" },
+            10749 => new Genre() { Value = "Romance" },
+            10751 => new Genre() { Value = "Family" },
             _ => new Genre() { Value = "???" }
         };
     }
