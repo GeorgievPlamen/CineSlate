@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { User } from './userType';
+import { User } from '../Models/userType';
 
-export const userApiAxios = {
+export const userApi = {
   login: async (formData: FormData): Promise<User> =>
     await axios.post('users/login', formData),
 

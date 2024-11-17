@@ -1,5 +1,5 @@
 import { Form, NavLink, useActionData } from 'react-router-dom';
-import { UserResponse } from './UserResponse';
+import { UserResponse } from './Models/UserResponse';
 import SubmitButton from '../../app/components/Buttons/SubmitButton';
 import EmailField from '../../app/components/Fields/EmailField';
 import NameField from '../../app/components/Fields/NameField';

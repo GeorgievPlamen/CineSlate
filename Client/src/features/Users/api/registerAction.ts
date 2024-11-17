@@ -1,10 +1,10 @@
 import { ActionFunctionArgs } from 'react-router-dom';
-import { userErrors } from './userErrors';
-import { userApiAxios } from './userApiAxios';
-import { UserResponse } from './UserResponse';
-import { isProblemDetails, getErrorDetails } from '../../app/api/errors';
-import { SESSION_JWT } from '../../app/config';
-import { validate } from '../../app/utils/validate';
+import { userErrors } from '../Models/userErrors';
+import { UserResponse } from '../Models/UserResponse';
+import { isProblemDetails, getErrorDetails } from '../../../app/api/errors';
+import { SESSION_JWT } from '../../../app/config';
+import { validate } from '../../../app/utils/validate';
+import { userApi } from './userApi';
 
 export async function registerAction({
   request,
@@ -15,9 +15,9 @@ export async function registerAction({
 
     if (errors.length > 0) return { errors };
 
-    await userApiAxios.register(input);
+    await userApi.register(input);
 
-    const user = await userApiAxios.login(input);
+    const user = await userApi.login(input);
     sessionStorage.setItem(SESSION_JWT, user?.token);
 
     return { user };
