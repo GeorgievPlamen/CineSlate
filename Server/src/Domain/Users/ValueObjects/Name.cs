@@ -7,13 +7,12 @@ public class Name : ValueObject
     private Name()
     {
     }
-    public Name(string firstName, string lastName)
-    {
-        First = firstName;
-        Last = lastName;
-    }
-    public string First { get; } = null!;
-    public string Last { get; } = null!;
+    public string First { get; private set; } = null!;
+    public string Last { get; private set; } = null!;
+
+    public static Name Create(string firstName, string lastName)
+    => new() { First = firstName, Last = lastName };
+
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return First;

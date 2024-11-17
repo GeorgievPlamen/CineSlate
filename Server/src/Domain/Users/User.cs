@@ -15,7 +15,7 @@ public class User : AggregateRoot<UserId>
     public static User Create(string firstName, string lastName, string email, string passwordHash, Roles role = Roles.User)
         => new(UserId.Create())
         {
-            Name = new(firstName, lastName),
+            Name = Name.Create(firstName, lastName),
             Email = email,
             PasswordHash = passwordHash,
             Role = role,
