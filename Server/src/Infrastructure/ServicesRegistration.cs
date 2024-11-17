@@ -26,6 +26,7 @@ public static class InfrastructureServices
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
+        services.Configure<ApiKeys>(configuration.GetSection(nameof(ApiKeys)));
         services.AddHttpClient();
         services.AddHttpContextAccessor();
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)

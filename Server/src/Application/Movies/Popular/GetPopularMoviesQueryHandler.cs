@@ -11,7 +11,7 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMapper ma
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
     {
-        moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
+        await moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
 
         int[] genreIds = [878, 28, 12];
 
@@ -22,8 +22,6 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMapper ma
             DateOnly.Parse("2024-10-22"),
             "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
             genreIds.Select(x => Genre.Create(x)));
-
-        Movie movieResponse = mapper.Map<Movie>(movie);
 
         return Result<Paged<Movie>>.Success(new([mapper.Map<Movie>(movie)], 1, false, false));
     }
