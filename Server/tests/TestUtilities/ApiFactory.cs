@@ -1,4 +1,5 @@
 using Api.Common;
+using Application.Movies.Interfaces;
 using Domain.Common.Models;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -32,6 +34,9 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
         builder.ConfigureTestServices(services =>
         {
+            var moviesClientSubstitute = Substitute.For<IMoviesClient>();
+            services.AddSingleton(moviesClientSubstitute);
+
             var descriptor = services.FirstOrDefault(
                 s => s.ServiceType == typeof(DbContextOptions<CineSlateContext>));
 
@@ -46,6 +51,8 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
             dbContext.Database.Migrate();
         });
     }
+
+    public IMoviesClient MoviesClientMock => Services.GetRequiredService<IMoviesClient>();
 
     public Task InitializeAsync()
     {

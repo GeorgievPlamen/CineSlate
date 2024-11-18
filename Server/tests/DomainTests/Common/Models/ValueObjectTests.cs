@@ -10,8 +10,9 @@ public class ValueObjectTests
     public void ValueObjects_WithSameProperties_ShouldBeEqual()
     {
         // Arrange
-        var name1 = new Name("John", "Doe");
-        var name2 = new Name("John", "Doe");
+        var name1 = Name.Create("John", "Doe");
+        var name2 = Name.Create("John", "Doe");
+
 
         // Act & Assert
         name1.Should().Be(name2); // Uses Equals method
@@ -23,8 +24,8 @@ public class ValueObjectTests
     public void ValueObjects_WithDifferentProperties_ShouldNotBeEqual()
     {
         // Arrange
-        var name1 = new Name("John", "Doe");
-        var name2 = new Name("Jane", "Smith");
+        var name1 = Name.Create("John", "Doe");
+        var name2 = Name.Create("Jane", "Smith");
 
         // Act & Assert
         name1.Should().NotBe(name2); // Uses Equals method
@@ -36,8 +37,8 @@ public class ValueObjectTests
     public void ValueObject_ShouldHaveConsistentHashCode()
     {
         // Arrange
-        var name1 = new Name("John", "Doe");
-        var name2 = new Name("John", "Doe");
+        var name1 = Name.Create("John", "Doe");
+        var name2 = Name.Create("John", "Doe");
 
         // Act & Assert
         name1.GetHashCode().Should().Be(name2.GetHashCode());
@@ -47,8 +48,8 @@ public class ValueObjectTests
     public void ValueObjects_WithDifferentProperties_ShouldHaveDifferentHashCodes()
     {
         // Arrange
-        var name1 = new Name("John", "Doe");
-        var name2 = new Name("Jane", "Smith");
+        var name1 = Name.Create("John", "Doe");
+        var name2 = Name.Create("Jane", "Smith");
 
         // Act & Assert
         name1.GetHashCode().Should().NotBe(name2.GetHashCode());
@@ -58,7 +59,7 @@ public class ValueObjectTests
     public void ValueObject_ShouldNotEqualNull()
     {
         // Arrange
-        var name = new Name("John", "Doe");
+        var name = Name.Create("John", "Doe");
 
         // Act & Assert
         name.Equals(null).Should().BeFalse();
@@ -68,7 +69,7 @@ public class ValueObjectTests
     public void ValueObjects_OfDifferentTypes_ShouldNotBeEqual()
     {
         // Arrange
-        var name = new Name("John", "Doe");
+        var name = Name.Create("John", "Doe");
         var otherValueObject = new TestValueObject();
 
         // Act & Assert

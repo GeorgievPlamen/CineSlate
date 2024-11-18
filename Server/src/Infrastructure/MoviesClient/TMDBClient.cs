@@ -20,7 +20,7 @@ public class TMDBClient : IMoviesClient
         _apiKeys = apiKeyOptions.Value;
     }
 
-    public async Task<Paged<ExternalMovie>> GetPopularMoviesByPage(int pageNumber)
+    public async Task<Paged<ExternalMovie>> GetPopularMoviesByPageAsync(int pageNumber)
     {
         var response = await _httpClient.GetAsync(UriWithApiKey($"/movie/popular?language=en-US&page={pageNumber}"));
         var popularMovies = JsonSerializer.Deserialize<TMDBPopularMovies>(

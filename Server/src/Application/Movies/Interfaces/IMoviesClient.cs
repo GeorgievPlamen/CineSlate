@@ -4,5 +4,5 @@ namespace Application.Movies.Interfaces;
 
 public interface IMoviesClient
 {
-    Task<Paged<ExternalMovie>> GetPopularMoviesByPage(int pageNumber);
+    Task<Paged<ExternalMovie>> GetPopularMoviesByPageAsync(int pageNumber);
 }

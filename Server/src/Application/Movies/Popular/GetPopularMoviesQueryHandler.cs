@@ -11,7 +11,7 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequest
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
     {
-        var popularMovies = await moviesClient.GetPopularMoviesByPage(request.Page ?? 1);
+        var popularMovies = await moviesClient.GetPopularMoviesByPageAsync(request.Page ?? 1);
 
         if (popularMovies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
