@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using Domain.Common.Models;
 using Domain.Users;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +9,11 @@ namespace Infrastructure.Database;
 
 public class CineSlateContext(
     DbContextOptions options,
-    IHttpContextAccessor httpContextAccessor) : DbContext(options)
+    IHttpContextAccessor httpContextAccessor,
+    IPublisher publisher) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly IPublisher _publisher = publisher;
     public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,10 +22,15 @@ public class CineSlateContext(
 
         base.OnModelCreating(modelBuilder);
     }
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        List<DomainEvent> domainEvents = [];
+
         foreach (var entry in ChangeTracker.Entries<IEntity>())
         {
+            if (entry.Entity.DomainEvents.Count > 0)
+                domainEvents.AddRange(entry.Entity.DomainEvents);
+
             var email = _httpContextAccessor.HttpContext?.User?.FindFirst(
                 JwtRegisteredClaimNames.Email)?.Value ??
                 "Could not get email. User Not logged in.";
@@ -30,11 +38,14 @@ public class CineSlateContext(
             entry.Entity.SetUpdated(email, DateTimeOffset.UtcNow);
 
             if (entry.State == EntityState.Added)
-            {
                 entry.Entity.SetCreated(email, DateTimeOffset.UtcNow);
-            }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        foreach (var domainEvent in domainEvents)
+            await _publisher.Publish(domainEvent, cancellationToken);
+
+        return result;
     }
 }

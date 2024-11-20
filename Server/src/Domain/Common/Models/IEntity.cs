@@ -4,4 +4,5 @@ public interface IEntity
 {
     public void SetCreated(string email, DateTimeOffset createdAt);
     public void SetUpdated(string email, DateTimeOffset updatedAt);
+    public IReadOnlyCollection<DomainEvent> DomainEvents { get; }
 }
