@@ -29,7 +29,7 @@ public class MovieAggregate : AggregateRoot<MovieId>
             Description = description,
             ReleaseDate = releaseDate,
             PosterPath = "https://image.tmdb.org/t/p/w500/" + posterPath,
-            _genres = genres.ToList()
+            _genres = [.. genres]
         };
 
     public void AddRating(Rating rating) => _ratings.Add(rating);

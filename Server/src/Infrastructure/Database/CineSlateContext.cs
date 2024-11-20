@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Domain.Common.Models;
+using Domain.Movies;
 using Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@ public class CineSlateContext(
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IPublisher _publisher = publisher;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<MovieAggregate> Movies { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
