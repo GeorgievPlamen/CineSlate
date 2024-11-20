@@ -24,7 +24,6 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequest
             x.PosterPath,
             x.GenreIds.Select(g => Genre.Create(g)))).ToList();
 
-
         var movies = movieAggregates.Select(x => new Movie(
             x.Id.Value,
             x.Title,

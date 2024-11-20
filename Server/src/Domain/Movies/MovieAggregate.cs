@@ -15,7 +15,7 @@ public class MovieAggregate : AggregateRoot<MovieId>
     public string PosterPath { get; private set; } = null!;
     public IReadOnlyList<Genre> Genres => [.. _genres];
     public IReadOnlyCollection<Rating> Ratings => [.. _ratings];
-    public double Rating => _ratings.Average(r => r.Value);
+    public double Rating => Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
 
     public static MovieAggregate Create(
         MovieId id,

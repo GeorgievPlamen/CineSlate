@@ -13,7 +13,6 @@ public static class ApplicationServices
         var assembly = typeof(ApplicationServices).Assembly;
 
         services.AddMediatR(assembly);
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(assembly);
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));

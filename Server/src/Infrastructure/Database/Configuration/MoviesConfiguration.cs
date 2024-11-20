@@ -1,4 +1,5 @@
 using Domain.Movies;
+using Domain.Movies.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +9,9 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
 {
     public void Configure(EntityTypeBuilder<MovieAggregate> builder)
     {
+        builder.Property(m => m.Id)
+            .HasConversion(id => id.Value, value => MovieId.Create(value));
+
         builder.HasIndex(m => m.Id)
             .IsUnique();
 
@@ -32,7 +36,16 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
         builder.OwnsMany(m => m.Ratings)
             .WithOwner();
 
-        builder.Property(m => m.Rating)
-            .IsRequired();
+        builder.Property(u => u.CreatedBy)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(u => u.UpdatedBy)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Ignore(m => m.DomainEvents);
+
+        builder.Ignore(m => m.Rating);
     }
 }
