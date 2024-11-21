@@ -1,5 +1,6 @@
 using Application.Movies;
 using Bogus;
+using Domain.Movies;
 using Domain.Movies.ValueObjects;
 
 namespace TestUtilities.Fakers;
@@ -23,7 +24,7 @@ public static class MovieFaker
         new Faker<ExternalMovie>()
             .CustomInstantiator(f => new ExternalMovie
             (
-                Id: f.Random.Number(),
+                Id: f.Random.Number(1000, 5000),
                 Title: f.Name.FullName(),
                 Description: f.Lorem.Sentence(),
                 ReleaseDate: f.Date.PastDateOnly(),
