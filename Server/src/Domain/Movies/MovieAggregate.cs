@@ -6,7 +6,7 @@ namespace Domain.Movies;
 public class MovieAggregate : AggregateRoot<MovieId>
 {
     private MovieAggregate(MovieId id) : base(id) { }
-    private List<Genre> _genres = null!;
+    private List<Genre> _genres = [];
     private readonly List<Rating> _ratings = [];
 
     public string Title { get; private set; } = null!;

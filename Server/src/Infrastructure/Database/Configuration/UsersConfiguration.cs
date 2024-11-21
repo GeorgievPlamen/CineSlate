@@ -10,7 +10,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(u => u.Id)
-            .HasConversion(id => id.Id, value => UserId.Create(value));
+            .HasConversion(id => id.Value, value => UserId.Create(value));
 
         builder
             .HasIndex(u => u.Email)

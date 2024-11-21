@@ -4,8 +4,9 @@ namespace Domain.Movies.ValueObjects;
 
 public class Genre : ValueObject
 {
-    public string Value { get; private set; } = null!;
     private Genre() { }
+
+    public string Value { get; private set; } = null!;
 
     public static Genre Create(int id)
     {

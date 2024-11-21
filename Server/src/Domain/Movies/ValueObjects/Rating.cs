@@ -5,10 +5,11 @@ namespace Domain.Movies.ValueObjects;
 
 public class Rating : ValueObject
 {
-    public int Value { get; private set; }
-    public UserId RatedBy { get; private set; } = null!;
     private Rating() { }
 
+    public int Value { get; private set; }
+    public UserId RatedBy { get; private set; } = null!;
+    
     public static Rating Create(int rating, UserId ratedBy)
     {
         if (rating < 1 || rating > 5)

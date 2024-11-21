@@ -26,7 +26,7 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
             return Result<LoginResponse>.Failure(UserErrors.NotFound);
 
         var token = _userIdentity.GenerateJwtToken(
-            foundUser.Id.Id,
+            foundUser.Id.Value,
             foundUser.Name.First,
             foundUser.Name.Last,
             foundUser.Email,

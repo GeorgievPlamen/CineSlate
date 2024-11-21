@@ -4,9 +4,7 @@ namespace Domain.Users;
 
 public class Name : ValueObject
 {
-    private Name()
-    {
-    }
+    private Name() { }
     public string First { get; private set; } = null!;
     public string Last { get; private set; } = null!;
 

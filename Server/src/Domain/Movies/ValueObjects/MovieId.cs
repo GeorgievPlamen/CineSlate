@@ -4,9 +4,9 @@ namespace Domain.Movies.ValueObjects;
 
 public class MovieId : ValueObject
 {
-    public int Value { get; private set; }
     private MovieId() { }
 
+    public int Value { get; private set; }
     public static MovieId Create(int movieId) => new() { Value = movieId };
     public override IEnumerable<object> GetEqualityComponents()
     {

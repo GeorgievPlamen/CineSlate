@@ -13,15 +13,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CineSlateContext))]
-    [Migration("20241120072642_UpdateMovies")]
-    partial class UpdateMovies
+    [Migration("20241121065505_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -132,17 +132,6 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Domain.Users.ValueObjects.UserId", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserId");
-                });
-
             modelBuilder.Entity("Domain.Movies.MovieAggregate", b =>
                 {
                     b.OwnsMany("Domain.Movies.ValueObjects.Genre", "Genres", b1 =>
@@ -170,37 +159,26 @@ namespace Infrastructure.Database.Migrations
 
                     b.OwnsMany("Domain.Movies.ValueObjects.Rating", "Ratings", b1 =>
                         {
+                            b1.Property<Guid>("RatedBy")
+                                .HasColumnType("uuid");
+
                             b1.Property<int>("MovieAggregateId")
                                 .HasColumnType("integer");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.Property<Guid>("RatedById")
-                                .HasColumnType("uuid");
 
                             b1.Property<int>("Value")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("MovieAggregateId", "Id");
+                            b1.HasKey("RatedBy");
 
-                            b1.HasIndex("RatedById");
+                            b1.HasIndex("MovieAggregateId");
+
+                            b1.HasIndex("RatedBy")
+                                .IsUnique();
 
                             b1.ToTable("Rating");
 
                             b1.WithOwner()
                                 .HasForeignKey("MovieAggregateId");
-
-                            b1.HasOne("Domain.Users.ValueObjects.UserId", "RatedBy")
-                                .WithMany()
-                                .HasForeignKey("RatedById")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.Navigation("RatedBy");
                         });
 
                     b.Navigation("Genres");

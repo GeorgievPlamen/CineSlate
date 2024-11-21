@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMovies : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,8 +23,8 @@ namespace Infrastructure.Database.Migrations
                     PosterPath = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,14 +32,23 @@ namespace Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserId",
+                name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Name_First = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Name_Last = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserId", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,25 +75,17 @@ namespace Infrastructure.Database.Migrations
                 name: "Rating",
                 columns: table => new
                 {
-                    MovieAggregateId = table.Column<int>(type: "integer", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     Value = table.Column<int>(type: "integer", nullable: false),
-                    RatedById = table.Column<Guid>(type: "uuid", nullable: false)
+                    MovieAggregateId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rating", x => new { x.MovieAggregateId, x.Id });
+                    table.PrimaryKey("PK_Rating", x => x.RatedBy);
                     table.ForeignKey(
                         name: "FK_Rating_Movies_MovieAggregateId",
                         column: x => x.MovieAggregateId,
                         principalTable: "Movies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rating_UserId_RatedById",
-                        column: x => x.RatedById,
-                        principalTable: "UserId",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -96,9 +97,21 @@ namespace Infrastructure.Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rating_RatedById",
+                name: "IX_Rating_MovieAggregateId",
                 table: "Rating",
-                column: "RatedById");
+                column: "MovieAggregateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rating_RatedBy",
+                table: "Rating",
+                column: "RatedBy",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -111,10 +124,10 @@ namespace Infrastructure.Database.Migrations
                 name: "Rating");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "UserId");
+                name: "Movies");
         }
     }
 }
