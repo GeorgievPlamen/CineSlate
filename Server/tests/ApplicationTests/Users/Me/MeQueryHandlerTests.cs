@@ -20,29 +20,29 @@ public class MeQueryHandlerTests
 
     public MeQueryHandlerTests()
     {
-        var claims = new List<Claim> { new (ClaimTypes.Email, "john.doe@test.com") };
+        var claims = new List<Claim> { new(ClaimTypes.Email, "john.doe@test.com") };
         var identity = new ClaimsIdentity(claims, "TestAuthType");
         var claimsPrincipal = new ClaimsPrincipal(identity);
-        
+
         var httpContext = new DefaultHttpContext
         {
             User = claimsPrincipal
         };
 
         _httpContextAccessor.HttpContext.Returns(httpContext);
-        _sut = new(_httpContextAccessor,_userRepository);
+        _sut = new(_httpContextAccessor, _userRepository);
     }
 
     [Fact]
     public async Task Handler_ShouldReturnSuccess_WhenValidParameters()
     {
         // Arrange
-        _userRepository.GetUserAsync(Arg.Any<string>(),Arg.Any<CancellationToken>())
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(_user);
 
         // Act
-        var result = await _sut.Handle(new MeQuery(),CancellationToken.None);
-    
+        var result = await _sut.Handle(new MeQuery(), CancellationToken.None);
+
         // Assert
         result.IsSuccess.Should().BeTrue();
     }
@@ -51,12 +51,12 @@ public class MeQueryHandlerTests
     public async Task Handler_ShouldReturnFailure_WhenUserNotFound()
     {
         // Arrange
-        _userRepository.GetUserAsync(Arg.Any<string>(),Arg.Any<CancellationToken>())
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .ReturnsNull();
 
         // Act
-        var result = await _sut.Handle(new MeQuery(),CancellationToken.None);
-    
+        var result = await _sut.Handle(new MeQuery(), CancellationToken.None);
+
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Errors.Should().NotBeEmpty();

@@ -26,7 +26,7 @@ public class MeQueryHandler(
         if (email is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound);
 
-        var foundUser = await _userRepository.GetUserAsync(email.Value, cancellationToken);
+        var foundUser = await _userRepository.GetAsync(email.Value, cancellationToken);
 
         if (foundUser is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound);

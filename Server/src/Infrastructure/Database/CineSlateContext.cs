@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Domain.Common.Models;
 using Domain.Movies;
 using Domain.Users;
@@ -34,8 +35,7 @@ public class CineSlateContext(
                 domainEvents.AddRange(entry.Entity.DomainEvents);
 
             var email = _httpContextAccessor.HttpContext?.User?.FindFirst(
-                JwtRegisteredClaimNames.Email)?.Value ??
-                "Could not get email. User Not logged in.";
+                ClaimTypes.Email)?.Value ?? "Could not get email. User Not logged in.";
 
             entry.Entity.SetUpdated(email, DateTimeOffset.UtcNow);
 

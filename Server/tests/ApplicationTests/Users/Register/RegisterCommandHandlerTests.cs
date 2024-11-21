@@ -26,11 +26,11 @@ public class RegisterCommandHandlerTests
     public async Task Handler_ShouldReturnSuccess_WhenValid()
     {
         // Arrange
-        _userRepository.GetUserAsync(
+        _userRepository.GetAsync(
             Arg.Any<string>(), Arg.Any<CancellationToken>())
             .ReturnsNull();
 
-        _userRepository.AddUserAsync(
+        _userRepository.CreateAsync(
             Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(true);
 
@@ -47,7 +47,7 @@ public class RegisterCommandHandlerTests
     public async Task Handler_ShouldReturnFailure_WhenUserAlreadyRegistered()
     {
         // Arrange
-        _userRepository.GetUserAsync(
+        _userRepository.GetAsync(
             Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(_user);
 
@@ -63,11 +63,11 @@ public class RegisterCommandHandlerTests
     public async Task Handler_ShouldReturnFailure_WhenUserCouldNotBeAdded()
     {
         // Arrange
-        _userRepository.GetUserAsync(
+        _userRepository.GetAsync(
             Arg.Any<string>(), Arg.Any<CancellationToken>())
             .ReturnsNull();
 
-        _userRepository.AddUserAsync(
+        _userRepository.CreateAsync(
             Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(false);
 

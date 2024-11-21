@@ -17,7 +17,7 @@ public class RegisterCommandHandler(
 
     public async Task<Result<UserId>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await _userRepository.GetUserAsync(request.Email, cancellationToken);
+        var existingUser = await _userRepository.GetAsync(request.Email, cancellationToken);
 
         if (existingUser is not null)
         {
@@ -32,7 +32,7 @@ public class RegisterCommandHandler(
             request.Email,
             passwordHash);
 
-        bool isSuccess = await _userRepository.AddUserAsync(user, cancellationToken);
+        bool isSuccess = await _userRepository.CreateAsync(user, cancellationToken);
 
         return isSuccess ?
             Result<UserId>.Success(user.Id) :

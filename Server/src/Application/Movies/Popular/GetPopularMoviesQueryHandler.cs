@@ -7,21 +7,34 @@ using MediatR;
 
 namespace Application.Movies.Popular;
 
-public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequestHandler<GetPopularMoviesQuery, Result<Paged<Movie>>>
+public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository) : IRequestHandler<GetPopularMoviesQuery, Result<Paged<Movie>>>
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
     {
-        var popularMovies = await moviesClient.GetPopularMoviesByPageAsync(request.Page ?? 1);
+        var defaultPage = 1;
+        var popularMovies = await moviesClient
+            .GetPopularMoviesByPageAsync(request.Page ?? defaultPage);
 
         if (popularMovies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
 
-        // TODO Query DB for movies data
-        // TODO Raise create movie event for id's not matched
-        // TODO Combine TMDB data with Our data and return
+        var popularMovieIds = popularMovies.Values
+            .Select(m => MovieId.Create(m.Id))
+            .ToList();
 
+        var knownMovies = await moviesRepository
+            .GetManyByIdsAsync(popularMovieIds, cancellationToken);
 
-        var movieAggregates = popularMovies.Values.Select(x => MovieAggregate.Create(
+        var unknownMovieIds = popularMovieIds
+            .Except(knownMovies.Select(m => m.Id))
+            .Select(id => id.Value)
+            .ToList();
+
+        var unknownMovies = popularMovies.Values
+            .Where(m => unknownMovieIds.Contains(m.Id))
+            .ToList();
+
+        var movieAggregates = unknownMovies.Select(x => MovieAggregate.Create(
             MovieId.Create(x.Id),
             x.Title,
             x.Description,
@@ -29,7 +42,13 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequest
             x.PosterPath,
             x.GenreIds.Select(g => Genre.Create(g)))).ToList();
 
-        var movies = movieAggregates.Select(x => new Movie(
+        if (movieAggregates.Count > 0)
+        {
+            await moviesRepository.CreateManyAsync(movieAggregates, cancellationToken);
+            knownMovies.AddRange(movieAggregates);
+        }
+
+        var movies = knownMovies.Select(x => new Movie(
             x.Id.Value,
             x.Title,
             x.Description,

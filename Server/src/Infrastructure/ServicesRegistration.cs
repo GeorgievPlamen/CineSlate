@@ -45,9 +45,10 @@ public static class InfrastructureServices
             options.UseNpgsql(configuration.GetConnectionString("CineSlate")));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IMoviesClient, TMDBClient>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddScoped<IMoviesClient, TMDBClient>();
 
         return services;
     }
