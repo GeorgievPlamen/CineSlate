@@ -16,6 +16,11 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient) : IRequest
         if (popularMovies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
 
+        // TODO Query DB for movies data
+        // TODO Raise create movie event for id's not matched
+        // TODO Combine TMDB data with Our data and return
+
+
         var movieAggregates = popularMovies.Values.Select(x => MovieAggregate.Create(
             MovieId.Create(x.Id),
             x.Title,
