@@ -2,7 +2,7 @@
 using Api.Common;
 using Application.Common;
 using Application.Movies;
-using Application.Movies.Popular;
+using Application.Movies.PagedMoviesQuery;
 using MediatR;
 
 namespace Api.Features.Movies;
@@ -13,9 +13,9 @@ public static class MoviesEndpoint
     {
         var movies = app.MapGroup("api/movies").RequireAuthorization();
 
-        movies.MapGet("/popular", GetPopularMoviesAsync);
+        movies.MapGet("/{moviesBy}", GetMoviesAsync);
     }
 
-    private static async Task<IResult> GetPopularMoviesAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
-    => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPopularMoviesQuery(pageNumber), cancellationToken));
+    private static async Task<IResult> GetMoviesAsync(MoviesBy moviesBy, int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
+    => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(moviesBy, pageNumber), cancellationToken));
 }

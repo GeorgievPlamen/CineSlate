@@ -22,24 +22,24 @@ public class TMDBClient : IMoviesClient
         _apiKeys = apiKeyOptions.Value;
     }
 
-    public async Task<Paged<ExternalMovie>> GetPopularMoviesByPageAsync(int pageNumber)
+    public async Task<Paged<ExternalMovie>> GetMoviesByPageAsync(MoviesBy moviesBy, int pageNumber)
     {
         var response = await _httpClient.GetAsync(
-            UriWithApiKey($"/movie/popular?page={pageNumber}"));
+            UriForMoviesWithKey(pageNumber, moviesBy));
 
-        var popularMovies = JsonSerializer.Deserialize<TMDBPopularMovies>(
+        var movies = JsonSerializer.Deserialize<TMDBMovies>(
             await response.Content.ReadAsStringAsync(),
             _jsonSerializerOptions);
 
-        if (popularMovies is null || popularMovies.Results is null) return new([]);
+        if (movies is null || movies.Results is null) return new([]);
 
-        return new(popularMovies.Results.Select(
+        return new(movies.Results.Select(
             x => new ExternalMovie(x.Id, x.Title, x.Overview, x.Release_date, x.Poster_path, [.. x.Genre_ids])).ToList(),
-            popularMovies.Page,
-            popularMovies.Page < 500,
-            popularMovies.Page > 1,
-            popularMovies.Total_Results);
+            movies.Page,
+            movies.Page < 500,
+            movies.Page > 1,
+            movies.Total_Results);
     }
 
-    private string UriWithApiKey(string requestPath) => $"/3{requestPath}&api_key={_apiKeys.TMDBKey}";
+    private string UriForMoviesWithKey(int pageNumber, MoviesBy? getBy = MoviesBy.now_playing) => $"/3/movie/{getBy}?page={pageNumber}&api_key={_apiKeys.TMDBKey}";
 }

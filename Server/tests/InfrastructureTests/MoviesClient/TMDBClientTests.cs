@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Application.Movies;
 using FluentAssertions;
 using Infrastructure.Common.Models;
 using Infrastructure.MoviesClient;
@@ -33,7 +34,7 @@ public class TMDBClientTests
         var sut = CreateSut(_httpMessageHandler);
 
         // Act
-        var result = await sut.GetPopularMoviesByPageAsync(1);
+        var result = await sut.GetMoviesByPageAsync(MoviesBy.now_playing, 1);
 
         // Assert
         result.Should().NotBeNull();
@@ -64,7 +65,7 @@ public class TMDBClientTests
         var sut = CreateSut(_httpMessageHandler);
 
         // Act
-        var result = await sut.GetPopularMoviesByPageAsync(1);
+        var result = await sut.GetMoviesByPageAsync(MoviesBy.now_playing, 1);
 
         // Assert
         result.Should().NotBeNull();

@@ -5,32 +5,32 @@ using Domain.Movies;
 using Domain.Movies.ValueObjects;
 using MediatR;
 
-namespace Application.Movies.Popular;
+namespace Application.Movies.PagedMoviesQuery;
 
-public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository) : IRequestHandler<GetPopularMoviesQuery, Result<Paged<Movie>>>
+public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository) : IRequestHandler<GetPagedMoviesQuery, Result<Paged<Movie>>>
 {
-    public async Task<Result<Paged<Movie>>> Handle(GetPopularMoviesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Paged<Movie>>> Handle(GetPagedMoviesQuery request, CancellationToken cancellationToken)
     {
         var defaultPage = 1;
-        var popularMovies = await moviesClient
-            .GetPopularMoviesByPageAsync(request.Page ?? defaultPage);
+        var movies = await moviesClient
+            .GetMoviesByPageAsync(request.MoviesBy, request.Page ?? defaultPage);
 
-        if (popularMovies.Values.Count == 0)
+        if (movies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
 
-        var popularMovieIds = popularMovies.Values
+        var movieIds = movies.Values
             .Select(m => MovieId.Create(m.Id))
             .ToList();
 
         var knownMovies = await moviesRepository
-            .GetManyByIdsAsync(popularMovieIds, cancellationToken);
+            .GetManyByIdsAsync(movieIds, cancellationToken);
 
-        var unknownMovieIds = popularMovieIds
+        var unknownMovieIds = movieIds
             .Except(knownMovies.Select(m => m.Id))
             .Select(id => id.Value)
             .ToList();
 
-        var unknownMovies = popularMovies.Values
+        var unknownMovies = movies.Values
             .Where(m => unknownMovieIds.Contains(m.Id))
             .ToList();
 
@@ -48,7 +48,7 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepo
             knownMovies.AddRange(movieAggregates);
         }
 
-        var movies = knownMovies.Select(x => new Movie(
+        var response = knownMovies.Select(x => new Movie(
             x.Id.Value,
             x.Title,
             x.Description,
@@ -57,10 +57,10 @@ public class GetPopularMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepo
             x.Genres)).ToList();
 
         return Result<Paged<Movie>>.Success(new(
-            movies,
-            popularMovies.CurrentPage,
-            popularMovies.HasNextPage,
-            popularMovies.HasPreviousPage,
-            popularMovies.TotalCount));
+            response,
+            movies.CurrentPage,
+            movies.HasNextPage,
+            movies.HasPreviousPage,
+            movies.TotalCount));
     }
 }

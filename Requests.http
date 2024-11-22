@@ -49,9 +49,9 @@ content-type: application/json
     "password": "badPassword"
 }
 
-### Popular Movies List
+### Movies List
 
-GET {{Api_HostAddress}}movies/popular?pageNumber=1
+GET {{Api_HostAddress}}movies/now_playing?pageNumber=1
 content-type: application/json
 Authorization: {{Token}}
 

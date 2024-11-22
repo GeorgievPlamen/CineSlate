@@ -13,9 +13,10 @@ namespace ApiTests.Features.Movies;
 
 public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
 {
+    private const string TestUri = "/api/movies/now_playing";
 
     [Fact]
-    public async Task GetPopular_ShouldReturnPagedResponseWithMovies()
+    public async Task GetMovies_ShouldReturnPagedResponseWithMovies()
     {
         // Arrange
         await AuthenticateAsync();
@@ -34,11 +35,11 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 
         await Api.SeedDatabaseAsync([.. movieAggregates]);
 
-        Api.MoviesClientMock.GetPopularMoviesByPageAsync(Arg.Any<int>())
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync("/api/movies/popular");
+        var result = await Client.GetAsync(TestUri);
 
         // Assert
         result.Should().NotBeNull();
@@ -46,18 +47,18 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
     }
 
     [Fact]
-    public async Task GetPopular_ShouldAddUnknownMoviesToDatabase()
+    public async Task GetMovies_ShouldAddUnknownMoviesToDatabase()
     {
         // Arrange
         await AuthenticateAsync();
 
         var externalMovies = MovieFaker.GenerateExternalMovies(5);
 
-        Api.MoviesClientMock.GetPopularMoviesByPageAsync(Arg.Any<int>())
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync("/api/movies/popular");
+        var result = await Client.GetAsync(TestUri);
 
         // Assert
         result.Should().NotBeNull();

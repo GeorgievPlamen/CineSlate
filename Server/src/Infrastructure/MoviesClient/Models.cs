@@ -16,7 +16,7 @@ public record TMDBMovie(
     double Vote_average,
     int Vote_count);
 
-public record TMDBPopularMovies(
+public record TMDBMovies(
     int Page,
     TMDBMovie[] Results,
     int Total_Pages,
