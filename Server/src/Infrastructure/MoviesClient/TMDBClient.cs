@@ -12,6 +12,8 @@ public class TMDBClient : IMoviesClient
     private const string TMDBurl = "https://api.themoviedb.org/";
     private readonly HttpClient _httpClient;
     private readonly ApiKeys _apiKeys;
+    private static readonly JsonSerializerOptions _jsonSerializerOptions =
+        new() { PropertyNameCaseInsensitive = true };
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
     {
@@ -22,10 +24,12 @@ public class TMDBClient : IMoviesClient
 
     public async Task<Paged<ExternalMovie>> GetPopularMoviesByPageAsync(int pageNumber)
     {
-        var response = await _httpClient.GetAsync(UriWithApiKey($"/movie/popular?language=en-US&page={pageNumber}"));
+        var response = await _httpClient.GetAsync(
+            UriWithApiKey($"/movie/popular?language=en-US&page={pageNumber}"));
+
         var popularMovies = JsonSerializer.Deserialize<TMDBPopularMovies>(
             await response.Content.ReadAsStringAsync(),
-            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            _jsonSerializerOptions);
 
         if (popularMovies is null || popularMovies.Results is null) return new([]);
 
