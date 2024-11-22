@@ -35,7 +35,7 @@ public class UserIdentity(
         var securityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
-            expires: _dateTimeProvider.Now.AddMinutes(_jwtSettings.ExpiryMinutes).DateTime,
+            expires: _dateTimeProvider.Now.AddDays(_jwtSettings.ExpiryMinutes).DateTime, // TODO Change back to minutes, Add refresh token
             claims: claims,
             signingCredentials: signingCredentials);
 
