@@ -13,8 +13,8 @@ export default function DropdownButton({ children }: Props) {
       <button
         onClick={() => setIsListActive(!isListActive)}
         className={
-          'flex rounded px-2 py-1 text-whitesmoke hover:bg-indigo-700 active:bg-indigo-500 ' +
-          `${isListActive ? 'bg-indigo-700' : null}`
+          'hover:bg-primary-hover active:bg-primary-active flex rounded px-2 py-1 text-whitesmoke ' +
+          `${isListActive ? 'bg-primary-selected' : null}`
         }
       >
         {children}
@@ -22,7 +22,7 @@ export default function DropdownButton({ children }: Props) {
       <ul
         className={`${
           isListActive
-            ? 'absolute mt-2 flex flex-col gap-2 rounded-lg bg-whitesmoke px-2 py-1 font-bold text-indigo-800 transition-transform'
+            ? 'text-primary-selected absolute mt-2 flex flex-col gap-2 rounded-lg bg-whitesmoke px-2 py-1 font-bold transition-transform'
             : 'hidden'
         }`}
       >

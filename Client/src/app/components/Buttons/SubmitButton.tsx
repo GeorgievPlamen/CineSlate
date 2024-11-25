@@ -11,7 +11,7 @@ function SubmitButton({ text }: Props) {
   return (
     <button
       type="submit"
-      className="flex h-8 w-full items-center justify-center rounded-full bg-indigo-600 text-whitesmoke hover:bg-indigo-500 active:bg-indigo-400"
+      className="bg-primary-hover flex h-8 w-full items-center justify-center rounded-full text-whitesmoke hover:bg-opacity-80 active:bg-opacity-50"
     >
       {navigation.state === 'submitting' ? <Spinner /> : text}
     </button>

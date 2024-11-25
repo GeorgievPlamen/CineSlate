@@ -10,11 +10,19 @@ export default {
       colors: {
         dark: '#001011',
         whitesmoke: '#F5F5F5',
-        primary: '#8B80F9',
-        secondary: '#1e293b',
-        secondaryLight: '#cbd5e1',
+        // primary: '#8B80F9',
+        primary: {
+          DEFAULT: '#8B80F9',
+          hover: '#4f46e5',
+          active: '#6366f1',
+          selected: '#4338ca',
+        },
+        background: {
+          DEFAULT: '#1e293b',
+          light: '#cbd5e1',
+        },
         error: '#ef4444',
-        placeholderGrey: '#475569',
+        placeholder: '#475569',
       },
     },
   },

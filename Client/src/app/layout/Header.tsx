@@ -31,7 +31,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="text-placeholderGrey h-8 flex-grow rounded-full bg-whitesmoke pl-2 focus:outline-none"
+            className="text-placeholder h-8 flex-grow rounded-full bg-whitesmoke pl-2 focus:outline-none"
           />
           <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
         </div>
@@ -40,8 +40,8 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
-                ` ${isActive ? 'bg-indigo-700' : null}`
+                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
               Movies
@@ -51,8 +51,8 @@ function Header() {
             <NavLink
               to="/critics"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
-                ` ${isActive ? 'bg-indigo-700' : null}`
+                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
               Critics
@@ -62,8 +62,8 @@ function Header() {
             <NavLink
               to="/stories"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
-                ` ${isActive ? 'bg-indigo-700' : null}`
+                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
               Stories
@@ -73,8 +73,8 @@ function Header() {
             <NavLink
               to="/quizzes"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-indigo-600 active:bg-indigo-500' +
-                ` ${isActive ? 'bg-indigo-700' : null}`
+                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
               Quizzes
@@ -92,8 +92,8 @@ function Header() {
           <NavLink
             to="login"
             className={({ isActive }) =>
-              'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-indigo-700 active:bg-indigo-500' +
-              ` ${isActive ? 'bg-indigo-700' : null}`
+              'hover:bg-primary-hover active:bg-primary-active mx-2 rounded px-2 py-1 text-whitesmoke' +
+              ` ${isActive ? 'bg-primary-selected' : null}`
             }
           >
             Sign in
