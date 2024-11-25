@@ -1,8 +1,8 @@
 function Stories() {
   return (
     <>
-      <div className="bg-grayFrench dark:bg-bluePersian text-dark dark:text-whitesmoke w-1/2 rounded-xl p-4">
-        <h2 className="font-arvo mb-4 text-4xl font-extrabold">Title here</h2>
+      <div className="dark:bg-secondary bg-secondaryLight w-1/2 rounded-xl p-4 text-dark dark:text-whitesmoke">
+        <h2 className="mb-4 font-arvo text-4xl font-extrabold">Title here</h2>
         <p className="font-roboto">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed similique
           est vitae consectetur fuga deserunt, beatae quis minus ea ipsum
@@ -22,7 +22,7 @@ function Stories() {
           autem.
         </p>
       </div>
-      <div className="bg-grayFrench dark:bg-bluePersian text-dark dark:text-whitesmoke w-1/2 rounded p-4">
+      <div className="dark:bg-secondary bg-secondaryLight w-1/2 rounded p-4 text-dark dark:text-whitesmoke">
         <h2 className="font-arvo text-4xl font-extrabold">Title here</h2>
         <h3 className="font-arvo text-3xl font-bold">Critic</h3>
         <p className="font-roboto">
@@ -44,7 +44,7 @@ function Stories() {
           autem.
         </p>
       </div>
-      <div className="bg-grayFrench dark:bg-bluePersian text-dark dark:text-whitesmoke w-1/2 rounded p-4">
+      <div className="dark:bg-secondary bg-secondaryLight w-1/2 rounded p-4 text-dark dark:text-whitesmoke">
         <h2 className="font-arvo text-4xl font-extrabold">Title here</h2>
         <h3 className="font-arvo text-3xl font-bold">Critic</h3>
         <p className="font-roboto">

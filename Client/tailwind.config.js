@@ -10,14 +10,11 @@ export default {
       colors: {
         dark: '#001011',
         whitesmoke: '#F5F5F5',
-        indigoTropical: '#8B80F9',
-        bluePersian: '#1e293b',
-        grayFrench: '#cbd5e1',
+        primary: '#8B80F9',
+        secondary: '#1e293b',
+        secondaryLight: '#cbd5e1',
         error: '#ef4444',
-        grayPayns: '#475569',
-      },
-      boxShadow: {
-        light: '0 5px 20px -10px #4f46e5, 0 8px 10px -6px #001011', // light shadow for dark mode
+        placeholderGrey: '#475569',
       },
     },
   },

@@ -15,7 +15,7 @@ function Register() {
     <Form
       noValidate
       method="post"
-      className="mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-grayFrench p-4 shadow-xl dark:bg-bluePersian dark:shadow-light"
+      className="dark:bg-secondary bg-secondaryLight mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke p-4"
     >
       <Heading2 title="Register" />
       <NameField errors={response?.errors} />

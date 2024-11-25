@@ -22,7 +22,7 @@ export default function DropdownButton({ children }: Props) {
       <ul
         className={`${
           isListActive
-            ? 'absolute mt-2 flex flex-col gap-2 rounded-lg bg-whitesmoke px-2 py-1 font-bold text-indigo-800 shadow shadow-black transition-transform'
+            ? 'absolute mt-2 flex flex-col gap-2 rounded-lg bg-whitesmoke px-2 py-1 font-bold text-indigo-800 transition-transform'
             : 'hidden'
         }`}
       >

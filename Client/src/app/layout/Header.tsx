@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <header className="flex border bg-indigoTropical py-2 shadow-xl dark:shadow-light">
+    <header className="bg-primary flex border py-2">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
@@ -31,7 +31,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-grayPayns focus:outline-none"
+            className="text-placeholderGrey h-8 flex-grow rounded-full bg-whitesmoke pl-2 focus:outline-none"
           />
           <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
         </div>
