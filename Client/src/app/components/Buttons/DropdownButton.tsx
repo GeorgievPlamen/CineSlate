@@ -13,7 +13,7 @@ export default function DropdownButton({ children }: Props) {
       <button
         onClick={() => setIsListActive(!isListActive)}
         className={
-          'hover:bg-primary-hover active:bg-primary-active flex rounded px-2 py-1 text-whitesmoke ' +
+          'hover:bg-primary active:bg-primary-active flex rounded px-2 py-1 text-whitesmoke ' +
           `${isListActive ? 'bg-primary-selected' : null}`
         }
       >

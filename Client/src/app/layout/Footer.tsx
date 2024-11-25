@@ -2,7 +2,7 @@ import tmdbLogo from '../assets/images/tmdbLogo.png';
 
 function Footer() {
   return (
-    <footer className="bg-primary flex items-center justify-between py-2">
+    <footer className="bg-background flex items-center justify-between py-2">
       <p className="text-sm">Created by Plamen Georgiev.</p>
       <p className="text-xs">© 2024 CineSlate. All rights reserved.</p>
       <a

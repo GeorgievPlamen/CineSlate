@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <header className="bg-primary flex border py-2">
+    <header className="bg-background flex py-2">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
@@ -40,7 +40,7 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
                 ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
@@ -51,7 +51,7 @@ function Header() {
             <NavLink
               to="/critics"
               className={({ isActive }) =>
-                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
                 ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
@@ -62,7 +62,7 @@ function Header() {
             <NavLink
               to="/stories"
               className={({ isActive }) =>
-                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
                 ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
@@ -73,7 +73,7 @@ function Header() {
             <NavLink
               to="/quizzes"
               className={({ isActive }) =>
-                'hover:bg-primary-hover active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
+                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
                 ` ${isActive ? 'bg-primary-selected' : null}`
               }
             >
@@ -92,7 +92,7 @@ function Header() {
           <NavLink
             to="login"
             className={({ isActive }) =>
-              'hover:bg-primary-hover active:bg-primary-active mx-2 rounded px-2 py-1 text-whitesmoke' +
+              'hover:bg-primary active:bg-primary-active mx-2 rounded px-2 py-1 text-whitesmoke' +
               ` ${isActive ? 'bg-primary-selected' : null}`
             }
           >

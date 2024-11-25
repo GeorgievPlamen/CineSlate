@@ -10,10 +10,8 @@ export default {
       colors: {
         dark: '#001011',
         whitesmoke: '#F5F5F5',
-        // primary: '#8B80F9',
         primary: {
-          DEFAULT: '#8B80F9',
-          hover: '#4f46e5',
+          DEFAULT: '#4f46e5',
           active: '#6366f1',
           selected: '#4338ca',
         },
