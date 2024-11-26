@@ -25,13 +25,4 @@ public record MovieDetails(
     long Revenue,
     int Runtime,
     string Status,
-    string Tagline
-) : Movie(Id, Title, Description, ReleaseDate, PosterPath, Genres);
-
-public record ExternalMovie(
-    int Id,
-    string Title,
-    string Description,
-    DateOnly ReleaseDate,
-    string PosterPath,
-    List<int> GenreIds);
+    string Tagline);

@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjM4ZjczYS05NzU1LTQ0NTYtOTI3YS1jNTM1OTgyZTA3OWUiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiYmU3MGI2OWYtNWVlNC00NDY0LTk5NzAtMDE4ZWJhMGYzMjk5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNDg0NTk2MSwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.5dNR2rv1NujlFoPNL1-pYyQ0kDkruyr_fimlQ6mXbb8
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjM4ZjczYS05NzU1LTQ0NTYtOTI3YS1jNTM1OTgyZTA3OWUiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiY2NkM2UyMTYtZWJjMy00N2Q4LTgyMWMtNmM3YTY0MDAxNjJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNTE5MTA4OSwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.PzjW0XipqtZSNHa1ptYdpHz2vOXIZCbMPbn9y0n21TY
 
 ### Login Success
 
@@ -51,7 +51,13 @@ content-type: application/json
 
 ### Movies List
 
-GET {{Api_HostAddress}}movies/now_playing?pageNumber=1
+GET {{Api_HostAddress}}movies/now_playing
+content-type: application/json
+Authorization: {{Token}}
+
+### Movies Details
+
+GET {{Api_HostAddress}}movies/912649
 content-type: application/json
 Authorization: {{Token}}
 

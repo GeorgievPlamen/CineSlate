@@ -21,19 +21,19 @@ public static class UsersEndpoint
     }
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
-    => Response<MeResponse>.Match(await mediatr.Send(new MeQuery(), cancellationToken));
+        => Response<MeResponse>.Match(await mediatr.Send(new MeQuery(), cancellationToken));
 
     public static async Task<IResult> LoginAsync(LoginRequest request, ISender mediatr, CancellationToken cancellationToken)
-    => Response<LoginResponse>.Match(await mediatr.Send(new LoginCommand(
-        request.Email,
-        request.Password),
-        cancellationToken));
+        => Response<LoginResponse>.Match(await mediatr.Send(new LoginCommand(
+            request.Email,
+            request.Password),
+            cancellationToken));
 
     public static async Task<IResult> RegisterAsync(RegisterRequest request, ISender mediatr, CancellationToken cancellationToken)
-    => Response<UserId>.Match(await mediatr.Send(new RegisterCommand(
-        request.FirstName,
-        request.LastName,
-        request.Email,
-        request.Password),
-        cancellationToken), "login");
+        => Response<UserId>.Match(await mediatr.Send(new RegisterCommand(
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password),
+            cancellationToken), "login");
 }

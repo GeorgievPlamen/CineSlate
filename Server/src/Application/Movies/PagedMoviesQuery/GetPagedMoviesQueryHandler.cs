@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Movies.PagedMoviesQuery;
 
-public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository) 
+public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository)
     : IRequestHandler<GetPagedMoviesQuery, Result<Paged<Movie>>>
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPagedMoviesQuery request, CancellationToken cancellationToken)
@@ -41,9 +41,9 @@ public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieReposi
             x.Description,
             x.ReleaseDate,
             x.PosterPath,
-            x.GenreIds.Select(g => Genre.Create(g)))).ToList();
+            x.Genres));
 
-        if (movieAggregates.Count > 0)
+        if (movieAggregates.Any())
         {
             await moviesRepository.CreateManyAsync(movieAggregates, cancellationToken);
             knownMovies.AddRange(movieAggregates);

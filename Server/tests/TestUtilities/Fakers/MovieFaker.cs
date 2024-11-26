@@ -11,25 +11,12 @@ public static class MovieFaker
         new Faker<Movie>()
             .CustomInstantiator(f => new Movie
             (
-                Id: f.Random.Number(),
-                Title: f.Name.FullName(),
-                Description: f.Lorem.Sentence(),
-                ReleaseDate: f.Date.PastDateOnly(),
-                PosterPath: f.Internet.Url(),
-                Genres: [Genre.Create(f.Random.Number())]
-            ))
-            .Generate(howMany);
-
-    public static List<ExternalMovie> GenerateExternalMovies(int howMany = 1) =>
-        new Faker<ExternalMovie>()
-            .CustomInstantiator(f => new ExternalMovie
-            (
                 Id: f.Random.Number(1000, 5000),
                 Title: f.Name.FullName(),
                 Description: f.Lorem.Sentence(),
                 ReleaseDate: f.Date.PastDateOnly(),
                 PosterPath: f.Internet.Url(),
-                GenreIds: [f.Random.Number(1, 10)]
+                Genres: [Genre.Create(f.Random.Number(1000, 5000))]
             ))
             .Generate(howMany);
 }
