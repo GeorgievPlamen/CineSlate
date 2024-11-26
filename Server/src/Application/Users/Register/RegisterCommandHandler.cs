@@ -21,7 +21,7 @@ public class RegisterCommandHandler(
 
         if (existingUser is not null)
         {
-            return Result<UserId>.Failure(UserErrors.AlreadyRegistered);
+            return Result<UserId>.Failure(UserErrors.AlreadyRegistered(request.Email));
         }
 
         string passwordHash = _userIdentity.HashPassword(request.Password);

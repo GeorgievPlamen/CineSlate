@@ -60,7 +60,7 @@ public class LoginQueryHandlerTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Errors[0].Code.Should().Be(UserErrors.NotFound.Code);
+        result.Errors[0].Code.Should().Be(UserErrors.NotFound().Code);
     }
 
     [Fact]
@@ -78,6 +78,6 @@ public class LoginQueryHandlerTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Errors[0].Code.Should().Be(UserErrors.NotFound.Code);
+        result.Errors[0].Code.Should().Be(UserErrors.NotFound().Code);
     }
 }

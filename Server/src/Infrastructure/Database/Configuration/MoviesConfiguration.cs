@@ -48,13 +48,15 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
             ratingBuilder.HasIndex(r => r.RatedBy).IsUnique();
         });
 
-        builder.Property(u => u.CreatedBy)
+        builder.Property(m => m.CreatedBy)
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(u => u.UpdatedBy)
+        builder.Property(m => m.UpdatedBy)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.ComplexProperty(m => m.Details);
 
         builder.Ignore(m => m.DomainEvents);
 

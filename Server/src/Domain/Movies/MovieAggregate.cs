@@ -16,6 +16,7 @@ public class MovieAggregate : AggregateRoot<MovieId>
     public IReadOnlyList<Genre> Genres => [.. _genres];
     public IReadOnlyCollection<Rating> Ratings => [.. _ratings];
     public double Rating => Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
+    public Details? Details { get; private set; }
 
     public static MovieAggregate Create(
         MovieId id,
@@ -32,5 +33,6 @@ public class MovieAggregate : AggregateRoot<MovieId>
             _genres = [.. genres]
         };
 
+    public void AddDetails(Details movieDetails) => Details = movieDetails;
     public void AddRating(Rating rating) => _ratings.Add(rating);
 };

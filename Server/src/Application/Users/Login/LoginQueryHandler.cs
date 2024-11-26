@@ -18,12 +18,12 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
         var foundUser = users.Find(u => u.Email == request.Email);
 
         if (foundUser is null)
-            return Result<LoginResponse>.Failure(UserErrors.NotFound);
+            return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
 
         bool hasValidPassword = _userIdentity.ValidatePassword(request.Password, foundUser.PasswordHash);
 
         if (!hasValidPassword)
-            return Result<LoginResponse>.Failure(UserErrors.NotFound);
+            return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
 
         var token = _userIdentity.GenerateJwtToken(
             foundUser.Id.Value,

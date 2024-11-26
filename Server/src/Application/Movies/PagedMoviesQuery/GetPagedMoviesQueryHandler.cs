@@ -49,13 +49,7 @@ public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieReposi
             knownMovies.AddRange(movieAggregates);
         }
 
-        var response = knownMovies.Select(x => new Movie(
-            x.Id.Value,
-            x.Title,
-            x.Description,
-            x.ReleaseDate,
-            x.PosterPath,
-            x.Genres)).ToList();
+        var response = knownMovies.Select(x => x.ToMovie()).ToList();
 
         return Result<Paged<Movie>>.Success(new(
             response,
