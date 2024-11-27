@@ -15,7 +15,7 @@ public class TMDBClient : IMoviesClient
     private readonly ApiKeys _apiKeys;
     private static readonly JsonSerializerOptions _jsonSerializerOptions =
         new() { PropertyNameCaseInsensitive = true };
-    private string UriForMoviesWithKey(int pageNumber, MoviesBy? getBy = MoviesBy.now_playing) 
+    private string UriForMoviesWithKey(int pageNumber, MoviesBy? getBy = MoviesBy.now_playing)
     => $"/3/movie/{getBy}?page={pageNumber}&api_key={_apiKeys.TMDBKey}";
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
@@ -50,7 +50,7 @@ public class TMDBClient : IMoviesClient
             movies.Total_Results);
     }
 
-    public Task<MovieDetails> GetMovieDetailsAsync(int id)
+    public Task<Application.Movies.MovieFull> GetMovieDetailsAsync(int id)
     {
         throw new NotImplementedException();
     }

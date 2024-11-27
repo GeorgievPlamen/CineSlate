@@ -11,7 +11,7 @@ public record Movie(
     string PosterPath,
     IReadOnlyList<Genre> Genres);
 
-public record MovieDetails(
+public record MovieFull(
     int Id,
     string Title,
     string Description,
@@ -38,7 +38,7 @@ public static class Converter
             movie.ReleaseDate,
             movie.PosterPath,
             movie.Genres);
-    public static MovieDetails ToMovieDetails(this MovieAggregate movie) => new(
+    public static MovieFull ToMovieFull(this MovieAggregate movie) => new(
             movie.Id.Value,
             movie.Title,
             movie.Description,

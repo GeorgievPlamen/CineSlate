@@ -16,7 +16,7 @@ public class MovieAggregate : AggregateRoot<MovieId>
     public IReadOnlyList<Genre> Genres => [.. _genres];
     public IReadOnlyCollection<Rating> Ratings => [.. _ratings];
     public double Rating => Ratings.Count > 0 ? Ratings.Average(r => r.Value) : 0;
-    public Details? Details { get; private set; }
+    public MovieDetails Details { get; private set; } = null!;
 
     public static MovieAggregate Create(
         MovieId id,
@@ -29,10 +29,11 @@ public class MovieAggregate : AggregateRoot<MovieId>
             Title = title,
             Description = description,
             ReleaseDate = releaseDate,
-            PosterPath = "https://image.tmdb.org/t/p/w500/" + posterPath,
-            _genres = [.. genres]
+            PosterPath = posterPath,
+            _genres = [.. genres],
+            Details = MovieDetails.CreateEmpty()
         };
 
-    public void AddDetails(Details movieDetails) => Details = movieDetails;
+    public void AddDetails(MovieDetails movieDetails) => Details = movieDetails;
     public void AddRating(Rating rating) => _ratings.Add(rating);
 };

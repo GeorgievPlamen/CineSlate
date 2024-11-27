@@ -22,7 +22,7 @@ public static class MoviesEndpoint
     }
 
     private static async Task<IResult> GetMovieDetailsByIdAsync(int id, ISender mediatr, CancellationToken cancellationToken)
-        => Response<MovieDetails>.Match(await mediatr.Send(new GetMovieDetailsQuery(id), cancellationToken));
+        => Response<MovieFull>.Match(await mediatr.Send(new GetMovieDetailsQuery(id), cancellationToken));
 
     private static async Task<IResult> GetNowPlayingAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
         => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.now_playing, pageNumber), cancellationToken));
