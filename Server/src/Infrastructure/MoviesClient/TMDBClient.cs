@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.MoviesClient;
 
-public class TMDBClient : IMoviesClient
+public class TMDBClient : IMovieClient
 {
     private const string TMDBurl = "https://api.themoviedb.org/";
     private readonly HttpClient _httpClient;

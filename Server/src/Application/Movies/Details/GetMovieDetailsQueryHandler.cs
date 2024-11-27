@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Movies.Details;
 
-public class GetMovieDetailsQueryHandler(IMovieRepository movieRepository, IMoviesClient moviesClient) : IRequestHandler<GetMovieDetailsQuery, Result<MovieFull>>
+public class GetMovieDetailsQueryHandler(IMovieRepository movieRepository, IMovieClient moviesClient) : IRequestHandler<GetMovieDetailsQuery, Result<MovieFull>>
 {
     public async Task<Result<MovieFull>> Handle(GetMovieDetailsQuery request, CancellationToken cancellationToken)
     {

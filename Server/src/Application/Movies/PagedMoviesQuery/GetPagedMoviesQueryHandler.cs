@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Movies.PagedMoviesQuery;
 
-public class GetPagedMoviesQueryHandler(IMoviesClient moviesClient, IMovieRepository moviesRepository)
+public class GetPagedMoviesQueryHandler(IMovieClient moviesClient, IMovieRepository moviesRepository)
     : IRequestHandler<GetPagedMoviesQuery, Result<Paged<Movie>>>
 {
     public async Task<Result<Paged<Movie>>> Handle(GetPagedMoviesQuery request, CancellationToken cancellationToken)

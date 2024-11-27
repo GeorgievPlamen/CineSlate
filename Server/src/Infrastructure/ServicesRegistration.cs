@@ -46,7 +46,7 @@ public static class InfrastructureServices
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
-        services.AddScoped<IMoviesClient, TMDBClient>();
+        services.AddScoped<IMovieClient, TMDBClient>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

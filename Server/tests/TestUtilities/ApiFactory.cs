@@ -34,7 +34,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
         builder.ConfigureTestServices(services =>
         {
-            var moviesClientSubstitute = Substitute.For<IMoviesClient>();
+            var moviesClientSubstitute = Substitute.For<IMovieClient>();
             services.AddSingleton(moviesClientSubstitute);
 
             var descriptor = services.FirstOrDefault(
@@ -52,7 +52,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         });
     }
 
-    public IMoviesClient MoviesClientMock => Services.GetRequiredService<IMoviesClient>();
+    public IMovieClient MoviesClientMock => Services.GetRequiredService<IMovieClient>();
 
     public Task InitializeAsync()
     {
