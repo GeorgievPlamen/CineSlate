@@ -27,9 +27,9 @@ public class MovieAggregate : AggregateRoot<MovieId>
         IEnumerable<Genre> genres) => new(id)
         {
             Title = title,
-            Description = description,
+            Description = description ?? string.Empty,
             ReleaseDate = releaseDate,
-            PosterPath = posterPath,
+            PosterPath = posterPath ?? string.Empty,
             _genres = [.. genres],
             Details = MovieDetails.CreateEmpty()
         };

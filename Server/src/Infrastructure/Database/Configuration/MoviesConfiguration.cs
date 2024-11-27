@@ -31,8 +31,12 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.OwnsMany(m => m.Genres)
-            .WithOwner();
+        builder.OwnsMany(m => m.Genres, genreBuilder =>
+        {
+            genreBuilder.WithOwner();
+        });
+
+        // TODO redo how we store genres
 
         builder.OwnsMany(m => m.Ratings, ratingBuilder =>
         {

@@ -22,17 +22,17 @@ public static class MoviesEndpoint
     }
 
     private static async Task<IResult> GetMovieDetailsByIdAsync(int id, ISender mediatr, CancellationToken cancellationToken)
-        => Response<MovieFull>.Match(await mediatr.Send(new GetMovieDetailsQuery(id), cancellationToken));
+        => Response<MovieDetailed>.Match(await mediatr.Send(new GetMovieDetailsQuery(id), cancellationToken));
 
-    private static async Task<IResult> GetNowPlayingAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.now_playing, pageNumber), cancellationToken));
+    private static async Task<IResult> GetNowPlayingAsync(int? page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.now_playing, page), cancellationToken));
 
-    private static async Task<IResult> GetPopularAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.popular, pageNumber), cancellationToken));
+    private static async Task<IResult> GetPopularAsync(int? page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.popular, page), cancellationToken));
 
-    private static async Task<IResult> GetTopRatedAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.top_rated, pageNumber), cancellationToken));
+    private static async Task<IResult> GetTopRatedAsync(int? page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.top_rated, page), cancellationToken));
 
-    private static async Task<IResult> GetUpcomingAsync(int? pageNumber, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.upcoming, pageNumber), cancellationToken));
+    private static async Task<IResult> GetUpcomingAsync(int? page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.upcoming, page), cancellationToken));
 }

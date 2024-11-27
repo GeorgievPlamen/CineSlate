@@ -1,5 +1,5 @@
-# @Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+# @Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
@@ -51,7 +51,7 @@ content-type: application/json
 
 ### Movies List
 
-GET {{Api_HostAddress}}movies/now_playing
+GET {{Api_HostAddress}}movies/now_playing?page=21
 content-type: application/json
 Authorization: {{Token}}
 

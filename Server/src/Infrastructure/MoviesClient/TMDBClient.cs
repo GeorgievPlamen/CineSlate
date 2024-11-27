@@ -16,7 +16,10 @@ public class TMDBClient : IMovieClient
     private static readonly JsonSerializerOptions _jsonSerializerOptions =
         new() { PropertyNameCaseInsensitive = true };
     private string UriForMoviesWithKey(int pageNumber, MoviesBy? getBy = MoviesBy.now_playing)
-    => $"/3/movie/{getBy}?page={pageNumber}&api_key={_apiKeys.TMDBKey}";
+        => $"/3/movie/{getBy}?page={pageNumber}&api_key={_apiKeys.TMDBKey}";
+
+    private string UriForMovieDetailsWithKey(int id)
+        => $"/3/movie/{id}?api_key={_apiKeys.TMDBKey}";
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
     {
@@ -25,13 +28,13 @@ public class TMDBClient : IMovieClient
         _apiKeys = apiKeyOptions.Value;
     }
 
-    public async Task<Paged<Movie>> GetMoviesByPageAsync(MoviesBy moviesBy, int pageNumber)
+    public async Task<Paged<Movie>> GetMoviesByPageAsync(MoviesBy moviesBy, int pageNumber, CancellationToken cancellationToken)
     {
         var response = await _httpClient.GetAsync(
             UriForMoviesWithKey(pageNumber, moviesBy));
 
         var movies = JsonSerializer.Deserialize<TMDBMovies>(
-            await response.Content.ReadAsStringAsync(),
+            await response.Content.ReadAsStringAsync(cancellationToken),
             _jsonSerializerOptions);
 
         if (movies is null || movies.Results is null) return new([]);
@@ -50,9 +53,32 @@ public class TMDBClient : IMovieClient
             movies.Total_Results);
     }
 
-    public Task<Application.Movies.MovieFull> GetMovieDetailsAsync(int id)
+    public async Task<MovieDetailed?> GetMovieDetailsAsync(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        var response = await _httpClient.GetAsync(
+            UriForMovieDetailsWithKey(id), cancellationToken);
 
+        var movieDetailed = JsonSerializer.Deserialize<TMDBMovieDetailed>(
+            await response.Content.ReadAsStringAsync(cancellationToken),
+            _jsonSerializerOptions);
+
+        if (movieDetailed is null) return null;
+
+        return new MovieDetailed(
+            movieDetailed.Id,
+            movieDetailed.Title,
+            movieDetailed.Overview,
+            movieDetailed.Release_date,
+            movieDetailed.Poster_path,
+            movieDetailed.Genres.Select(g => Genre.Create(g.Id)).ToList(),
+            movieDetailed.Backdrop_path,
+            movieDetailed.Budget,
+            movieDetailed.Homepage,
+            movieDetailed.Imdb_id,
+            movieDetailed.Origin_country[0],
+            movieDetailed.Revenue,
+            movieDetailed.Runtime,
+            movieDetailed.Status,
+            movieDetailed.Tagline);
+    }
 }

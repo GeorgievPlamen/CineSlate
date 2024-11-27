@@ -14,7 +14,7 @@ public class GetPagedMoviesQueryHandler(IMovieClient moviesClient, IMovieReposit
     {
         var defaultPage = 1;
         var movies = await moviesClient
-            .GetMoviesByPageAsync(request.MoviesBy, request.Page ?? defaultPage);
+            .GetMoviesByPageAsync(request.MoviesBy, request.Page ?? defaultPage, cancellationToken);
 
         if (movies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
