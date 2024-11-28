@@ -11,11 +11,9 @@ namespace Infrastructure.Database;
 
 public class CineSlateContext(
     DbContextOptions options,
-    IHttpContextAccessor httpContextAccessor,
-    IPublisher publisher) : DbContext(options)
+    IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-    private readonly IPublisher _publisher = publisher;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<MovieAggregate> Movies { get; set; } = null!;
 
@@ -43,11 +41,6 @@ public class CineSlateContext(
                 entry.Entity.SetCreated(email, DateTimeOffset.UtcNow);
         }
 
-        var result = await base.SaveChangesAsync(cancellationToken);
-
-        foreach (var domainEvent in domainEvents)
-            await _publisher.Publish(domainEvent, cancellationToken);
-
-        return result;
+        return await base.SaveChangesAsync(cancellationToken);
     }
 }

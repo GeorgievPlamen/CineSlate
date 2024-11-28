@@ -9,10 +9,10 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IEntity whe
     public DateTimeOffset UpdatedAt { get; private set; }
     public string? CreatedBy { get; private set; }
     public string? UpdatedBy { get; private set; }
-
     public IReadOnlyCollection<DomainEvent> DomainEvents => [.. _domainEvents];
 
     public void Raise(DomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    public void ClearEvents() => _domainEvents.Clear();
 
     public override bool Equals(object? obj)
         => obj is Entity<TId> entity && Id!.Equals(entity.Id);
