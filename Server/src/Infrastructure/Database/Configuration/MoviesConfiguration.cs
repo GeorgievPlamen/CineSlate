@@ -1,18 +1,13 @@
-using Domain.Movies;
-using Domain.Movies.ValueObjects;
-using Domain.Users.ValueObjects;
+using Infrastructure.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configuration;
 
-public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
+public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
 {
-    public void Configure(EntityTypeBuilder<MovieAggregate> builder)
+    public void Configure(EntityTypeBuilder<MovieModel> builder)
     {
-        builder.Property(m => m.Id)
-            .HasConversion(id => id.Value, value => MovieId.Create(value));
-
         builder.HasIndex(m => m.Id)
             .IsUnique();
 
@@ -31,26 +26,8 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.OwnsMany(m => m.Genres, genreBuilder =>
-        {
-            genreBuilder.WithOwner();
-        });
-
-        // TODO redo how we store genres
-
-        builder.OwnsMany(m => m.Ratings, ratingBuilder =>
-        {
-            ratingBuilder.WithOwner();
-
-            ratingBuilder.Property(r => r.RatedBy)
-                .HasConversion(
-                    id => id.Value,
-                    value => UserId.Create(value))
-                .IsRequired();
-
-            ratingBuilder.HasKey(r => r.RatedBy);
-            ratingBuilder.HasIndex(r => r.RatedBy).IsUnique();
-        });
+        builder.HasMany(m => m.Genres)
+            .WithMany(g => g.Movies);
 
         builder.Property(m => m.CreatedBy)
             .IsRequired()
@@ -60,10 +37,8 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieAggregate>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.ComplexProperty(m => m.Details);
+        // TODO rethink domain events
 
-        builder.Ignore(m => m.DomainEvents);
-
-        builder.Ignore(m => m.Rating);
+        // builder.Ignore(m => m.DomainEvents);
     }
 }
