@@ -5,7 +5,7 @@ using Application.Users.Interfaces;
 using Infrastructure.Common;
 using Infrastructure.Common.Models;
 using Infrastructure.Database;
-using Infrastructure.MoviesClient;
+using Infrastructure.MovieClient;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

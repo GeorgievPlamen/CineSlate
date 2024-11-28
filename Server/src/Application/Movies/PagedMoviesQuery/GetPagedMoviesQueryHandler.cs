@@ -41,7 +41,7 @@ public class GetPagedMoviesQueryHandler(IMovieClient moviesClient, IMovieReposit
             x.Description,
             x.ReleaseDate,
             x.PosterPath,
-            x.Genres));
+            x.GenreIds.Select(id => Genre.Create(id))));
 
         if (movieAggregates.Any())
         {

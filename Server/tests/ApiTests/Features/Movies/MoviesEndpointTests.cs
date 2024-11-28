@@ -2,6 +2,7 @@ using System.Net;
 using ApiTests.Common;
 using Application.Common;
 using Application.Movies;
+using Application.Movies.Interfaces;
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
 using FluentAssertions;
@@ -22,6 +23,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         await AuthenticateAsync();
 
         var movies = MovieFaker.GenerateMovies(5);
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
         var movieAggregates = movies
             .Select(m => MovieAggregate
             .Create(MovieId
@@ -34,8 +36,8 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 
         await Api.SeedDatabaseAsync([.. movieAggregates]);
 
-        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
-            .Returns(new Paged<Movie>(movies));
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
         var result = await Client.GetAsync(TestUri("now_playing"));
@@ -51,10 +53,10 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         // Arrange
         await AuthenticateAsync();
 
-        var externalMovies = MovieFaker.GenerateMovies(5);
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
 
-        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
-            .Returns(new Paged<Movie>(externalMovies));
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
         var result = await Client.GetAsync(TestUri("popular"));
@@ -70,10 +72,10 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         // Arrange
         await AuthenticateAsync();
 
-        var externalMovies = MovieFaker.GenerateMovies(5);
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
 
-        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
-            .Returns(new Paged<Movie>(externalMovies));
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
         var result = await Client.GetAsync(TestUri("top_rated"));
@@ -89,10 +91,10 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         // Arrange
         await AuthenticateAsync();
 
-        var externalMovies = MovieFaker.GenerateMovies(5);
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
 
-        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>())
-            .Returns(new Paged<Movie>(externalMovies));
+        Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
         var result = await Client.GetAsync(TestUri("upcoming"));

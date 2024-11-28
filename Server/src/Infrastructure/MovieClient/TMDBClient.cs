@@ -2,11 +2,11 @@ using System.Text.Json;
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
-using Domain.Movies.ValueObjects;
 using Infrastructure.Common.Models;
+using Infrastructure.MoviesClient;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure.MoviesClient;
+namespace Infrastructure.MovieClient;
 
 public class TMDBClient : IMovieClient
 {
@@ -28,7 +28,7 @@ public class TMDBClient : IMovieClient
         _apiKeys = apiKeyOptions.Value;
     }
 
-    public async Task<Paged<Movie>> GetMoviesByPageAsync(MoviesBy moviesBy, int pageNumber, CancellationToken cancellationToken)
+    public async Task<Paged<ExternalMovie>> GetMoviesByPageAsync(MoviesBy moviesBy, int pageNumber, CancellationToken cancellationToken)
     {
         var response = await _httpClient.GetAsync(
             UriForMoviesWithKey(pageNumber, moviesBy));
@@ -40,20 +40,20 @@ public class TMDBClient : IMovieClient
         if (movies is null || movies.Results is null) return new([]);
 
         return new(movies.Results.Select(
-            x => new Movie(
+            x => new ExternalMovie(
                 x.Id,
                 x.Title,
                 x.Overview,
                 x.Release_date,
                 x.Poster_path,
-                [.. x.Genre_ids.Select(id => Genre.Create(id))])).ToList(),
+                x.Genre_ids)).ToList(),
             movies.Page,
             movies.Page < 500,
             movies.Page > 1,
             movies.Total_Results);
     }
 
-    public async Task<MovieDetailed?> GetMovieDetailsAsync(int id, CancellationToken cancellationToken)
+    public async Task<ExternalMovieDetailed?> GetMovieDetailsAsync(int id, CancellationToken cancellationToken)
     {
         var response = await _httpClient.GetAsync(
             UriForMovieDetailsWithKey(id), cancellationToken);
@@ -64,13 +64,13 @@ public class TMDBClient : IMovieClient
 
         if (movieDetailed is null) return null;
 
-        return new MovieDetailed(
+        return new ExternalMovieDetailed(
             movieDetailed.Id,
             movieDetailed.Title,
             movieDetailed.Overview,
             movieDetailed.Release_date,
             movieDetailed.Poster_path,
-            movieDetailed.Genres.Select(g => Genre.Create(g.Id)).ToList(),
+            movieDetailed.Genres,
             movieDetailed.Backdrop_path,
             movieDetailed.Budget,
             movieDetailed.Homepage,

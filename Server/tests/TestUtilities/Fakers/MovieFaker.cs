@@ -1,6 +1,6 @@
 using Application.Movies;
+using Application.Movies.Interfaces;
 using Bogus;
-using Domain.Movies;
 using Domain.Movies.ValueObjects;
 
 namespace TestUtilities.Fakers;
@@ -17,6 +17,19 @@ public static class MovieFaker
                 ReleaseDate: f.Date.PastDateOnly(),
                 PosterPath: f.Internet.Url(),
                 Genres: [Genre.Create(f.Random.Number(1000, 5000))]
+            ))
+            .Generate(howMany);
+
+    public static List<ExternalMovie> GenerateExternalMovies(int howMany = 1) =>
+        new Faker<ExternalMovie>()
+            .CustomInstantiator(f => new ExternalMovie
+            (
+                Id: f.Random.Number(1000, 5000),
+                Title: f.Name.FullName(),
+                Description: f.Lorem.Sentence(),
+                ReleaseDate: f.Date.PastDateOnly(),
+                PosterPath: f.Internet.Url(),
+                GenreIds: [f.Random.Number(1000, 5000)]
             ))
             .Generate(howMany);
 }

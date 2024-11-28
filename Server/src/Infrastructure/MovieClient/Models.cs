@@ -1,3 +1,5 @@
+using Application.Movies.Interfaces;
+
 namespace Infrastructure.MoviesClient;
 
 public record TMDBMovie(
@@ -22,13 +24,11 @@ public record TMDBMovies(
     int Total_Pages,
     int Total_Results);
 
-public record TMDBGenre(int Id, string Name);
-
 public record TMDBMovieDetailed(
     bool Adult,
     string Backdrop_path,
     long Budget,
-    TMDBGenre[] Genres,
+    ExternalGenre[] Genres,
     string Homepage,
     int Id,
     string Imdb_id,
