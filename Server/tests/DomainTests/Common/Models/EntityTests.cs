@@ -41,38 +41,6 @@ public class EntityTests
     }
 
     [Fact]
-    public void SetCreated_ShouldSetCreatedByAndCreatedAt()
-    {
-        // Arrange
-        var user = UserFaker.GenerateValid();
-        var createdAt = DateTimeOffset.UtcNow;
-        const string createdBy = "admin@example.com";
-
-        // Act
-        user.SetCreated(createdBy, createdAt);
-
-        // Assert
-        user.CreatedBy.Should().Be(createdBy);
-        user.CreatedAt.Should().Be(createdAt);
-    }
-
-    [Fact]
-    public void SetUpdated_ShouldSetUpdatedByAndUpdatedAt()
-    {
-        // Arrange
-        var user = UserFaker.GenerateValid();
-        var updatedAt = DateTimeOffset.UtcNow;
-        const string updatedBy = "admin@example.com";
-
-        // Act
-        user.SetUpdated(updatedBy, updatedAt);
-
-        // Assert
-        user.UpdatedBy.Should().Be(updatedBy);
-        user.UpdatedAt.Should().Be(updatedAt);
-    }
-
-    [Fact]
     public void Entity_ShouldNotEqualNull()
     {
         // Arrange

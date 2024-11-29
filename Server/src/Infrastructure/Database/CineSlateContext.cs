@@ -1,9 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Domain.Common.Models;
-using Domain.Movies;
-using Domain.Users;
-using MediatR;
+using Infrastructure.Database.Models;
+using Infrastructure.Database.Models.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +11,9 @@ public class CineSlateContext(
     IHttpContextAccessor httpContextAccessor) : DbContext(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<MovieAggregate> Movies { get; set; } = null!;
+    public DbSet<UserModel> Users { get; set; } = null!;
+    public DbSet<MovieModel> Movies { get; set; } = null!;
+    public DbSet<GenreModel> Genres { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,13 +23,8 @@ public class CineSlateContext(
     }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        List<DomainEvent> domainEvents = [];
-
-        foreach (var entry in ChangeTracker.Entries<IEntity>())
+        foreach (var entry in ChangeTracker.Entries<IModel>())
         {
-            if (entry.Entity.DomainEvents.Count > 0)
-                domainEvents.AddRange(entry.Entity.DomainEvents);
-
             var email = _httpContextAccessor.HttpContext?.User?.FindFirst(
                 ClaimTypes.Email)?.Value ?? "Could not get email. User Not logged in.";
 

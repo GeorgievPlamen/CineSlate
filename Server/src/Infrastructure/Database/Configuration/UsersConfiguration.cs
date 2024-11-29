@@ -1,24 +1,19 @@
-using Domain.Users;
-using Domain.Users.ValueObjects;
+using Infrastructure.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Configuration;
 
-public class UsersConfiguration : IEntityTypeConfiguration<User>
+public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserModel> builder)
     {
-        builder.Property(u => u.Id)
-            .HasConversion(id => id.Value, value => UserId.Create(value));
-
-        builder
-            .HasIndex(u => u.Email)
+        builder.HasIndex(u => u.Email)
             .IsUnique();
 
         builder.Property(u => u.Email)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(200);
 
         builder.Property(u => u.Role)
             .IsRequired()
@@ -31,11 +26,11 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.CreatedBy)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(200);
 
         builder.Property(u => u.UpdatedBy)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(200);
 
         var name = builder.ComplexProperty(u => u.Name);
 
@@ -46,7 +41,5 @@ public class UsersConfiguration : IEntityTypeConfiguration<User>
         name.Property(n => n!.Last)
             .IsRequired()
             .HasMaxLength(50);
-
-        builder.Ignore(m => m.DomainEvents);
     }
 }

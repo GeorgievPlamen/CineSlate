@@ -8,9 +8,6 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
 {
     public void Configure(EntityTypeBuilder<MovieModel> builder)
     {
-        builder.HasIndex(m => m.Id)
-            .IsUnique();
-
         builder.Property(m => m.Title)
             .IsRequired()
             .HasMaxLength(200);
@@ -26,19 +23,33 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
             .IsRequired()
             .HasMaxLength(200);
 
+        builder.Property(m => m.BackdropPath)
+            .HasMaxLength(200);
+
+        builder.Property(m => m.Homepage)
+            .HasMaxLength(200);
+
+        builder.Property(m => m.ImdbId)
+            .HasMaxLength(50);
+
+        builder.Property(m => m.OriginCountry)
+            .HasMaxLength(10);
+
+        builder.Property(m => m.Status)
+            .HasMaxLength(20);
+
+        builder.Property(m => m.Tagline)
+            .HasMaxLength(200);
+
         builder.HasMany(m => m.Genres)
             .WithMany(g => g.Movies);
 
         builder.Property(m => m.CreatedBy)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(200);
 
         builder.Property(m => m.UpdatedBy)
             .IsRequired()
-            .HasMaxLength(100);
-
-        // TODO rethink domain events
-
-        // builder.Ignore(m => m.DomainEvents);
+            .HasMaxLength(200);
     }
 }

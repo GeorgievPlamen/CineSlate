@@ -1,8 +1,10 @@
+using Infrastructure.Database.Models.Base;
+
 namespace Infrastructure.Database.Models;
 
-public class GenreModel
+public class GenreModel : BaseModel
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public List<MovieModel> Movies { get; set; } = [];
+    public ICollection<MovieModel> Movies { get; set; } = [];
 }

@@ -16,8 +16,8 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
     }
 
     public async Task<List<User>> GetManyAsync(CancellationToken cancellationToken)
-        => await _dbContext.Users.AsNoTracking().ToListAsync(cancellationToken);
+        => throw new NotImplementedException();
 
     public async Task<User?> GetAsync(string email, CancellationToken cancellationToken)
-        => await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        => throw new NotImplementedException();
 }

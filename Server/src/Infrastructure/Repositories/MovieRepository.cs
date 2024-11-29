@@ -15,10 +15,10 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
     }
 
     public async Task<MovieAggregate?> GetByIdAsync(MovieId id, CancellationToken cancellationToken)
-        => await dbContext.Movies.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+        => throw new NotImplementedException();
 
     public async Task<List<MovieAggregate>> GetManyByIdsAsync(IEnumerable<MovieId> ids, CancellationToken cancellationToken)
-        => await dbContext.Movies.AsNoTracking().Where(m => ids.Contains(m.Id)).ToListAsync(cancellationToken);
+        => throw new NotImplementedException();
 
     public async Task<bool> UpdateAsync(MovieAggregate movie, CancellationToken cancellationToken)
     {
