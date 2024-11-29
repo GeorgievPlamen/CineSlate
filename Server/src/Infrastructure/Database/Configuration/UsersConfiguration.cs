@@ -15,7 +15,7 @@ public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(u => u.Role)
+        builder.Property(u => u.Roles)
             .IsRequired()
             .HasMaxLength(20)
             .HasConversion<string>();

@@ -10,5 +10,5 @@ public class UserModel : BaseModel
     public Name Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string PasswordHash { get; set; } = null!;
-    public Roles Role { get; set; }
+    public Roles Roles { get; set; }
 }
