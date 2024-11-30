@@ -26,16 +26,19 @@ public class GetMovieDetailsQueryHandler(IMovieRepository movieRepository, IMovi
         if (movieDetailed is null)
             return Result<MovieDetailed>.Failure(Error.ServerError());
 
-        movie.AddDetails(MovieDetails.Create(
-            movieDetailed.BackdropPath,
-            movieDetailed.Budget,
-            movieDetailed.Homepage,
-            movieDetailed.ImdbId,
-            movieDetailed.OriginCountry,
-            movieDetailed.Revenue,
-            movieDetailed.Runtime,
-            movieDetailed.Status,
-            movieDetailed.Tagline));
+        movie.AddDetails(
+            MovieDetails.Create(
+                movieDetailed.BackdropPath,
+                movieDetailed.Budget,
+                movieDetailed.Homepage,
+                movieDetailed.ImdbId,
+                movieDetailed.OriginCountry,
+                movieDetailed.Revenue,
+                movieDetailed.Runtime,
+                movieDetailed.Status,
+                movieDetailed.Tagline),
+            movieDetailed.Genres
+                .Select(g => Genre.Create(g.Id, g.Name)));
 
         await movieRepository.UpdateAsync(movie, cancellationToken);
 

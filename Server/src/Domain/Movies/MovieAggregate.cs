@@ -35,6 +35,11 @@ public class MovieAggregate : AggregateRoot<MovieId>
             Details = details ?? MovieDetails.CreateEmpty()
         };
 
-    public void AddDetails(MovieDetails movieDetails) => Details = movieDetails;
+    public void AddDetails(MovieDetails movieDetails, IEnumerable<Genre> genres)
+    {
+        Details = movieDetails;
+        _genres = [.. genres];
+    }
+
     public void AddRating(Rating rating) => _ratings.Add(rating);
 };
