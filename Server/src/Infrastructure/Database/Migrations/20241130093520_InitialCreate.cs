@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,7 +65,7 @@ namespace Infrastructure.Database.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Roles = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Name_First = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Name_Last = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -106,12 +106,6 @@ namespace Infrastructure.Database.Migrations
                 name: "IX_GenreModelMovieModel_MoviesId",
                 table: "GenreModelMovieModel",
                 column: "MoviesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Genres_Name",
-                table: "Genres",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

@@ -8,9 +8,6 @@ public class GenresConfiguration : IEntityTypeConfiguration<GenreModel>
 {
     public void Configure(EntityTypeBuilder<GenreModel> builder)
     {
-        builder.HasIndex(g => g.Name)
-            .IsUnique();
-
         builder.Property(g => g.Name)
             .HasMaxLength(100);
 

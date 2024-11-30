@@ -11,7 +11,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
 {
     public async Task<bool> CreateManyAsync(IEnumerable<MovieAggregate> movies, CancellationToken cancellationToken)
     {
-        var genreIds = movies.SelectMany(m => m.Genres.Select(g => g.Id)).ToList();
+        var genreIds = movies.SelectMany(m => m.Genres.Select(g => g.Id)).Distinct().ToList();
 
         var existingGenres = await dbContext.Genres
             .Where(g => genreIds.Contains(g.Id))
@@ -23,8 +23,10 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         {
             var missingGenreIds = genreIds.Except(existingGenres.Select(eg => eg.Id));
 
-            await dbContext.AddRangeAsync(missingGenreIds
-                .Select(id => new GenreModel() { Id = id }), cancellationToken);
+            dbContext.AddRange(missingGenreIds
+                .Select(id => new GenreModel() { Id = id }));
+
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             var createdGenres = await dbContext.Genres
                 .Where(g => missingGenreIds.Contains(g.Id))
@@ -43,6 +45,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
     public async Task<MovieAggregate?> GetByIdAsync(MovieId id, CancellationToken cancellationToken)
     {
         var model = await dbContext.Movies
+            .AsNoTracking()
             .Include(m => m.Genres)
             .FirstOrDefaultAsync(m => m.Id == id.Value, cancellationToken);
 
@@ -71,30 +74,41 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
 
     public async Task<bool> UpdateAsync(MovieAggregate movie, CancellationToken cancellationToken)
     {
-        var model = ToModel(movie);
+        var model = await dbContext.Movies
+            .Include(m => m.Genres)
+            .FirstOrDefaultAsync(m => m.Id == movie.Id.Value, cancellationToken);
+
+        if (model is null)
+            return false;
+
+        UpdateModel(model, movie);
+
         dbContext.Update(model);
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    private static MovieModel ToModel(MovieAggregate movie)
-        => new()
+    private static void UpdateModel(MovieModel model, MovieAggregate movie)
+    {
+        model.Id = movie.Id.Value;
+        model.Title = movie.Title;
+        model.Description = movie.Description;
+        model.ReleaseDate = movie.ReleaseDate;
+        model.PosterPath = movie.PosterPath;
+        model.BackdropPath = movie.Details.BackdropPath;
+        model.Budget = movie.Details.Budget;
+        model.Homepage = movie.Details.Homepage;
+        model.ImdbId = movie.Details.ImdbId;
+        model.OriginCountry = movie.Details.OriginCountry;
+        model.Revenue = movie.Details.Revenue;
+        model.Runtime = movie.Details.Runtime;
+        model.Status = movie.Details.Status;
+        model.Tagline = movie.Details.Tagline;
+
+        foreach (var genre in model.Genres)
         {
-            Id = movie.Id.Value,
-            Title = movie.Title,
-            Description = movie.Description,
-            ReleaseDate = movie.ReleaseDate,
-            PosterPath = movie.PosterPath,
-            BackdropPath = movie.Details.BackdropPath,
-            Budget = movie.Details.Budget,
-            Homepage = movie.Details.Homepage,
-            ImdbId = movie.Details.ImdbId,
-            OriginCountry = movie.Details.OriginCountry,
-            Revenue = movie.Details.Revenue,
-            Runtime = movie.Details.Runtime,
-            Status = movie.Details.Status,
-            Tagline = movie.Details.Tagline,
-            Genres = [.. movie.Genres.Select(g => new GenreModel() { Id = g.Id, Name = g.Value })]
-        };
+            genre.Name = movie.Genres.First(g => genre.Id == g.Id).Value;
+        }
+    }
 
     private static MovieModel ToModel(MovieAggregate movie, Dictionary<int, GenreModel> genres)
         => new()
