@@ -22,11 +22,11 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         .WithPassword("secretpassword")
         .Build();
 
-    public async Task SeedDatabaseAsync(IEnumerable<IModel> entities)
+    public async Task SeedDatabaseAsync(IEnumerable<BaseModel> models)
     {
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<CineSlateContext>();
-        context.AddRange(entities);
+        context.AddRange(models);
         await context.SaveChangesAsync();
     }
 

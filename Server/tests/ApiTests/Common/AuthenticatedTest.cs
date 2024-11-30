@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Api.Features.Users.Requests;
 using Application.Users.Login;
+using Infrastructure.Repositories.MappingExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TestUtilities;
 using TestUtilities.Fakers;
@@ -21,7 +22,7 @@ public abstract class AuthenticatedTest(ApiFactory factory) : IClassFixture<ApiF
             var user = UserFaker.GenerateValid();
             var request = new LoginRequest(user.Email, Constants.ValidPassword);
 
-            await Api.SeedDatabaseAsync([user]);
+            await Api.SeedDatabaseAsync([user.ToModel()]);
 
             var response = await Client.PostAsJsonAsync("/api/users/login", request);
 

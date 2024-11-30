@@ -6,6 +6,8 @@ using Application.Movies.Interfaces;
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
 using FluentAssertions;
+using Infrastructure.Database.Models;
+using Infrastructure.Repositories.MappingExtensions;
 using NSubstitute;
 using TestUtilities;
 using TestUtilities.Fakers;
@@ -32,7 +34,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
                 m.Description,
                 m.ReleaseDate,
                 m.PosterPath,
-                m.Genres));
+                m.Genres).ToModel([.. m.Genres.Select(g => new GenreModel() { Id = g.Id, Name = g.Value })])); // TODO simplify test -> add to faker
 
         await Api.SeedDatabaseAsync([.. movieAggregates]);
 

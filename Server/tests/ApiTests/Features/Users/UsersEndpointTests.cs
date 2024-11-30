@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Api.Features.Users.Requests;
+using Infrastructure.Repositories.MappingExtensions;
 using TestUtilities;
 using TestUtilities.Fakers;
 
@@ -30,7 +31,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new RegisterRequest(user.Name.First, user.Name.Last, user.Email, "Password123!");
 
-        await api.SeedDatabaseAsync([user]);
+        await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
         var response = await _httpClient.PostAsJsonAsync("/api/users/register", request);
@@ -46,7 +47,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new LoginRequest(user.Email, Constants.ValidPassword);
 
-        await api.SeedDatabaseAsync([user]);
+        await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
         var response = await _httpClient.PostAsJsonAsync("/api/users/login", request);
@@ -62,7 +63,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new LoginRequest(user.Email, "invalidpassword");
 
-        await api.SeedDatabaseAsync([user]);
+        await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
         var response = await _httpClient.PostAsJsonAsync("/api/users/login", request);
