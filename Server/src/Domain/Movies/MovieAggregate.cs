@@ -24,14 +24,15 @@ public class MovieAggregate : AggregateRoot<MovieId>
         string description,
         DateOnly releaseDate,
         string posterPath,
-        IEnumerable<Genre> genres) => new(id)
+        IEnumerable<Genre> genres,
+        MovieDetails? details = null) => new(id)
         {
             Title = title,
             Description = description ?? string.Empty,
             ReleaseDate = releaseDate,
             PosterPath = posterPath ?? string.Empty,
             _genres = [.. genres],
-            Details = MovieDetails.CreateEmpty()
+            Details = details ?? MovieDetails.CreateEmpty()
         };
 
     public void AddDetails(MovieDetails movieDetails) => Details = movieDetails;
