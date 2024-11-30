@@ -3,6 +3,7 @@ using Domain.Movies;
 using Domain.Movies.ValueObjects;
 using Infrastructure.Database;
 using Infrastructure.Database.Models;
+using Infrastructure.Repositories.MappingExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -35,9 +36,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
             existingGenres.AddRange(createdGenres);
         }
 
-        var genresLookup = existingGenres.ToDictionary(g => g.Id);
-
-        dbContext.AddRange(movies.Select(m => ToModel(m, genresLookup)));
+        dbContext.AddRange(movies.Select(m => m.ToModel(existingGenres)));
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
@@ -52,7 +51,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         if (model is null)
             return null;
 
-        return FromModel(model);
+        return model.Unwrap();
     }
 
     public async Task<List<MovieAggregate>> GetManyByIdsAsync(IEnumerable<MovieId> ids, CancellationToken cancellationToken)
@@ -66,7 +65,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
             .ToListAsync(cancellationToken);
 
         var movieAggregates = models
-            .Select(FromModel)
+            .Select(m => m.Unwrap())
             .ToList();
 
         return movieAggregates;
@@ -109,44 +108,4 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
             genre.Name = movie.Genres.First(g => genre.Id == g.Id).Value;
         }
     }
-
-    private static MovieModel ToModel(MovieAggregate movie, Dictionary<int, GenreModel> genres)
-        => new()
-        {
-            Id = movie.Id.Value,
-            Title = movie.Title,
-            Description = movie.Description,
-            ReleaseDate = movie.ReleaseDate,
-            PosterPath = movie.PosterPath,
-            BackdropPath = movie.Details.BackdropPath,
-            Budget = movie.Details.Budget,
-            Homepage = movie.Details.Homepage,
-            ImdbId = movie.Details.ImdbId,
-            OriginCountry = movie.Details.OriginCountry,
-            Revenue = movie.Details.Revenue,
-            Runtime = movie.Details.Runtime,
-            Status = movie.Details.Status,
-            Tagline = movie.Details.Tagline,
-            Genres = [.. movie.Genres.Select(g => genres[g.Id])]
-        };
-
-    private static MovieAggregate FromModel(MovieModel movie)
-        => MovieAggregate.Create(
-        MovieId.Create(movie.Id),
-        movie.Title,
-        movie.Description,
-        movie.ReleaseDate,
-        movie.PosterPath,
-        movie.Genres.Select(g => Genre.Create(g.Id, g.Name)),
-        MovieDetails.Create(
-            movie.BackdropPath,
-            movie.Budget,
-            movie.Homepage,
-            movie.ImdbId,
-            movie.OriginCountry,
-            movie.Revenue,
-            movie.Runtime,
-            movie.Status,
-            movie.Tagline)
-    );
 }

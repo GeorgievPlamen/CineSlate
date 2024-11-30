@@ -1,7 +1,7 @@
 using Api.Common;
 using Application.Movies.Interfaces;
-using Domain.Common.Models;
 using Infrastructure.Database;
+using Infrastructure.Database.Models.Base;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -22,7 +22,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         .WithPassword("secretpassword")
         .Build();
 
-    public async Task SeedDatabaseAsync(IEnumerable<IEntity> entities)
+    public async Task SeedDatabaseAsync(IEnumerable<IModel> entities)
     {
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<CineSlateContext>();
