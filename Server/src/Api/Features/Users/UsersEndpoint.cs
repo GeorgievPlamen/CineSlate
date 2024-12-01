@@ -10,14 +10,19 @@ namespace Api.Features.Users;
 
 public static class UsersEndpoint
 {
+    public const string Uri = "/api/users";
+    public const string Me = "/me";
+    public const string Login = "/login";
+    public const string Register = "/register";
+
     public static void MapUsers(this WebApplication app)
     {
-        var users = app.MapGroup("/api/users");
+        var users = app.MapGroup(Uri);
 
-        users.MapGet("/me", GetMeAsync).RequireAuthorization();
+        users.MapGet(Me, GetMeAsync).RequireAuthorization();
 
-        users.MapPost("/login", LoginAsync).WithName("login");
-        users.MapPost("/register", RegisterAsync);
+        users.MapPost(Login, LoginAsync).WithName(Login);
+        users.MapPost(Register, RegisterAsync);
     }
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
@@ -35,5 +40,5 @@ public static class UsersEndpoint
             request.LastName,
             request.Email,
             request.Password),
-            cancellationToken), "login");
+            cancellationToken), Login);
 }

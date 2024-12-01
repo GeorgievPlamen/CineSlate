@@ -32,4 +32,26 @@ public static class MovieFaker
                 GenreIds: [f.Random.Number(1000, 5000)]
             ))
             .Generate(howMany);
+
+    public static ExternalMovieDetailed GenerateExternalMovieDetails(Movie movie) =>
+        new Faker<ExternalMovieDetailed>()
+            .CustomInstantiator(f => new ExternalMovieDetailed
+            (
+                Id: movie.Id,
+                Title: movie.Title,
+                Description: movie.Description,
+                ReleaseDate: movie.ReleaseDate,
+                PosterPath: movie.PosterPath,
+                Genres: [new(movie.Genres[0].Id, f.Lorem.Word())],
+                BackdropPath: f.Internet.Url(),
+                Budget: f.Random.Number(1000, 1000000),
+                Homepage: f.Internet.Url(),
+                ImdbId: f.Lorem.Word(),
+                OriginCountry: f.Lorem.Word(),
+                Revenue: f.Random.Number(1000, 1000000),
+                Runtime: f.Random.Number(60, 500),
+                Status: f.Lorem.Word(),
+                Tagline: f.Lorem.Sentence()
+            ))
+            .Generate();
 }

@@ -18,7 +18,7 @@ public class GetMovieDetailsQueryHandler(IMovieRepository movieRepository, IMovi
         if (movie is null)
             return Result<MovieDetailed>.Failure(MovieErrors.NotFound(id));
 
-        if (movie.Details.IsFull())
+        if (movie.Details.IsFilled())
             return Result<MovieDetailed>.Success(movie.ToMovieDetailed());
 
         var movieDetailed = await moviesClient.GetMovieDetailsAsync(id.Value, cancellationToken);

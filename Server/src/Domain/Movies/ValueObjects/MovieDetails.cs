@@ -49,7 +49,7 @@ public class MovieDetails : ValueObject
         Tagline = ""
     };
 
-    public bool IsFull() =>
+    public bool IsFilled() =>
         BackdropPath.Length > 0 &&
         Budget > 0 &&
         Homepage.Length > 0 &&

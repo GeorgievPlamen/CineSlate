@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Api.Features.Users;
 using Api.Features.Users.Requests;
 using Infrastructure.Repositories.MappingExtensions;
 using TestUtilities;
@@ -10,6 +11,7 @@ namespace ApiTests.Features.Users;
 public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
 {
     private readonly HttpClient _httpClient = api.CreateClient();
+    private static string TestUri(string uri) => $"{UsersEndpoint.Uri}{uri}";
 
     [Fact]
     public async Task Register_ShouldReturnOk201_WhenValid()
@@ -18,7 +20,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var request = new RegisterRequest("John", "Doe", "john.doe@example.com", "Password123!");
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("/api/users/register", request);
+        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -34,7 +36,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("/api/users/register", request);
+        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -50,7 +52,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("/api/users/login", request);
+        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -66,7 +68,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         await api.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync("/api/users/login", request);
+        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
