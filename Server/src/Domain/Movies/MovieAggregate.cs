@@ -1,11 +1,11 @@
 using Domain.Common.Models;
+using Domain.Movies.Ratings;
 using Domain.Movies.ValueObjects;
 
 namespace Domain.Movies;
 
-public class MovieAggregate : AggregateRoot<MovieId>
+public class MovieAggregate(MovieId id) : AggregateRoot<MovieId>(id)
 {
-    private MovieAggregate(MovieId id) : base(id) { }
     private List<Genre> _genres = [];
     private readonly List<Rating> _ratings = [];
 
