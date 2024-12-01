@@ -1,26 +1,26 @@
 using Domain.Common.Models;
-using Domain.Movies.Ratings.Exceptions;
-using Domain.Movies.Ratings.ValueObjects;
+using Domain.Movies.Reviews.Exceptions;
+using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
 
-namespace Domain.Movies.Ratings;
+namespace Domain.Movies.Reviews;
 
-public class Rating(RatingId id) : Entity<RatingId>(id)
+public class Review(ReviewId id) : Entity<ReviewId>(id)
 {
-    public int Value { get; private set; }
+    public int Rating { get; private set; }
     public MovieId MovieId { get; private set; } = null!;
     public UserId Author { get; private set; } = null!;
     public string Text { get; private set; } = null!;
     public bool ContainsSpoilers { get; private set; }
-    public static Rating Create(int rating, MovieId movieId, UserId ratedBy, string text = "", bool containsSpoilers = false)
+    public static Review Create(int rating, MovieId movieId, UserId ratedBy, string text = "", bool containsSpoilers = false)
     {
         if (rating < 1 || rating > 5)
             throw new RatingOutOfRangeException();
 
-        return new(RatingId.Create())
+        return new(ReviewId.Create())
         {
-            Value = rating,
+            Rating = rating,
             MovieId = movieId,
             Author = ratedBy,
             Text = text,

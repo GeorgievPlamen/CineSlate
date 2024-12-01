@@ -1,3 +1,10 @@
+
+using Api.Common;
+using Api.Features.Reviews.Requests.cs;
+using Application.Reviews.Create;
+using Domain.Movies.Reviews.ValueObjects;
+using MediatR;
+
 namespace Api.Features.Reviews;
 
 public static class ReviewsEndpoint
@@ -12,8 +19,19 @@ public static class ReviewsEndpoint
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
         reviews.MapGet(Latest, () => TypedResults.Ok("latest reviews")); // TODO
-        reviews.MapPost(Create, () => TypedResults.Ok("create")); // TODO
+        reviews.MapPost(Create, CreateReviewAsync); // TODO
         reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
         reviews.MapPut("/{id}", (Guid id) => TypedResults.Ok($"update {id}")); // TODO
     }
+
+    private static async Task<IResult> CreateReviewAsync(
+        CreateReviewRequest request,
+        ISender mediatr,
+        CancellationToken cancellationToken)
+            => Response<ReviewId>.Match(await mediatr.Send(new CreateReviewCommand(
+                request.Rating,
+                request.MovieId,
+                request.Text,
+                request.ContainsSpoilers
+            ), cancellationToken));
 }
