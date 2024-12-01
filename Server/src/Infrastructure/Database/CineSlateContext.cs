@@ -14,6 +14,7 @@ public class CineSlateContext(
     public DbSet<UserModel> Users { get; set; } = null!;
     public DbSet<MovieModel> Movies { get; set; } = null!;
     public DbSet<GenreModel> Genres { get; set; } = null!;
+    public DbSet<ReviewModel> Reviews { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

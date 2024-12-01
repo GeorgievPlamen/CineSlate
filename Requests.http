@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhODM0N2Y1YS02ODQyLTRjNzQtYWIyYi02OGE5MTNiMmY0ZGYiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiODZkMzg2MGMtMGNjMi00YjliLTg1ZTYtZGM5NjU2OTVmZjk3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNTU1MDcxNCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0._9hZree0lzrqRMykmQCyH77Uj8o0r768PEYhNNGHpyc
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOTBhODc0Ny1kMWEwLTRiZGQtOTk4Zi04MjhjY2E0NjJjYWQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMzQwMjVlN2EtMzZiNC00YTUzLTk4ZDEtOTJiYWM2YzAwYTg0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNTY1NDYyNiwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.PwHZWCCtrHgIn0U0AmQm8V9a5BUSEG7AEY99CDLZ8-k
 
 ### Login Success
 
@@ -78,3 +78,34 @@ Authorization: {{Token}}
 GET {{Api_HostAddress}}users/me HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
+
+### Review Latest 
+
+GET {{Api_HostAddress}}reviews/ HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+### Review Update 
+
+PUT {{Api_HostAddress}}reviews/ HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+### Review Delete 
+
+DELETE  {{Api_HostAddress}}reviews/31640b26-60b2-4fea-8058-7335954c640f HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+### Review Create 
+
+POST   {{Api_HostAddress}}reviews/ HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+{
+    "rating": 5,
+    "movieId": 912649,
+    "text": "Love the movie!",
+    "containsSpoilers": false
+}

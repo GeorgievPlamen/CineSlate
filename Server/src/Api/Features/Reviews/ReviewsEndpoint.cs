@@ -19,9 +19,9 @@ public static class ReviewsEndpoint
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
         reviews.MapGet(Latest, () => TypedResults.Ok("latest reviews")); // TODO
-        reviews.MapPost(Create, CreateReviewAsync); // TODO
+        reviews.MapPost(Create, CreateReviewAsync);
         reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
-        reviews.MapPut("/{id}", (Guid id) => TypedResults.Ok($"update {id}")); // TODO
+        reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
 
     private static async Task<IResult> CreateReviewAsync(

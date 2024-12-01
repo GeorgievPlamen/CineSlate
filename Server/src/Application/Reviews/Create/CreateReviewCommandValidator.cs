@@ -14,9 +14,10 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
             .WithMessage("Id must be positive!");
 
         RuleFor(x => x.Text)
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(2000);
 
         RuleFor(x => x.ContainsSpoilers)
-            .NotEmpty();
+            .NotNull();
     }
 }

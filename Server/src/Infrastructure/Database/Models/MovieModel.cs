@@ -19,4 +19,5 @@ public class MovieModel : BaseModel
     public string Status { get; set; } = null!;
     public string Tagline { get; set; } = null!;
     public ICollection<GenreModel> Genres { get; set; } = [];
+    public ICollection<ReviewModel> Reviews { get; set; } = [];
 }

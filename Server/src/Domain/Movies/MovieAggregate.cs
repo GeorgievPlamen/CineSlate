@@ -41,5 +41,5 @@ public class MovieAggregate(MovieId id) : AggregateRoot<MovieId>(id)
         _genres = [.. genres];
     }
 
-    public void AddReview(Review rating) => _reviews.Add(rating);
+    public void AddReview(Review review) => _reviews.Add(review);
 };

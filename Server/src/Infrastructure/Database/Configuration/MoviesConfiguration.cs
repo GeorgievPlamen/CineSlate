@@ -51,5 +51,8 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
         builder.Property(m => m.UpdatedBy)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.HasMany(m => m.Reviews)
+            .WithOne();
     }
 }
