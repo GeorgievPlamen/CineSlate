@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CineSlateContext))]
-    [Migration("20241201143300_Initial")]
-    partial class Initial
+    [Migration("20241202064240_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,7 +173,15 @@ namespace Infrastructure.Database.Migrations
                     b.Property<bool>("ContainsSpoilers")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("MovieModelId")
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("MovieId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Rating")
@@ -184,11 +192,19 @@ namespace Infrastructure.Database.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("MovieModelId");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
                 });
@@ -270,9 +286,13 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Infrastructure.Database.Models.ReviewModel", b =>
                 {
-                    b.HasOne("Infrastructure.Database.Models.MovieModel", null)
+                    b.HasOne("Infrastructure.Database.Models.MovieModel", "Movie")
                         .WithMany("Reviews")
-                        .HasForeignKey("MovieModelId");
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Models.MovieModel", b =>

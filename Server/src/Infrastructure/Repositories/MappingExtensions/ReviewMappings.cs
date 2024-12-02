@@ -1,4 +1,5 @@
 using Domain.Movies.Reviews;
+using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
 using Infrastructure.Database.Models;
 
@@ -20,6 +21,7 @@ public static class ReviewMappings
         => Review.Create(
             model.Rating,
             UserId.Create(model.AuthorId),
+            MovieId.Create(model.Movie.Id),
             model.Text,
             model.ContainsSpoilers);
 }

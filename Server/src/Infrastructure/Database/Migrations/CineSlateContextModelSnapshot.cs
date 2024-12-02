@@ -178,7 +178,7 @@ namespace Infrastructure.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int?>("MovieModelId")
+                    b.Property<int>("MovieId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Rating")
@@ -201,7 +201,7 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("MovieModelId");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
                 });
@@ -283,9 +283,13 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Infrastructure.Database.Models.ReviewModel", b =>
                 {
-                    b.HasOne("Infrastructure.Database.Models.MovieModel", null)
+                    b.HasOne("Infrastructure.Database.Models.MovieModel", "Movie")
                         .WithMany("Reviews")
-                        .HasForeignKey("MovieModelId");
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Models.MovieModel", b =>

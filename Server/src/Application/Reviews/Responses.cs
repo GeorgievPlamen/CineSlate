@@ -2,6 +2,10 @@ namespace Application.Reviews;
 
 public record ReviewResponse(
     int Rating,
-    int MovieId,
     string Text,
+    int MovieId,
+    string MovieTitle,
+    DateOnly ReleaseDate,
+    string PosterPath,
+    Guid AuthorId,
     bool ContainsSpoilers);

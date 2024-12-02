@@ -1,6 +1,7 @@
 using System.Text;
 using Application.Common.Interfaces;
 using Application.Movies.Interfaces;
+using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 using Infrastructure.Common;
 using Infrastructure.Common.Models;
@@ -46,6 +47,7 @@ public static class InfrastructureServices
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IMovieClient, TMDBClient>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

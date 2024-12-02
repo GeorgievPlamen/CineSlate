@@ -53,6 +53,6 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
             .HasMaxLength(200);
 
         builder.HasMany(m => m.Reviews)
-            .WithOne();
+            .WithOne(r => r.Movie);
     }
 }
