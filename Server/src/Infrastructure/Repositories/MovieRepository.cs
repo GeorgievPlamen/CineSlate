@@ -5,6 +5,7 @@ using Infrastructure.Database;
 using Infrastructure.Database.Models;
 using Infrastructure.Repositories.MappingExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Infrastructure.Repositories;
 
@@ -52,7 +53,11 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         if (model is null)
             return null;
 
-        return model.Unwrap();
+        var movie = model.Unwrap();
+        var reviews = model.Reviews.Select(r => r.Unwrap());
+        movie.AddReviews(reviews);
+
+        return movie;
     }
 
     public async Task<List<MovieAggregate>> GetManyByIdsAsync(IEnumerable<MovieId> ids, CancellationToken cancellationToken)

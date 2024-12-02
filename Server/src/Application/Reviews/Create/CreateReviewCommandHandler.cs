@@ -4,6 +4,7 @@ using Application.Movies.Interfaces;
 using Domain.Common;
 using Domain.Movies.Errors;
 using Domain.Movies.Reviews;
+using Domain.Movies.Reviews.Errors;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
 using Domain.Users.Errors;
@@ -29,9 +30,13 @@ public class CreateReviewCommandHandler(
 
         var movieId = MovieId.Create(request.MovieId);
 
-        var movie = await movieRepository.GetByIdAsync(MovieId.Create(request.MovieId), cancellationToken);
+        var movie = await movieRepository.GetByIdAsync(movieId, cancellationToken);
         if (movie is null)
             return Result<ReviewId>.Failure(MovieErrors.NotFound(movieId));
+
+        var authors = movie.Reviews.Select(r => r.Author.Value).ToList();
+        if (authors.Contains(Guid.Parse(userId)))
+            return Result<ReviewId>.Failure(ReviewErrors.UserAlreadyReviewed(userId));
 
         var review = Review.Create(
             request.Rating,

@@ -41,4 +41,18 @@ public class Review(ReviewId id) : Entity<ReviewId>(id)
             ContainsSpoilers = containsSpoilers,
         };
     }
+    public static Review Create(Guid reviewId, int rating, UserId ratedBy, MovieId movieId, string text = "", bool containsSpoilers = false)
+    {
+        if (rating < 1 || rating > 5)
+            throw new RatingOutOfRangeException();
+
+        return new(ReviewId.Create(reviewId))
+        {
+            Rating = rating,
+            Author = ratedBy,
+            MovieId = movieId,
+            Text = text,
+            ContainsSpoilers = containsSpoilers,
+        };
+    }
 }

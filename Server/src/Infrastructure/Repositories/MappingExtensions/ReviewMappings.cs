@@ -19,6 +19,7 @@ public static class ReviewMappings
 
     public static Review Unwrap(this ReviewModel model)
         => Review.Create(
+            model.Id,
             model.Rating,
             UserId.Create(model.AuthorId),
             MovieId.Create(model.Movie.Id),

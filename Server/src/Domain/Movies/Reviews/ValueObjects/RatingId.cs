@@ -8,7 +8,7 @@ public class ReviewId : ValueObject
     public Guid Value { get; private set; }
 
     public static ReviewId Create() => new() { Value = Guid.NewGuid() };
-    public static ReviewId Create(ReviewId id) => new() { Value = id.Value };
+    public static ReviewId Create(Guid id) => new() { Value = id };
 
     public override IEnumerable<object> GetEqualityComponents()
     {

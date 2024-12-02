@@ -7,7 +7,7 @@ namespace Domain.Movies;
 public class MovieAggregate(MovieId id) : AggregateRoot<MovieId>(id)
 {
     private List<Genre> _genres = [];
-    private readonly List<Review> _reviews = [];
+    private List<Review> _reviews = [];
 
     public string Title { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -32,7 +32,8 @@ public class MovieAggregate(MovieId id) : AggregateRoot<MovieId>(id)
             ReleaseDate = releaseDate,
             PosterPath = posterPath ?? string.Empty,
             _genres = [.. genres],
-            Details = details ?? MovieDetails.CreateEmpty()
+            Details = details ?? MovieDetails.CreateEmpty(),
+            _reviews = []
         };
 
     public void AddDetails(MovieDetails movieDetails, IEnumerable<Genre> genres)
@@ -42,4 +43,5 @@ public class MovieAggregate(MovieId id) : AggregateRoot<MovieId>(id)
     }
 
     public void AddReview(Review review) => _reviews.Add(review);
+    public void AddReviews(IEnumerable<Review> reviews) => _reviews.AddRange(reviews);
 };
