@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/reduxHooks';
 import { useEffect } from 'react';
-import { setUser } from '../../features/Users/userSlice';
-import { UserResponse } from '../../features/Users/Models/UserResponse';
+import { setUser } from '../../pages/Users/userSlice';
+import { UserResponse } from '../../pages/Users/Models/UserResponse';
 
 export default function useHandleUserResponse(userResponse: UserResponse) {
   const navigate = useNavigate();

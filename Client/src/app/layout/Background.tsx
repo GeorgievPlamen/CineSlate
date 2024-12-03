@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { SESSION_JWT } from '../config';
 import { useAppDispatch } from '../store/reduxHooks';
-import { setUser } from '../../features/Users/userSlice';
-import { userApi } from '../../features/Users/api/userApi';
+import { setUser } from '../../pages/Users/userSlice';
+import { userApi } from '../../pages/Users/api/userApi';
 
 function Background() {
   const dispatch = useAppDispatch();

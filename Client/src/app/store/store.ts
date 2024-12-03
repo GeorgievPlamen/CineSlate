@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { userSlice } from '../../features/Users/userSlice';
+import { userSlice } from '../../pages/Users/userSlice';
 import { cineslateApi } from '../api/cineslateApi';
 
 export const store = configureStore({
