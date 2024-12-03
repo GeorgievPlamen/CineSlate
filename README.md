@@ -29,6 +29,7 @@ Create a .env file in root folder containing:
     PSQL_DB=cineslate
     PGADMIN_MAIL=admin@email.com
     PGADMIN_PW=secretpassword
+    TMDB_KEY={your TMDB key}
 
 You will need an api key from TMDB -> https://www.themoviedb.org/settings/api
 

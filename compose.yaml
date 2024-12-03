@@ -12,6 +12,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=cineslate;Username=postgres;Password=secretpassword;
+      - ApiKeys__TMDBKey=${TMDB_KEY}
+  
     command: >
       sh -c "dotnet Api.dll"
     develop:
