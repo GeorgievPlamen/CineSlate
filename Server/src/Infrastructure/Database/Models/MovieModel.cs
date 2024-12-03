@@ -20,4 +20,5 @@ public class MovieModel : BaseModel
     public string Tagline { get; set; } = null!;
     public ICollection<GenreModel> Genres { get; set; } = [];
     public ICollection<ReviewModel> Reviews { get; set; } = [];
+    public double Rating { get; set; }
 }

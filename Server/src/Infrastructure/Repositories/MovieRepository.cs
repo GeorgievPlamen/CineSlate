@@ -67,8 +67,6 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         var models = await dbContext.Movies
             .AsNoTracking()
             .Where(m => idValues.Contains(m.Id))
-            .Include(m => m.Genres)
-            .Include(m => m.Reviews)
             .ToListAsync(cancellationToken);
 
         var movieAggregates = models
@@ -131,6 +129,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         model.Runtime = movie.Details.Runtime;
         model.Status = movie.Details.Status;
         model.Tagline = movie.Details.Tagline;
+        model.Rating = movie.Rating;
 
         foreach (var genre in model.Genres)
         {

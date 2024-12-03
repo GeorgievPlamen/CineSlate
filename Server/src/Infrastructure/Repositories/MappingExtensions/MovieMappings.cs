@@ -47,5 +47,6 @@ public static class MovieMappings
             model.Revenue,
             model.Runtime,
             model.Status,
-            model.Tagline));
+            model.Tagline),
+        model.Rating);
 }

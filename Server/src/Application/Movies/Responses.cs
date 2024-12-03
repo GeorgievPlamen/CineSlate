@@ -7,10 +7,9 @@ namespace Application.Movies;
 public record Movie(
     int Id,
     string Title,
-    string Description,
     DateOnly ReleaseDate,
     string PosterPath,
-    IReadOnlyList<Genre> Genres);
+    double Rating);
 
 public record MovieDetailed(
     int Id,
@@ -37,10 +36,9 @@ public static class Converter
     public static Movie ToMovie(this MovieAggregate movie) => new(
             movie.Id.Value,
             movie.Title,
-            movie.Description,
             movie.ReleaseDate,
             movie.PosterPath,
-            movie.Genres);
+            movie.Rating);
     public static MovieDetailed ToMovieDetailed(this MovieAggregate movie) => new(
             movie.Id.Value,
             movie.Title,

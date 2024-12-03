@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZTA3MjlmOS1hYTc5LTQ5ZTgtOTM4My02YjJkOGQxOTUxMzIiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiMjhmMGMwNTUtOGZlNi00NWRmLWE4MTQtZDgzYzBmYjE1NDUzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNTcxMzg1MCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.2G1qOB5QYN2md15g5zU2H6dSpoyh9HeeCB2Ir2CWO2s
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWEzYTcxZC0xM2E1LTQwOWUtOWZjZC00OGJkMDgxYzk5NzEiLCJlbWFpbCI6ImpvaG4zQHRlc3QuY29tIiwiZ2l2ZW5fbmFtZSI6IkpvaG4iLCJmYW1pbHlfbmFtZSI6IkRvZSIsImp0aSI6ImFlZDQ1OTlmLWFiZWItNGQ3Yi1hZjQ2LWZlNmQ3OTQzZWQ1YiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MzU4MDAxMjEsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9._MjqTYLyL-9vMbL9FeT63bPytZfy5XHMCx1mTuiB6S8
 
 ### Login Success
 
@@ -98,8 +98,8 @@ content-type: application/json
 Authorization: {{Token}}
 
 {
-    "rating": 4,
+    "rating": 2,
     "movieId": 912649,
-    "text": "It was okay",
+    "text": "Did not like it...",
     "containsSpoilers": false
 }

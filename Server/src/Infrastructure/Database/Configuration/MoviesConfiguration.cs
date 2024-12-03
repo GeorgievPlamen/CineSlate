@@ -54,5 +54,8 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
 
         builder.HasMany(m => m.Reviews)
             .WithOne(r => r.Movie);
+
+        builder.Property(m => m.Rating)
+            .HasPrecision(2);
     }
 }

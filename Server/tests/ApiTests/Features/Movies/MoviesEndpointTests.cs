@@ -4,11 +4,8 @@ using ApiTests.Common;
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
-using Domain.Movies;
-using Domain.Movies.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Database.Models;
-using Infrastructure.Repositories.MappingExtensions;
 using NSubstitute;
 using TestUtilities;
 using TestUtilities.Fakers;
@@ -19,23 +16,21 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 {
     private static string TestUri(string uri) => $"{MoviesEndpoint.Uri}{uri}";
 
+    // TODO fix tests
+
     [Fact]
     public async Task GetMoviesNowPlaying_ShouldReturnPagedResponseWithMovies()
     {
         // Arrange
         await AuthenticateAsync();
 
-        var movies = MovieFaker.GenerateMovies(5);
         var externalMovies = MovieFaker.GenerateExternalMovies(5);
-        var movieModels = movies
-            .Select(m => MovieAggregate
-            .Create(MovieId
-                .Create(m.Id),
-                m.Title,
-                m.Description,
-                m.ReleaseDate,
-                m.PosterPath,
-                m.Genres).ToModel([.. m.Genres.Select(g => new GenreModel() { Id = g.Id, Name = g.Value })]));
+        var movieModels = MovieFaker.GenerateMovieModels(5);
+
+        foreach (var model in movieModels)
+        {
+            model.Genres.Add(new GenreModel() { Id = externalMovies[0].GenreIds[0] });
+        }
 
         await Api.SeedDatabaseAsync([.. movieModels]);
 
@@ -113,18 +108,9 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         // Arrange
         await AuthenticateAsync();
 
-        var movies = MovieFaker.GenerateMovies(1);
-        var movieModels = movies
-            .Select(m => MovieAggregate
-            .Create(MovieId
-                .Create(m.Id),
-                m.Title,
-                m.Description,
-                m.ReleaseDate,
-                m.PosterPath,
-                m.Genres).ToModel([.. m.Genres.Select(g => new GenreModel() { Id = g.Id, Name = g.Value })]));
+        var movieModels = MovieFaker.GenerateMovieModels(1);
 
-        var externalMovieDetailed = MovieFaker.GenerateExternalMovieDetails(movies[0]);
+        var externalMovieDetailed = MovieFaker.GenerateExternalMovieDetails(movieModels[0]);
 
         await Api.SeedDatabaseAsync([.. movieModels]);
 
@@ -132,7 +118,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(externalMovieDetailed);
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetMovieDetailsById(movies[0].Id)));
+        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetMovieDetailsById(movieModels[0].Id)));
 
         // Assert
         result.Should().NotBeNull();
