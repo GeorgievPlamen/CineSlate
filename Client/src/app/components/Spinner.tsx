@@ -1,6 +1,6 @@
 function Spinner() {
   return (
-    <div className="border-t-primary size-6 animate-spin rounded-full border-2 border-whitesmoke" />
+    <div className="size-6 animate-spin rounded-full border-2 border-whitesmoke border-t-slate-400" />
   );
 }
 export default Spinner;
