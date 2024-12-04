@@ -16,8 +16,6 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 {
     private static string TestUri(string uri) => $"{MoviesEndpoint.Uri}{uri}";
 
-    // TODO fix tests
-
     [Fact]
     public async Task GetMoviesNowPlaying_ShouldReturnPagedResponseWithMovies()
     {
@@ -26,11 +24,6 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 
         var externalMovies = MovieFaker.GenerateExternalMovies(5);
         var movieModels = MovieFaker.GenerateMovieModels(5);
-
-        foreach (var model in movieModels)
-        {
-            model.Genres.Add(new GenreModel() { Id = externalMovies[0].GenreIds[0] });
-        }
 
         await Api.SeedDatabaseAsync([.. movieModels]);
 

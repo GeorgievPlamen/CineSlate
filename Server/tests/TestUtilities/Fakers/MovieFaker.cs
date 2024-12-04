@@ -19,7 +19,7 @@ public static class MovieFaker
             ))
             .Generate(howMany);
 
-    public static List<MovieModel> GenerateMovieModels(int howMany = 1) =>
+    public static List<MovieModel> GenerateMovieModels(int howMany = 1, IEnumerable<GenreModel>? genreModels = null) =>
         new Faker<MovieModel>()
             .RuleFor(m => m.Id, f => f.Random.Number(1000, 5000))
             .RuleFor(m => m.Title, f => f.Lorem.Word())
@@ -30,12 +30,13 @@ public static class MovieFaker
             .RuleFor(m => m.Budget, f => f.Random.Number(1000, 5000))
             .RuleFor(m => m.Homepage, f => f.Internet.Url())
             .RuleFor(m => m.ImdbId, f => f.Lorem.Word())
-            .RuleFor(m => m.OriginCountry, f => f.Lorem.Word())
+            .RuleFor(m => m.OriginCountry, f => f.Random.AlphaNumeric(2))
             .RuleFor(m => m.Revenue, f => f.Random.Number(1000, 5000))
             .RuleFor(m => m.Runtime, f => f.Random.Number(1000, 5000))
             .RuleFor(m => m.Status, f => f.Lorem.Word())
             .RuleFor(m => m.Tagline, f => f.Lorem.Word())
             .RuleFor(m => m.Rating, f => f.Random.Number(1, 5))
+            .RuleFor(m => m.Genres, f => genreModels ?? [new GenreModel() { Id = f.Random.Number(10, 200), Name = f.Lorem.Word() }])
             .Generate(howMany);
 
     public static List<ExternalMovie> GenerateExternalMovies(int howMany = 1) =>
@@ -60,12 +61,12 @@ public static class MovieFaker
                 Description: movie.Description,
                 ReleaseDate: movie.ReleaseDate,
                 PosterPath: movie.PosterPath,
-                Genres: [new(movie.Genres.First().Id, f.Lorem.Word())],
+                Genres: [new(movie.Genres.First().Id, movie.Genres.First().Name)],
                 BackdropPath: f.Internet.Url(),
                 Budget: f.Random.Number(1000, 1000000),
                 Homepage: f.Internet.Url(),
                 ImdbId: f.Lorem.Word(),
-                OriginCountry: f.Lorem.Word(),
+                OriginCountry: f.Random.AlphaNumeric(2),
                 Revenue: f.Random.Number(1000, 1000000),
                 Runtime: f.Random.Number(60, 500),
                 Status: f.Lorem.Word(),
