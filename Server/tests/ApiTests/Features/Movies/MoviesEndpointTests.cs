@@ -5,7 +5,6 @@ using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
 using FluentAssertions;
-using Infrastructure.Database.Models;
 using NSubstitute;
 using TestUtilities;
 using TestUtilities.Fakers;
@@ -25,7 +24,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         var externalMovies = MovieFaker.GenerateExternalMovies(5);
         var movieModels = MovieFaker.GenerateMovieModels(5);
 
-        await Api.SeedDatabaseAsync([.. movieModels]);
+        await Api.SeedDatabaseAsync(movieModels);
 
         Api.MoviesClientMock.GetMoviesByPageAsync(Arg.Any<MoviesBy>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new Paged<ExternalMovie>(externalMovies));
@@ -105,7 +104,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 
         var externalMovieDetailed = MovieFaker.GenerateExternalMovieDetails(movieModels[0]);
 
-        await Api.SeedDatabaseAsync([.. movieModels]);
+        await Api.SeedDatabaseAsync(movieModels);
 
         Api.MoviesClientMock.GetMovieDetailsAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(externalMovieDetailed);

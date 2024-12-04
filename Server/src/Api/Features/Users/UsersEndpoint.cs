@@ -21,8 +21,8 @@ public static class UsersEndpoint
 
         users.MapGet(Me, GetMeAsync).RequireAuthorization();
 
-        users.MapPost(Login, LoginAsync).WithName(Login);
-        users.MapPost(Register, RegisterAsync);
+        users.MapPost(Login, LoginAsync);
+        users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
     }
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
@@ -40,5 +40,5 @@ public static class UsersEndpoint
             request.LastName,
             request.Email,
             request.Password),
-            cancellationToken), Login);
+            cancellationToken), Uri + Register);
 }

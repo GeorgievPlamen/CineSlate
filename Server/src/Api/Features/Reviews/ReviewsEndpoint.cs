@@ -16,13 +16,14 @@ public static class ReviewsEndpoint
     public const string Get = "/";
     public const string Create = "/";
     public const string Update = "/";
+    public static string GetById(Guid id) => $"/{id}";
     public static string Delete(Guid id) => $"/{id}";
     public static void MapReviews(this WebApplication app)
     {
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
-        reviews.MapGet(Get, GetReviewsAsync); // TODO
-        reviews.MapPost(Create, CreateReviewAsync);
+        reviews.MapGet(Get, GetReviewsAsync);
+        reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
@@ -39,5 +40,5 @@ public static class ReviewsEndpoint
                 request.MovieId,
                 request.Text,
                 request.ContainsSpoilers
-            ), cancellationToken));
+            ), cancellationToken), "Created");
 }
