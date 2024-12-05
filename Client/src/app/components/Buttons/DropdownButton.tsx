@@ -13,8 +13,8 @@ export default function DropdownButton({ children }: Props) {
       <button
         onClick={() => setIsListActive(!isListActive)}
         className={
-          'hover:bg-primary active:bg-primary-active flex rounded px-2 py-1 text-whitesmoke ' +
-          `${isListActive ? 'bg-primary-selected' : null}`
+          'active:bg-opcaity-80 flex rounded px-2 py-1 text-whitesmoke hover:bg-primary ' +
+          `${isListActive ? 'outline outline-1 outline-whitesmoke' : null}`
         }
       >
         {children}
@@ -22,7 +22,7 @@ export default function DropdownButton({ children }: Props) {
       <ul
         className={`${
           isListActive
-            ? 'text-primary-selected absolute mt-2 flex flex-col gap-2 rounded-lg bg-whitesmoke px-2 py-1 font-bold transition-transform'
+            ? 'absolute mt-2 flex flex-col gap-2 rounded-lg bg-background px-2 py-1 font-bold text-whitesmoke outline outline-1 transition-transform'
             : 'hidden'
         }`}
       >
@@ -30,12 +30,20 @@ export default function DropdownButton({ children }: Props) {
           <NavLink
             to="/reviews"
             className={({ isActive }) => ` ${isActive ? 'underline' : null}`}
+            onClick={() => setIsListActive(false)}
           >
             Reviews
           </NavLink>
         </li>
         <li className="text-nowrap">
-          <button onClick={() => sessionStorage.clear()}>Sign out</button>
+          <a
+            href="/"
+            onClick={() => {
+              sessionStorage.clear();
+            }}
+          >
+            Sign out
+          </a>
         </li>
       </ul>
     </div>

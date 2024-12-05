@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <header className="bg-background flex py-2">
+    <header className="flex bg-background py-2">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
@@ -31,7 +31,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="text-placeholder h-8 flex-grow rounded-full bg-whitesmoke pl-2 focus:outline-none"
+            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
           />
           <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
         </div>
@@ -40,8 +40,8 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
-                ` ${isActive ? 'bg-primary-selected' : null}`
+                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
               }
             >
               Movies
@@ -51,8 +51,8 @@ function Header() {
             <NavLink
               to="/critics"
               className={({ isActive }) =>
-                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
-                ` ${isActive ? 'bg-primary-selected' : null}`
+                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
               }
             >
               Critics
@@ -62,8 +62,8 @@ function Header() {
             <NavLink
               to="/stories"
               className={({ isActive }) =>
-                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
-                ` ${isActive ? 'bg-primary-selected' : null}`
+                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
               }
             >
               Stories
@@ -73,8 +73,8 @@ function Header() {
             <NavLink
               to="/quizzes"
               className={({ isActive }) =>
-                'hover:bg-primary active:bg-primary-active rounded px-2 py-1 text-whitesmoke' +
-                ` ${isActive ? 'bg-primary-selected' : null}`
+                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
               }
             >
               Quizzes
@@ -92,8 +92,8 @@ function Header() {
           <NavLink
             to="login"
             className={({ isActive }) =>
-              'hover:bg-primary active:bg-primary-active mx-2 rounded px-2 py-1 text-whitesmoke' +
-              ` ${isActive ? 'bg-primary-selected' : null}`
+              'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
+              ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
             }
           >
             Sign in

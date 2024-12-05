@@ -1,16 +1,20 @@
 import axios from 'axios';
 import { CINESLATE_API_URL, SESSION_JWT } from '../config';
 
-axios.defaults.baseURL = CINESLATE_API_URL;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+const api = axios.create({
+  baseURL: CINESLATE_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = `Bearer ${sessionStorage.getItem(SESSION_JWT)}`;
-  config.headers.set('Authorization', token);
+  config.headers['Authorization'] = token;
   return config;
 });
 
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response?.data,
   (error) =>
     Promise.reject({
@@ -22,12 +26,4 @@ axios.interceptors.response.use(
     })
 );
 
-async function movies() {
-  try {
-    return await axios.get('movies');
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export { movies };
+export default api;
