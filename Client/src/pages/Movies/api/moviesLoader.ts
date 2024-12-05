@@ -1,9 +1,7 @@
-import { LoaderFunctionArgs } from 'react-router-dom';
 import { moviesApi, MoviesBy } from './moviesApi';
 
-export async function moviesLoader({ params }: LoaderFunctionArgs) {
-  console.log('In loader');
-  console.log(params);
+export async function moviesLoader() {
+  console.log('inside loader');
   const res = await moviesApi.getMovies(1, MoviesBy.GetNowPlaying);
   return res;
 }

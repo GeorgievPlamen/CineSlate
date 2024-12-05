@@ -22,7 +22,7 @@ public static class ReviewsEndpoint
     {
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
-        reviews.MapGet(Get, GetReviewsAsync);
+        reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO

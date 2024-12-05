@@ -19,7 +19,7 @@ public static class MoviesEndpoint
 
     public static void MapMovies(this WebApplication app)
     {
-        var movies = app.MapGroup(Uri).RequireAuthorization();
+        var movies = app.MapGroup(Uri);
 
         movies.MapGet("/{id}", GetMovieDetailsByIdAsync);
         movies.MapGet(GetNowPlaying, GetNowPlayingAsync);
