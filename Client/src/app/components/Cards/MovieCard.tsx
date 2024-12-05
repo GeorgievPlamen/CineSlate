@@ -16,9 +16,9 @@ export default function MovieCard({
   rating,
 }: Props) {
   return (
-    <article className="flex w-60 flex-col" id={`${id}`}>
+    <article className="flex w-60 flex-col" id={`${id}`}>    
       <img
-        className="mb-2 rounded-lg border border-slate-500 shadow hover:border-primary active:border-primary-active"
+        className="mb-2 rounded-lg border border-slate-500 shadow hover:border-primary active:border-opacity-80"
         src={IMG_PATH_W500 + posterPath}
         alt="poster"
       />

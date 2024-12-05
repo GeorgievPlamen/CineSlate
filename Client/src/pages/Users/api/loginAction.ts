@@ -10,6 +10,7 @@ export async function loginAction({
   request,
 }: ActionFunctionArgs): Promise<UserResponse> {
   try {
+
     const input = await request.formData();
     const errors = validateLogin(input);
 

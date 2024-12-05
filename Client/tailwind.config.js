@@ -11,9 +11,7 @@ export default {
         dark: '#001011',
         whitesmoke: '#F5F5F5',
         primary: {
-          DEFAULT: '#4f46e5',
-          active: '#6366f1',
-          selected: '#4338ca',
+          DEFAULT: '#176EBF',
         },
         background: {
           DEFAULT: '#1e293b',
