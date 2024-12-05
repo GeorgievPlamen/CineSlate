@@ -9,6 +9,7 @@ import { registerAction } from '../pages/Users/api/registerAction';
 import Login from '../pages/Users/Login';
 import Register from '../pages/Users/Register';
 import Layout from './layout/Layout';
+import { moviesLoader } from '../pages/Movies/api/moviesLoader';
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
               path: '/movies',
               index: true,
               element: <Movies />,
+              loader: moviesLoader,
             },
             {
               path: '/critics',

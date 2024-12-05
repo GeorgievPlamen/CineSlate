@@ -10,13 +10,13 @@ export async function loginAction({
   request,
 }: ActionFunctionArgs): Promise<UserResponse> {
   try {
-
     const input = await request.formData();
     const errors = validateLogin(input);
 
     if (errors.length > 0) return { errors };
 
     const user = await userApi.login(input);
+
     sessionStorage.setItem(SESSION_JWT, user?.token);
 
     return { user };
