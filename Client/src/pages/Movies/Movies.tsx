@@ -1,16 +1,25 @@
+import { useLoaderData } from 'react-router-dom';
 import MovieCard from '../../app/components/Cards/MovieCard';
+import { Paged } from '../../app/models/paged';
+import { Movie } from './models/movieType';
 
 function Movies() {
+  const movies = useLoaderData() as Paged<Movie>;
+  console.log(movies.values[0]);
+
   return (
-    <div>
-      <MovieCard
-        title="title"
-        id={123}
-        rating={4.2}
-        releaseDate="2024-01-01"
-        posterPath="/aosm8NMQ3UyoBVpSxyimorCQykC.jpg"
-      />
-    </div>
+    <article className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
+      {movies.values.map((m) => (
+        <MovieCard
+          key={m.id}
+          title={m.title}
+          id={m.id}
+          rating={m.rating}
+          releaseDate={m.releaseDate}
+          posterPath={m.posterPath}
+        />
+      ))}
+    </article>
   );
 }
 export default Movies;

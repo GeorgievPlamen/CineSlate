@@ -16,7 +16,10 @@ export async function loginAction({
 
     if (errors.length > 0) return { errors };
 
+    console.log(" will await")
     const user = await userApi.login(input);
+
+    console.log("waiting")
     sessionStorage.setItem(SESSION_JWT, user?.token);
 
     return { user };
