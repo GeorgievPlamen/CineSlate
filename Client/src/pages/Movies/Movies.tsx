@@ -8,7 +8,7 @@ import Button from '../../app/components/Buttons/Button';
 import Spinner from '../../app/components/Spinner';
 import { useLazyPagedMoviesQuery } from './api/moviesApiExtended';
 
-function Movies() {
+export default function Movies() {
   const moviesData = useLoaderData() as Paged<Movie>;
   const [movies, setMovies] = useState(moviesData.values);
   const [currentPage, setCurrentPage] = useState(moviesData.currentPage);
@@ -53,7 +53,7 @@ function Movies() {
   }, [hasNextPage, isLoading, currentPage, getPagedMovies]);
 
   // TODO remove loaders, refactor to RTK query
-  // TODO add suspense and loading fallback
+  // TODO add loading/error handling
   // TODO link from movie to movie details
 
   return (
@@ -92,4 +92,3 @@ function Movies() {
     </>
   );
 }
-export default Movies;
