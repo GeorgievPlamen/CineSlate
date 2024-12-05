@@ -17,8 +17,6 @@ function Movies() {
   const [getPagedMovies] = useLazyPagedMoviesQuery();
   const loaderRef = useRef(null);
 
-  console.log(isLoading);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       async ([entry]) => {
@@ -43,16 +41,16 @@ function Movies() {
       { root: null, rootMargin: '100px', threshold: 0.1 }
     );
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    const currentLoader = loaderRef.current;
+
+    if (currentLoader) {
+      observer.observe(currentLoader);
     }
 
     return () => {
-      if (loaderRef.current) observer.unobserve(loaderRef.current);
+      if (currentLoader) observer.unobserve(currentLoader);
     };
   }, [hasNextPage, isLoading, currentPage, getPagedMovies]);
-
-  console.log(movies);
 
   // TODO remove loaders, refactor to RTK query
   // TODO add suspense and loading fallback
