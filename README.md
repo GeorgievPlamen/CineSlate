@@ -33,7 +33,7 @@ Create a .env file in root folder containing:
 
 You will need an api key from TMDB -> https://www.themoviedb.org/settings/api
 
-Add the key to appSettings under ApiSettings: TMDBKey.
+Add the key to appsettings file under ApiKeys: TMDBKey.
 
 When you're ready, start your application by running:
 `docker compose up --build -w`
