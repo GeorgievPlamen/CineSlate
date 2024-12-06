@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { IMG_PATH_W500 } from '../../config';
 
 interface Props {
@@ -15,8 +16,10 @@ export default function MovieCard({
   id,
   rating,
 }: Props) {
+  const nav = useNavigate();
   return (
     <article
+      onClick={() => nav(`/movies/${id}`)}
       className="border-grey mx-auto flex w-60 flex-col rounded-lg border bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
       id={`${id}`}
     >

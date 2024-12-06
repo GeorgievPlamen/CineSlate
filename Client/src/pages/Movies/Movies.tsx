@@ -11,8 +11,6 @@ export default function Movies() {
   const [page, setPage] = useState(1);
   const { nearBottom } = useScroll();
 
-  console.log(movies);
-
   const { data, isFetching } = usePagedMoviesQuery({
     page,
     moviesBy: MoviesBy.GetNowPlaying,
@@ -21,8 +19,12 @@ export default function Movies() {
   useEffect(() => {
     if (!data) return;
 
-    setMovies((prev) => [...prev, ...data.values]);
-  }, [data]);
+    setMovies((prev) =>
+      prev.length < data.currentPage * 20
+        ? [...prev, ...data.values]
+        : [...prev]
+    );
+  }, [data, page]);
 
   useEffect(() => {
     if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));
