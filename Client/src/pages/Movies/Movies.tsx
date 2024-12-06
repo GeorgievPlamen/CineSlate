@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import Button from '../../app/components/Buttons/Button';
 import useScroll from '../../app/hooks/useScroll';
 import Spinner from '../../app/components/Spinner';
+import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
 
 export default function Movies() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const { nearBottom } = useScroll();
 
-  const { data, isFetching } = usePagedMoviesQuery({
+  const { data, isFetching, isError } = usePagedMoviesQuery({
     page,
     moviesBy: MoviesBy.GetNowPlaying,
   });
@@ -46,6 +47,7 @@ export default function Movies() {
       </article>
       <div className="mb-5 mt-10 flex justify-center">
         {isFetching && <Spinner />}
+        {isError && <ErrorMessage />}
         {page > 4 && (
           <Button
             onClick={() => setPage((prev) => prev + 1)}

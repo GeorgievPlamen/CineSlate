@@ -14,12 +14,20 @@ export default {
         primary: {
           DEFAULT: '#176EBF',
         },
+        secondary: {
+          DEFAULT: '#90E0EF',
+        },
         background: {
           DEFAULT: '#1e293b',
           light: '#cbd5e1',
         },
-        error: '#ef4444',
+        error: {
+          DEFAULT: '#ef4444',
+        },
         placeholder: '#475569',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
     },
   },

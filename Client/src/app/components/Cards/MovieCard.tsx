@@ -20,7 +20,7 @@ export default function MovieCard({
   return (
     <article
       onClick={() => nav(`/movies/${id}`)}
-      className="border-grey mx-auto flex w-60 flex-col rounded-lg border bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
+      className="mx-auto flex w-60 flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
       id={`${id}`}
     >
       <img
@@ -32,7 +32,7 @@ export default function MovieCard({
         <p>⭐{rating}</p>
         <p>{releaseDate.toString()}</p>
       </div>
-      <p className="mx-2 font-arvo text-lg">{title}</p>
+      <p className="mx-2 flex h-full items-center font-arvo text-lg">{title}</p>
     </article>
   );
 }
