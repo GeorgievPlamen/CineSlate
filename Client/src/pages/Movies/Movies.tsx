@@ -1,60 +1,32 @@
-import { useLoaderData } from 'react-router-dom';
 import MovieCard from '../../app/components/Cards/MovieCard';
-import { Paged } from '../../app/models/paged';
 import { Movie } from './models/movieType';
-import { MoviesBy } from './api/moviesApi';
-import { useEffect, useRef, useState } from 'react';
+import { MoviesBy, usePagedMoviesQuery } from './api/moviesApi';
+import { useEffect, useState } from 'react';
 import Button from '../../app/components/Buttons/Button';
+import useScroll from '../../app/hooks/useScroll';
 import Spinner from '../../app/components/Spinner';
-import { useLazyPagedMoviesQuery } from './api/moviesApiExtended';
 
 export default function Movies() {
-  const moviesData = useLoaderData() as Paged<Movie>;
-  const [movies, setMovies] = useState(moviesData.values);
-  const [currentPage, setCurrentPage] = useState(moviesData.currentPage);
-  const [hasNextPage, setHasNextPage] = useState(moviesData.hasNextPage);
-  const [isLoading, setIsLoading] = useState(false);
-  const [getPagedMovies] = useLazyPagedMoviesQuery();
-  const loaderRef = useRef(null);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [page, setPage] = useState(1);
+  const { nearBottom } = useScroll();
+
+  console.log(movies);
+
+  const { data, isFetching } = usePagedMoviesQuery({
+    page,
+    moviesBy: MoviesBy.GetNowPlaying,
+  });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      async ([entry]) => {
-        if (
-          entry.isIntersecting &&
-          hasNextPage &&
-          !isLoading &&
-          currentPage < 5
-        ) {
-          setIsLoading(true);
-          const res = await getPagedMovies({
-            page: currentPage + 1,
-            moviesBy: MoviesBy.GetNowPlaying,
-          }).unwrap();
+    if (!data) return;
 
-          setIsLoading(false);
-          setCurrentPage(res.currentPage);
-          setHasNextPage(res.hasNextPage);
-          setMovies((prev) => [...prev, ...res.values]);
-        }
-      },
-      { root: null, rootMargin: '100px', threshold: 0.1 }
-    );
+    setMovies((prev) => [...prev, ...data.values]);
+  }, [data]);
 
-    const currentLoader = loaderRef.current;
-
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-
-    return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
-    };
-  }, [hasNextPage, isLoading, currentPage, getPagedMovies]);
-
-  // TODO remove loaders, refactor to RTK query
-  // TODO add loading/error handling
-  // TODO link from movie to movie details
+  useEffect(() => {
+    if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));
+  }, [nearBottom]);
 
   return (
     <>
@@ -70,20 +42,13 @@ export default function Movies() {
           />
         ))}
       </article>
-      <div ref={loaderRef} className="mb-5 mt-10 flex justify-center">
-        {isLoading && <Spinner />}
-        {currentPage >= 5 && (
+      <div className="mb-5 mt-10 flex justify-center">
+        {isFetching && <Spinner />}
+        {page > 4 && (
           <Button
-            onClick={async () => {
-              const res = await getPagedMovies({
-                page: currentPage + 1,
-                moviesBy: MoviesBy.GetNowPlaying,
-              }).unwrap();
-
-              setMovies((prev) => [...prev, ...res.values]);
-            }}
+            onClick={() => setPage((prev) => prev + 1)}
             className="w-fit px-10"
-            isLoading={isLoading}
+            isLoading={isFetching}
           >
             Load More
           </Button>

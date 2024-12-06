@@ -19,7 +19,7 @@ export default function Button({
       onClick={onClick}
       type="submit"
       className={
-        'flex h-8 w-full items-center justify-center rounded-full bg-primary text-whitesmoke hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80' +
+        'flex h-8 items-center justify-center rounded-full bg-primary text-whitesmoke hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80' +
         ' ' +
         className
       }

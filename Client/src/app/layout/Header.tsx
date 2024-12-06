@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <header className="flex bg-background py-2">
+    <header className="fixed flex w-full bg-background py-2 shadow shadow-dark">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
