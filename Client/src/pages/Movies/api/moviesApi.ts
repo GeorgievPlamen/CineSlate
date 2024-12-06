@@ -1,6 +1,6 @@
 import { cineslateApi } from '../../../app/api/cineslateApi';
 import { Paged } from '../../../app/models/paged';
-import { Movie } from '../models/movieType';
+import { Movie, MovieDetails } from '../models/movieType';
 
 export enum MoviesBy {
   GetNowPlaying = '/now_playing',
@@ -17,7 +17,10 @@ const moviesApi = cineslateApi.injectEndpoints({
     >({
       query: ({ page, moviesBy }) => `/movies${moviesBy}?page=${page}`,
     }),
+    movieDetails: build.query<MovieDetails, { id: string | undefined }>({
+      query: ({ id }) => `/movies/${id}`,
+    }),
   }),
 });
 
-export const { usePagedMoviesQuery } = moviesApi;
+export const { usePagedMoviesQuery, useMovieDetailsQuery } = moviesApi;

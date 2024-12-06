@@ -1,6 +1,67 @@
 import { useParams } from 'react-router-dom';
+import { useMovieDetailsQuery } from '../api/moviesApi';
+import { IMG_PATH } from '../../../app/config';
+import Backdrop from '../../../app/components/Backdrop/Backdrop';
+import { useState } from 'react';
+import Loading from '../../../app/components/Loading/Loading';
+import ErrorMessage from '../../../app/components/ErrorMessage/ErrorMessage';
+import ReviewCard from '../../../app/components/Cards/ReviewCard';
+import GenreButton from '../../../app/components/Buttons/GenreButton';
 
 export default function MovieDetails() {
-  const params = useParams();
-  return <div>MovieId {params.id}</div>;
+  const { id } = useParams();
+  const [imageIsLoading, setImageIsLoading] = useState(true);
+  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+
+  if (isFetching) return <Loading />;
+
+  if (isError) return <ErrorMessage />;
+
+  return (
+    <>
+      <Backdrop path={data?.backdropPath} />
+      {imageIsLoading && <Loading />}
+      <article className="mt-5">
+        <article className="mx-auto flex w-full flex-col items-center justify-center">
+          <div className="flex">
+            <img
+              className={
+                'w-80 rounded-lg border border-grey' +
+                ` ${imageIsLoading ? 'hidden' : ''}`
+              }
+              src={IMG_PATH + data?.posterPath}
+              alt="poster"
+              onLoad={() => setImageIsLoading(false)}
+            />
+            <section className="mx-10 my-5 w-1/2 max-w-[700px]">
+              <div className="flex w-fit items-center gap-4">
+                <h2 className="mb-2 font-arvo text-3xl font-bold">
+                  {data?.title}
+                </h2>
+                <p className="text-sm font-light">
+                  {data?.releaseDate.toString()}
+                </p>
+                <p className="text-xl font-bold">
+                  ⭐
+                  {data?.rating === 0
+                    ? 'Be the first to review!'
+                    : data?.rating}
+                </p>
+              </div>
+              <p className="font-roboto">{data?.description}</p>
+              <p className="my-4 font-serif text-xl italic">{data?.tagline}</p>
+              <section className="mt-4 h-full flex-row gap-2">
+                {data?.genres.map((g) => (
+                  <GenreButton key={g.id} name={g.value} />
+                ))}
+              </section>
+            </section>
+          </div>
+          <section className="my-10 flex flex-col gap-10">
+            {data?.reviews.map((r) => <ReviewCard key={r.authorId} r={r} />)}
+          </section>
+        </article>
+      </article>
+    </>
+  );
 }
