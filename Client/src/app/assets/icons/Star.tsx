@@ -10,7 +10,7 @@ export default function Star({ fill, stroke }: Props) {
       fill={fill ?? 'none'}
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke={stroke ?? 'currentColor'}
+      stroke={stroke ?? 'yellow'}
       className="size-6"
     >
       <path

@@ -7,7 +7,7 @@ import Loading from '../../../app/components/Loading/Loading';
 import ErrorMessage from '../../../app/components/ErrorMessage/ErrorMessage';
 import ReviewCard from '../../../app/components/Cards/ReviewCard';
 import GenreButton from '../../../app/components/Buttons/GenreButton';
-import Star from '../../../app/assets/icons/Star';
+import AddReview from './AddReview';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -35,13 +35,7 @@ export default function MovieDetails() {
                 alt="poster"
                 onLoad={() => setImageIsLoading(false)}
               />
-              <div className="flex gap-2">
-                <Star fill="yellow" stroke="yellow" />
-                <Star fill="yellow" stroke="yellow" />
-                <Star fill="yellow" stroke="yellow" />
-                <Star />
-                <Star />
-              </div>
+              <AddReview />
             </div>
             <section className="mx-10 my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
