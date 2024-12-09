@@ -4,9 +4,9 @@ import Star from '../../../app/assets/icons/Star';
 export default function AddReview() {
   const [rating, setRating] = useState(0);
   const [subtitle, setSubtitle] = useState('');
-  const [hoverSubtitle, setHoverSubtitle] = useState('');
-  const [hoverRating, setHoverRating] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [hoverSubtitle, setHoverSubtitle] = useState('');
 
   function onRatingSelection(selectedRating: number, subtitle: string) {
     if (selectedRating === rating) {
@@ -37,8 +37,8 @@ export default function AddReview() {
         onMouseLeave={() => setIsHovering(false)}
       >
         <button
-          onClick={() => onRatingSelection(1, "'— Terrible! Don't watch.'")}
-          onMouseEnter={() => onHover(1, "'— Terrible! Don't watch.'")}
+          onClick={() => onRatingSelection(1, "— 'Terrible! Don't watch.'")}
+          onMouseEnter={() => onHover(1, "— 'Terrible! Don't watch.'")}
         >
           {isHovering ? (
             <Star {...(hoverRating > 0 && { fill: 'yellow' })} />

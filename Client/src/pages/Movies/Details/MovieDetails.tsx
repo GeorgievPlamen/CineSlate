@@ -22,7 +22,7 @@ export default function MovieDetails() {
     <>
       <Backdrop path={data?.backdropPath} />
       {imageIsLoading && <Loading />}
-      <article className="mt-5">
+      <article className="mt-20">
         <article className="mx-auto flex w-full flex-col items-center justify-center">
           <div className="flex">
             <div className="flex flex-col items-center justify-center">
