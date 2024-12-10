@@ -17,7 +17,7 @@ function Login() {
     <Form
       noValidate
       method="post"
-      className="mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-background-light p-4 dark:bg-background"
+      className="mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-background p-4"
     >
       <Heading2 title="Login" />
       <EmailField errors={response?.errors} />
