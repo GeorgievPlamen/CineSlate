@@ -33,7 +33,7 @@ export default function Movies() {
 
   return (
     <>
-      <article className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
+      <article className="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
         {movies.map((m) => (
           <MovieCard
             key={m.id}
@@ -45,8 +45,8 @@ export default function Movies() {
           />
         ))}
       </article>
-      <div className="mb-5 mt-10 flex justify-center">
-        {isFetching && <Spinner />}
+      <div className="mb-20 mt-10 flex justify-center">
+        {isFetching && page < 5 && <Spinner />}
         {isError && <ErrorMessage />}
         {page > 4 && (
           <Button

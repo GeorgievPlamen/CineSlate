@@ -7,6 +7,7 @@ import Loading from '../../../app/components/Loading/Loading';
 import ErrorMessage from '../../../app/components/ErrorMessage/ErrorMessage';
 import ReviewCard from '../../../app/components/Cards/ReviewCard';
 import GenreButton from '../../../app/components/Buttons/GenreButton';
+import AddReview from './AddReview';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -21,18 +22,21 @@ export default function MovieDetails() {
     <>
       <Backdrop path={data?.backdropPath} />
       {imageIsLoading && <Loading />}
-      <article className="mt-5">
+      <article className="mt-20">
         <article className="mx-auto flex w-full flex-col items-center justify-center">
           <div className="flex">
-            <img
-              className={
-                'w-80 rounded-lg border border-grey' +
-                ` ${imageIsLoading ? 'hidden' : ''}`
-              }
-              src={IMG_PATH + data?.posterPath}
-              alt="poster"
-              onLoad={() => setImageIsLoading(false)}
-            />
+            <div className="flex flex-col items-center justify-center">
+              <img
+                className={
+                  'mb-4 w-80 rounded-lg border border-grey' +
+                  ` ${imageIsLoading ? 'hidden' : ''}`
+                }
+                src={IMG_PATH + data?.posterPath}
+                alt="poster"
+                onLoad={() => setImageIsLoading(false)}
+              />
+              <AddReview />
+            </div>
             <section className="mx-10 my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
                 <h2 className="mb-2 font-arvo text-3xl font-bold">
