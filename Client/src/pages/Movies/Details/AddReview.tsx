@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
+import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 
 export default function AddReview() {
   const [rating, setRating] = useState(0);
@@ -23,7 +24,7 @@ export default function AddReview() {
     setHoverSubtitle(subtitle);
   }
 
-  // TODO text area - share your thoughts, spoilers checkbox, submit
+  // TODO text area - spoilers checkbox, submit
 
   return (
     <form
@@ -91,12 +92,25 @@ export default function AddReview() {
       <textarea
         onFocus={() => setIsTextAreaSelected(true)}
         onBlur={() => setIsTextAreaSelected(false)}
-        placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
+        placeholder={
+          isTextAreaSelected ? '' : 'Share your thoughts?'
+        } /* --tw-ring-offset-width: 2px; */
         className={
-          'placeholder- h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
+          'placeholder- mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
       />
+      <div className="flex items-center justify-center">
+        <label htmlFor="containsSpoilers">Spoilers?</label>
+        <div className="relative m-0 mb-4 h-5 w-10 rounded-full bg-primary">
+          <input
+            type="checkbox"
+            name="containsSpoilers"
+            className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-whitesmoke bg-whitesmoke transition-all checked:left-[22px] checked:bg-primary hover:checked:border-whitesmoke hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-whitesmoke focus:checked:bg-primary"
+          />
+        </div>
+      </div>
+      <SubmitButton text="Add review" />
     </form>
   );
 }
