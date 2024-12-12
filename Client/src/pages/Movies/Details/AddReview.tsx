@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
+import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
 
 export default function AddReview() {
   const [rating, setRating] = useState(0);
@@ -29,7 +30,9 @@ export default function AddReview() {
   return (
     <form
       className="flex w-full flex-col items-center"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
     >
       <fieldset
         aria-label="Rate this product"
@@ -92,23 +95,15 @@ export default function AddReview() {
       <textarea
         onFocus={() => setIsTextAreaSelected(true)}
         onBlur={() => setIsTextAreaSelected(false)}
-        placeholder={
-          isTextAreaSelected ? '' : 'Share your thoughts?'
-        } /* --tw-ring-offset-width: 2px; */
+        placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
           'placeholder- mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
       />
-      <div className="flex items-center justify-center">
+      <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <div className="relative m-0 mb-4 h-5 w-10 rounded-full bg-primary">
-          <input
-            type="checkbox"
-            name="containsSpoilers"
-            className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-whitesmoke bg-whitesmoke transition-all checked:left-[22px] checked:bg-primary hover:checked:border-whitesmoke hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-whitesmoke focus:checked:bg-primary"
-          />
-        </div>
+        <MobileCheckbox name="containsSpoilers" />
       </div>
       <SubmitButton text="Add review" />
     </form>
