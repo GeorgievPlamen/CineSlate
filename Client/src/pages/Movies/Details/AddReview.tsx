@@ -2,6 +2,10 @@ import { useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
+import { useAddReviewMutation } from '../api/moviesApi';
+import { useParams } from 'react-router-dom';
+
+// TODO refactor with react-hook-form or some other form lib
 
 export default function AddReview() {
   const [rating, setRating] = useState(0);
@@ -9,8 +13,27 @@ export default function AddReview() {
   const [hoverRating, setHoverRating] = useState(0);
   const [hoverSubtitle, setHoverSubtitle] = useState('');
   const [isTextAreaSelected, setIsTextAreaSelected] = useState(false);
+  const [containsSpoilers, setContainsSpoilers] = useState(false);
+  const [text, setText] = useState<string>('');
+  const { id: movieId } = useParams();
 
-  console.log(isTextAreaSelected);
+  const [addReview] = useAddReviewMutation();
+
+  async function handleSubmit() {
+    try {
+      const result = await addReview({
+        movieId: Number(movieId),
+        containsSpoilers: containsSpoilers,
+        rating: rating,
+        text: text,
+      });
+      console.log(result);
+    } catch (error) {
+      const err = error as Error;
+
+      console.log(err.message);
+    }
+  }
 
   function onRatingSelection(selectedRating: number) {
     if (selectedRating === rating) {
@@ -24,8 +47,6 @@ export default function AddReview() {
     setHoverRating(rating);
     setHoverSubtitle(subtitle);
   }
-
-  // TODO text area - spoilers checkbox, submit
 
   return (
     <form
@@ -93,19 +114,24 @@ export default function AddReview() {
       </fieldset>
       {isHovering && <p className="mb-2 font-serif italic">{hoverSubtitle}</p>}
       <textarea
+        onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsTextAreaSelected(true)}
         onBlur={() => setIsTextAreaSelected(false)}
         placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
-          'placeholder- mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
+          'mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
       />
       <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <MobileCheckbox name="containsSpoilers" />
+        <MobileCheckbox
+          name="containsSpoilers"
+          checked={containsSpoilers}
+          setChecked={setContainsSpoilers}
+        />
       </div>
-      <SubmitButton text="Add review" />
+      <SubmitButton text="Add review" onClick={handleSubmit} />
     </form>
   );
 }
