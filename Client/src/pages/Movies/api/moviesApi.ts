@@ -21,7 +21,7 @@ const moviesApi = cineslateApi.injectEndpoints({
       query: ({ id }) => `/movies/${id}`,
     }),
     addReview: build.mutation<
-      void,
+      { location: string | null },
       {
         rating: number;
         movieId: number;
@@ -34,6 +34,13 @@ const moviesApi = cineslateApi.injectEndpoints({
         method: 'POST',
         body: { rating, movieId, text, containsSpoilers },
       }),
+      transformResponse: (_, meta) => {
+        const locationHeader = meta?.response?.headers?.get('Location') ?? null;
+
+        return {
+          location: locationHeader,
+        };
+      },
     }),
   }),
 });

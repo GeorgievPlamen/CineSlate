@@ -4,10 +4,15 @@ import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
 import { useAddReviewMutation } from '../api/moviesApi';
 import { useParams } from 'react-router-dom';
+import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
 
 // TODO refactor with react-hook-form or some other form lib
 
-export default function AddReview() {
+interface Props {
+  onSuccess: () => void;
+}
+
+export default function AddReview({ onSuccess }: Props) {
   const [rating, setRating] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
@@ -20,18 +25,21 @@ export default function AddReview() {
   const [addReview] = useAddReviewMutation();
 
   async function handleSubmit() {
-    try {
-      const result = await addReview({
-        movieId: Number(movieId),
-        containsSpoilers: containsSpoilers,
-        rating: rating,
-        text: text,
-      });
-      console.log(result);
-    } catch (error) {
-      const err = error as Error;
+    // TODO handle error response
+    const { data } = await addReview({
+      movieId: Number(movieId),
+      containsSpoilers: containsSpoilers,
+      rating: rating,
+      text: text,
+    });
 
-      console.log(err.message);
+    // TODO build review endpoint to get review with id and fill in form
+    // TODO edit review
+    if (data?.location) {
+      const id = extractIdFromLocation(data?.location);
+
+      console.log(id);
+      onSuccess();
     }
   }
 

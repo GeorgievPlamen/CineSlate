@@ -17,12 +17,7 @@ export default function ReviewCard({ r }: Props) {
           <p className="text-xl">Username placeholder</p>
           <p>⭐{r.rating}</p>
         </div>
-        <p className="font-roboto">
-          {r.text} Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Autem, quas odio reiciendis sunt numquam assumenda architecto
-          distinctio a vero. Ad laborum animi earum quasi non iste? Corporis
-          asperiores maxime nihil!
-        </p>
+        <p className="font-roboto">{r.text}</p>
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ import AddReview from './AddReview';
 export default function MovieDetails() {
   const { id } = useParams();
   const [imageIsLoading, setImageIsLoading] = useState(true);
-  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+  const { data, isFetching, isError, refetch } = useMovieDetailsQuery({ id });
 
   if (isFetching) return <Loading />;
 
@@ -35,7 +35,7 @@ export default function MovieDetails() {
                 alt="poster"
                 onLoad={() => setImageIsLoading(false)}
               />
-              <AddReview />
+              <AddReview onSuccess={refetch} />
             </div>
             <section className="mx-10 my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
