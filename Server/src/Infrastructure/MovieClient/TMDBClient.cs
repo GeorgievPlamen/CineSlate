@@ -75,7 +75,7 @@ public class TMDBClient : IMovieClient
             movieDetailed.Budget,
             movieDetailed.Homepage,
             movieDetailed.Imdb_id,
-            movieDetailed.Origin_country[0],
+            movieDetailed.Origin_country.FirstOrDefault() ?? "",
             movieDetailed.Revenue,
             movieDetailed.Runtime,
             movieDetailed.Status,
