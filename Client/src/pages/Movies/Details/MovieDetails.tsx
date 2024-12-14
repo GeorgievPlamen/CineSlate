@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { useMovieDetailsQuery } from '../api/moviesApi';
 import { IMG_PATH } from '../../../app/config';
 import Backdrop from '../../../app/components/Backdrop/Backdrop';
@@ -8,11 +8,13 @@ import ErrorMessage from '../../../app/components/ErrorMessage/ErrorMessage';
 import ReviewCard from '../../../app/components/Cards/ReviewCard';
 import GenreButton from '../../../app/components/Buttons/GenreButton';
 import AddReview from './AddReview';
+import useAuth from '../../../app/hooks/useAuth';
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [imageIsLoading, setImageIsLoading] = useState(true);
-  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+  const { data, isFetching, isError, refetch } = useMovieDetailsQuery({ id });
+  const { isAuthenticated } = useAuth();
 
   if (isFetching) return <Loading />;
 
@@ -35,7 +37,16 @@ export default function MovieDetails() {
                 alt="poster"
                 onLoad={() => setImageIsLoading(false)}
               />
-              <AddReview />
+              {isAuthenticated ? (
+                <AddReview onSuccess={refetch} />
+              ) : (
+                <p>
+                  <NavLink to="../login" className="underline">
+                    Sign in
+                  </NavLink>{' '}
+                  to review
+                </p>
+              )}
             </div>
             <section className="mx-10 my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">

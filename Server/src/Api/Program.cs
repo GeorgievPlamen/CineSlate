@@ -33,7 +33,8 @@ builder.Services.AddCors(opt =>
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins("http://localhost:3000", "http://localhost:3030"));
+        .WithOrigins("http://localhost:3000", "http://localhost:3030")
+        .WithExposedHeaders("Location"));
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();

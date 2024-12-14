@@ -1,15 +1,47 @@
 import { useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
+import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
+import { useAddReviewMutation } from '../api/moviesApi';
+import { useParams } from 'react-router-dom';
+import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
 
-export default function AddReview() {
+// TODO refactor with react-hook-form or some other form lib
+
+interface Props {
+  onSuccess: () => void;
+}
+
+export default function AddReview({ onSuccess }: Props) {
   const [rating, setRating] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
   const [hoverSubtitle, setHoverSubtitle] = useState('');
   const [isTextAreaSelected, setIsTextAreaSelected] = useState(false);
+  const [containsSpoilers, setContainsSpoilers] = useState(false);
+  const [text, setText] = useState<string>('');
+  const { id: movieId } = useParams();
 
-  console.log(isTextAreaSelected);
+  const [addReview] = useAddReviewMutation();
+
+  async function handleSubmit() {
+    // TODO handle error response
+    const { data } = await addReview({
+      movieId: Number(movieId),
+      containsSpoilers: containsSpoilers,
+      rating: rating,
+      text: text,
+    });
+
+    // TODO build review endpoint to get review with id and fill in form
+    // TODO edit review
+    if (data?.location) {
+      const id = extractIdFromLocation(data?.location);
+
+      console.log(id);
+      onSuccess();
+    }
+  }
 
   function onRatingSelection(selectedRating: number) {
     if (selectedRating === rating) {
@@ -24,12 +56,12 @@ export default function AddReview() {
     setHoverSubtitle(subtitle);
   }
 
-  // TODO text area - spoilers checkbox, submit
-
   return (
     <form
       className="flex w-full flex-col items-center"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
     >
       <fieldset
         aria-label="Rate this product"
@@ -90,27 +122,24 @@ export default function AddReview() {
       </fieldset>
       {isHovering && <p className="mb-2 font-serif italic">{hoverSubtitle}</p>}
       <textarea
+        onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsTextAreaSelected(true)}
         onBlur={() => setIsTextAreaSelected(false)}
-        placeholder={
-          isTextAreaSelected ? '' : 'Share your thoughts?'
-        } /* --tw-ring-offset-width: 2px; */
+        placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
-          'placeholder- mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
+          'mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
       />
-      <div className="flex items-center justify-center">
+      <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <div className="relative m-0 mb-4 h-5 w-10 rounded-full bg-primary">
-          <input
-            type="checkbox"
-            name="containsSpoilers"
-            className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-whitesmoke bg-whitesmoke transition-all checked:left-[22px] checked:bg-primary hover:checked:border-whitesmoke hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-whitesmoke focus:checked:bg-primary"
-          />
-        </div>
+        <MobileCheckbox
+          name="containsSpoilers"
+          checked={containsSpoilers}
+          setChecked={setContainsSpoilers}
+        />
       </div>
-      <SubmitButton text="Add review" />
+      <SubmitButton text="Add review" onClick={handleSubmit} />
     </form>
   );
 }

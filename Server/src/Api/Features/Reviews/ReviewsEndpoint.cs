@@ -23,9 +23,15 @@ public static class ReviewsEndpoint
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
         reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
+        reviews.MapGet(Get, GetMovieReviews).AllowAnonymous(); // TODO remove reviews from movie details
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
+    }
+
+    private static async Task GetMovieReviews(HttpContext context)
+    {
+        throw new NotImplementedException();
     }
 
     private static async Task<IResult> GetReviewsAsync(int page, ReviewsBy? reviewsBy, ISender mediatr, CancellationToken cancellationToken)
