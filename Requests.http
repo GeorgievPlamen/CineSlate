@@ -79,6 +79,12 @@ GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
+### Reviews By Movie Id 
+
+GET {{Api_HostAddress}}reviews/912649?page=1 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
 ### Review Update 
 
 PUT {{Api_HostAddress}}reviews/ HTTP/1.1

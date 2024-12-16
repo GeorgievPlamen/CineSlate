@@ -1,5 +1,4 @@
 using Application.Common;
-using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
 using MediatR;
 

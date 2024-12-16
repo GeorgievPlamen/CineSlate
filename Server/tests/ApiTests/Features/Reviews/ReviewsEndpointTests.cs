@@ -49,4 +49,23 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
         result.Should().NotBeNull();
         result.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+
+    [Fact]
+    public async Task GetReviewsByMovieId_ShouldReturn_ListofReviews()
+    {
+        // Arrange
+        var movieModels = MovieFaker.GenerateMovieModels(1);
+        var reviews = ReviewFaker.GenerateReviews(5);
+        movieModels[0].Reviews = reviews;
+
+        await AuthenticateAsync();
+        await Api.SeedDatabaseAsync(movieModels);
+
+        // Act
+        var result = await Client.GetAsync(TestUri($"/{movieModels[0].Id}" + "?page=1"));
+
+        // Assert
+        result.Should().NotBeNull();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 }
