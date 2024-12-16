@@ -9,11 +9,17 @@ import ReviewCard from '../../../app/components/Cards/ReviewCard';
 import GenreButton from '../../../app/components/Buttons/GenreButton';
 import AddReview from './AddReview';
 import useAuth from '../../../app/hooks/useAuth';
+import { useReviewsByMovieIdQuery } from '../../Reviews/api/reviewsApi';
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [imageIsLoading, setImageIsLoading] = useState(true);
   const { data, isFetching, isError, refetch } = useMovieDetailsQuery({ id });
+  const { data: reviewData } = useReviewsByMovieIdQuery({
+    movieId: Number(id),
+    page: 1,
+  });
+
   const { isAuthenticated } = useAuth();
 
   if (isFetching) return <Loading />;
@@ -72,8 +78,12 @@ export default function MovieDetails() {
               </section>
             </section>
           </div>
+          // TODO add loading spinner for reviews or no reviews empty response
+          // TODO refactor add review to reviewsapi, not movies api
           <section className="my-10 flex flex-col gap-10">
-            {data?.reviews.map((r) => <ReviewCard key={r.authorId} r={r} />)}
+            {reviewData?.values.map((r) => (
+              <ReviewCard key={r.authorId} r={r} />
+            ))}
           </section>
         </article>
       </article>
