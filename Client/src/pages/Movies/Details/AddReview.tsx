@@ -5,34 +5,43 @@ import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
 import { useParams } from 'react-router-dom';
 import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
 import { useAddReviewMutation } from '../../Reviews/api/reviewsApi';
-
-// TODO refactor with react-hook-form or some other form lib
+import { FieldValues, useForm } from 'react-hook-form';
 
 interface Props {
   onSuccess: () => void;
 }
 
 export default function AddReview({ onSuccess }: Props) {
-  const [rating, setRating] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
   const [hoverSubtitle, setHoverSubtitle] = useState('');
   const [isTextAreaSelected, setIsTextAreaSelected] = useState(false);
-  const [containsSpoilers, setContainsSpoilers] = useState(false);
-  const [text, setText] = useState<string>('');
-  const { id: movieId } = useParams();
-
   const [addReview] = useAddReviewMutation();
+  const { id: movieId } = useParams();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  async function handleSubmit() {
+  function onHover(rating: number, subtitle: string) {
+    setHoverRating(rating);
+    setHoverSubtitle(subtitle);
+  }
+
+  async function handleOnSubmit(formData: FieldValues) {
+    console.log(formData.containsSpoilers);
     // TODO handle error response
+
     const { data } = await addReview({
       movieId: Number(movieId),
-      containsSpoilers: containsSpoilers,
-      rating: rating,
-      text: text,
+      containsSpoilers: formData.containsSpoilers,
+      rating: formData.rating,
+      text: formData.text,
     });
 
+    // TODO add zod for validation
     // TODO build review endpoint to get review with id and fill in form
     // TODO edit review
     if (data?.location) {
@@ -43,103 +52,144 @@ export default function AddReview({ onSuccess }: Props) {
     }
   }
 
-  function onRatingSelection(selectedRating: number) {
-    if (selectedRating === rating) {
-      setRating(0);
-    } else {
-      setRating(selectedRating);
-    }
-  }
-
-  function onHover(rating: number, subtitle: string) {
-    setHoverRating(rating);
-    setHoverSubtitle(subtitle);
-  }
-
   return (
     <form
       className="flex w-full flex-col items-center"
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
+      onSubmit={handleSubmit(handleOnSubmit)}
     >
       <fieldset
         aria-label="Rate this product"
-        className="mb-3 flex gap-2"
+        className="mb-3 flex gap-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <button
-          onClick={() => onRatingSelection(1)}
+        <label
+          className="relative"
           onMouseEnter={() => onHover(1, "— 'Terrible! Don't watch.'")}
         >
+          <input
+            type="radio"
+            value={1}
+            {...register('rating')}
+            className="appearance-none border-transparent bg-transparent checked:bg-transparent checked:bg-none checked:hover:bg-transparent focus:ring-0 focus:ring-offset-0 checked:focus:bg-transparent"
+          />
           {isHovering ? (
-            <Star {...(hoverRating > 0 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(hoverRating > 0 && { fill: 'yellow' })}
+            />
           ) : (
-            <Star {...(rating > 0 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(watch('rating') > 0 && { fill: 'yellow' })}
+            />
           )}
-        </button>
-        <button
-          onClick={() => onRatingSelection(2)}
+        </label>
+        <label
+          className="relative"
           onMouseEnter={() => onHover(2, "— 'Bad experience, avoid.'")}
         >
+          <input
+            type="radio"
+            value={2}
+            {...register('rating')}
+            className="appearance-none border-transparent bg-transparent checked:bg-transparent checked:bg-none checked:hover:bg-transparent focus:ring-0 focus:ring-offset-0 checked:focus:bg-transparent"
+          />
           {isHovering ? (
-            <Star {...(hoverRating > 1 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(hoverRating > 1 && { fill: 'yellow' })}
+            />
           ) : (
-            <Star {...(rating > 1 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(watch('rating') > 1 && { fill: 'yellow' })}
+            />
           )}
-        </button>
-        <button
-          onClick={() => onRatingSelection(3)}
+        </label>
+        <label
+          className="relative"
           onMouseEnter={() => onHover(3, "— 'It was okay.'")}
         >
+          <input
+            type="radio"
+            value={3}
+            {...register('rating')}
+            className="appearance-none border-transparent bg-transparent checked:bg-transparent checked:bg-none checked:hover:bg-transparent focus:ring-0 focus:ring-offset-0 checked:focus:bg-transparent"
+          />
           {isHovering ? (
-            <Star {...(hoverRating > 2 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(hoverRating > 2 && { fill: 'yellow' })}
+            />
           ) : (
-            <Star {...(rating > 2 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(watch('rating') > 2 && { fill: 'yellow' })}
+            />
           )}
-        </button>
-        <button
-          onClick={() => onRatingSelection(4)}
+        </label>
+        <label
+          className="relative"
           onMouseEnter={() => onHover(4, "— 'Great movie, must watch.'")}
         >
+          <input
+            type="radio"
+            value={4}
+            {...register('rating')}
+            className="appearance-none border-transparent bg-transparent checked:bg-transparent checked:bg-none checked:hover:bg-transparent focus:ring-0 focus:ring-offset-0 checked:focus:bg-transparent"
+          />
           {isHovering ? (
-            <Star {...(hoverRating > 3 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(hoverRating > 3 && { fill: 'yellow' })}
+            />
           ) : (
-            <Star {...(rating > 3 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(watch('rating') > 3 && { fill: 'yellow' })}
+            />
           )}
-        </button>
-        <button
-          onClick={() => onRatingSelection(5)}
+        </label>
+        <label
+          className="relative"
           onMouseEnter={() => onHover(5, "— 'One of the best!'")}
         >
+          <input
+            type="radio"
+            value={5}
+            {...register('rating')}
+            className="appearance-none border-transparent bg-transparent checked:bg-transparent checked:bg-none checked:hover:bg-transparent focus:ring-0 focus:ring-offset-0 checked:focus:bg-transparent"
+          />
           {isHovering ? (
-            <Star {...(hoverRating > 4 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(hoverRating > 4 && { fill: 'yellow' })}
+            />
           ) : (
-            <Star {...(rating > 4 && { fill: 'yellow' })} />
+            <Star
+              className="absolute -left-1 top-0.5"
+              {...(watch('rating') > 4 && { fill: 'yellow' })}
+            />
           )}
-        </button>
+        </label>
       </fieldset>
       {isHovering && <p className="mb-2 font-serif italic">{hoverSubtitle}</p>}
       <textarea
-        onChange={(e) => setText(e.target.value)}
-        onFocus={() => setIsTextAreaSelected(true)}
-        onBlur={() => setIsTextAreaSelected(false)}
         placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
           'mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
+        {...register('text')}
+        onFocus={() => setIsTextAreaSelected(true)}
+        onBlur={() => setIsTextAreaSelected(false)}
       />
       <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <MobileCheckbox
-          name="containsSpoilers"
-          checked={containsSpoilers}
-          setChecked={setContainsSpoilers}
-        />
+        <MobileCheckbox name="containsSpoilers" register={register} />
       </div>
-      <SubmitButton text="Add review" onClick={handleSubmit} />
+      <SubmitButton text="Add review" />
     </form>
   );
 }

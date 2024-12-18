@@ -34,7 +34,7 @@ public class CreateReviewCommandHandler(
         if (movie is null)
             return Result<ReviewId>.Failure(MovieErrors.NotFound(movieId));
 
-        var authors = movie.Reviews.Select(r => r.Author.Value).ToList();
+        var authors = movie.Reviews.Select(r => r.Author.Value).ToList(); // TODO add getAuthor from reviews to replace this
         if (authors.Contains(Guid.Parse(userId)))
             return Result<ReviewId>.Failure(ReviewErrors.UserAlreadyReviewed(userId));
 
