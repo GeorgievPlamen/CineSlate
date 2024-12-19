@@ -20,33 +20,7 @@ const moviesApi = cineslateApi.injectEndpoints({
     movieDetails: build.query<MovieDetails, { id: string | undefined }>({
       query: ({ id }) => `/movies/${id}`,
     }),
-    addReview: build.mutation<
-      { location: string | null },
-      {
-        rating: number;
-        movieId: number;
-        text: string;
-        containsSpoilers: boolean;
-      }
-    >({
-      query: ({ rating, movieId, text, containsSpoilers }) => ({
-        url: '/reviews/',
-        method: 'POST',
-        body: { rating, movieId, text, containsSpoilers },
-      }),
-      transformResponse: (_, meta) => {
-        const locationHeader = meta?.response?.headers?.get('Location') ?? null;
-
-        return {
-          location: locationHeader,
-        };
-      },
-    }),
   }),
 });
 
-export const {
-  usePagedMoviesQuery,
-  useMovieDetailsQuery,
-  useAddReviewMutation,
-} = moviesApi;
+export const { usePagedMoviesQuery, useMovieDetailsQuery } = moviesApi;

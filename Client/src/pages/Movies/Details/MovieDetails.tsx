@@ -2,19 +2,43 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useMovieDetailsQuery } from '../api/moviesApi';
 import { IMG_PATH } from '../../../app/config';
 import Backdrop from '../../../app/components/Backdrop/Backdrop';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from '../../../app/components/Loading/Loading';
 import ErrorMessage from '../../../app/components/ErrorMessage/ErrorMessage';
 import ReviewCard from '../../../app/components/Cards/ReviewCard';
 import GenreButton from '../../../app/components/Buttons/GenreButton';
 import AddReview from './AddReview';
 import useAuth from '../../../app/hooks/useAuth';
+import { useReviewsByMovieIdQuery } from '../../Reviews/api/reviewsApi';
+import Button from '../../../app/components/Buttons/Button';
+import { Review } from '../../Reviews/models/review';
 
 export default function MovieDetails() {
   const { id } = useParams();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
-  const { data, isFetching, isError, refetch } = useMovieDetailsQuery({ id });
+  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+  const {
+    data: reviewData,
+    isFetching: isReviewsFetching,
+    refetch,
+  } = useReviewsByMovieIdQuery({
+    movieId: Number(id),
+    page: reviewsPage,
+  });
+
   const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!reviewData) return;
+
+    setReviews((prev) =>
+      prev.length < reviewData.currentPage * 20
+        ? [...prev, ...reviewData.values]
+        : [...prev]
+    );
+  }, [reviewData]);
 
   if (isFetching) return <Loading />;
 
@@ -73,7 +97,18 @@ export default function MovieDetails() {
             </section>
           </div>
           <section className="my-10 flex flex-col gap-10">
-            {data?.reviews.map((r) => <ReviewCard key={r.authorId} r={r} />)}
+            {reviews.map((r) => (
+              <ReviewCard key={r.authorId} review={r} />
+            ))}
+            {reviewData?.hasNextPage && (
+              <Button
+                onClick={() => setReviewsPage((prev) => prev + 1)}
+                className="w-fit px-10"
+                isLoading={isReviewsFetching}
+              >
+                Load More
+              </Button>
+            )}
           </section>
         </article>
       </article>

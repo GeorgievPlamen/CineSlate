@@ -47,15 +47,12 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         var model = await dbContext.Movies
             .AsNoTracking()
             .Include(m => m.Genres)
-            .Include(m => m.Reviews)
             .FirstOrDefaultAsync(m => m.Id == id.Value, cancellationToken);
 
         if (model is null)
             return null;
 
         var movie = model.Unwrap();
-        var reviews = model.Reviews.Select(r => r.Unwrap());
-        movie.AddReviews(reviews);
 
         return movie;
     }

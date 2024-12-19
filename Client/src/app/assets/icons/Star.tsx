@@ -1,9 +1,10 @@
 interface Props {
   fill?: string;
   stroke?: string;
+  className?: string;
 }
 
-export default function Star({ fill, stroke }: Props) {
+export default function Star({ fill, stroke, className }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +12,7 @@ export default function Star({ fill, stroke }: Props) {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke={stroke ?? 'yellow'}
-      className="size-6"
+      className={'size-6 ' + className}
     >
       <path
         strokeLinecap="round"

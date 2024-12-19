@@ -25,7 +25,7 @@ export default function Movies() {
         ? [...prev, ...data.values]
         : [...prev]
     );
-  }, [data, page]);
+  }, [data]);
 
   useEffect(() => {
     if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));

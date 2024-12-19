@@ -11,14 +11,6 @@ export interface Genre {
   value: string;
 }
 
-export interface Review {
-  rating: number;
-  text: string;
-  movieId: number;
-  authorId: string;
-  containsSpoilers: boolean;
-}
-
 export interface MovieDetails {
   id: number;
   title: string;
@@ -36,5 +28,4 @@ export interface MovieDetails {
   status: string;
   tagline: string;
   rating: number;
-  reviews: Review[];
 }

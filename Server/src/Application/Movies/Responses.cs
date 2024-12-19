@@ -1,4 +1,3 @@
-using Application.Reviews;
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
 
@@ -27,8 +26,7 @@ public record MovieDetailed(
     int Runtime,
     string Status,
     string Tagline,
-    double Rating,
-    IReadOnlyList<ReviewResponse> Reviews);
+    double Rating);
 
 
 public static class Converter
@@ -55,6 +53,5 @@ public static class Converter
             movie.Details?.Runtime ?? 0,
             movie.Details?.Status ?? "",
             movie.Details?.Tagline ?? "",
-            movie.Rating,
-            [.. movie.Reviews.Select(r => r.ToResponse())]);
+            movie.Rating);
 }
