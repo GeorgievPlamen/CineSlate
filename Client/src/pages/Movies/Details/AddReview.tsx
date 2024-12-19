@@ -6,6 +6,9 @@ import { useParams } from 'react-router-dom';
 import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
 import { useAddReviewMutation } from '../../Reviews/api/reviewsApi';
 import { FieldValues, useForm } from 'react-hook-form';
+import { Review } from '../../Reviews/models/review';
+import { zodResolver } from '@hookform/resolvers/zod';
+import ValidationError from '../../../app/components/ValidationError';
 
 interface Props {
   onSuccess: () => void;
@@ -23,7 +26,9 @@ export default function AddReview({ onSuccess }: Props) {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<Review>({
+    resolver: zodResolver(Review),
+  });
 
   function onHover(rating: number, subtitle: string) {
     setHoverRating(rating);
@@ -31,9 +36,6 @@ export default function AddReview({ onSuccess }: Props) {
   }
 
   async function handleOnSubmit(formData: FieldValues) {
-    console.log(formData.containsSpoilers);
-    // TODO handle error response
-
     const { data } = await addReview({
       movieId: Number(movieId),
       containsSpoilers: formData.containsSpoilers,
@@ -43,7 +45,6 @@ export default function AddReview({ onSuccess }: Props) {
 
     console.log(data);
 
-    // TODO add zod for validation
     // TODO build review endpoint to get review with id and fill in form
     // TODO edit review
     if (data?.location) {
@@ -53,6 +54,8 @@ export default function AddReview({ onSuccess }: Props) {
       onSuccess();
     }
   }
+
+  console.log(errors);
 
   return (
     <form
@@ -83,7 +86,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(watch('rating') > 0 && { fill: 'yellow' })}
+              {...(Number(watch('rating')) > 0 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -105,7 +108,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(watch('rating') > 1 && { fill: 'yellow' })}
+              {...(Number(watch('rating')) > 1 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -127,7 +130,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(watch('rating') > 2 && { fill: 'yellow' })}
+              {...(Number(watch('rating')) > 2 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -149,7 +152,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(watch('rating') > 3 && { fill: 'yellow' })}
+              {...(Number(watch('rating')) > 3 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -171,7 +174,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(watch('rating') > 4 && { fill: 'yellow' })}
+              {...(Number(watch('rating')) > 4 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -191,7 +194,11 @@ export default function AddReview({ onSuccess }: Props) {
         <label htmlFor="containsSpoilers">Spoilers?</label>
         <MobileCheckbox name="containsSpoilers" register={register} />
       </div>
-      <SubmitButton text="Add review" />
+      <SubmitButton className="mb-2" text="Add review" />
+      <ValidationError
+        isError={errors !== undefined}
+        message={errors.rating?.message ?? ''}
+      />
     </form>
   );
 }

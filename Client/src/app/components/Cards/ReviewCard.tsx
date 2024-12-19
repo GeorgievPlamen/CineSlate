@@ -33,7 +33,9 @@ export default function ReviewCard({ review }: Props) {
         )}
         {revealed && (
           <p className="font-roboto">
-            {review.text.length > 0 ? review.text : 'Did not share...'}
+            {review.text && review.text.length > 0
+              ? review.text
+              : 'Did not share...'}
           </p>
         )}
       </div>

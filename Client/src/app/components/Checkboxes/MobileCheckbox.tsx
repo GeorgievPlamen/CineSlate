@@ -6,7 +6,8 @@ interface Props {
   bgClassName?: string;
   className?: string;
 
-  register: UseFormRegister<FieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<FieldValues | any>;
 }
 
 export default function MobileCheckbox({
