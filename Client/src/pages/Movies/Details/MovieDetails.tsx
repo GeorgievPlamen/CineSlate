@@ -18,12 +18,15 @@ export default function MovieDetails() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
-  const { data, isFetching, isError, refetch } = useMovieDetailsQuery({ id });
-  const { data: reviewData, isFetching: isReviewsFetching } =
-    useReviewsByMovieIdQuery({
-      movieId: Number(id),
-      page: reviewsPage,
-    });
+  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+  const {
+    data: reviewData,
+    isFetching: isReviewsFetching,
+    refetch,
+  } = useReviewsByMovieIdQuery({
+    movieId: Number(id),
+    page: reviewsPage,
+  });
 
   const { isAuthenticated } = useAuth();
 
