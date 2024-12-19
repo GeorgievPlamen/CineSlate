@@ -3,6 +3,7 @@ using Application.Reviews;
 using Application.Reviews.Interfaces;
 using Domain.Movies.Reviews;
 using Domain.Movies.ValueObjects;
+using Domain.Users.ValueObjects;
 using Infrastructure.Database;
 using Infrastructure.Repositories.MappingExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -54,5 +55,15 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             total - (page * count) > 0,
             page > 1,
             total);
+    }
+
+    public async Task<Review?> GetReviewByAuthorIdAndMovieIdAsync(UserId userId, MovieId movieId, CancellationToken cancellationToken)
+    {
+        var result = await dbContext.Reviews
+            .AsNoTracking()
+            .Include(r => r.Movie)
+            .FirstOrDefaultAsync(x => x.AuthorId == userId.Value && x.Movie.Id == movieId.Value, cancellationToken);
+
+        return result?.Unwrap();
     }
 }
