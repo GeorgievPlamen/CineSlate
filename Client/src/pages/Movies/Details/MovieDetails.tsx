@@ -95,7 +95,7 @@ export default function MovieDetails() {
           </div>
           <section className="my-10 flex flex-col gap-10">
             {reviews.map((r) => (
-              <ReviewCard key={r.authorId} r={r} />
+              <ReviewCard key={r.authorId} review={r} />
             ))}
             {reviewData?.hasNextPage && (
               <Button
