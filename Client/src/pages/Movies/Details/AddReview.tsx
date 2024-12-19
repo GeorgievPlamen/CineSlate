@@ -41,6 +41,8 @@ export default function AddReview({ onSuccess }: Props) {
       text: formData.text,
     });
 
+    console.log(data);
+
     // TODO add zod for validation
     // TODO build review endpoint to get review with id and fill in form
     // TODO edit review

@@ -47,7 +47,7 @@ public class CreateReviewCommandHandler(
         var review = Review.Create(
             request.Rating,
             UserId.Create(Guid.Parse(userId)),
-            request.Text,
+            request.Text ?? string.Empty,
             request.ContainsSpoilers);
 
         movie.AddReview(review);
