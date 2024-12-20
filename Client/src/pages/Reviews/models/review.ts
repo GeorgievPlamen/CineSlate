@@ -8,6 +8,7 @@ export const Review = z.object({
   text: z.string().max(2000, 'Maximum character length is 2000.').optional(),
   movieId: z.number().optional(),
   authorId: z.string().optional(),
+  authorUsername: z.string().optional(),
   containsSpoilers: z.boolean(),
 });
 

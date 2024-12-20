@@ -25,7 +25,7 @@ public class RegisterCommandValidatorTests
     }
 
     [Fact]
-    public void Validate_ShouldFail_WhenFirstNameExceedsMaximumLength()
+    public void Validate_ShouldFail_WhenUsernameExceedsMaximumLength()
     {
         // Arrange
         var command = new RegisterCommand(

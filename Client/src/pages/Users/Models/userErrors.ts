@@ -1,9 +1,7 @@
 export enum userErrors {
   InvalidEmail = "That doesn't look like an email address.",
-  InvalidFirstName = 'First Name must be below 30 chars.',
-  InvalidLastName = 'Last Name must be below 30 chars.',
-  MissingFirstName = 'Please enter your first name.',
-  MissingLastName = 'Please enter your last name.',
+  InvalidUsername = 'First Name must be below 30 chars.',
+  MissingUsername = 'Please enter your first name.',
   MissingPassword = "Can't login without a password.",
   InvalidPassword = 'Password must include 8-30 chars, with uppercase, lowercase, digit, and special symbol.',
   PasswordsMatch = "Passwords don't match.",

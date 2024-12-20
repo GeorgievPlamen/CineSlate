@@ -29,16 +29,13 @@ export async function registerAction({
 
 function validateRegister(formData: FormData) {
   const errors: userErrors[] = [];
-  const firstName = formData.get('firstName') as string;
-  const lastName = formData.get('lastName') as string;
+  const userName = formData.get('userName') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const confirmPassword = formData.get('confirmPassword') as string;
 
-  if (!firstName) errors.push(userErrors.MissingFirstName);
-  if (firstName.length > 30) errors.push(userErrors.InvalidFirstName);
-  if (!lastName) errors.push(userErrors.MissingLastName);
-  if (lastName.length > 30) errors.push(userErrors.InvalidLastName);
+  if (!userName) errors.push(userErrors.MissingUsername);
+  if (userName.length > 30) errors.push(userErrors.InvalidUsername);
   if (!validate.email(email)) errors.push(userErrors.InvalidEmail);
   if (!validate.password(password)) errors.push(userErrors.InvalidPassword);
   if (confirmPassword !== password) errors.push(userErrors.PasswordsMatch);

@@ -19,7 +19,6 @@ function Register() {
     >
       <Heading2 title="Register" />
       <NameField errors={response?.errors} />
-      <NameField errors={response?.errors} isLastName />
       <EmailField errors={response?.errors} />
       <PasswordField errors={response?.errors} />
       <PasswordField errors={response?.errors} isConfirmPassword />
