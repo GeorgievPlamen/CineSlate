@@ -35,14 +35,16 @@ export default function MovieDetails() {
 
     setReviews((prev) =>
       prev.length < reviewData.currentPage * 20
-        ? [...prev, ...reviewData.values]
-        : [...prev]
+        ? [...reviewData.values]
+        : [...prev, ...reviewData.values]
     );
   }, [reviewData]);
 
   if (isFetching) return <Loading />;
 
   if (isError) return <ErrorMessage />;
+
+  console.log(reviews);
 
   return (
     <>
