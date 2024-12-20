@@ -32,14 +32,14 @@ public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
             .IsRequired()
             .HasMaxLength(200);
 
-        var name = builder.ComplexProperty(u => u.Name);
+        var name = builder.ComplexProperty(u => u.Username);
 
-        name.Property(n => n!.First)
+        name.Property(n => n!.Value)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(110);
 
-        name.Property(n => n!.Last)
+        name.Property(n => n!.OnlyName)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(100);
     }
 }

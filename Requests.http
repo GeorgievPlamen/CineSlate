@@ -31,8 +31,7 @@ POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
-    "firstname": "John",
-    "lastname": "Doe",
+    "username": "theJohnDoe",
     "email": "john@test.com",
     "password": "SuperS3cre7!"
 }
@@ -43,8 +42,7 @@ POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
-    "firstname": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
-    "lastname": "Doe",
+    "username": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
     "email": "johnm",
     "password": "badPassword"
 }

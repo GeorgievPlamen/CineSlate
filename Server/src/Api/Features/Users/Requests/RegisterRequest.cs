@@ -1,3 +1,3 @@
 namespace Api.Features.Users.Requests;
 
-public record RegisterRequest(string FirstName, string LastName, string Email, string Password);
+public record RegisterRequest(string Username, string Email, string Password);

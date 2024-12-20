@@ -15,7 +15,7 @@ public class RegisterCommandValidatorTests
     public void Validate_ShouldPass_WhenValidCommand()
     {
         // Arrange
-        var command = new RegisterCommand(_user.Name.First, _user.Name.Last, _user.Email, ValidPassword);
+        var command = new RegisterCommand(_user.Username.OnlyName, _user.Email, ValidPassword);
 
         // Act
         var result = _sut.TestValidate(command);
@@ -29,37 +29,21 @@ public class RegisterCommandValidatorTests
     {
         // Arrange
         var command = new RegisterCommand(
-            "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            , _user.Name.Last, _user.Email, ValidPassword);
+            "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn", _user.Email, ValidPassword);
 
         // Act
         var result = _sut.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.FirstName);
+        result.ShouldHaveValidationErrorFor(x => x.Username);
     }
 
-    [Fact]
-    public void Validate_ShouldFail_WhenLastNameExceedsMaximumLength()
-    {
-        // Arrange
-        var command = new RegisterCommand(
-            _user.Name.First,
-            "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
-            , _user.Email, ValidPassword);
-
-        // Act
-        var result = _sut.TestValidate(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.LastName);
-    }
 
     [Fact]
     public void Validate_ShouldFail_WhenPasswordDoesNotMeetCriteria()
     {
         // Arrange
-        var command = new RegisterCommand(_user.Name.First, _user.Name.Last, _user.Email, "simplepassword");
+        var command = new RegisterCommand(_user.Username.OnlyName, _user.Email, "simplepassword");
 
         // Act
         var result = _sut.TestValidate(command);

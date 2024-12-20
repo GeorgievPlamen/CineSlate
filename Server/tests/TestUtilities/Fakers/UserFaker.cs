@@ -9,8 +9,7 @@ public static class UserFaker
 {
     public static User GenerateValid() => new Faker<User>()
         .CustomInstantiator(f => User.Create(
-            f.Person.FirstName,
-            f.Person.LastName,
+            f.Person.UserName,
             f.Person.Email,
             Constants.ValidPasswordHash,
             Roles.User))
@@ -18,8 +17,7 @@ public static class UserFaker
 
     public static List<User> GenerateMany(int howManyToGenerate) => new Faker<User>()
         .CustomInstantiator(f => User.Create(
-            f.Person.FirstName,
-            f.Person.LastName,
+            f.Person.UserName,
             f.Person.Email,
             Constants.ValidPasswordHash,
             Roles.User))

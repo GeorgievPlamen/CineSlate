@@ -10,8 +10,8 @@ public class UserTests
     public void Create_ShouldCreateUser_WhenValidParams()
     {
         // Act
-        var user = User.Create("Test","Test","Test","Test",Roles.User);
-    
+        var user = User.Create("Test", "Test", "Test", Roles.User);
+
         // Assert
         user.Should().NotBeNull();
     }

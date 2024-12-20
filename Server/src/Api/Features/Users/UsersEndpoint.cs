@@ -36,8 +36,7 @@ public static class UsersEndpoint
 
     public static async Task<IResult> RegisterAsync(RegisterRequest request, ISender mediatr, CancellationToken cancellationToken)
         => Response<UserId>.Match(await mediatr.Send(new RegisterCommand(
-            request.FirstName,
-            request.LastName,
+            request.Username,
             request.Email,
             request.Password),
             cancellationToken), Uri + Register);

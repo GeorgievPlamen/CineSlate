@@ -32,8 +32,7 @@ public class MeQueryHandler(
             return Result<MeResponse>.Failure(UserErrors.NotFound());
 
         var result = new MeResponse(
-            foundUser.Name.First,
-            foundUser.Name.Last,
+            foundUser.Username.Value,
             foundUser.Email);
 
         return Result<MeResponse>.Success(result);

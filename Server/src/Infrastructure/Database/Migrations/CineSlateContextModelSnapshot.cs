@@ -247,19 +247,19 @@ namespace Infrastructure.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Name", "Infrastructure.Database.Models.UserModel.Name#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.UserModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<string>("First")
+                            b1.Property<string>("OnlyName")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)");
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
 
-                            b1.Property<string>("Last")
+                            b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)");
+                                .HasMaxLength(110)
+                                .HasColumnType("character varying(110)");
                         });
 
                     b.HasKey("Id");

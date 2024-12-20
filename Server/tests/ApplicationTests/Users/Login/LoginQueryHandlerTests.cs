@@ -2,6 +2,7 @@ using Application.Users.Interfaces;
 using Application.Users.Login;
 using Domain.Users;
 using Domain.Users.Errors;
+using Domain.Users.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 using TestUtilities;
@@ -34,9 +35,8 @@ public class LoginQueryHandlerTests
             .Returns(true);
 
         _userIdentity.GenerateJwtToken(
-            Arg.Any<Guid>(),
-            Arg.Any<string>(),
-            Arg.Any<string>(),
+            Arg.Any<UserId>(),
+            Arg.Any<Username>(),
             Arg.Any<string>(),
             Arg.Any<string>())
                 .Returns("fakejwt");

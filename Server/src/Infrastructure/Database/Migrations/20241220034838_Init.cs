@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,7 @@ namespace Infrastructure.Database.Migrations
                     Runtime = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Tagline = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Rating = table.Column<double>(type: "double precision", precision: 2, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
@@ -66,8 +67,8 @@ namespace Infrastructure.Database.Migrations
                     Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Roles = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Name_First = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Name_Last = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Username_OnlyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Username_Value = table.Column<string>(type: "character varying(110)", maxLength: 110, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),

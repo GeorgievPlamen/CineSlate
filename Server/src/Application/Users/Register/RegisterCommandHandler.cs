@@ -27,8 +27,7 @@ public class RegisterCommandHandler(
         string passwordHash = _userIdentity.HashPassword(request.Password);
 
         User user = User.Create(
-            request.FirstName,
-            request.LastName,
+            request.Username,
             request.Email,
             passwordHash);
 

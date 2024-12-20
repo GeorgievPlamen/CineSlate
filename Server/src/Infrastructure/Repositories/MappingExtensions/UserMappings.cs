@@ -9,15 +9,14 @@ public static class UserMappings
         => new()
         {
             Id = user.Id.Value,
-            Name = user.Name,
+            Username = user.Username,
             Email = user.Email,
             PasswordHash = user.PasswordHash,
             Roles = user.Role
         };
     public static User Unwrap(this UserModel model)
          => User.Create(
-            model.Name.First,
-            model.Name.Last,
+            model.Username.OnlyName,
             model.Email,
             model.PasswordHash,
             model.Roles);
