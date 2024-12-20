@@ -1,10 +1,12 @@
 using Api.Common;
 using Api.Features.Users.Requests;
+using Application.Users.GetUsers;
 using Application.Users.Login;
 using Application.Users.Me;
 using Application.Users.Register;
 using Domain.Users.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Users;
 
@@ -21,9 +23,13 @@ public static class UsersEndpoint
 
         users.MapGet(Me, GetMeAsync).RequireAuthorization();
 
+        users.MapPost("/", GetUsersAsync);
         users.MapPost(Login, LoginAsync);
         users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
     }
+
+    private static async Task<IResult> GetUsersAsync([FromBody] GetUsersRequest request, ISender mediatr, CancellationToken cancellationToken)
+        => Response<List<UserResponse>>.Match(await mediatr.Send(new GetUsersQuery(request.UserIds), cancellationToken));
 
     public static async Task<IResult> GetMeAsync(ISender mediatr, CancellationToken cancellationToken)
         => Response<MeResponse>.Match(await mediatr.Send(new MeQuery(), cancellationToken));

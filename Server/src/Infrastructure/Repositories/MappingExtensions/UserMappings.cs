@@ -1,4 +1,5 @@
 using Domain.Users;
+using Domain.Users.ValueObjects;
 using Infrastructure.Database.Models;
 
 namespace Infrastructure.Repositories.MappingExtensions;
@@ -16,6 +17,7 @@ public static class UserMappings
         };
     public static User Unwrap(this UserModel model)
          => User.Create(
+            UserId.Create(model.Id),
             model.Username.OnlyName,
             model.Email,
             model.PasswordHash,

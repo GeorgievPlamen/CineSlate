@@ -73,4 +73,20 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
+
+    [Fact]
+    public async Task GetManyById_ShouldReturnFoundUsers()
+    {
+        // Arrange
+        var user = UserFaker.GenerateMany(2);
+        var request = new GetUsersRequest([.. user.Select(u => u.Id.Value)]);
+
+        await api.SeedDatabaseAsync(user.Select(u => u.ToModel()));
+
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(TestUri("/"), request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
 }

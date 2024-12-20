@@ -24,4 +24,13 @@ public class User : AggregateRoot<UserId>
             Role = role,
         };
     }
+
+    public static User Create(UserId userId, string userName, string email, string passwordHash, Roles role = Roles.User)
+    => new(userId)
+    {
+        Username = Username.Create(userName, userId),
+        Email = email,
+        PasswordHash = passwordHash,
+        Role = role,
+    };
 }

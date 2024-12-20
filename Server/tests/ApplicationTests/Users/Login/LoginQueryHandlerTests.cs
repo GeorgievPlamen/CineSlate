@@ -28,8 +28,8 @@ public class LoginQueryHandlerTests
     public async Task Handler_ShouldReturnSuccess_WhenValid()
     {
         // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([_user]);
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(_user);
 
         _userIdentity.ValidatePassword(Arg.Any<string>(), Arg.Any<string>())
             .Returns(true);
@@ -51,10 +51,6 @@ public class LoginQueryHandlerTests
     [Fact]
     public async Task Handler_ShouldReturnNotFoundError_WhenUserNotFound()
     {
-        // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([]);
-
         // Act
         var result = await _sut.Handle(_command, CancellationToken.None);
 
@@ -67,8 +63,8 @@ public class LoginQueryHandlerTests
     public async Task Handler_ShouldReturnNotFoundError_WhenPasswordIsWrong()
     {
         // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([_user]);
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(_user);
 
         _userIdentity.ValidatePassword(Arg.Any<string>(), Arg.Any<string>())
             .Returns(false);
