@@ -6,6 +6,7 @@ using Application.Reviews;
 using Application.Reviews.Create;
 using Application.Reviews.Get;
 using Application.Reviews.GetByMovieId;
+using Application.Reviews.Update;
 using Domain.Movies.Reviews.ValueObjects;
 using MediatR;
 
@@ -24,9 +25,9 @@ public static class ReviewsEndpoint
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
         reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
-        reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous(); // TODO remove reviews from movie details
+        reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous();
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
-        reviews.MapPut(Update, () => TypedResults.Ok("update")); // TODO
+        reviews.MapPut(Update, UpdateReviewAsync);
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
 
@@ -46,4 +47,15 @@ public static class ReviewsEndpoint
                 request.Text,
                 request.ContainsSpoilers
             ), cancellationToken), "Created");
+
+    private static async Task<IResult> UpdateReviewAsync(
+        UpdateReviewRequest request,
+        ISender mediatr,
+        CancellationToken cancellationToken)
+        => Response<ReviewId>.Match(await mediatr.Send(new UpdateReviewCommand(
+            request.ReviewId,
+            request.Rating,
+            request.Text,
+            request.ContainsSpoilers),
+        cancellationToken));
 }
