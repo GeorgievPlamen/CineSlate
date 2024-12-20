@@ -2,6 +2,7 @@ using Application.Users.Interfaces;
 using Application.Users.Login;
 using Domain.Users;
 using Domain.Users.Errors;
+using Domain.Users.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 using TestUtilities;
@@ -27,16 +28,15 @@ public class LoginQueryHandlerTests
     public async Task Handler_ShouldReturnSuccess_WhenValid()
     {
         // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([_user]);
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(_user);
 
         _userIdentity.ValidatePassword(Arg.Any<string>(), Arg.Any<string>())
             .Returns(true);
 
         _userIdentity.GenerateJwtToken(
-            Arg.Any<Guid>(),
-            Arg.Any<string>(),
-            Arg.Any<string>(),
+            Arg.Any<UserId>(),
+            Arg.Any<Username>(),
             Arg.Any<string>(),
             Arg.Any<string>())
                 .Returns("fakejwt");
@@ -51,10 +51,6 @@ public class LoginQueryHandlerTests
     [Fact]
     public async Task Handler_ShouldReturnNotFoundError_WhenUserNotFound()
     {
-        // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([]);
-
         // Act
         var result = await _sut.Handle(_command, CancellationToken.None);
 
@@ -67,8 +63,8 @@ public class LoginQueryHandlerTests
     public async Task Handler_ShouldReturnNotFoundError_WhenPasswordIsWrong()
     {
         // Arrange
-        _userRepository.GetManyAsync(Arg.Any<CancellationToken>())
-            .Returns([_user]);
+        _userRepository.GetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(_user);
 
         _userIdentity.ValidatePassword(Arg.Any<string>(), Arg.Any<string>())
             .Returns(false);

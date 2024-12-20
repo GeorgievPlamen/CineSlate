@@ -7,17 +7,30 @@ public class User : AggregateRoot<UserId>
 {
     private User(UserId id) : base(id) { }
 
-    public Name Name { get; private set; } = null!;
+    public Username Username { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
     public Roles Role { get; private set; }
 
-    public static User Create(string firstName, string lastName, string email, string passwordHash, Roles role = Roles.User)
-        => new(UserId.Create())
+    public static User Create(string userName, string email, string passwordHash, Roles role = Roles.User)
+    {
+        var id = UserId.Create();
+
+        return new(id)
         {
-            Name = Name.Create(firstName, lastName),
+            Username = Username.Create(userName, id),
             Email = email,
             PasswordHash = passwordHash,
             Role = role,
         };
+    }
+
+    public static User Create(UserId userId, string userName, string email, string passwordHash, Roles role = Roles.User)
+    => new(userId)
+    {
+        Username = Username.Create(userName, userId),
+        Email = email,
+        PasswordHash = passwordHash,
+        Role = role,
+    };
 }

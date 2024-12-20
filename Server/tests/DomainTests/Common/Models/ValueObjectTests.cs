@@ -1,5 +1,5 @@
 using Domain.Common.Models;
-using Domain.Users;
+using Domain.Users.ValueObjects;
 using FluentAssertions;
 
 namespace DomainTests.Common.Models;
@@ -10,8 +10,9 @@ public class ValueObjectTests
     public void ValueObjects_WithSameProperties_ShouldBeEqual()
     {
         // Arrange
-        var name1 = Name.Create("John", "Doe");
-        var name2 = Name.Create("John", "Doe");
+        var userId = UserId.Create();
+        var name1 = Username.Create("John", userId);
+        var name2 = Username.Create("John", userId);
 
 
         // Act & Assert
@@ -24,8 +25,9 @@ public class ValueObjectTests
     public void ValueObjects_WithDifferentProperties_ShouldNotBeEqual()
     {
         // Arrange
-        var name1 = Name.Create("John", "Doe");
-        var name2 = Name.Create("Jane", "Smith");
+        var userId = UserId.Create();
+        var name1 = Username.Create("John", userId);
+        var name2 = Username.Create("Jane", userId);
 
         // Act & Assert
         name1.Should().NotBe(name2); // Uses Equals method
@@ -37,8 +39,9 @@ public class ValueObjectTests
     public void ValueObject_ShouldHaveConsistentHashCode()
     {
         // Arrange
-        var name1 = Name.Create("John", "Doe");
-        var name2 = Name.Create("John", "Doe");
+        var userId = UserId.Create();
+        var name1 = Username.Create("John", userId);
+        var name2 = Username.Create("John", userId);
 
         // Act & Assert
         name1.GetHashCode().Should().Be(name2.GetHashCode());
@@ -48,8 +51,9 @@ public class ValueObjectTests
     public void ValueObjects_WithDifferentProperties_ShouldHaveDifferentHashCodes()
     {
         // Arrange
-        var name1 = Name.Create("John", "Doe");
-        var name2 = Name.Create("Jane", "Smith");
+        var userId = UserId.Create();
+        var name1 = Username.Create("John", userId);
+        var name2 = Username.Create("Jane", userId);
 
         // Act & Assert
         name1.GetHashCode().Should().NotBe(name2.GetHashCode());
@@ -59,7 +63,8 @@ public class ValueObjectTests
     public void ValueObject_ShouldNotEqualNull()
     {
         // Arrange
-        var name = Name.Create("John", "Doe");
+        var userId = UserId.Create();
+        var name = Username.Create("John", userId);
 
         // Act & Assert
         name.Equals(null).Should().BeFalse();
@@ -69,7 +74,8 @@ public class ValueObjectTests
     public void ValueObjects_OfDifferentTypes_ShouldNotBeEqual()
     {
         // Arrange
-        var name = Name.Create("John", "Doe");
+        var userId = UserId.Create();
+        var name = Username.Create("John", userId);
         var otherValueObject = new TestValueObject();
 
         // Act & Assert

@@ -17,7 +17,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
     public async Task Register_ShouldReturnOk201_WhenValid()
     {
         // Arrange
-        var request = new RegisterRequest("John", "Doe", "john.doe@example.com", "Password123!");
+        var request = new RegisterRequest("John", "john.doe@example.com", "Password123!");
 
         // Act
         var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
@@ -31,7 +31,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
     {
         // Arrange
         var user = UserFaker.GenerateValid();
-        var request = new RegisterRequest(user.Name.First, user.Name.Last, user.Email, "Password123!");
+        var request = new RegisterRequest(user.Username.OnlyName, user.Email, "Password123!");
 
         await api.SeedDatabaseAsync([user.ToModel()]);
 
@@ -72,5 +72,21 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetManyById_ShouldReturnFoundUsers()
+    {
+        // Arrange
+        var user = UserFaker.GenerateMany(2);
+        var request = new GetUsersRequest([.. user.Select(u => u.Id.Value)]);
+
+        await api.SeedDatabaseAsync(user.Select(u => u.ToModel()));
+
+        // Act
+        var response = await _httpClient.PostAsJsonAsync(TestUri("/"), request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

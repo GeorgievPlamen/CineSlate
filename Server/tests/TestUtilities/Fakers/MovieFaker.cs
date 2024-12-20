@@ -36,19 +36,19 @@ public static class MovieFaker
             .RuleFor(m => m.Status, f => f.Lorem.Word())
             .RuleFor(m => m.Tagline, f => f.Lorem.Word())
             .RuleFor(m => m.Rating, f => f.Random.Number(1, 5))
-            .RuleFor(m => m.Genres, f => genreModels ?? [new GenreModel() { Id = f.Random.Number(10, 200), Name = f.Lorem.Word() }])
+            .RuleFor(m => m.Genres, f => genreModels ?? [new GenreModel() { Id = f.Random.Number(10, 10000), Name = f.Lorem.Word() }])
             .Generate(howMany);
 
     public static List<ExternalMovie> GenerateExternalMovies(int howMany = 1) =>
         new Faker<ExternalMovie>()
             .CustomInstantiator(f => new ExternalMovie
             (
-                Id: f.Random.Number(1000, 5000),
+                Id: f.Random.Number(1000, 100000),
                 Title: f.Name.FullName(),
                 Description: f.Lorem.Sentence(),
                 ReleaseDate: f.Date.PastDateOnly(),
                 PosterPath: f.Internet.Url(),
-                GenreIds: [f.Random.Number(1000, 5000)]
+                GenreIds: [f.Random.Number(1000, 100000)]
             ))
             .Generate(howMany);
 

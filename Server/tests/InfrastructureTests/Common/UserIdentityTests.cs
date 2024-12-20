@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Domain.Users.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Common;
 using Infrastructure.Common.Models;
@@ -30,9 +31,8 @@ public class UserIdentityTests
     {
         // Act
         var token = _sut.GenerateJwtToken(
-            Guid.NewGuid(),
-            "John",
-            "Doe",
+            UserId.Create(),
+            Username.Create("John", UserId.Create()),
             "john.doe@example.com",
             "Admin");
 

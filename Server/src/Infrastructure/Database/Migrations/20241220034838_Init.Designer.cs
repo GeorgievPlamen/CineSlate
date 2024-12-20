@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CineSlateContext))]
-    [Migration("20241202064240_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241220034838_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,6 +123,10 @@ namespace Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<double>("Rating")
+                        .HasPrecision(2)
+                        .HasColumnType("double precision");
 
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date");
@@ -246,19 +250,19 @@ namespace Infrastructure.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Name", "Infrastructure.Database.Models.UserModel.Name#Name", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.UserModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.Property<string>("First")
+                            b1.Property<string>("OnlyName")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)");
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
 
-                            b1.Property<string>("Last")
+                            b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)");
+                                .HasMaxLength(110)
+                                .HasColumnType("character varying(110)");
                         });
 
                     b.HasKey("Id");

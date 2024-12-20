@@ -13,9 +13,7 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
 
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var users = await _usersRepository.GetManyAsync(cancellationToken);
-
-        var foundUser = users.Find(u => u.Email == request.Email);
+        var foundUser = await _usersRepository.GetAsync(request.Email, cancellationToken);
 
         if (foundUser is null)
             return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
@@ -26,15 +24,13 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
             return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
 
         var token = _userIdentity.GenerateJwtToken(
-            foundUser.Id.Value,
-            foundUser.Name.First,
-            foundUser.Name.Last,
+            foundUser.Id,
+            foundUser.Username,
             foundUser.Email,
             foundUser.Role.ToString());
 
         LoginResponse result = new(
-            foundUser.Name.First,
-            foundUser.Name.Last,
+            foundUser.Username.Value,
             foundUser.Email,
             token);
 

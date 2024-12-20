@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Domain.Users.ValueObjects;
 namespace Infrastructure.Common;
 
 public class UserIdentity(
@@ -17,17 +18,16 @@ public class UserIdentity(
     private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
 
-    public string GenerateJwtToken(Guid userId, string firstName, string lastName, string email, string role)
+    public string GenerateJwtToken(UserId userId, Username username, string email, string role)
     {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret))
             , SecurityAlgorithms.HmacSha256);
 
         Claim[] claims = [
-            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, userId.Value.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
-            new Claim(JwtRegisteredClaimNames.GivenName, firstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
+            new Claim(JwtRegisteredClaimNames.PreferredUsername, username.Value),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Role, role),
         ];

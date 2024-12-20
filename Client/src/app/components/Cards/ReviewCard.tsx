@@ -9,7 +9,7 @@ interface Props {
 export default function ReviewCard({ review }: Props) {
   const [revealed, setRevealed] = useState(!review.containsSpoilers);
 
-  console.log(review.containsSpoilers);
+  const username = review.authorUsername?.split('#');
 
   return (
     <div className="flex rounded-2xl border border-grey bg-background p-1">
@@ -20,7 +20,10 @@ export default function ReviewCard({ review }: Props) {
       />
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">
-          <p className="text-xl">Username placeholder</p>
+          <p className="text-xl">
+            {username![0]}
+            <span className="text-xs text-grey"> #{username![1]}</span>
+          </p>
           <p>⭐{review.rating}</p>
         </div>
         {review.containsSpoilers && !revealed && (

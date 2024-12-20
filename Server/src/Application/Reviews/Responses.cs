@@ -7,14 +7,16 @@ public record ReviewResponse(
     string Text,
     int MovieId,
     Guid AuthorId,
+    string AuthorUsername,
     bool ContainsSpoilers);
 
 public static class Converter
 {
-    public static ReviewResponse ToResponse(this Review review) => new(
+    public static ReviewResponse ToResponse(this Review review, string authorUsername) => new(
         review.Rating,
         review.Text,
         review.MovieId.Value,
         review.Author.Value,
+        authorUsername,
         review.ContainsSpoilers);
 }

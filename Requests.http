@@ -1,9 +1,9 @@
-# @Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+# @Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMjYyNTc3NS03YWQ2LTQwZWEtYTA2OC01MDUzMjIxYWFmNzIiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoiNmI1OTBmYTItOGYzMy00M2ZhLWIwM2YtMTdmNjkzZjM1NGQ3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzE3OTA3NywiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.62toMBFcwgYsF26lip5uYgW7QvY3c76fBZCLH-Ex6po
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWFhMzE1Yi1kNWQxLTRjYTgtODZmMS03N2I4NWI4MDYwODQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0aGVKb2huRG9lI2Y5YWEzIiwianRpIjoiNDBjMWI0NTItYmVkYi00MTNlLWJlZDctZTM3MDVkZTkxNzVjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzI2MjkzMSwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.lUpoLDX6Y1GnOcS-QpZZyz7gjceNfBMs7j5sL1WO5co
 
 ### Login Success
 
@@ -31,8 +31,7 @@ POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
-    "firstname": "John",
-    "lastname": "Doe",
+    "username": "john Doe112",
     "email": "john@test.com",
     "password": "SuperS3cre7!"
 }
@@ -43,8 +42,7 @@ POST {{Api_HostAddress}}users/register HTTP/1.1
 content-type: application/json
 
 {
-    "firstname": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
-    "lastname": "Doe",
+    "username": "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn",
     "email": "johnm",
     "password": "badPassword"
 }
@@ -73,6 +71,16 @@ GET {{Api_HostAddress}}users/me HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
+### Users By Id 
+
+POST {{Api_HostAddress}}users/ HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+{
+    "UserIds": ["f9aa315b-d5d1-4ca8-86f1-77b85b806084", "5cdf56d4-6626-4f2b-9b05-968e1b8d99ce" , "7962e6b4-59e5-4d53-b1b9-a685cd1650ac"]
+}
+
 ### Review Latest 
 
 GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
@@ -81,7 +89,7 @@ Authorization: {{Token}}
 
 ### Reviews By Movie Id 
 
-GET {{Api_HostAddress}}reviews/912649?page=1 HTTP/1.1
+GET {{Api_HostAddress}}reviews/1241982?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 

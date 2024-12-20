@@ -81,10 +81,10 @@ function Header() {
             </NavLink>
           </li>
         </ul>
-        {user?.firstName?.length > 0 ? (
+        {user?.username?.length > 0 ? (
           <DropdownButton>
             <>
-              {user?.firstName}
+              {user?.username?.split('#')[0]}
               <UserCircleIcon className="size-6 pl-1" />
             </>
           </DropdownButton>

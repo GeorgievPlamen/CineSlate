@@ -19,7 +19,7 @@ public class RegisterCommandHandlerTests
     public RegisterCommandHandlerTests()
     {
         _sut = new(_userIdentity, _userRepository);
-        _command = new(_user.Name.First, _user.Name.Last, _user.Email, _user.PasswordHash);
+        _command = new(_user.Username.OnlyName, _user.Email, _user.PasswordHash);
     }
 
     [Fact]
