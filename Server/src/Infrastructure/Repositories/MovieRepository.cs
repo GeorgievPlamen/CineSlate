@@ -47,12 +47,15 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         var model = await dbContext.Movies
             .AsNoTracking()
             .Include(m => m.Genres)
+            .Include(m => m.Reviews)
             .FirstOrDefaultAsync(m => m.Id == id.Value, cancellationToken);
 
         if (model is null)
             return null;
 
         var movie = model.Unwrap();
+        var reviews = model.Reviews.Select(r => r.Unwrap());
+        movie.AddReviews(reviews);
 
         return movie;
     }
@@ -83,18 +86,31 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
         if (model is null)
             return false;
 
-        if (movie.Reviews.Count > 0)
-        {
-            var reviewToAdd = movie.Reviews.First().ToModel();
-            model.Reviews.Add(reviewToAdd);
-            dbContext.Entry(reviewToAdd).State = EntityState.Added;
-        }
+        var newReviews = new List<ReviewModel>();
+
+        if (movie.Reviews.Count > model.Reviews.Count)
+            newReviews.AddRange(GetNewReviews(movie, model));
 
         UpdateModel(model, movie);
+
+        foreach (var review in newReviews)
+        {
+            model.Reviews.Add(review);
+            dbContext.Entry(review).State = EntityState.Added;
+        }
 
         dbContext.Update(model);
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    private static List<ReviewModel> GetNewReviews(MovieAggregate movie, MovieModel model)
+    {
+        var movieReviewIds = movie.Reviews.Select(r => r.Id.Value);
+        var currentReviewIds = model.Reviews.Select(r => r.Id);
+        var newReviewIds = movieReviewIds.Except(currentReviewIds);
+
+        return movie.Reviews.Where(r => newReviewIds.Contains(r.Id.Value)).Select(r => r.ToModel()).ToList();
     }
 
     private static void UpdateModel(MovieModel model, MovieAggregate movie)

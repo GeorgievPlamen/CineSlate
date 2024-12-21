@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWFhMzE1Yi1kNWQxLTRjYTgtODZmMS03N2I4NWI4MDYwODQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0aGVKb2huRG9lI2Y5YWEzIiwianRpIjoiMTkwZWI5ZWYtMmU1Ny00ZDQxLWFhZGUtMmE0Yjc4ZmFjM2UzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzI2ODAyNywiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.LYeNK20s9TlwHWXB7fRDFZ4l4u0y5feix1MNdgbel3g
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjBiNWZhOC1mYWQ2LTRjMTgtYTUzYy1mMzBlMmI2N2Q2ZDQiLCJlbWFpbCI6ImpvaG41QHRlc3QuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obiBEb2UxMTIjZWIwYjUiLCJqdGkiOiI1ZDMzZTIwMi0wZTY3LTQzMzAtOWE5ZC0wYmU4Y2EzODE2NmMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzM3MzQ4NTE0LCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.qtXTgvL4DpQwBclgItWP1vXPId5naJPcmzTOsEVhguQ
 
 ### Login Success
 
@@ -55,7 +55,7 @@ Authorization: {{Token}}
 
 ### Movies Details
 
-GET {{Api_HostAddress}}movies/912649
+GET {{Api_HostAddress}}movies/845781
 content-type: application/json
 Authorization: {{Token}}
 
@@ -100,9 +100,9 @@ content-type: application/json
 Authorization: {{Token}}
 
 {
-    "reviewId": "6bece237-a480-43f5-b2ed-cbf720ca3db5",
-    "rating": 3,
-    "text": "It was nice, ending was great when main hero dies.",
+    "reviewId": "4d766144-6da5-49d3-9971-a92eec016ca7",
+    "rating": 4,
+    "text": "It had a nice ending.",
     "containsSpoilers": true
 }
 
@@ -120,7 +120,7 @@ Authorization: {{Token}}
 
 {
     "rating": 2,
-    "movieId": 1241982,
+    "movieId": 845781,
     "text": "Did not like it...",
     "containsSpoilers": false
 }
