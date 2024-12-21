@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
@@ -24,7 +24,7 @@ export default function AddReview({ onSuccess }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     formState: { errors },
   } = useForm<Review>({
     resolver: zodResolver(Review),
@@ -86,7 +86,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 0 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 0 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -108,7 +108,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 1 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 1 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -130,7 +130,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 2 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 2 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -152,7 +152,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 3 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 3 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -174,7 +174,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 4 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 4 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -188,7 +188,11 @@ export default function AddReview({ onSuccess }: Props) {
         }
         {...register('text')}
         onFocus={() => setIsTextAreaSelected(true)}
-        onBlur={() => setIsTextAreaSelected(false)}
+        onBlur={() => {
+          setTimeout(() => {
+            setIsTextAreaSelected(false);
+          }, 50);
+        }}
       />
       <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>

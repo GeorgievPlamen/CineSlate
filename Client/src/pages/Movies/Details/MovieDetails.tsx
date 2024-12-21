@@ -18,11 +18,15 @@ export default function MovieDetails() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
-  const { data, isFetching, isError } = useMovieDetailsQuery({ id });
+  const {
+    data,
+    isError,
+    refetch: refetchMovieDetails,
+  } = useMovieDetailsQuery({ id });
   const {
     data: reviewData,
     isFetching: isReviewsFetching,
-    refetch,
+    refetch: refetchReviews,
   } = useReviewsByMovieIdQuery({
     movieId: Number(id),
     page: reviewsPage,
@@ -40,11 +44,7 @@ export default function MovieDetails() {
     );
   }, [reviewData]);
 
-  if (isFetching) return <Loading />;
-
   if (isError) return <ErrorMessage />;
-
-  console.log(reviews);
 
   return (
     <>
@@ -64,7 +64,12 @@ export default function MovieDetails() {
                 onLoad={() => setImageIsLoading(false)}
               />
               {isAuthenticated ? (
-                <AddReview onSuccess={refetch} />
+                <AddReview
+                  onSuccess={() => {
+                    refetchMovieDetails();
+                    refetchReviews();
+                  }}
+                />
               ) : (
                 <p>
                   <NavLink to="../login" className="underline">
