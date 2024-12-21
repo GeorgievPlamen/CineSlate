@@ -1,9 +1,9 @@
-@Api_HostAddress = http://localhost:5000/api/
-# @Api_HostAddress = http://localhost:8080/api/ 
+# @Api_HostAddress = http://localhost:5000/api/
+@Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjBiNWZhOC1mYWQ2LTRjMTgtYTUzYy1mMzBlMmI2N2Q2ZDQiLCJlbWFpbCI6ImpvaG41QHRlc3QuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obiBEb2UxMTIjZWIwYjUiLCJqdGkiOiI1ZDMzZTIwMi0wZTY3LTQzMzAtOWE5ZC0wYmU4Y2EzODE2NmMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzM3MzQ4NTE0LCJpc3MiOiJDaW5lU2xhdGUiLCJhdWQiOiJDaW5lU2xhdGUifQ.qtXTgvL4DpQwBclgItWP1vXPId5naJPcmzTOsEVhguQ
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWFhMzE1Yi1kNWQxLTRjYTgtODZmMS03N2I4NWI4MDYwODQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0aGVKb2huRG9lI2Y5YWEzIiwianRpIjoiZGJiYTk3MWUtN2E2Zi00Y2Y4LWI2YzYtYTUzY2FjNTU2YTRlIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzM1MzgyOCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.xi1aREw3f_O5ysjqv6G2-xEkZlkrEWqJemdg2TjZClk
 
 ### Login Success
 
@@ -87,9 +87,15 @@ GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
+### Review by movie Id
+
+GET {{Api_HostAddress}}reviews/own/645757 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
 ### Reviews By Movie Id 
 
-GET {{Api_HostAddress}}reviews/1241982?page=1 HTTP/1.1
+GET {{Api_HostAddress}}reviews/645757?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
