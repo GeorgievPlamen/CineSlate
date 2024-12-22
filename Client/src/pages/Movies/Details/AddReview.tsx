@@ -3,7 +3,6 @@ import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
 import { useParams } from 'react-router-dom';
-import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
 import {
   useAddReviewMutation,
   useOwnedReviewsByMovieIdQuery,
