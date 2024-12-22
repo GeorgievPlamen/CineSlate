@@ -1,9 +1,9 @@
-@Api_HostAddress = http://localhost:5000/api/
-# @Api_HostAddress = http://localhost:8080/api/ 
+# @Api_HostAddress = http://localhost:5000/api/
+@Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWFhMzE1Yi1kNWQxLTRjYTgtODZmMS03N2I4NWI4MDYwODQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0aGVKb2huRG9lI2Y5YWEzIiwianRpIjoiNDBjMWI0NTItYmVkYi00MTNlLWJlZDctZTM3MDVkZTkxNzVjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzI2MjkzMSwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.lUpoLDX6Y1GnOcS-QpZZyz7gjceNfBMs7j5sL1WO5co
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmOWFhMzE1Yi1kNWQxLTRjYTgtODZmMS03N2I4NWI4MDYwODQiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0aGVKb2huRG9lI2Y5YWEzIiwianRpIjoiZGJiYTk3MWUtN2E2Zi00Y2Y4LWI2YzYtYTUzY2FjNTU2YTRlIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTczNzM1MzgyOCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.xi1aREw3f_O5ysjqv6G2-xEkZlkrEWqJemdg2TjZClk
 
 ### Login Success
 
@@ -55,7 +55,7 @@ Authorization: {{Token}}
 
 ### Movies Details
 
-GET {{Api_HostAddress}}movies/912649
+GET {{Api_HostAddress}}movies/939243
 content-type: application/json
 Authorization: {{Token}}
 
@@ -87,9 +87,15 @@ GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
+### Owned Review by movie Id
+
+GET {{Api_HostAddress}}reviews/own/645757 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
 ### Reviews By Movie Id 
 
-GET {{Api_HostAddress}}reviews/1241982?page=1 HTTP/1.1
+GET {{Api_HostAddress}}reviews/645757?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
@@ -98,6 +104,13 @@ Authorization: {{Token}}
 PUT {{Api_HostAddress}}reviews/ HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
+
+{
+    "reviewId": "4d766144-6da5-49d3-9971-a92eec016ca7",
+    "rating": 4,
+    "text": "It had a nice ending.",
+    "containsSpoilers": true
+}
 
 ### Review Delete 
 
@@ -113,7 +126,7 @@ Authorization: {{Token}}
 
 {
     "rating": 2,
-    "movieId": 1241982,
+    "movieId": 845781,
     "text": "Did not like it...",
     "containsSpoilers": false
 }

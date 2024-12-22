@@ -2,6 +2,7 @@ using Application.Common;
 using Application.Reviews;
 using Application.Reviews.Interfaces;
 using Domain.Movies.Reviews;
+using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
 using Infrastructure.Database;
@@ -65,5 +66,31 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .FirstOrDefaultAsync(x => x.AuthorId == userId.Value && x.Movie.Id == movieId.Value, cancellationToken);
 
         return result?.Unwrap();
+    }
+
+    public async Task<Review?> GetReviewByIdAsync(ReviewId reviewId, CancellationToken cancellationToken)
+    {
+        var result = await dbContext.Reviews
+            .AsNoTracking()
+            .Include(r => r.Movie)
+            .FirstOrDefaultAsync(x => x.Id == reviewId.Value, cancellationToken);
+
+        return result?.Unwrap();
+    }
+
+    public async Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken)
+    {
+        var oldReview = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
+
+        if (oldReview is null)
+            return false;
+
+        oldReview.Rating = rating;
+        oldReview.Text = text;
+        oldReview.ContainsSpoilers = containsSpoilers;
+
+        dbContext.Update(oldReview);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }

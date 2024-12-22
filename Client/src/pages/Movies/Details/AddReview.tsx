@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Star from '../../../app/assets/icons/Star';
 import SubmitButton from '../../../app/components/Buttons/SubmitButton';
 import MobileCheckbox from '../../../app/components/Checkboxes/MobileCheckbox';
 import { useParams } from 'react-router-dom';
-import extractIdFromLocation from '../../../app/utils/extractIdFromLocation';
-import { useAddReviewMutation } from '../../Reviews/api/reviewsApi';
+import {
+  useAddReviewMutation,
+  useOwnedReviewsByMovieIdQuery,
+  useUpdateReviewMutation,
+} from '../../Reviews/api/reviewsApi';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Review } from '../../Reviews/models/review';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ValidationError from '../../../app/components/ValidationError';
+import Loading from '../../../app/components/Loading/Loading';
 
 interface Props {
   onSuccess: () => void;
@@ -19,16 +23,34 @@ export default function AddReview({ onSuccess }: Props) {
   const [hoverRating, setHoverRating] = useState(0);
   const [hoverSubtitle, setHoverSubtitle] = useState('');
   const [isTextAreaSelected, setIsTextAreaSelected] = useState(false);
-  const [addReview] = useAddReviewMutation();
   const { id: movieId } = useParams();
+  const [addReview] = useAddReviewMutation();
+  const [updateReview] = useUpdateReviewMutation();
+  const {
+    data: ownReviewData,
+    isFetching: isOwnReviewFetching,
+    refetch: refetchOwnedReview,
+  } = useOwnedReviewsByMovieIdQuery({
+    movieId: Number(movieId),
+  });
+
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm<Review>({
     resolver: zodResolver(Review),
   });
+
+  useEffect(() => {
+    if (ownReviewData) {
+      setValue('rating', ownReviewData.rating);
+      setValue('text', ownReviewData.text);
+      setValue('containsSpoilers', ownReviewData.containsSpoilers);
+    }
+  }, [ownReviewData, setValue]);
 
   function onHover(rating: number, subtitle: string) {
     setHoverRating(rating);
@@ -36,26 +58,38 @@ export default function AddReview({ onSuccess }: Props) {
   }
 
   async function handleOnSubmit(formData: FieldValues) {
-    const { data } = await addReview({
-      movieId: Number(movieId),
-      containsSpoilers: formData.containsSpoilers,
-      rating: formData.rating,
-      text: formData.text,
-    });
+    let isSuccess;
 
-    console.log(data);
+    if (ownReviewData) {
+      const { data } = await updateReview({
+        reviewId: ownReviewData.id ?? '',
+        movieId: Number(movieId),
+        containsSpoilers: formData.containsSpoilers,
+        rating: formData.rating,
+        text: formData.text,
+      });
 
-    // TODO build review endpoint to get review with id and fill in form
-    // TODO edit review
-    if (data?.location) {
-      const id = extractIdFromLocation(data?.location);
+      isSuccess = data !== undefined;
+    } else {
+      const { data } = await addReview({
+        movieId: Number(movieId),
+        containsSpoilers: formData.containsSpoilers,
+        rating: formData.rating,
+        text: formData.text,
+      });
 
-      console.log(id);
+      isSuccess = data?.location !== undefined;
+
+      await refetchOwnedReview();
+    }
+
+    if (isSuccess) {
+      console.log(isSuccess);
       onSuccess();
     }
   }
 
-  console.log(errors);
+  if (isOwnReviewFetching) return <Loading />;
 
   return (
     <form
@@ -86,7 +120,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 0 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 0 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -108,7 +142,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 1 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 1 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -130,7 +164,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 2 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 2 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -152,7 +186,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 3 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 3 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -174,7 +208,7 @@ export default function AddReview({ onSuccess }: Props) {
           ) : (
             <Star
               className="absolute -left-1 top-0.5"
-              {...(Number(watch('rating')) > 4 && { fill: 'yellow' })}
+              {...(Number(getValues('rating')) > 4 && { fill: 'yellow' })}
             />
           )}
         </label>
@@ -188,13 +222,24 @@ export default function AddReview({ onSuccess }: Props) {
         }
         {...register('text')}
         onFocus={() => setIsTextAreaSelected(true)}
-        onBlur={() => setIsTextAreaSelected(false)}
+        onBlur={() => {
+          setTimeout(() => {
+            setIsTextAreaSelected(false);
+          }, 50);
+        }}
       />
       <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <MobileCheckbox name="containsSpoilers" register={register} />
+        <MobileCheckbox
+          isChecked={ownReviewData?.containsSpoilers}
+          name="containsSpoilers"
+          register={register}
+        />
       </div>
-      <SubmitButton className="mb-2" text="Add review" />
+      <SubmitButton
+        className="mb-2"
+        text={ownReviewData === undefined ? 'Add review' : 'Update review'}
+      />
       <ValidationError
         isError={errors !== undefined}
         message={errors.rating?.message ?? ''}

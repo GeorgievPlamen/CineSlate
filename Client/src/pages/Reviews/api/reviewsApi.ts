@@ -10,6 +10,9 @@ const reviewsApi = cineslateApi.injectEndpoints({
     >({
       query: ({ movieId, page }) => `/reviews/${movieId}?page=${page}`,
     }),
+    ownedReviewsByMovieId: build.query<Review, { movieId: number }>({
+      query: ({ movieId }) => `reviews/own/${movieId}`,
+    }),
     addReview: build.mutation<
       { location: string | null },
       {
@@ -32,7 +35,35 @@ const reviewsApi = cineslateApi.injectEndpoints({
         };
       },
     }),
+    updateReview: build.mutation<
+      { location: string | null },
+      {
+        reviewId: string;
+        rating: number;
+        movieId: number;
+        text: string;
+        containsSpoilers: boolean;
+      }
+    >({
+      query: ({ reviewId, rating, movieId, text, containsSpoilers }) => ({
+        url: '/reviews/',
+        method: 'PUT',
+        body: { reviewId, rating, movieId, text, containsSpoilers },
+      }),
+      transformResponse: (_, meta) => {
+        const locationHeader = meta?.response?.headers?.get('Location') ?? null;
+
+        return {
+          location: locationHeader,
+        };
+      },
+    }),
   }),
 });
 
-export const { useReviewsByMovieIdQuery, useAddReviewMutation } = reviewsApi;
+export const {
+  useReviewsByMovieIdQuery,
+  useAddReviewMutation,
+  useOwnedReviewsByMovieIdQuery,
+  useUpdateReviewMutation,
+} = reviewsApi;

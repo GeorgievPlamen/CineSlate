@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const Review = z.object({
+  id: z.string().optional(),
   rating: z
     .string({ message: 'Rating is required.' })
     .min(1, 'Rating is required.')
