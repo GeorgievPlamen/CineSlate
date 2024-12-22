@@ -55,8 +55,6 @@ export default function AddReview({ onSuccess }: Props) {
     }
   }
 
-  console.log(errors);
-
   return (
     <form
       className="flex w-full flex-col items-center"

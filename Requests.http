@@ -87,7 +87,7 @@ GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
-### Review by movie Id
+### Owned Review by movie Id
 
 GET {{Api_HostAddress}}reviews/own/645757 HTTP/1.1
 content-type: application/json

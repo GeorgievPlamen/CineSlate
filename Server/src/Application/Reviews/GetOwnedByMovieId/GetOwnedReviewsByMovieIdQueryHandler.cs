@@ -8,16 +8,16 @@ using Domain.Users.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Reviews.GetByEmailAndMovieId;
+namespace Application.Reviews.GetOwnedByMovieId;
 
-public class GetReviewByEmailAndMovieIdQueryHandler(
+public class GetOwnedReviewsByMovieIdQueryHandler(
     IReviewRepository reviewRepository,
     IUserRepository userRepository,
     IHttpContextAccessor httpContextAccessor) :
-    IRequestHandler<GetReviewByEmailAndMovieIdQuery, Result<ReviewResponse>>
+    IRequestHandler<GetOwnedReviewsByMovieIdQuery, Result<ReviewResponse>>
 {
 
-    public async Task<Result<ReviewResponse>> Handle(GetReviewByEmailAndMovieIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<ReviewResponse>> Handle(GetOwnedReviewsByMovieIdQuery request, CancellationToken cancellationToken)
     {
         var httpContext = httpContextAccessor.HttpContext;
         if (httpContext is null)
