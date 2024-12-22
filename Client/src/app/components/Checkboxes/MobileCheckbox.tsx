@@ -5,6 +5,7 @@ interface Props {
   name: string;
   bgClassName?: string;
   className?: string;
+  isChecked?: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<FieldValues | any>;
@@ -14,9 +15,10 @@ export default function MobileCheckbox({
   name,
   className,
   bgClassName,
+  isChecked,
   register,
 }: Props) {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(isChecked);
 
   return (
     <div
