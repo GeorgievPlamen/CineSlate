@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
+using Application.Common;
 using Application.Users.Interfaces;
 using Domain.Users;
 using Domain.Users.ValueObjects;
@@ -31,10 +32,18 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
             .Select(m => m.Unwrap())
             .FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
-        => await dbContext.Users
+    public async Task<Paged<User>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var total = await dbContext.Users.CountAsync(cancellationToken);
+
+        var values = await dbContext.Users
             .AsNoTracking()
-            .Where(u => u.Email == email)
+            .OrderBy(u => u.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Select(u => u.Unwrap())
-            .FirstOrDefaultAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
+
+        return new Paged<User>(values, page, page * pageSize - total > 0, page > 1, total);
+    }
 }

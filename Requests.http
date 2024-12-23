@@ -71,6 +71,12 @@ GET {{Api_HostAddress}}users/me HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
+### Users Latest - Paged 
+
+GET {{Api_HostAddress}}users/1 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
 ### Users By Id 
 
 POST {{Api_HostAddress}}users/ HTTP/1.1
