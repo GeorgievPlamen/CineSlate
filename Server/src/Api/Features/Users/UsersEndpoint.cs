@@ -1,5 +1,7 @@
 using Api.Common;
 using Api.Features.Users.Requests;
+using Application.Common;
+using Application.Users.GetLatest;
 using Application.Users.GetUsers;
 using Application.Users.Login;
 using Application.Users.Me;
@@ -22,11 +24,15 @@ public static class UsersEndpoint
         var users = app.MapGroup(Uri);
 
         users.MapGet(Me, GetMeAsync).RequireAuthorization();
+        users.MapGet("/{page}", GetLatestUsersAsync);
 
         users.MapPost("/", GetUsersAsync);
         users.MapPost(Login, LoginAsync);
         users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
     }
+
+    private static async Task<IResult> GetLatestUsersAsync(int page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<UserResponse>>.Match(await mediatr.Send(new GetLatestUsersQuery(page), cancellationToken));
 
     private static async Task<IResult> GetUsersAsync([FromBody] GetUsersRequest request, ISender mediatr, CancellationToken cancellationToken)
         => Response<List<UserResponse>>.Match(await mediatr.Send(new GetUsersQuery(request.UserIds), cancellationToken));

@@ -23,6 +23,8 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
 
         builder.HasIndex(r => r.AuthorId);
 
+        builder.HasIndex(r => r.CreatedAt);
+
         builder.Property(r => r.CreatedBy)
             .IsRequired()
             .HasMaxLength(200);
