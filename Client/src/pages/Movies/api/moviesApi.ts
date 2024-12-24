@@ -16,6 +16,17 @@ const moviesApi = cineslateApi.injectEndpoints({
       { page: number; moviesBy: MoviesBy }
     >({
       query: ({ page, moviesBy }) => `/movies${moviesBy}?page=${page}`,
+      serializeQueryArgs: () => {
+        return 'getPagedMovies';
+      },
+      merge: (cache, newData) => {
+        cache.values.push(...newData.values);
+        cache.currentPage = newData.currentPage;
+        cache.totalCount = newData.totalCount;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
     }),
     movieDetails: build.query<MovieDetails, { id: string | undefined }>({
       query: ({ id }) => `/movies/${id}`,
