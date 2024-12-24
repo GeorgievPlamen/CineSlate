@@ -44,6 +44,6 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
             .Select(u => u.Unwrap())
             .ToListAsync(cancellationToken);
 
-        return new Paged<User>(values, page, page * pageSize - total > 0, page > 1, total);
+        return new Paged<User>(values, page, page * pageSize < total, page > 1, total);
     }
 }

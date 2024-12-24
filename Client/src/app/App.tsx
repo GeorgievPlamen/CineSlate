@@ -3,7 +3,6 @@ import Critics from '../pages/Critics/Critics';
 import Home from '../pages/Home';
 import Movies from '../pages/Movies/Movies';
 import Quizzess from '../pages/Quizzes/Quizzess';
-import Stories from '../pages/Stories/Stories';
 import { loginAction } from '../pages/Users/api/loginAction';
 import { registerAction } from '../pages/Users/api/registerAction';
 import Login from '../pages/Users/Login';
@@ -47,11 +46,6 @@ export default function App() {
               path: '/critics',
               index: true,
               element: <Critics />,
-            },
-            {
-              path: '/stories',
-              index: true,
-              element: <Stories />,
             },
             {
               path: '/quizzes',
