@@ -5,7 +5,9 @@ using Api.Features.Reviews;
 using Api.Features.Users;
 using Api.Middleware;
 using Application;
+using Application.Common.Tracing;
 using Infrastructure;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -47,21 +49,36 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
-builder.Logging.AddOpenTelemetry(opt =>
+
+var appConfig = builder.Configuration.GetSection("App").Get<App>();
+if (appConfig != null)
 {
-    opt.SetResourceBuilder(ResourceBuilder.CreateDefault()
-        .AddService("servicePlaceholder"))
-        .AddConsoleExporter();
-});
-builder.Services.AddOpenTelemetry()
-    .ConfigureResource(r => r
-        .AddService("servicePlaceholder"))
-    .WithTracing(t => t
-        .AddAspNetCoreInstrumentation()
-        .AddConsoleExporter())
-    .WithMetrics(m => m
-        .AddAspNetCoreInstrumentation()
-        .AddConsoleExporter());
+    builder.Services.AddSingleton(Options.Create(appConfig));
+    builder.Logging.AddOpenTelemetry(opt =>
+    {
+        opt.SetResourceBuilder(ResourceBuilder.CreateDefault()
+            .AddService(serviceName: appConfig.Name, serviceVersion: appConfig?.Version))
+            .AddConsoleExporter()
+            .AddOtlpExporter();
+    });
+    builder.Services.AddOpenTelemetry()
+        .ConfigureResource(r => r
+            .AddService(serviceName: appConfig.Name, serviceVersion: appConfig?.Version))
+        .WithTracing(t => t
+            .AddSource(appConfig.Name)
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddOtlpExporter())
+        .WithMetrics(m => m
+            .AddMeter(appConfig.Name)
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter()
+            .AddPrometheusExporter()
+            .AddOtlpExporter());
+}
 
 var app = builder.Build();
 
@@ -73,6 +90,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseMiddleware<TraceMiddleware>();
+app.MapPrometheusScrapingEndpoint();
 
 app.MapGet("api/", () =>
 {
