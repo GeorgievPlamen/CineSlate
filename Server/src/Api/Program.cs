@@ -6,6 +6,10 @@ using Api.Features.Users;
 using Api.Middleware;
 using Application;
 using Infrastructure;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -43,6 +47,21 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
+builder.Logging.AddOpenTelemetry(opt =>
+{
+    opt.SetResourceBuilder(ResourceBuilder.CreateDefault()
+        .AddService("servicePlaceholder"))
+        .AddConsoleExporter();
+});
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r
+        .AddService("servicePlaceholder"))
+    .WithTracing(t => t
+        .AddAspNetCoreInstrumentation()
+        .AddConsoleExporter())
+    .WithMetrics(m => m
+        .AddAspNetCoreInstrumentation()
+        .AddConsoleExporter());
 
 var app = builder.Build();
 
