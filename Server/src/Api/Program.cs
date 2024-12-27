@@ -5,7 +5,13 @@ using Api.Features.Reviews;
 using Api.Features.Users;
 using Api.Middleware;
 using Application;
+using Application.Common.Tracing;
 using Infrastructure;
+using Microsoft.Extensions.Options;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -44,6 +50,36 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
 
+var appConfig = builder.Configuration.GetSection("App").Get<App>();
+if (appConfig != null)
+{
+    builder.Services.AddSingleton(Options.Create(appConfig));
+    builder.Logging.AddOpenTelemetry(opt =>
+    {
+        opt.SetResourceBuilder(ResourceBuilder.CreateDefault()
+            .AddService(serviceName: appConfig.Name, serviceVersion: appConfig?.Version))
+            .AddConsoleExporter()
+            .AddOtlpExporter();
+    });
+    builder.Services.AddOpenTelemetry()
+        .ConfigureResource(r => r
+            .AddService(serviceName: appConfig.Name, serviceVersion: appConfig?.Version))
+        .WithTracing(t => t
+            .AddSource(appConfig.Name)
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddOtlpExporter())
+        .WithMetrics(m => m
+            .AddMeter(appConfig.Name)
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter()
+            .AddPrometheusExporter()
+            .AddOtlpExporter());
+}
+
 var app = builder.Build();
 
 app.MapScalarApiReference();
@@ -54,6 +90,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseMiddleware<TraceMiddleware>();
+app.MapPrometheusScrapingEndpoint();
 
 app.MapGet("api/", () =>
 {
