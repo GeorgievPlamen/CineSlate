@@ -10,6 +10,7 @@ const initialState: UserState = {
     email: '',
     username: '',
     token: '',
+    id: '',
   },
 };
 

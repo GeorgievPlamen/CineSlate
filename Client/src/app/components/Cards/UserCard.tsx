@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { User } from '../../../pages/Users/Models/userType';
 
 interface Props {
@@ -8,8 +9,11 @@ interface Props {
 export default function UserCard({ user, className }: Props) {
   const username = user.username?.split('#');
 
+  console.log(user.id);
+
   return (
-    <div
+    <NavLink
+      to={`${username[0]}.${username[1]}.${user.id}`}
       className={
         'flex rounded-2xl border border-grey bg-background p-1 ' + className
       }
@@ -27,6 +31,6 @@ export default function UserCard({ user, className }: Props) {
           </p>
         </div>
       </div>
-    </div>
+    </NavLink>
   );
 }

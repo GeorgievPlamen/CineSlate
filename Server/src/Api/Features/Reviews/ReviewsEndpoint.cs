@@ -29,7 +29,7 @@ public static class ReviewsEndpoint
         reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
         reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous();
         reviews.MapGet("/own/{movieId}", GetOwnedReviewsByMovieIdAsync);
-        reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync);
+        reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync).AllowAnonymous();
 
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
 
