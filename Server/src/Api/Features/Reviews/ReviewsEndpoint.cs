@@ -6,6 +6,7 @@ using Application.Reviews;
 using Application.Reviews.Create;
 using Application.Reviews.Get;
 using Application.Reviews.GetByMovieId;
+using Application.Reviews.GetByUserIdQuery;
 using Application.Reviews.GetOwnedByMovieId;
 using Application.Reviews.Update;
 using Domain.Movies.Reviews.ValueObjects;
@@ -28,10 +29,15 @@ public static class ReviewsEndpoint
         reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
         reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous();
         reviews.MapGet("/own/{movieId}", GetOwnedReviewsByMovieIdAsync);
+        reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync);
+
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
+
         reviews.MapPut(Update, UpdateReviewAsync);
+
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
+
 
     private static async Task<IResult> GetReviewsAsync(int page, ReviewsBy? reviewsBy, ISender mediatr, CancellationToken cancellationToken)
         => Response<Paged<ReviewResponse>>.Match(await mediatr.Send(new GetReviewsQuery(page, reviewsBy ?? ReviewsBy.Latest), cancellationToken));
@@ -41,6 +47,9 @@ public static class ReviewsEndpoint
 
     private static async Task<IResult> GetOwnedReviewsByMovieIdAsync(int movieId, ISender mediatr, CancellationToken cancellationToken)
         => Response<ReviewResponse>.Match(await mediatr.Send(new GetOwnedReviewsByMovieIdQuery(movieId), cancellationToken));
+
+    private static async Task<IResult> GetReviewsByUserIdAsync(string userId, int page, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<ReviewResponse>>.Match(await mediatr.Send(new GetReviewsByUserIdQuery(Guid.Parse(userId), page), cancellationToken));
 
     private static async Task<IResult> CreateReviewAsync(
         CreateReviewRequest request,

@@ -32,6 +32,13 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
             .Select(m => m.Unwrap())
             .FirstOrDefaultAsync(cancellationToken);
 
+    public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken)
+        => await dbContext.Users
+            .AsNoTracking()
+            .Where(u => u.Id == userId.Value)
+            .Select(m => m.Unwrap())
+            .FirstOrDefaultAsync(cancellationToken);
+
     public async Task<Paged<User>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
         var total = await dbContext.Users.CountAsync(cancellationToken);

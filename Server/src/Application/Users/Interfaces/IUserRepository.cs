@@ -8,6 +8,7 @@ public interface IUserRepository
 {
     Task<List<User>> GetManyByIdAsync(IEnumerable<UserId> userIds, CancellationToken cancellationToken);
     Task<User?> GetAsync(string email, CancellationToken cancellationToken);
+    Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken);
     Task<bool> CreateAsync(User user, CancellationToken cancellationToken);
     Task<Paged<User>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken);
 }

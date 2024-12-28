@@ -58,6 +58,29 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             total);
     }
 
+    public async Task<Paged<Review>> GetReviewsByAuthorIdAsync(UserId userId, int page, int count, CancellationToken cancellationToken)
+    {
+        var result = await dbContext.Reviews
+            .AsNoTracking()
+            .Include(r => r.Movie)
+            .Where(r => r.AuthorId == userId.Value)
+            .OrderBy(r => r.CreatedAt)
+            .Take(count)
+            .Skip(count * (page - 1))
+            .ToListAsync(cancellationToken);
+
+        var total = await dbContext.Reviews
+            .Where(r => r.AuthorId == userId.Value)
+            .CountAsync(cancellationToken);
+
+        return new Paged<Review>(
+            result.Select(r => r.Unwrap()).ToList(),
+            page,
+            total - (page * count) > 0,
+            page > 1,
+            total);
+    }
+
     public async Task<Review?> GetReviewByAuthorIdAndMovieIdAsync(UserId userId, MovieId movieId, CancellationToken cancellationToken)
     {
         var result = await dbContext.Reviews
