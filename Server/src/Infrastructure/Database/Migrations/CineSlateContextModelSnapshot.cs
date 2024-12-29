@@ -205,6 +205,8 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
@@ -263,6 +265,8 @@ namespace Infrastructure.Database.Migrations
                         });
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Email")
                         .IsUnique();
