@@ -49,7 +49,7 @@ public static class ReviewsEndpoint
         => Response<ReviewResponse>.Match(await mediatr.Send(new GetOwnedReviewsByMovieIdQuery(movieId), cancellationToken));
 
     private static async Task<IResult> GetReviewsByUserIdAsync(string userId, int page, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<ReviewResponse>>.Match(await mediatr.Send(new GetReviewsByUserIdQuery(Guid.Parse(userId), page), cancellationToken));
+        => Response<Paged<ReviewWithMovieDetailsResponse>>.Match(await mediatr.Send(new GetReviewsByUserIdQuery(Guid.Parse(userId), page), cancellationToken));
 
     private static async Task<IResult> CreateReviewAsync(
         CreateReviewRequest request,

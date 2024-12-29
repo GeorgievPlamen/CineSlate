@@ -84,7 +84,6 @@ export default function AddReview({ onSuccess }: Props) {
     }
 
     if (isSuccess) {
-      console.log(isSuccess);
       onSuccess();
     }
   }

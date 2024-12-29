@@ -9,13 +9,12 @@ interface Props {
 export default function UserCard({ user, className }: Props) {
   const username = user.username?.split('#');
 
-  console.log(user.id);
-
   return (
     <NavLink
       to={`${username[0]}.${username[1]}.${user.id}`}
       className={
-        'flex rounded-2xl border border-grey bg-background p-1 ' + className
+        'flex rounded-2xl border border-grey bg-background p-1 hover:border-primary ' +
+        className
       }
     >
       <img
