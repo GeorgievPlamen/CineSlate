@@ -39,7 +39,7 @@ function CriticDetails() {
         <h3 className="my-4 ml-2 font-arvo text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviewData?.values.map((r) => (
-            <MovieReviewCard key={r.id} review={r} />
+            <MovieReviewCard key={r.movieId} review={r} />
           ))}
           {reviewData?.hasNextPage && (
             <Button

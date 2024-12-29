@@ -84,6 +84,8 @@ services:
       - "9090:9090"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - migrate
       
   grafana:
     image: grafana/grafana

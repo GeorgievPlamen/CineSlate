@@ -140,9 +140,19 @@ namespace Infrastructure.Database.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CreatedAt",
+                table: "Reviews",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_MovieId",
                 table: "Reviews",
                 column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CreatedAt",
+                table: "Users",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",

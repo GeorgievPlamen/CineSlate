@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CineSlateContext))]
-    [Migration("20241220034838_Init")]
+    [Migration("20241229132616_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -208,6 +208,8 @@ namespace Infrastructure.Database.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
@@ -266,6 +268,8 @@ namespace Infrastructure.Database.Migrations
                         });
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Email")
                         .IsUnique();
