@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Review } from '../../../pages/Reviews/models/review';
 import Button from '../Buttons/Button';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   review: Review;
@@ -9,7 +10,7 @@ interface Props {
 export default function ReviewCard({ review }: Props) {
   const [revealed, setRevealed] = useState(!review.containsSpoilers);
 
-  const username = review.authorUsername?.split('#');
+  const username = review.authorUsername?.split('#') ?? '';
 
   return (
     <div className="flex rounded-2xl border border-grey bg-background p-1">
@@ -21,8 +22,13 @@ export default function ReviewCard({ review }: Props) {
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
-            {username![0]}
-            <span className="text-xs text-grey"> #{username![1]}</span>
+            <NavLink
+              className={'hover:text-primary'}
+              to={`/critics/${username[0]}.${username[1]}.${review.authorId}`}
+            >
+              {username[0]}
+            </NavLink>
+            <span className="text-xs text-grey"> #{username[1]}</span>
           </p>
           <p>⭐{review.rating}</p>
         </div>

@@ -136,3 +136,9 @@ Authorization: {{Token}}
     "text": "Did not like it...",
     "containsSpoilers": false
 }
+
+### Review By UserId 
+
+GET   {{Api_HostAddress}}reviews/user/f9aa315b-d5d1-4ca8-86f1-77b85b806084?page=1 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}

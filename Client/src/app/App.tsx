@@ -9,6 +9,7 @@ import Login from '../pages/Users/Login';
 import Register from '../pages/Users/Register';
 import Layout from './layout/Layout';
 import MovieDetails from '../pages/Movies/Details/MovieDetails';
+import CriticDetails from '../pages/CriticDetails/CriticDetails';
 
 export default function App() {
   return (
@@ -46,6 +47,10 @@ export default function App() {
               path: '/critics',
               index: true,
               element: <Critics />,
+            },
+            {
+              path: '/critics/:user',
+              element: <CriticDetails />,
             },
             {
               path: '/quizzes',

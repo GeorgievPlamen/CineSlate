@@ -5,7 +5,7 @@ import { cineslateApi } from '../api/cineslateApi';
 export const store = configureStore({
   reducer: {
     users: userSlice.reducer,
-    [cineslateApi.reducerPath]: cineslateApi.reducer
+    [cineslateApi.reducerPath]: cineslateApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(cineslateApi.middleware),

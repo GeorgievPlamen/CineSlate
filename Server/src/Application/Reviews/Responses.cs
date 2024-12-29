@@ -11,6 +11,13 @@ public record ReviewResponse(
     string AuthorUsername,
     bool ContainsSpoilers);
 
+public record ReviewWithMovieDetailsResponse(
+    string Title,
+    int MovieId,
+    DateOnly ReleaseDate,
+    string PosterPath,
+    ReviewResponse ReviewResponse);
+
 public static class Converter
 {
     public static ReviewResponse ToResponse(this Review review, string authorUsername) => new(
