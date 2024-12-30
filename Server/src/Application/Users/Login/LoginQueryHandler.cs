@@ -32,7 +32,8 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
         LoginResponse result = new(
             foundUser.Username.Value,
             foundUser.Email,
-            token);
+            token,
+            foundUser.Id.Value);
 
         return Result<LoginResponse>.Success(result);
     }

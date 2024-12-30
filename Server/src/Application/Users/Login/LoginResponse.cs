@@ -3,4 +3,5 @@ namespace Application.Users.Login;
 public record LoginResponse(
     string Username,
     string Email,
-    string Token);
+    string Token,
+    Guid Id);
