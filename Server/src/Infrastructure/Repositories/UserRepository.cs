@@ -54,8 +54,10 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
         return new Paged<User>(values, page, page * pageSize < total, page > 1, total);
     }
 
-    public Task<bool> UpdateAsync(User user, CancellationToken cancellationToken)
+    public async Task<bool> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        dbContext.Update(user);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }
