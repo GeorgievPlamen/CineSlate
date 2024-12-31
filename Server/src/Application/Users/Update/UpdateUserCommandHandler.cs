@@ -21,6 +21,6 @@ public class UpdateUserCommandHandler(IUserRepository userRepository) : IRequest
         if (!success)
             return Result<MeResponse>.Failure(Error.ServerError());
 
-        return Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value));
+        return Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value, user.Bio));
     }
 }

@@ -1,5 +1,5 @@
-# @Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+# @Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
@@ -74,6 +74,12 @@ Authorization: {{Token}}
 ### Users Latest - Paged 
 
 GET {{Api_HostAddress}}users/1 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}
+
+### User Upade
+
+PUT {{Api_HostAddress}}users/91c2776d-7806-4277-94c9-e620709afadb?bio=test HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 

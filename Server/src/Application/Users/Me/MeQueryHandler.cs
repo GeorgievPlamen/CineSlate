@@ -32,7 +32,8 @@ public class MeQueryHandler(
         var result = new MeResponse(
             foundUser.Username.Value,
             foundUser.Email,
-            foundUser.Id.Value);
+            foundUser.Id.Value,
+            foundUser.Bio);
 
         return Result<MeResponse>.Success(result);
     }

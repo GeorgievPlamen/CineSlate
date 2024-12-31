@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
 using Application.Common;
 using Application.Users.Interfaces;
 using Domain.Users;
@@ -56,7 +54,13 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
 
     public async Task<bool> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        dbContext.Update(user);
+        var savedUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id.Value, cancellationToken);
+        if (savedUser is null)
+            return false;
+
+        var userModel = user.ToModel();
+        savedUser.Bio = userModel.Bio;
+        dbContext.Update(savedUser);
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }

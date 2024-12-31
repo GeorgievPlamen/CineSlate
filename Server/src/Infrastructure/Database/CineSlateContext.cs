@@ -32,7 +32,7 @@ public class CineSlateContext(
             entry.Entity.SetUpdated(email, DateTimeOffset.UtcNow);
 
             if (entry.State == EntityState.Added)
-                entry.Entity.SetCreated(email, DateTimeOffset.UtcNow);
+                entry.Entity.SetCreated(email ?? "Unknown", DateTimeOffset.UtcNow);
         }
 
         return await base.SaveChangesAsync(cancellationToken);
