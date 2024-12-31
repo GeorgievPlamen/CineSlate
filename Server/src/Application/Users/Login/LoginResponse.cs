@@ -4,4 +4,5 @@ public record LoginResponse(
     string Username,
     string Email,
     string Token,
-    Guid Id);
+    Guid Id,
+    string Bio);

@@ -1,8 +1,14 @@
-import { useAppSelector } from '../../app/store/reduxHooks';
+import { useGetReviewsByAuthorIdQuery } from '../CriticDetails/api/criticDetailsApi';
+import { useUser } from '../Users/userSlice';
 
 function MyDetails() {
-  const user = useAppSelector((store) => store.users.user);
-  console.log(user.id);
+  const user = useUser();
+  const { data: reviewData } = useGetReviewsByAuthorIdQuery({
+    id: user.id ?? '',
+    page: 1,
+  });
+  console.log(reviewData?.values);
+
   return <div>MyDetails</div>;
 }
 export default MyDetails;
