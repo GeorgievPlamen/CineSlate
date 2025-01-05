@@ -12,7 +12,11 @@ function MyDetails() {
 
   console.log(reviewData?.values);
 
-  return <div>MyDetails</div>;
+  return (
+    <>
+      <div>MyDetails</div>
+    </>
+  );
 }
 
 export default MyDetails;

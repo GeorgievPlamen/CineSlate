@@ -11,7 +11,7 @@ export default function UserCard({ user, className }: Props) {
 
   return (
     <NavLink
-      to={`${username[0]}.${username[1]}.${user.id}`}
+      to={`${user.id}`}
       className={
         'flex rounded-2xl border border-grey bg-background p-1 hover:border-primary ' +
         className

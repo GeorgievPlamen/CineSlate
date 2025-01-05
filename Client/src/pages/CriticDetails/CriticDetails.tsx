@@ -4,17 +4,23 @@ import { useState } from 'react';
 import { useGetReviewsByAuthorIdQuery } from './api/criticDetailsApi';
 import { BACKUP_PROFILE } from '../../app/config';
 import MovieReviewCard from '../../app/components/Cards/MovieReviewCard';
+import { useCriticById } from '../Critics/criticsSlice';
 
 function CriticDetails() {
-  const { user } = useParams();
-  const userData = user?.split('.') ?? '';
+  const { id } = useParams();
 
   const [reviewsPage, setReviewsPage] = useState(1);
   const { data: reviewData, isFetching: isReviewsFetching } =
     useGetReviewsByAuthorIdQuery({
-      id: userData[2],
+      id: id ?? '',
       page: reviewsPage,
     });
+
+  const critic = useCriticById(id);
+
+  console.log(critic);
+
+  // TODO if critic empty - fetch
 
   return (
     <article className="m-auto flex w-2/3 flex-col">
@@ -23,7 +29,7 @@ function CriticDetails() {
           <div className="flex w-1/4 gap-2">
             <img src={BACKUP_PROFILE} alt="profile-pic" className="h-32 w-32" />
             <div className="flex flex-col">
-              <h2 className="mt-5 font-arvo text-xl">{userData[0]}</h2>
+              <h2 className="mt-5 font-arvo text-xl">{id}</h2>
               <p className="font-roboto text-sm text-grey">[bio placeholder]</p>
             </div>
           </div>

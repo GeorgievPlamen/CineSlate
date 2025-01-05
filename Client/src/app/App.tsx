@@ -1,4 +1,9 @@
-import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Link,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 import Critics from '../pages/Critics/Critics';
 import Home from '../pages/Home';
 import Movies from '../pages/Movies/Movies';
@@ -27,8 +32,7 @@ export default function App() {
           children: [
             {
               path: '*',
-              index: true,
-              element: <Home />,
+              element: <Navigate to={'/'} />,
             },
             {
               path: '/',
@@ -37,7 +41,6 @@ export default function App() {
             },
             {
               path: '/movies',
-              index: true,
               element: <Movies />,
             },
             {
@@ -46,16 +49,14 @@ export default function App() {
             },
             {
               path: '/critics',
-              index: true,
               element: <Critics />,
             },
             {
-              path: '/critics/:user',
+              path: '/critics/:id',
               element: <CriticDetails />,
             },
             {
               path: '/quizzes',
-              index: true,
               element: <Quizzess />,
             },
             {
