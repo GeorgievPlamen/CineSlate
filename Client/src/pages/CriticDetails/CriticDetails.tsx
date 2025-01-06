@@ -10,17 +10,14 @@ import { useLazyGetUsersByIdQuery } from '../Users/api/userApiRTK';
 function CriticDetails() {
   const { id } = useParams();
   const [getUsersByIds] = useLazyGetUsersByIdQuery();
-
+  const { dispatchCritics } = useSetCritics();
+  const critic = useCriticById(id);
   const [reviewsPage, setReviewsPage] = useState(1);
   const { data: reviewData, isFetching: isReviewsFetching } =
     useGetReviewsByAuthorIdQuery({
       id: id ?? '',
       page: reviewsPage,
     });
-
-  const critic = useCriticById(id);
-
-  const { dispatchCritics } = useSetCritics();
 
   useEffect(() => {
     async function GetUsers() {
