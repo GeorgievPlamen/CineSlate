@@ -90,7 +90,7 @@ content-type: application/json
 Authorization: {{Token}}
 
 {
-    "UserIds": ["f9aa315b-d5d1-4ca8-86f1-77b85b806084", "5cdf56d4-6626-4f2b-9b05-968e1b8d99ce" , "7962e6b4-59e5-4d53-b1b9-a685cd1650ac"]
+    "UserIds": ["91c2776d-7806-4277-94c9-e620709afadb"]
 }
 
 ### Review Latest 

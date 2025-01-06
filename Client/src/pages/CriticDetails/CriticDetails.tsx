@@ -1,13 +1,15 @@
 import { useParams } from 'react-router-dom';
 import Button from '../../app/components/Buttons/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetReviewsByAuthorIdQuery } from './api/criticDetailsApi';
 import { BACKUP_PROFILE } from '../../app/config';
 import MovieReviewCard from '../../app/components/Cards/MovieReviewCard';
-import { useCriticById } from '../Critics/criticsSlice';
+import { Critic, useCriticById, useSetCritics } from '../Critics/criticsSlice';
+import { useLazyGetUsersByIdQuery } from '../Users/api/userApiRTK';
 
 function CriticDetails() {
   const { id } = useParams();
+  const [getUsersByIds] = useLazyGetUsersByIdQuery();
 
   const [reviewsPage, setReviewsPage] = useState(1);
   const { data: reviewData, isFetching: isReviewsFetching } =
@@ -18,9 +20,18 @@ function CriticDetails() {
 
   const critic = useCriticById(id);
 
-  console.log(critic);
+  const { dispatchCritics } = useSetCritics();
 
-  // TODO if critic empty - fetch
+  useEffect(() => {
+    async function GetUsers() {
+      const users = await getUsersByIds({ ids: [id ?? ''] });
+      if (users.data) dispatchCritics([...users.data] as Critic[]);
+    }
+
+    if (!critic && id) {
+      GetUsers();
+    }
+  }, [critic, dispatchCritics, getUsersByIds, id]);
 
   return (
     <article className="m-auto flex w-2/3 flex-col">
@@ -29,8 +40,10 @@ function CriticDetails() {
           <div className="flex w-1/4 gap-2">
             <img src={BACKUP_PROFILE} alt="profile-pic" className="h-32 w-32" />
             <div className="flex flex-col">
-              <h2 className="mt-5 font-arvo text-xl">{id}</h2>
-              <p className="font-roboto text-sm text-grey">[bio placeholder]</p>
+              <h2 className="mt-5 font-arvo text-xl">
+                {critic?.username.split('#')[0]}
+              </h2>
+              <p className="font-roboto text-sm text-grey">{critic?.bio}</p>
             </div>
           </div>
           <div className="p-2">

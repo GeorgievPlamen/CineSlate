@@ -18,7 +18,17 @@ const userApiRTK = cineslateApi.injectEndpoints({
         return currentArg?.page !== previousArg?.page;
       },
     }),
+
+    getUsersById: build.query<User[], { ids: string[] }>({
+      query: ({ ids }) => ({
+        url: '/users',
+        method: 'POST',
+        body: {
+          UserIds: ids,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetLatestUsersQuery } = userApiRTK;
+export const { useGetLatestUsersQuery, useLazyGetUsersByIdQuery } = userApiRTK;

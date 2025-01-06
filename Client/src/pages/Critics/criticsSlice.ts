@@ -39,7 +39,7 @@ export function useCriticById(id?: string) {
   return critics.find((c) => c.id === id);
 }
 
-export function useSetCritics(users: User[] | undefined) {
+export function useSetCritics(users?: User[]) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -47,4 +47,8 @@ export function useSetCritics(users: User[] | undefined) {
 
     dispatch(setCritics(users as Critic[]));
   }, [dispatch, users]);
+
+  const dispatchCritics = (critics: Critic[]) => dispatch(setCritics(critics));
+
+  return { dispatchCritics };
 }
