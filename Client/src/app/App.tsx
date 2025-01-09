@@ -1,4 +1,9 @@
-import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Link,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 import Critics from '../pages/Critics/Critics';
 import Home from '../pages/Home';
 import Movies from '../pages/Movies/Movies';
@@ -10,6 +15,7 @@ import Register from '../pages/Users/Register';
 import Layout from './layout/Layout';
 import MovieDetails from '../pages/Movies/Details/MovieDetails';
 import CriticDetails from '../pages/CriticDetails/CriticDetails';
+import MyDetails from '../pages/MyDetails/MyDetails';
 
 export default function App() {
   return (
@@ -26,8 +32,7 @@ export default function App() {
           children: [
             {
               path: '*',
-              index: true,
-              element: <Home />,
+              element: <Navigate to={'/'} />,
             },
             {
               path: '/',
@@ -36,7 +41,6 @@ export default function App() {
             },
             {
               path: '/movies',
-              index: true,
               element: <Movies />,
             },
             {
@@ -45,16 +49,14 @@ export default function App() {
             },
             {
               path: '/critics',
-              index: true,
               element: <Critics />,
             },
             {
-              path: '/critics/:user',
+              path: '/critics/:id',
               element: <CriticDetails />,
             },
             {
               path: '/quizzes',
-              index: true,
               element: <Quizzess />,
             },
             {
@@ -66,6 +68,10 @@ export default function App() {
               path: '/register',
               element: <Register />,
               action: registerAction,
+            },
+            {
+              path: '/my-details',
+              element: <MyDetails />,
             },
           ],
         },

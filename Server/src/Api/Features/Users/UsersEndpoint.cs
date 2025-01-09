@@ -6,6 +6,7 @@ using Application.Users.GetUsers;
 using Application.Users.Login;
 using Application.Users.Me;
 using Application.Users.Register;
+using Application.Users.Update;
 using Domain.Users.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,13 @@ public static class UsersEndpoint
         users.MapPost("/", GetUsersAsync);
         users.MapPost(Login, LoginAsync);
         users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
+        users.MapPut("/{id}", UpdateAsync).RequireAuthorization();
     }
+
+    private static async Task<IResult> UpdateAsync(Guid id, string? bio, ISender mediatr, CancellationToken cancellationToken)
+        => Response<MeResponse>.Match(await mediatr.Send(
+            new UpdateUserCommand(UserId.Create(id), bio ?? string.Empty),
+            cancellationToken));
 
     private static async Task<IResult> GetLatestUsersAsync(int page, ISender mediatr, CancellationToken cancellationToken)
         => Response<Paged<UserResponse>>.Match(await mediatr.Send(new GetLatestUsersQuery(page), cancellationToken));

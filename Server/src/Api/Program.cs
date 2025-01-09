@@ -44,7 +44,7 @@ builder.Services.AddCors(opt =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment.IsDevelopment());
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();

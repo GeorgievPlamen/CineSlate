@@ -21,7 +21,8 @@ public static class InfrastructureServices
 {
     public static IServiceCollection AddInfrastructureServices(
         this IServiceCollection services,
-        ConfigurationManager configuration)
+        ConfigurationManager configuration,
+        bool isDevelopment)
     {
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
@@ -42,8 +43,14 @@ public static class InfrastructureServices
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
+
         services.AddDbContext<CineSlateContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("CineSlate")));
+        {
+            options.UseNpgsql(configuration.GetConnectionString("CineSlate"));
+
+            if (isDevelopment)
+                options.EnableSensitiveDataLogging();
+        });
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();

@@ -17,7 +17,7 @@ export async function loginAction({
 
     const user = await userApi.login(input);
 
-    sessionStorage.setItem(SESSION_JWT, user?.token);
+    sessionStorage.setItem(SESSION_JWT, user?.token ?? '');
 
     return { user };
   } catch (error) {

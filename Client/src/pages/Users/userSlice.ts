@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from './Models/userType';
+import { useAppSelector } from '../../app/store/reduxHooks';
 
 interface UserState {
   user: User;
@@ -23,5 +24,9 @@ export const userSlice = createSlice({
     },
   },
 });
+
+export function useUser() {
+  return useAppSelector((store) => store.users.user);
+}
 
 export const { setUser } = userSlice.actions;

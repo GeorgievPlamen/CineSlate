@@ -4,10 +4,13 @@ import Loading from '../../app/components/Loading/Loading';
 import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
 import UserCard from '../../app/components/Cards/UserCard';
 import Button from '../../app/components/Buttons/Button';
+import { useSetCritics } from './criticsSlice';
 
 function Critics() {
   const [page, setPage] = useState(1);
   const { data, isFetching, isError } = useGetLatestUsersQuery({ page });
+
+  useSetCritics(data?.values);
 
   if (isFetching) return <Loading />;
   if (isError) return <ErrorMessage />;

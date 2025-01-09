@@ -11,4 +11,5 @@ public interface IUserRepository
     Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken);
     Task<bool> CreateAsync(User user, CancellationToken cancellationToken);
     Task<Paged<User>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken);
+    Task<bool> UpdateAsync(User user, CancellationToken cancellationToken);
 }

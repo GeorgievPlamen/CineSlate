@@ -14,12 +14,10 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
     public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var foundUser = await _usersRepository.GetAsync(request.Email, cancellationToken);
-
         if (foundUser is null)
             return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
 
         bool hasValidPassword = _userIdentity.ValidatePassword(request.Password, foundUser.PasswordHash);
-
         if (!hasValidPassword)
             return Result<LoginResponse>.Failure(UserErrors.NotFound(request.Email));
 
@@ -32,7 +30,9 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
         LoginResponse result = new(
             foundUser.Username.Value,
             foundUser.Email,
-            token);
+            token,
+            foundUser.Id.Value,
+            foundUser.Bio);
 
         return Result<LoginResponse>.Success(result);
     }

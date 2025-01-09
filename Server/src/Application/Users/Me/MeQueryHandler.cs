@@ -22,18 +22,18 @@ public class MeQueryHandler(
             return Result<MeResponse>.Failure(Error.ServerError());
 
         var email = _httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-
         if (email is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound());
 
         var foundUser = await _userRepository.GetAsync(email.Value, cancellationToken);
-
         if (foundUser is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound());
 
         var result = new MeResponse(
             foundUser.Username.Value,
-            foundUser.Email);
+            foundUser.Email,
+            foundUser.Id.Value,
+            foundUser.Bio);
 
         return Result<MeResponse>.Success(result);
     }

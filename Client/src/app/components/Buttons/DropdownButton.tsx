@@ -28,11 +28,11 @@ export default function DropdownButton({ children }: Props) {
       >
         <li className="text-nowrap">
           <NavLink
-            to="/reviews"
+            to="/my-details"
             className={({ isActive }) => ` ${isActive ? 'underline' : null}`}
             onClick={() => setIsListActive(false)}
           >
-            Reviews
+            My Details
           </NavLink>
         </li>
         <li className="text-nowrap">

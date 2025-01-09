@@ -13,7 +13,8 @@ public static class UserMappings
             Username = user.Username,
             Email = user.Email,
             PasswordHash = user.PasswordHash,
-            Roles = user.Role
+            Roles = user.Role,
+            Bio = user.Bio
         };
     public static User Unwrap(this UserModel model)
          => User.Create(
@@ -21,5 +22,6 @@ public static class UserMappings
             model.Username.OnlyName,
             model.Email,
             model.PasswordHash,
+            model.Bio,
             model.Roles);
 }

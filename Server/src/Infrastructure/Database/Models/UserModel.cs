@@ -9,6 +9,7 @@ public class UserModel : BaseModel
     public Guid Id { get; set; }
     public Username Username { get; set; } = null!;
     public string Email { get; set; } = null!;
+    public string Bio { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = null!;
     public Roles Roles { get; set; }
 }
