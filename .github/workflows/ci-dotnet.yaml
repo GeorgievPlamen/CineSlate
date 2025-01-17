@@ -29,7 +29,7 @@ jobs:
 
       - name: Add projects to solution
         working-directory: ./Server
-        run: dotnet sln add **/*.csproj
+        run: dotnet sln add **/**/*.csproj
 
       - name: Restore dependencies
         working-directory: ./Server
