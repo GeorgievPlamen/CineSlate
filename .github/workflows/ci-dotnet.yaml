@@ -24,10 +24,12 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Add solution
+        working-directory: ./Server
         run: dotnet new sln
 
       - name: Add projects to solution
-        run: dotnet sln add **/**/*.csproj
+        working-directory: ./Server
+        run: dotnet sln add **/*.csproj
 
       - name: Restore dependencies
         working-directory: ./Server
