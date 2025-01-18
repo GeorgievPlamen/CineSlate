@@ -36,7 +36,7 @@ jobs:
         run: dotnet restore
 
       - name: Cat Server
-        working-directory: ./Server/tests/ApiTests/
+        working-directory: ./Server
         run: |
           ls
           cat Server.sln
