@@ -35,6 +35,18 @@ jobs:
         working-directory: ./Server
         run: dotnet restore
 
+      - name: Cat proj
+        working-directory: ./Server/tests/ApiTests/
+        run: |
+          ls
+          cat ApiTests.csproj
+
+      - name: Cat proj Api
+        working-directory: ./Server/src/Api/
+        run: |
+          ls
+          cat Api.csproj
+
       - name: Build
         working-directory: ./Server
         run: dotnet build --no-restore --configuration Release
