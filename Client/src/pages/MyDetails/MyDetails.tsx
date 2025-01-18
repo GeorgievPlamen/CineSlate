@@ -1,42 +1,75 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '../../app/components/Buttons/Button';
 import MovieReviewCard from '../../app/components/Cards/MovieReviewCard';
 import { BACKUP_PROFILE } from '../../app/config';
 import { useGetReviewsByAuthorIdQuery } from '../CriticDetails/api/criticDetailsApi';
-import { useUser } from '../Users/userSlice';
+import { useDispatchUser, useUser } from '../Users/userSlice';
 import { useUpdateUserMutation } from './api/myDetailsApi';
+import EditIcon from '../../app/Icons/EditIcon';
+import { CheckIcon } from '@heroicons/react/16/solid';
+import TextField from '../../app/components/Fields/TextField';
+import { useForm } from 'react-hook-form';
+import { UserModel } from './models/UserModel';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 function MyDetails() {
   const user = useUser();
   const [updateUser] = useUpdateUserMutation();
   const [reviewsPage, setReviewsPage] = useState(1);
+  const [editing, setEditing] = useState(false);
+  const { setMyBio } = useDispatchUser();
 
-  const {
-    data: reviewData,
-    isFetching: isReviewsFetching,
-    refetch,
-  } = useGetReviewsByAuthorIdQuery({
-    id: user.id ?? '',
-    page: reviewsPage,
+  const { data: reviewData, isFetching: isReviewsFetching } =
+    useGetReviewsByAuthorIdQuery(
+      {
+        id: user?.id ?? '',
+        page: reviewsPage,
+      },
+      { skip: !user.id }
+    );
+
+  const { register, getValues } = useForm<UserModel>({
+    resolver: zodResolver(UserModel),
   });
 
-  useEffect(() => {
-    if (user?.id && user?.id?.length > 0) {
-      refetch();
+  async function handleEdit() {
+    if (editing) {
+      const { bio } = getValues();
+
+      if (bio && user.id) {
+        await updateUser({ bio: bio, id: user?.id });
+        setMyBio(bio);
+      }
     }
-  }, [refetch, user]);
+
+    setEditing(!editing);
+  }
 
   return (
     <article className="m-auto flex w-2/3 flex-col">
       <section className="mt-5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex w-1/4 gap-2">
+          <div className="relative flex w-1/4 gap-2">
             <img src={BACKUP_PROFILE} alt="profile-pic" className="h-32 w-32" />
+            <Button
+              className="absolute bottom-1 left-24 min-h-8 min-w-8"
+              onClick={handleEdit}
+            >
+              {editing ? <CheckIcon /> : <EditIcon />}
+            </Button>
             <div className="flex flex-col">
-              <h2 className="mt-5 font-arvo text-xl">
+              <h2 className="mb-2 mt-5 min-w-44 font-arvo text-xl">
                 {user?.username.split('#')[0]}
               </h2>
-              <p className="font-roboto text-sm text-grey">{user?.bio}</p>
+              {editing ? (
+                <TextField
+                  defaultValue={user?.bio}
+                  register={register('bio')}
+                  className="font-roboto text-sm text-grey"
+                />
+              ) : (
+                <p className="font-roboto text-sm text-grey">{user?.bio}</p>
+              )}
             </div>
           </div>
           <div className="p-2">

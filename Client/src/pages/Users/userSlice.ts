@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from './Models/userType';
-import { useAppSelector } from '../../app/store/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../app/store/reduxHooks';
 
 interface UserState {
   user: User;
@@ -22,6 +22,9 @@ export const userSlice = createSlice({
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
+    setBio: (state, action: PayloadAction<string>) => {
+      state.user.bio = action.payload;
+    },
   },
 });
 
@@ -29,4 +32,12 @@ export function useUser() {
   return useAppSelector((store) => store.users.user);
 }
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setBio } = userSlice.actions;
+
+export function useDispatchUser() {
+  const dispatch = useAppDispatch();
+
+  const setMyBio = (bio: string) => dispatch(setBio(bio));
+
+  return { setMyBio };
+}
