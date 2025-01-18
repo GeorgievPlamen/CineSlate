@@ -55,6 +55,13 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
+      - name: LS
+        working-directory: ./Server
+        run: |
+          ls
+          cd ./TestResults
+          ls
+
       - name: Generate coverage report
         working-directory: ./Server
         run: |
