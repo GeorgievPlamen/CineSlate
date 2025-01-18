@@ -42,12 +42,12 @@ jobs:
       - name: Test
         working-directory: ./Server
         run: |
-          dotnet test --configuration Release \
-            --collect "XPlat Code Coverage" \
+          dotnet test --no-build --configuration Release \
+            --logger trx \
             --results-directory "TestResults" \
-            /p:CoverletOutputFormat=cobertura \
+            /p:CollectCoverage=true \
             /p:CoverletOutput=TestResults/coverage.cobertura.xml \
-            /p:Threshold=70 \
+            /p:CoverletOutputFormat=cobertura \
             /p:ThresholdType=line \
             /p:ThresholdStat=total
             
