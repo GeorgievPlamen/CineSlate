@@ -35,6 +35,16 @@ jobs:
         working-directory: ./Server
         run: dotnet restore
 
+      - name: Cat Server
+        working-directory: ./Server/tests/ApiTests/
+        run: |
+          ls
+          cat Server.sln
+          cd ./src
+          ls
+          cd ./Api
+          ls
+
       - name: Cat proj
         working-directory: ./Server/tests/ApiTests/
         run: |
