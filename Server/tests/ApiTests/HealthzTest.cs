@@ -20,7 +20,7 @@ public class HealthzTest(ApiFactory api) : IClassFixture<ApiFactory>
         // Assert
         response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        content.Should().Match("Hello there :)");
+        content.Should().Match("Hello there :) asdf");
     }
 
     [Fact]
