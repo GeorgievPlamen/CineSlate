@@ -18,11 +18,13 @@ export default function MovieDetails() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
+
   const {
     data,
     isError,
     refetch: refetchMovieDetails,
   } = useMovieDetailsQuery({ id });
+
   const {
     data: reviewData,
     isFetching: isReviewsFetching,
