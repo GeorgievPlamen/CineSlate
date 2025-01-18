@@ -43,11 +43,19 @@ jobs:
         working-directory: ./Server
         run: |
           dotnet test --no-build --configuration Release \
-            --logger trx \
-            --results-directory "TestResults" \
             /p:CollectCoverage=true \
             /p:CoverletOutput=TestResults/coverage.cobertura.xml \
             /p:CoverletOutputFormat=cobertura \
             /p:Threshold=70 \
             /p:ThresholdType=line \
             /p:ThresholdStat=total
+            
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Generate coverage report
+        run: |
+          reportgenerator \
+            -reports:TestResults/coverage.cobertura.xml \
+            -targetdir:TestResults/coveragereport \
+            -reporttypes:TextSummary
