@@ -37,16 +37,17 @@ jobs:
 
       - name: Build
         working-directory: ./Server
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --configuration Release
 
       - name: Test
         working-directory: ./Server
-        run: dotnet test --no-build \
-          --logger trx \
-          --results-directory "TestResults" \
-          /p:CollectCoverage=true \
-          /p:CoverletOutput=TestResults/coverage.cobertura.xml \
-          /p:CoverletOutputFormat=cobertura \
-          /p:Threshold=70 \
-          /p:ThresholdType=line \
-          /p:ThresholdStat=total
+        run: |
+          dotnet test --no-build --configuration Release \
+            --logger trx \
+            --results-directory "TestResults" \
+            /p:CollectCoverage=true \
+            /p:CoverletOutput=TestResults/coverage.cobertura.xml \
+            /p:CoverletOutputFormat=cobertura \
+            /p:Threshold=70 \
+            /p:ThresholdType=line \
+            /p:ThresholdStat=total
