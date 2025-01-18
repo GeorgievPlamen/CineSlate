@@ -22,6 +22,6 @@ public static class UserMappings
             model.Username.OnlyName,
             model.Email,
             model.PasswordHash,
-            model.Bio,
+            model.Bio ?? "",
             model.Roles);
 }
