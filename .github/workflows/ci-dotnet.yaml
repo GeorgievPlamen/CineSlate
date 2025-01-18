@@ -43,6 +43,8 @@ jobs:
         working-directory: ./Server
         run: |
           dotnet test --no-build --configuration Release \
+            --logger trx \
+            --results-directory "TestResults" \
             /p:CollectCoverage=true \
             /p:CoverletOutput=TestResults/coverage.cobertura.xml \
             /p:CoverletOutputFormat=cobertura \
