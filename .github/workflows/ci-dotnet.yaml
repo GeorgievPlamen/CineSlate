@@ -6,10 +6,10 @@ on:
     branches:
       - master
     paths:
-      - './Server/**'
+      - 'Server/**'
   pull_request:
     paths:
-      - './Server/**'
+      - 'Server/**'
 
 jobs:
   build:
