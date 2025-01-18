@@ -1,0 +1,44 @@
+name: .NET CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'Server/**'
+  pull_request:
+    paths:
+      - 'Server/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Add solution
+        working-directory: ./Server
+        run: dotnet new sln
+
+      - name: Add projects to solution
+        working-directory: ./Server
+        run: dotnet sln add **/**/*.csproj
+
+      - name: Restore dependencies
+        working-directory: ./Server
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./Server
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        working-directory: ./Server
+        run: dotnet test --no-build --configuration Release 
