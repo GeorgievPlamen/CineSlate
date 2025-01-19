@@ -35,7 +35,7 @@ public class UserIdentity(
         var securityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
-            expires: _dateTimeProvider.Now.AddDays(_jwtSettings.ExpiryMinutes).DateTime, // TODO Change back to minutes, Add refresh token
+            expires: _dateTimeProvider.Now.AddMinutes(_jwtSettings.ExpiryMinutes).DateTime,
             claims: claims,
             signingCredentials: signingCredentials);
 
@@ -82,4 +82,7 @@ public class UserIdentity(
 
         return hashedPassword == storedHashedPassword;
     }
+
+    public string GenerateRefreshToken() =>
+        Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 }
