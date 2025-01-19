@@ -11,6 +11,8 @@ public record Error(string Code, ErrorType Type = ErrorType.ServerError, string?
         => new(message, ErrorType.NotFound, details);
     public static Error ServerError(string message = "Server Error", string? details = "Something wrong happened. Server could not handle your request properly.")
         => new(message, ErrorType.ServerError, details);
+    public static Error NotAuthorized(string message = "Not Authorized", string? details = "Client not authorized to access resource.")
+        => new(message, ErrorType.NotAuthorized, details);
 }
 
 public enum ErrorType
@@ -18,5 +20,6 @@ public enum ErrorType
     BadRequest,
     ServerError,
     Validation,
-    NotFound
+    NotFound,
+    NotAuthorized
 }
