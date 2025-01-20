@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
-import { SESSION_JWT } from '../config';
+import { LOCAL_REFRESH } from '../config';
 import { useAppDispatch } from '../store/reduxHooks';
 import { setUser } from '../../pages/Users/userSlice';
 import { userApi } from '../../pages/Users/api/userApi';
 
 function Background() {
   const dispatch = useAppDispatch();
-  const jwt = sessionStorage.getItem(SESSION_JWT);
+  const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
   useEffect(() => {
-    if (jwt) {
+    if (refreshToken) {
       async function getMe() {
-        const user = await userApi.me();
-        dispatch(setUser({ ...user, token: jwt ?? '' }));
+        const user = await userApi.refresh(refreshToken ?? '');
+        dispatch(setUser(user));
       }
 
       getMe();
     }
-  }, [dispatch, jwt]);
+  }, [dispatch, refreshToken]);
 
   return null;
 }
