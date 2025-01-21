@@ -6,18 +6,24 @@ import { userApi } from '../../pages/Users/api/userApi';
 
 function Background() {
   const dispatch = useAppDispatch();
-  const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
   useEffect(() => {
-    if (refreshToken) {
-      async function getMe() {
-        const user = await userApi.refresh(refreshToken ?? '');
-        dispatch(setUser(user));
-      }
+    async function getMe() {
+      const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
-      getMe();
+      if (!refreshToken) return;
+
+      const user = await userApi.refresh(refreshToken ?? '');
+
+      if (!user.refreshToken) return;
+
+      localStorage.setItem(LOCAL_REFRESH, user.refreshToken);
+      console.log(user);
+      dispatch(setUser(user));
     }
-  }, [dispatch, refreshToken]);
+
+    getMe();
+  }, [dispatch]);
 
   return null;
 }

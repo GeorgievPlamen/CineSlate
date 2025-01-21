@@ -11,29 +11,9 @@ import { redirect } from 'react-router-dom';
 import { setUser } from '../../pages/Users/userSlice';
 import { User } from '../../pages/Users/Models/userType';
 
-export const cineslateApi = createApi({
-  reducerPath: 'cineslateApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: CINESLATE_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).users.user.token;
-
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-    },
-  }),
-  endpoints: (builder) => ({
-    getHealth: builder.query<void, void>({
-      query: () => '/',
-    }),
-  }),
-});
-
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: 'https://your-api.com',
+  baseUrl: CINESLATE_API_URL,
   prepareHeaders: (headers, { getState }) => {
-    // If you stored the token in Redux store, get it from there
     const token = (getState() as RootState).users.user.token;
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
@@ -42,34 +22,44 @@ const rawBaseQuery = fetchBaseQuery({
   },
 });
 
-export const baseQueryWithReauth: BaseQueryFn<
+const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const result = await rawBaseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
-    const refreshToken = (api.getState() as RootState).users.user.refreshToken;
+  if (result?.error?.status !== 401) return result;
 
-    if (!refreshToken) redirect('/login');
+  const refreshToken = (api.getState() as RootState).users.user.refreshToken;
 
-    const refreshResult = await rawBaseQuery(
-      {
-        url: '/users/refresh-token',
-        method: 'POST',
-        body: { refreshToken: refreshToken },
-      },
-      api,
-      extraOptions
-    );
+  if (!refreshToken) redirect('/login');
 
-    if (!refreshResult.data) redirect('/login');
+  const refreshResult = await rawBaseQuery(
+    {
+      url: '/users/refresh-token',
+      method: 'POST',
+      body: { refreshToken: refreshToken },
+    },
+    api,
+    extraOptions
+  );
 
-    api.dispatch(setUser(refreshResult?.data as User));
-  }
+  if (!refreshResult.data) redirect('/login');
+
+  api.dispatch(setUser(refreshResult?.data as User));
 
   return await rawBaseQuery(args, api, extraOptions);
 };
+
+export const cineslateApi = createApi({
+  reducerPath: 'cineslateApi',
+  baseQuery: baseQueryWithReauth,
+  endpoints: (builder) => ({
+    getHealth: builder.query<void, void>({
+      query: () => '/',
+    }),
+  }),
+});
 
 export const { useGetHealthQuery } = cineslateApi;
