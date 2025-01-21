@@ -1,10 +1,15 @@
+using Application.Common;
 using Application.Users.Interfaces;
 using Application.Users.Login;
+
 using Domain.Users;
 using Domain.Users.Errors;
 using Domain.Users.ValueObjects;
+
 using FluentAssertions;
+
 using NSubstitute;
+
 using TestUtilities;
 using TestUtilities.Fakers;
 
@@ -40,6 +45,10 @@ public class LoginQueryHandlerTests
             Arg.Any<string>(),
             Arg.Any<string>())
                 .Returns("fakejwt");
+
+        _userIdentity.GenerateRefreshToken().Returns("fake-refresh-token");
+
+        _userRepository.CreateRefreshTokenAsync(Arg.Any<RefreshToken>(), Arg.Any<CancellationToken>()).Returns(true);
 
         // Act
         var result = await _sut.Handle(_command, CancellationToken.None);
