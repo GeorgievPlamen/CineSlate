@@ -1,5 +1,6 @@
 using Api.Common;
 using Api.Features.Users.Requests;
+
 using Application.Common;
 using Application.Users.GetLatest;
 using Application.Users.GetUsers;
@@ -7,8 +8,11 @@ using Application.Users.Login;
 using Application.Users.Me;
 using Application.Users.Register;
 using Application.Users.Update;
+
 using Domain.Users.ValueObjects;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Users;
@@ -33,9 +37,11 @@ public static class UsersEndpoint
         users.MapPut("/{id}", UpdateAsync).RequireAuthorization();
     }
 
-    private static async Task<IResult> UpdateAsync(Guid id, string? bio, ISender mediatr, CancellationToken cancellationToken)
-        => Response<MeResponse>.Match(await mediatr.Send(
-            new UpdateUserCommand(UserId.Create(id), bio ?? string.Empty),
+    private static async Task<IResult> UpdateAsync(UpdateUserRequest request, ISender mediatr, CancellationToken cancellationToken)
+        => Response<MeResponse>.Match(await mediatr.Send(new UpdateUserCommand(
+            UserId.Create(request.Id),
+            request.Bio,
+            request.Picture),
             cancellationToken));
 
     private static async Task<IResult> GetLatestUsersAsync(int page, ISender mediatr, CancellationToken cancellationToken)
