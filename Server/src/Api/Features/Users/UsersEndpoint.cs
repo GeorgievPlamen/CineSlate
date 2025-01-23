@@ -41,7 +41,7 @@ public static class UsersEndpoint
         => Response<MeResponse>.Match(await mediatr.Send(new UpdateUserCommand(
             UserId.Create(request.Id),
             request.Bio,
-            request.Picture),
+            request.PictureBase64),
             cancellationToken));
 
     private static async Task<IResult> GetLatestUsersAsync(int page, ISender mediatr, CancellationToken cancellationToken)

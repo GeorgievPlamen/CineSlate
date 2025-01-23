@@ -7,4 +7,4 @@ using MediatR;
 
 namespace Application.Users.Update;
 
-public record UpdateUserCommand(UserId Id, string? Bio, string? Picture) : IRequest<Result<MeResponse>>;
+public record UpdateUserCommand(UserId Id, string? Bio, string? ImageBase64) : IRequest<Result<MeResponse>>;
