@@ -22,9 +22,9 @@ public class UpdateUserCommandHandler(IUserRepository userRepository) : IRequest
         if (!string.IsNullOrWhiteSpace(request.ImageBase64)) user.UpdateProfilePicture(request.ImageBase64);
 
         var success = await userRepository.UpdateAsync(user, cancellationToken);
-        if (!success)
-            return Result<MeResponse>.Failure(Error.ServerError());
 
-        return Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value, user.Bio ?? ""));
+        return success
+            ? Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value, user.Bio ?? ""))
+            : Result<MeResponse>.Failure(Error.ServerError());
     }
 }
