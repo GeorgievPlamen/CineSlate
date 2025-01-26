@@ -12,6 +12,7 @@ function Background() {
     if (jwt) {
       async function getMe() {
         const user = await userApi.me();
+
         dispatch(setUser({ ...user, token: jwt ?? '' }));
       }
 

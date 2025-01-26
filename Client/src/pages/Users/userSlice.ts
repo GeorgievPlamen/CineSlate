@@ -26,7 +26,7 @@ export const userSlice = createSlice({
       state.user.bio = action.payload;
     },
     setAvatarBase64: (state, action: PayloadAction<string>) => {
-      state.user.avatarBase64 = action.payload;
+      state.user.pictureBase64 = action.payload;
     },
   },
 });

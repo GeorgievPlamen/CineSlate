@@ -1,9 +1,12 @@
 using Application.Common;
 using Application.Users.Interfaces;
+
 using Domain.Users;
 using Domain.Users.ValueObjects;
+
 using Infrastructure.Database;
 using Infrastructure.Repositories.MappingExtensions;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -59,7 +62,10 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
             return false;
 
         var userModel = user.ToModel();
+
         savedUser.Bio = userModel.Bio;
+        savedUser.AvatarBlob = userModel.AvatarBlob;
+
         dbContext.Update(savedUser);
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;

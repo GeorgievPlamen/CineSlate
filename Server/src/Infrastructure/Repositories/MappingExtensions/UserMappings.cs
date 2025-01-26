@@ -31,7 +31,7 @@ public static class UserMappings
                model.Roles);
 
         if (model.AvatarBlob is not null)
-            user.UpdateProfilePicture($"data:image/jpeg;base64,/9j/{Convert.ToBase64String(model.AvatarBlob)}");
+            user.UpdateProfilePicture($"data:image/jpeg;base64,{Convert.ToBase64String(model.AvatarBlob)}");
 
         return user;
     }

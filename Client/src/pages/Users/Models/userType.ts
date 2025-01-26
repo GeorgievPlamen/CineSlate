@@ -4,5 +4,5 @@ export interface User {
   token?: string;
   id?: string;
   bio?: string;
-  avatarBase64?: string;
+  pictureBase64?: string;
 }

@@ -20,8 +20,6 @@ function MyDetails() {
   const [editing, setEditing] = useState(false);
   const { setMyBio, setMyAvatarBase64 } = useDispatchUser();
 
-  console.log(user.avatarBase64);
-
   const { data: reviewData, isFetching: isReviewsFetching } =
     useGetReviewsByAuthorIdQuery(
       {
@@ -38,23 +36,34 @@ function MyDetails() {
   async function handleEdit() {
     if (editing) {
       const { bio, avatar } = getValues();
-      let avatarBase64;
+      let avatarBase64: string | undefined;
 
-      console.log(avatar);
       if (avatar?.[0]) {
         const reader = new FileReader();
-        reader.onload = () => {
+        reader.onload = async () => {
           avatarBase64 = reader.result as string;
 
-          console.log(avatarBase64);
+          if (bio && user.id) {
+            await updateUser({
+              bio: bio,
+              id: user?.id,
+              pictureBase64: avatarBase64?.split(',')[1] ?? '',
+            });
+
+            setMyBio(bio);
+            if (avatarBase64) setMyAvatarBase64(avatarBase64);
+          }
         };
         reader.readAsDataURL(avatar?.[0]);
+
+        return;
       }
 
       if (bio && user.id) {
         await updateUser({
           bio: bio,
           id: user?.id,
+          pictureBase64: avatarBase64?.split(',')[1] ?? '',
         });
 
         setMyBio(bio);
@@ -72,7 +81,7 @@ function MyDetails() {
           <div className="relative flex w-1/4 gap-2">
             <div className="min-h-32 min-w-32">
               <img
-                src={user.avatarBase64 ?? BACKUP_PROFILE}
+                src={user.pictureBase64 ?? BACKUP_PROFILE}
                 alt="profile-pic"
                 className="block h-32 w-32 rounded-full object-cover"
               />
