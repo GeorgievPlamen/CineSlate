@@ -11,13 +11,16 @@ import TextField from '../../app/components/Fields/TextField';
 import { useForm } from 'react-hook-form';
 import { UserModel } from './models/UserModel';
 import { zodResolver } from '@hookform/resolvers/zod';
+import UploadIcon from '../../app/Icons/UploadIcon';
 
 function MyDetails() {
   const user = useUser();
   const [updateUser] = useUpdateUserMutation();
   const [reviewsPage, setReviewsPage] = useState(1);
   const [editing, setEditing] = useState(false);
-  const { setMyBio } = useDispatchUser();
+  const { setMyBio, setMyAvatarBase64 } = useDispatchUser();
+
+  console.log(user.avatarBase64);
 
   const { data: reviewData, isFetching: isReviewsFetching } =
     useGetReviewsByAuthorIdQuery(
@@ -34,11 +37,28 @@ function MyDetails() {
 
   async function handleEdit() {
     if (editing) {
-      const { bio } = getValues();
+      const { bio, avatar } = getValues();
+      let avatarBase64;
+
+      console.log(avatar);
+      if (avatar?.[0]) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          avatarBase64 = reader.result as string;
+
+          console.log(avatarBase64);
+        };
+        reader.readAsDataURL(avatar?.[0]);
+      }
 
       if (bio && user.id) {
-        await updateUser({ bio: bio, id: user?.id });
+        await updateUser({
+          bio: bio,
+          id: user?.id,
+        });
+
         setMyBio(bio);
+        if (avatarBase64) setMyAvatarBase64(avatarBase64);
       }
     }
 
@@ -50,7 +70,25 @@ function MyDetails() {
       <section className="mt-5">
         <div className="flex items-center justify-between gap-2">
           <div className="relative flex w-1/4 gap-2">
-            <img src={BACKUP_PROFILE} alt="profile-pic" className="h-32 w-32" />
+            <div className="min-h-32 min-w-32">
+              <img
+                src={user.avatarBase64 ?? BACKUP_PROFILE}
+                alt="profile-pic"
+                className="block h-32 w-32 rounded-full object-cover"
+              />
+            </div>
+            {editing && (
+              <label htmlFor="avatar">
+                <UploadIcon className="absolute left-24 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary p-1 text-whitesmoke hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80" />
+                <input
+                  type="file"
+                  className="hidden"
+                  id="avatar"
+                  accept="image/*"
+                  {...register('avatar')}
+                />
+              </label>
+            )}
             <Button
               className="absolute bottom-1 left-24 min-h-8 min-w-8"
               onClick={handleEdit}

@@ -1,9 +1,13 @@
 using System.Security.Claims;
+
 using Application.Common;
 using Application.Users.Interfaces;
+
 using Domain.Common;
 using Domain.Users.Errors;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Users.Me;
@@ -33,7 +37,8 @@ public class MeQueryHandler(
             foundUser.Username.Value,
             foundUser.Email,
             foundUser.Id.Value,
-            foundUser.Bio);
+            foundUser.Bio ?? "",
+            foundUser.AvatarBase64 ?? "");
 
         return Result<MeResponse>.Success(result);
     }

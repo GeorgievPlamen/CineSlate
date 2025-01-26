@@ -37,11 +37,11 @@ public static class UsersEndpoint
         users.MapPut("/{id}", UpdateAsync).RequireAuthorization();
     }
 
-    private static async Task<IResult> UpdateAsync(UpdateUserRequest request, ISender mediatr, CancellationToken cancellationToken)
+    private static async Task<IResult> UpdateAsync(Guid id, string? bio, [FromBody] string? pictureBase64, ISender mediatr, CancellationToken cancellationToken)
         => Response<MeResponse>.Match(await mediatr.Send(new UpdateUserCommand(
-            UserId.Create(request.Id),
-            request.Bio,
-            request.PictureBase64),
+            UserId.Create(id),
+            bio,
+            pictureBase64),
             cancellationToken));
 
     private static async Task<IResult> GetLatestUsersAsync(int page, ISender mediatr, CancellationToken cancellationToken)

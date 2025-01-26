@@ -25,6 +25,9 @@ export const userSlice = createSlice({
     setBio: (state, action: PayloadAction<string>) => {
       state.user.bio = action.payload;
     },
+    setAvatarBase64: (state, action: PayloadAction<string>) => {
+      state.user.avatarBase64 = action.payload;
+    },
   },
 });
 
@@ -32,12 +35,14 @@ export function useUser() {
   return useAppSelector((store) => store.users.user);
 }
 
-export const { setUser, setBio } = userSlice.actions;
+export const { setUser, setBio, setAvatarBase64 } = userSlice.actions;
 
 export function useDispatchUser() {
   const dispatch = useAppDispatch();
 
   const setMyBio = (bio: string) => dispatch(setBio(bio));
+  const setMyAvatarBase64 = (avatarBase64: string) =>
+    dispatch(setAvatarBase64(avatarBase64));
 
-  return { setMyBio };
+  return { setMyBio, setMyAvatarBase64 };
 }

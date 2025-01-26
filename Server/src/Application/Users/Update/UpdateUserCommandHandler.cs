@@ -24,7 +24,7 @@ public class UpdateUserCommandHandler(IUserRepository userRepository) : IRequest
         var success = await userRepository.UpdateAsync(user, cancellationToken);
 
         return success
-            ? Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value, user.Bio ?? ""))
+            ? Result<MeResponse>.Success(new(user.Username.Value, user.Email, user.Id.Value, user.Bio ?? "", user.AvatarBase64 ?? ""))
             : Result<MeResponse>.Failure(Error.ServerError());
     }
 }
