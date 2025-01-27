@@ -12,12 +12,14 @@ import useAuth from '../../../app/hooks/useAuth';
 import { useReviewsByMovieIdQuery } from '../../Reviews/api/reviewsApi';
 import Button from '../../../app/components/Buttons/Button';
 import { Review } from '../../Reviews/models/review';
+import { useLazyGetUsersByIdQuery } from '../../Users/api/userApiRTK';
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
+  const [getUsersByIds, { data: usersData }] = useLazyGetUsersByIdQuery();
 
   const {
     data,
@@ -39,12 +41,20 @@ export default function MovieDetails() {
   useEffect(() => {
     if (!reviewData) return;
 
+    const authorIds = [
+      ...reviewData.values
+        .filter((x) => x.authorId !== undefined)
+        .map((x) => x.authorId),
+    ];
+
+    getUsersByIds({ ids: authorIds as string[] });
+
     setReviews((prev) =>
       prev.length < reviewData.currentPage * 20
         ? [...reviewData.values]
         : [...prev, ...reviewData.values]
     );
-  }, [reviewData]);
+  }, [getUsersByIds, reviewData]);
 
   if (isError) return <ErrorMessage />;
 
@@ -107,7 +117,13 @@ export default function MovieDetails() {
           </div>
           <section className="my-10 flex flex-col gap-10">
             {reviews.map((r) => (
-              <ReviewCard key={r.authorId} review={r} />
+              <ReviewCard
+                key={r.authorId}
+                review={r}
+                authorPicture={
+                  usersData?.find((x) => x.id === r.authorId)?.pictureBase64
+                }
+              />
             ))}
             {reviewData?.hasNextPage && (
               <Button

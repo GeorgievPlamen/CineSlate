@@ -82,7 +82,11 @@ function MyDetails() {
           <div className="relative flex w-1/4 gap-2">
             <div className="min-h-32 min-w-32">
               <img
-                src={user.pictureBase64 ?? BACKUP_PROFILE}
+                src={
+                  user?.pictureBase64?.length && user?.pictureBase64?.length > 0
+                    ? user.pictureBase64
+                    : BACKUP_PROFILE
+                }
                 alt="profile-pic"
                 className="h-32 w-32 rounded-full object-cover"
               />

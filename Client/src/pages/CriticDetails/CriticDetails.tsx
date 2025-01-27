@@ -35,7 +35,16 @@ function CriticDetails() {
       <section className="mt-5">
         <div className="flex items-center justify-between gap-2">
           <div className="flex w-1/4 gap-2">
-            <img src={BACKUP_PROFILE} alt="profile-pic" className="h-32 w-32" />
+            <img
+              src={
+                critic?.pictureBase64?.length &&
+                critic?.pictureBase64?.length > 0
+                  ? critic.pictureBase64
+                  : BACKUP_PROFILE
+              }
+              alt="profile-pic"
+              className="h-32 w-32 rounded-full object-cover"
+            />
             <div className="flex flex-col">
               <h2 className="mt-5 font-arvo text-xl">
                 {critic?.username.split('#')[0]}

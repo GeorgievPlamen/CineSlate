@@ -31,4 +31,4 @@ const userApiRTK = cineslateApi.injectEndpoints({
   }),
 });
 
-export const { useGetLatestUsersQuery, useLazyGetUsersByIdQuery } = userApiRTK;
+export const { useGetLatestUsersQuery, useLazyGetUsersByIdQuery, useGetUsersByIdQuery } = userApiRTK;
