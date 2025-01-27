@@ -60,24 +60,13 @@ function Header() {
           </li>
           <li>
             <NavLink
-              to="/stories"
-              className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
-              }
-            >
-              Stories
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
               to="/quizzes"
               className={({ isActive }) =>
                 'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
                 ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
               }
             >
-              Quizzes
+              Quizz
             </NavLink>
           </li>
         </ul>
