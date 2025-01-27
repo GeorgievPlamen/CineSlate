@@ -1,6 +1,7 @@
 using Domain.Common.Models;
 using Domain.Users.Enums;
 using Domain.Users.ValueObjects;
+
 namespace Domain.Users;
 
 public class User : AggregateRoot<UserId>
@@ -9,7 +10,8 @@ public class User : AggregateRoot<UserId>
 
     public Username Username { get; private set; } = null!;
     public string Email { get; private set; } = null!;
-    public string Bio { get; private set; } = null!;
+    public string? Bio { get; private set; }
+    public string? AvatarBase64 { get; private set; }
     public string PasswordHash { get; private set; } = null!;
     public Roles Role { get; private set; }
 
@@ -36,8 +38,7 @@ public class User : AggregateRoot<UserId>
         Role = role,
     };
 
-    public void Update(string bio)
-    {
-        Bio = bio;
-    }
+    public void UpdateBio(string bio) => Bio = bio;
+
+    public void UpdateProfilePicture(string imageBase64) => AvatarBase64 = imageBase64;
 }

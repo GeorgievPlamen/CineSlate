@@ -22,11 +22,11 @@ export default function DropdownButton({ children }: Props) {
       <ul
         className={`${
           isListActive
-            ? 'absolute mt-2 flex flex-col gap-2 rounded-lg bg-background px-2 py-1 font-bold text-whitesmoke outline outline-1 transition-transform'
+            ? 'absolute mt-2 flex w-full flex-col items-center gap-2 rounded-lg bg-background px-2 py-1 font-bold text-whitesmoke outline outline-1 transition-transform'
             : 'hidden'
         }`}
       >
-        <li className="text-nowrap">
+        <li className="text-nowrap hover:underline">
           <NavLink
             to="/my-details"
             className={({ isActive }) => ` ${isActive ? 'underline' : null}`}
@@ -35,7 +35,7 @@ export default function DropdownButton({ children }: Props) {
             My Details
           </NavLink>
         </li>
-        <li className="text-nowrap">
+        <li className="text-nowrap hover:underline">
           <a
             href="/"
             onClick={() => {

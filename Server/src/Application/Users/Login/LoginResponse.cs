@@ -6,4 +6,5 @@ public record LoginResponse(
     string Token,
     string RefreshToken,
     Guid Id,
-    string Bio);
+    string Bio,
+    string PictureBase64);

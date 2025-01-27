@@ -5,4 +5,5 @@ export interface User {
   refreshToken?: string;
   id?: string;
   bio?: string;
+  pictureBase64?: string;
 }

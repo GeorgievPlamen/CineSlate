@@ -7,6 +7,7 @@ export interface Critic {
   username: string;
   id: string;
   bio: string;
+  pictureBase64: string;
 }
 
 interface CriticsState {

@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Review } from '../../../pages/Reviews/models/review';
 import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
+import { BACKUP_PROFILE } from '../../config';
 
 interface Props {
   review: Review;
+  authorPicture?: string;
 }
 
-export default function ReviewCard({ review }: Props) {
+export default function ReviewCard({ review, authorPicture }: Props) {
   const [revealed, setRevealed] = useState(!review.containsSpoilers);
 
   const username = review.authorUsername?.split('#') ?? '';
@@ -15,9 +17,13 @@ export default function ReviewCard({ review }: Props) {
   return (
     <div className="flex rounded-2xl border border-grey bg-background p-1">
       <img
-        src="https://freesvg.org/img/abstract-user-flat-3.png"
+        src={
+          authorPicture && authorPicture.length > 0
+            ? authorPicture
+            : BACKUP_PROFILE
+        }
         alt="profile-pic"
-        className="h-20 w-20"
+        className="h-20 w-20 rounded-full object-cover"
       />
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">

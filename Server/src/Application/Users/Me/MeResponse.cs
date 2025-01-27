@@ -4,4 +4,5 @@ public record MeResponse(
     string Username,
     string Email,
     Guid Id,
-    string Bio);
+    string Bio,
+    string PictureBase64);

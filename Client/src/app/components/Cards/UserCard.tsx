@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { User } from '../../../pages/Users/Models/userType';
+import { BACKUP_PROFILE } from '../../config';
 
 interface Props {
   user: User;
@@ -18,9 +19,13 @@ export default function UserCard({ user, className }: Props) {
       }
     >
       <img
-        src="https://freesvg.org/img/abstract-user-flat-3.png"
+        src={
+          user?.pictureBase64?.length && user?.pictureBase64?.length > 0
+            ? user.pictureBase64
+            : BACKUP_PROFILE
+        }
         alt="profile-pic"
-        className="h-20 w-20"
+        className="h-20 w-20 rounded-full object-cover"
       />
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">
