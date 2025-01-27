@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CINESLATE_API_URL, SESSION_JWT } from '../config';
+import { CINESLATE_API_URL, LOCAL_JWT } from '../config';
 
 const api = axios.create({
   baseURL: CINESLATE_API_URL,
@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = `Bearer ${sessionStorage.getItem(SESSION_JWT)}`;
+  const token = `Bearer ${localStorage.getItem(LOCAL_JWT)}`;
   config.headers['Authorization'] = token;
   return config;
 });

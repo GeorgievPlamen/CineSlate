@@ -6,6 +6,7 @@ using Application.Users.GetLatest;
 using Application.Users.GetUsers;
 using Application.Users.Login;
 using Application.Users.Me;
+using Application.Users.RefreshAccessToken;
 using Application.Users.Register;
 using Application.Users.Update;
 
@@ -33,6 +34,7 @@ public static class UsersEndpoint
 
         users.MapPost("/", GetUsersAsync);
         users.MapPost(Login, LoginAsync);
+        users.MapPost("/refresh-token", RefreshTokenAsync);
         users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
         users.MapPut("/{id}", UpdateAsync).RequireAuthorization();
     }
@@ -58,6 +60,9 @@ public static class UsersEndpoint
             request.Email,
             request.Password),
             cancellationToken));
+
+    private static async Task<IResult> RefreshTokenAsync(RefreshTokenRequest request, ISender mediatr, CancellationToken cancellationToken)
+        => Response<LoginResponse>.Match(await mediatr.Send(new RefreshTokenCommand(request.RefreshToken), cancellationToken));
 
     public static async Task<IResult> RegisterAsync(RegisterRequest request, ISender mediatr, CancellationToken cancellationToken)
         => Response<UserId>.Match(await mediatr.Send(new RegisterCommand(

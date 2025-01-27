@@ -2,7 +2,7 @@ import { ActionFunctionArgs } from 'react-router-dom';
 import { userErrors } from '../Models/userErrors';
 import { UserResponse } from '../Models/UserResponse';
 import { getErrorDetails, isProblemDetails } from '../../../app/api/errors';
-import { SESSION_JWT } from '../../../app/config';
+import { LOCAL_JWT, LOCAL_REFRESH } from '../../../app/config';
 import { validate } from '../../../app/utils/validate';
 import { userApi } from './userApi';
 
@@ -17,7 +17,8 @@ export async function loginAction({
 
     const user = await userApi.login(input);
 
-    sessionStorage.setItem(SESSION_JWT, user?.token ?? '');
+    localStorage.setItem(LOCAL_JWT, user?.token ?? '');
+    localStorage.setItem(LOCAL_REFRESH, user?.refreshToken ?? '');
 
     return { user };
   } catch (error) {

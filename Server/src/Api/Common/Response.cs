@@ -1,5 +1,7 @@
 using Application.Common;
+
 using Domain.Common;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Common;
@@ -30,6 +32,7 @@ public static class Response<T>
         {
             ErrorType.BadRequest => StatusCodes.Status400BadRequest,
             ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotAuthorized => StatusCodes.Status401Unauthorized,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.ServerError => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status418ImATeapot

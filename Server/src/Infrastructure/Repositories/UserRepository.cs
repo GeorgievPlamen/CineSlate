@@ -5,6 +5,7 @@ using Domain.Users;
 using Domain.Users.ValueObjects;
 
 using Infrastructure.Database;
+using Infrastructure.Database.Models;
 using Infrastructure.Repositories.MappingExtensions;
 
 using Microsoft.EntityFrameworkCore;
@@ -69,5 +70,38 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
         dbContext.Update(savedUser);
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    public async Task<bool> CreateRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
+    {
+        if (refreshToken is null || refreshToken?.UserId?.Value is null) return false;
+
+        var token = new RefreshTokenModel
+        {
+            Id = refreshToken.Id,
+            UserId = refreshToken.UserId.Value,
+            Value = refreshToken?.Value ?? "",
+            ExpiresAt = refreshToken?.ExpiresAt ?? DateTime.UtcNow
+        };
+
+
+        dbContext.Add(token);
+        var oldTokens = dbContext.RefreshTokens.Where(x => x.UserId == refreshToken!.UserId.Value);
+        dbContext.RefreshTokens.RemoveRange(oldTokens);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    public async Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    {
+        var token = await dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Value == refreshToken, cancellationToken);
+        if (token is null)
+            return null;
+
+        return RefreshToken.Create(
+            token.Id,
+            UserId.Create(token.UserId),
+            token.Value,
+            token.ExpiresAt);
     }
 }

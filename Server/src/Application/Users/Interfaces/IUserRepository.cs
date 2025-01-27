@@ -1,4 +1,5 @@
 using Application.Common;
+
 using Domain.Users;
 using Domain.Users.ValueObjects;
 
@@ -12,4 +13,6 @@ public interface IUserRepository
     Task<bool> CreateAsync(User user, CancellationToken cancellationToken);
     Task<Paged<User>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken);
     Task<bool> UpdateAsync(User user, CancellationToken cancellationToken);
+    Task<bool> CreateRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken);
+    Task<RefreshToken?> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken);
 }

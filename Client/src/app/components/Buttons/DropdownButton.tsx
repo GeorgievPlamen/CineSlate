@@ -39,7 +39,7 @@ export default function DropdownButton({ children }: Props) {
           <a
             href="/"
             onClick={() => {
-              sessionStorage.clear();
+              localStorage.clear();
             }}
           >
             Sign out
