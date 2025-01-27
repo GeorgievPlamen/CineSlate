@@ -84,7 +84,7 @@ function MyDetails() {
               <img
                 src={user.pictureBase64 ?? BACKUP_PROFILE}
                 alt="profile-pic"
-                className="block h-32 w-32 rounded-full object-cover"
+                className="h-32 w-32 rounded-full object-cover"
               />
             </div>
             {editing && (

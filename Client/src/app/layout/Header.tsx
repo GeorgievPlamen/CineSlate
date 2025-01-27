@@ -3,8 +3,8 @@ import CineSlateLogo from '../assets/images/cineslateLogo.png';
 import { useState } from 'react';
 import { useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
-import { UserCircleIcon } from '@heroicons/react/24/outline';
 import DropdownButton from '../components/Buttons/DropdownButton';
+import { BACKUP_PROFILE } from '../config';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -83,10 +83,18 @@ function Header() {
         </ul>
         {user?.username?.length > 0 ? (
           <DropdownButton>
-            <>
+            <div className="flex items-center gap-2">
               {user?.username?.split('#')[0]}
-              <UserCircleIcon className="size-6 pl-1" />
-            </>
+              <img
+                src={
+                  user?.pictureBase64?.length && user?.pictureBase64?.length > 0
+                    ? user.pictureBase64
+                    : BACKUP_PROFILE
+                }
+                alt="profile-pic"
+                className="h-8 w-8 rounded-full object-cover"
+              />
+            </div>
           </DropdownButton>
         ) : (
           <NavLink
