@@ -10,10 +10,7 @@ const myDetailsApi = cineslateApi.injectEndpoints({
       query: ({ id, bio, pictureBase64 }) => ({
         url: `users/${id}?bio=${bio}`,
         method: 'PUT',
-        headers: {
-          'Content-Type': 'text/plain', // TODO try json
-        },
-        body: pictureBase64,
+        body: `"${pictureBase64}"`,
       }),
     }),
   }),

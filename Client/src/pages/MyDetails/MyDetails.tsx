@@ -54,9 +54,10 @@ function MyDetails() {
             if (avatarBase64) setMyAvatarBase64(avatarBase64);
           }
         };
+
         reader.readAsDataURL(avatar?.[0]);
 
-        return;
+        return setEditing(!editing);
       }
 
       if (bio && user.id) {

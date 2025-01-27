@@ -4,15 +4,21 @@ using Api.Features.Movies;
 using Api.Features.Reviews;
 using Api.Features.Users;
 using Api.Middleware;
+
 using Application;
 using Application.Common.Tracing;
+
 using Infrastructure;
+
 using Microsoft.Extensions.Options;
+
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+
 using Scalar.AspNetCore;
+
 using Serilog;
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
