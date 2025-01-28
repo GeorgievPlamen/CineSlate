@@ -40,6 +40,7 @@ public class RefreshTokenCommandHandler(IUserIdentity userIdentity, IUserReposit
             jwtToken,
             token,
             user.Id.Value,
-            user.Bio));
+            user.Bio ?? "",
+            user.AvatarBase64 ?? ""));
     }
 }

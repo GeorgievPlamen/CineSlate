@@ -6,6 +6,7 @@ import { userApi } from '../../pages/Users/api/userApi';
 
 function Background() {
   const dispatch = useAppDispatch();
+  
 
   useEffect(() => {
     async function getMe() {
@@ -13,12 +14,11 @@ function Background() {
 
       if (!refreshToken) return;
 
-      const user = await userApi.refresh(refreshToken ?? '');
+      const user = await userApi.refresh(refreshToken);
 
       if (!user.refreshToken) return;
 
       localStorage.setItem(LOCAL_REFRESH, user.refreshToken);
-      console.log(user);
       dispatch(setUser(user));
     }
 
