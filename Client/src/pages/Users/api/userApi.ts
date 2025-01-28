@@ -7,6 +7,7 @@ export const userApi = {
   register: async (formData: FormData): Promise<User> =>
     api.post('users/register', formData),
   me: async (): Promise<User> => api.get('users/me'),
-  refresh: async (refreshToken: string): Promise<User> =>
-    api.post('users/refresh-token', { refreshToken: refreshToken }),
+  refresh: async (refreshToken: string): Promise<User> => {
+    return api.post('users/refresh-token', { refreshToken: refreshToken });
+  },
 };

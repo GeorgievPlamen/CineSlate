@@ -18,6 +18,7 @@ export async function loginAction({
     const user = await userApi.login(input);
 
     localStorage.setItem(LOCAL_JWT, user?.token ?? '');
+
     localStorage.setItem(LOCAL_REFRESH, user?.refreshToken ?? '');
 
     return { user };
