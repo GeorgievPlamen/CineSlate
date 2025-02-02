@@ -1,12 +1,16 @@
 using System.Security.Claims;
+
 using Application.Common;
 using Application.Reviews.Interfaces;
+
 using Domain.Common;
 using Domain.Movies.Reviews.Errors;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Users.Errors;
 using Domain.Users.ValueObjects;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Reviews.Update;
