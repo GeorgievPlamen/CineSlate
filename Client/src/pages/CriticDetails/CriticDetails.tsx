@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { useGetReviewsByAuthorIdQuery } from './api/criticDetailsApi';
 import { BACKUP_PROFILE } from '../../app/config';
 import MovieReviewCard from '../../app/components/Cards/MovieReviewCard';
-import { Critic, useCriticById, useSetCritics } from '../Critics/criticsSlice';
+import { Critic, setCritics, useCriticById } from '../Critics/criticsSlice';
 import { useLazyGetUsersByIdQuery } from '../Users/api/userApiRTK';
+import { useAppDispatch } from '../../app/store/reduxHooks';
 
 function CriticDetails() {
   const { id } = useParams();
   const [getUsersByIds] = useLazyGetUsersByIdQuery();
-  const { dispatchCritics } = useSetCritics();
   const critic = useCriticById(id);
   const [reviewsPage, setReviewsPage] = useState(1);
   const { data: reviewData, isFetching: isReviewsFetching } =
@@ -19,16 +19,21 @@ function CriticDetails() {
       page: reviewsPage,
     });
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     async function GetUsers() {
+      console.log(id);
       const users = await getUsersByIds({ ids: [id ?? ''] });
-      if (users.data) dispatchCritics([...users.data] as Critic[]);
+
+      console.log(users);
+      if (users.data) dispatch(setCritics(users.data as Critic[]));
     }
 
-    if (!critic && id) {
+    if (id) {
       GetUsers();
     }
-  }, [critic, dispatchCritics, getUsersByIds, id]);
+  }, [dispatch, getUsersByIds, id]);
 
   return (
     <article className="m-auto flex w-2/3 flex-col">
@@ -80,4 +85,5 @@ function CriticDetails() {
     </article>
   );
 }
+
 export default CriticDetails;
