@@ -30,7 +30,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
           <p className="text-xl">
             <NavLink
               className={'hover:text-primary'}
-              to={`/critics/${username[0]}.${username[1]}.${review.authorId}`}
+              to={`/critics/${review.authorId}`}
             >
               {username[0]}
             </NavLink>
