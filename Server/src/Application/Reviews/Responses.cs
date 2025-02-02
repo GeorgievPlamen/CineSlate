@@ -11,6 +11,14 @@ public record ReviewResponse(
     string AuthorUsername,
     bool ContainsSpoilers);
 
+public record ReviewDetailsResponse(
+    Guid Id,
+    int Rating,
+    string Text,
+    int MovieId,
+    Guid AuthorId,
+    bool ContainsSpoilers);
+
 public record ReviewWithMovieDetailsResponse(
     string Title,
     int MovieId,
@@ -28,4 +36,12 @@ public static class Converter
         review.Author.Value,
         authorUsername,
         review.ContainsSpoilers);
+
+    public static ReviewDetailsResponse ToDetailsResponse(this Review review) => new(
+    review.Id.Value,
+    review.Rating,
+    review.Text,
+    review.MovieId.Value,
+    review.Author.Value,
+    review.ContainsSpoilers);
 }

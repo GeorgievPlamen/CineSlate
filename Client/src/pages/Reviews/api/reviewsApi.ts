@@ -10,6 +10,9 @@ const reviewsApi = cineslateApi.injectEndpoints({
     >({
       query: ({ movieId, page }) => `/reviews/${movieId}?page=${page}`,
     }),
+    reviewDetailsById: build.query<Review, { reviewId: string }>({
+      query: ({ reviewId }) => `reviews/details/${reviewId}`,
+    }),
     ownedReviewsByMovieId: build.query<Review, { movieId: number }>({
       query: ({ movieId }) => `reviews/own/${movieId}`,
     }),
@@ -66,4 +69,5 @@ export const {
   useAddReviewMutation,
   useOwnedReviewsByMovieIdQuery,
   useUpdateReviewMutation,
+  useReviewDetailsByIdQuery,
 } = reviewsApi;

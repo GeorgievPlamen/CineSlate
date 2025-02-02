@@ -157,3 +157,9 @@ Authorization: {{Token}}
 GET   {{Api_HostAddress}}reviews/user/f9aa315b-d5d1-4ca8-86f1-77b85b806084?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
+
+### Review By Id 
+
+GET   {{Api_HostAddress}}reviews/details/ed78f023-2fde-46b2-a805-f5d08737fe23 HTTP/1.1
+content-type: application/json
+Authorization: {{Token}}

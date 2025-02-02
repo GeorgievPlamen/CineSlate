@@ -30,13 +30,21 @@ export default function ReviewCard({ review, authorPicture }: Props) {
           <p className="text-xl">
             <NavLink
               className={'hover:text-primary'}
-              to={`/critics/${username[0]}.${username[1]}.${review.authorId}`}
+              to={`/critics/${review.authorId}`}
             >
               {username[0]}
             </NavLink>
             <span className="text-xs text-grey"> #{username[1]}</span>
           </p>
-          <p>⭐{review.rating}</p>
+          <div className="flex gap-2">
+            <NavLink
+              to={`/reviews/${review.id}`}
+              className={'hover:text-primary'}
+            >
+              To Review
+            </NavLink>
+            <p>⭐{review.rating}</p>
+          </div>
         </div>
         {review.containsSpoilers && !revealed && (
           <div className="flex items-center">

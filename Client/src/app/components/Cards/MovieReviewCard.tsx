@@ -36,7 +36,15 @@ export default function MovieReviewCard({ review }: Props) {
               {review.releaseDate.split('-')[0]}
             </NavLink>
           </p>
-          <p>⭐{review.reviewResponse.rating}</p>
+          <div className="flex gap-2">
+            <NavLink
+              to={`/reviews/${review.reviewResponse.id}`}
+              className={'hover:text-primary'}
+            >
+              To Review
+            </NavLink>
+            <p>⭐{review.reviewResponse.rating}</p>
+          </div>
         </div>
         {review.reviewResponse.containsSpoilers && !revealed && (
           <div className="flex items-center">
