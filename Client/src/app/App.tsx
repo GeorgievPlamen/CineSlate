@@ -16,6 +16,7 @@ import Layout from './layout/Layout';
 import MovieDetails from '../pages/Movies/Details/MovieDetails';
 import CriticDetails from '../pages/CriticDetails/CriticDetails';
 import MyDetails from '../pages/MyDetails/MyDetails';
+import ReviewDetails from '../pages/Reviews/Details/ReviewDetails';
 
 export default function App() {
   return (
@@ -72,6 +73,10 @@ export default function App() {
             {
               path: '/my-details',
               element: <MyDetails />,
+            },
+            {
+              path: '/reviews/:id',
+              element: <ReviewDetails />,
             },
           ],
         },
