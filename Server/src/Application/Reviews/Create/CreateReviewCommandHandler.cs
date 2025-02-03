@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Common.Context;
+using Application.Common.Interfaces;
 using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
 
@@ -12,18 +13,16 @@ using Domain.Movies.ValueObjects;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
-
 namespace Application.Reviews.Create;
 
 public class CreateReviewCommandHandler(
     IMovieRepository movieRepository,
     IReviewRepository reviewRepository,
-    IHttpContextAccessor httpContextAccessor) : IRequestHandler<CreateReviewCommand, Result<ReviewId>>
+    IAppContext appContext) : IRequestHandler<CreateReviewCommand, Result<ReviewId>>
 {
     public async Task<Result<ReviewId>> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+        var userId = appContext.GetUserId();
 
         var movieId = MovieId.Create(request.MovieId);
         var movie = await movieRepository.GetByIdAsync(movieId, cancellationToken);

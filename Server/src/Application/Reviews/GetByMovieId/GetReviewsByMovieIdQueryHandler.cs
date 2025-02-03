@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Common.Context;
+using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 
@@ -8,11 +9,9 @@ using Domain.Movies.ValueObjects;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
-
 namespace Application.Reviews.GetByMovieId;
 
-public class GetReviewsByMovieIdQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor) : IRequestHandler<GetReviewsByMovieIdQuery, Result<Paged<ReviewResponse>>>
+public class GetReviewsByMovieIdQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository, IAppContext appContext) : IRequestHandler<GetReviewsByMovieIdQuery, Result<Paged<ReviewResponse>>>
 {
 
     public async Task<Result<Paged<ReviewResponse>>> Handle(GetReviewsByMovieIdQuery request, CancellationToken cancellationToken)
@@ -24,7 +23,7 @@ public class GetReviewsByMovieIdQueryHandler(IReviewRepository reviewRepository,
 
         var users = await userRepository.GetManyByIdAsync(result.Values.Select(r => r.Author), cancellationToken);
 
-        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+        var userId = appContext.GetUserId();
 
         var reviewResponses = result.Values
             .Select(r => r.ToResponse(

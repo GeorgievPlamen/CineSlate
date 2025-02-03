@@ -1,6 +1,6 @@
 
 using Application.Common;
-using Application.Common.Context;
+using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 
@@ -10,18 +10,16 @@ using Domain.Users.Errors;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
-
 namespace Application.Reviews.Likes;
 
 public class LikeReviewCommandHandler(
     IReviewRepository reviewRepository,
     IUserRepository userRepository,
-    IHttpContextAccessor httpContextAccessor) : IRequestHandler<LikeReviewCommand, Result<ReviewDetailsResponse>>
+    IAppContext appContext) : IRequestHandler<LikeReviewCommand, Result<ReviewDetailsResponse>>
 {
     public async Task<Result<ReviewDetailsResponse>> Handle(LikeReviewCommand request, CancellationToken cancellationToken)
     {
-        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+        var userId = appContext.GetUserId();
 
         var review = await reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken);
         if (review is null)

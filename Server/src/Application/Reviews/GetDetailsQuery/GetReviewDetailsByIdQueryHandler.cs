@@ -1,18 +1,17 @@
 
 
 using Application.Common;
-using Application.Common.Context;
+using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
 
 using Domain.Movies.Reviews.Errors;
 using Domain.Movies.Reviews.ValueObjects;
 
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.Reviews.GetDetailsQuery;
 
-public class GetReviewDetailsByIdQueryHandler(IReviewRepository reviewRepository, IHttpContextAccessor httpContextAccessor) : IRequestHandler<GetReviewDetailsByIdQuery, Result<ReviewDetailsResponse>>
+public class GetReviewDetailsByIdQueryHandler(IReviewRepository reviewRepository, IAppContext appContext) : IRequestHandler<GetReviewDetailsByIdQuery, Result<ReviewDetailsResponse>>
 {
 
     public async Task<Result<ReviewDetailsResponse>> Handle(GetReviewDetailsByIdQuery request, CancellationToken cancellationToken)
@@ -20,7 +19,7 @@ public class GetReviewDetailsByIdQueryHandler(IReviewRepository reviewRepository
         var id = ReviewId.Create(request.ReviewId);
         var result = await reviewRepository.GetReviewByIdAsync(id, cancellationToken);
 
-        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+        var userId = appContext.GetUserId();
 
         return result is null
             ? Result<ReviewDetailsResponse>.Failure(ReviewErrors.NotFound(id))

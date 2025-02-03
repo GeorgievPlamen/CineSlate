@@ -1,12 +1,14 @@
 using System.Security.Claims;
 
+using Application.Common.Interfaces;
+
 using Domain.Users.ValueObjects;
 
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Common.Context;
 
-public class ContextHelper(IHttpContextAccessor httpContextAccessor)
+public class AppContext(IHttpContextAccessor httpContextAccessor) : IAppContext
 {
     public UserId GetUserId()
     {

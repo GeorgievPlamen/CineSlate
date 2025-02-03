@@ -1,15 +1,14 @@
 using Application.Common;
 using Application.Common.Context;
+using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
-
 namespace Application.Reviews.Get;
 
-public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor) : IRequestHandler<GetReviewsQuery, Result<Paged<ReviewResponse>>>
+public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository, IAppContext appContext) : IRequestHandler<GetReviewsQuery, Result<Paged<ReviewResponse>>>
 {
     public async Task<Result<Paged<ReviewResponse>>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
@@ -17,7 +16,7 @@ public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRep
 
         var users = await userRepository.GetManyByIdAsync(pagedReviews.Values.Select(r => r.Author), cancellationToken);
 
-        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+        var userId = appContext.GetUserId();
 
         var reviewResponses = pagedReviews.Values
             .Select(r => r.ToResponse(
