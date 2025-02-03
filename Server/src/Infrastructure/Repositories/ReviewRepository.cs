@@ -1,12 +1,17 @@
+
 using Application.Common;
 using Application.Reviews;
 using Application.Reviews.Interfaces;
+
 using Domain.Movies.Reviews;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
+
 using Infrastructure.Database;
+using Infrastructure.Database.Models;
 using Infrastructure.Repositories.MappingExtensions;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -20,6 +25,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
+            .Include(r => r.Likes)
             .OrderBy(r => r.CreatedAt)
             .Take(count)
             .Skip(count * (page - 1))
@@ -28,7 +34,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var total = await dbContext.Reviews.CountAsync(cancellationToken);
 
         return new Paged<Review>(
-            result.Select(r => r.Unwrap()).ToList(),
+            result.Select(r => r.Unwrap(r.Likes.Unwrap())).ToList(),
             page,
             total - (page * count) > 0,
             page > 1,
@@ -40,6 +46,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
+            .Include(r => r.Likes)
             .Where(r => r.Movie.Id == movieId.Value)
             .OrderBy(r => r.CreatedAt)
             .Take(count)
@@ -51,7 +58,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .CountAsync(cancellationToken);
 
         return new Paged<Review>(
-            result.Select(r => r.Unwrap()).ToList(),
+            result.Select(r => r.Unwrap(r.Likes.Unwrap())).ToList(),
             page,
             total - (page * count) > 0,
             page > 1,
@@ -63,6 +70,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
+            .Include(r => r.Likes)
             .Where(r => r.AuthorId == userId.Value)
             .OrderBy(r => r.CreatedAt)
             .Take(count)
@@ -74,7 +82,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .CountAsync(cancellationToken);
 
         return new Paged<Review>(
-            result.Select(r => r.Unwrap()).ToList(),
+            result.Select(r => r.Unwrap(r.Likes.Unwrap())).ToList(),
             page,
             total - (page * count) > 0,
             page > 1,
@@ -86,9 +94,10 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
+            .Include(r => r.Likes)
             .FirstOrDefaultAsync(x => x.AuthorId == userId.Value && x.Movie.Id == movieId.Value, cancellationToken);
 
-        return result?.Unwrap();
+        return result?.Unwrap(result.Likes.Unwrap());
     }
 
     public async Task<Review?> GetReviewByIdAsync(ReviewId reviewId, CancellationToken cancellationToken)
@@ -96,9 +105,10 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
+            .Include(r => r.Likes)
             .FirstOrDefaultAsync(x => x.Id == reviewId.Value, cancellationToken);
 
-        return result?.Unwrap();
+        return result?.Unwrap(result.Likes.Unwrap());
     }
 
     public async Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken)
@@ -111,6 +121,20 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
         oldReview.Rating = rating;
         oldReview.Text = text;
         oldReview.ContainsSpoilers = containsSpoilers;
+
+        dbContext.Update(oldReview);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    public async Task<bool> UpdateLikesAsync(ReviewId reviewId, List<Like> likes, CancellationToken cancellationToken)
+    {
+        var oldReview = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
+
+        if (oldReview is null)
+            return false;
+
+        oldReview.Likes = likes.Unwrap(oldReview);
 
         dbContext.Update(oldReview);
 

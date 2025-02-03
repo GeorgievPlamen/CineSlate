@@ -1,4 +1,5 @@
 using Application.Common;
+
 using Domain.Movies.Reviews;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
@@ -14,4 +15,5 @@ public interface IReviewRepository
     public Task<Review?> GetReviewByIdAsync(ReviewId reviewId, CancellationToken cancellationToken);
     public Task<Review?> GetReviewByAuthorIdAndMovieIdAsync(UserId userId, MovieId movieId, CancellationToken cancellationToken);
     public Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken);
+    public Task<bool> UpdateLikesAsync(ReviewId reviewId, List<Like> likes, CancellationToken cancellationToken);
 }

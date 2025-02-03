@@ -8,11 +8,18 @@ namespace Domain.Movies.Reviews;
 
 public class Review(ReviewId id) : Entity<ReviewId>(id)
 {
+    private readonly List<Like> _likes = [];
     public int Rating { get; private set; }
     public MovieId MovieId { get; set; } = null!;
     public UserId Author { get; private set; } = null!;
     public string Text { get; private set; } = null!;
     public bool ContainsSpoilers { get; private set; }
+    public IReadOnlyList<Like> Likes => [.. _likes];
+    public int LikesCount => _likes.Count;
+
+    public void AddLikes(List<Like> likes) => _likes.AddRange(likes);
+    public void RemoveLike(Like likes) => _likes.Remove(likes);
+    public bool HasUserLiked(UserId userId) => _likes.FirstOrDefault(x => x.FromUserId == userId) is not null;
 
     public static Review Create(int rating, UserId ratedBy, string text = "", bool containsSpoilers = false)
     {

@@ -2,8 +2,10 @@ using Application.Common;
 using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
+
 using Domain.Common;
 using Domain.Users.ValueObjects;
+
 using MediatR;
 
 namespace Application.Reviews.GetByUserIdQuery;
@@ -38,7 +40,7 @@ public class GetReviewsByUserIdQueryHandler(
                 matchedMovie.Id.Value,
                 matchedMovie.ReleaseDate,
                 matchedMovie.PosterPath,
-                review.ToResponse(user.Username.Value)));
+                review.ToResponse(user.Username.Value, review.HasUserLiked(user.Id))));
         }
 
         return Result<Paged<ReviewWithMovieDetailsResponse>>.Success(new Paged<ReviewWithMovieDetailsResponse>(

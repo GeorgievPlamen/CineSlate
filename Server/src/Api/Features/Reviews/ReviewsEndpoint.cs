@@ -1,4 +1,3 @@
-
 using Api.Common;
 using Api.Features.Reviews.Requests.cs;
 
@@ -10,6 +9,7 @@ using Application.Reviews.GetByMovieId;
 using Application.Reviews.GetByUserIdQuery;
 using Application.Reviews.GetDetailsQuery;
 using Application.Reviews.GetOwnedByMovieId;
+using Application.Reviews.Likes;
 using Application.Reviews.Update;
 
 using Domain.Movies.Reviews.ValueObjects;
@@ -36,11 +36,17 @@ public static class ReviewsEndpoint
         reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync).AllowAnonymous();
 
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
+        reviews.MapPost("/like/{reviewId}", LikeReviewAsync);
 
         reviews.MapPut(Update, UpdateReviewAsync);
 
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
+
+    private static async Task<IResult> LikeReviewAsync(Guid reviewId, ISender mediatr, CancellationToken cancellationToken)
+        => Response<ReviewDetailsResponse>.Match(await mediatr.Send(new LikeReviewCommand(
+            ReviewId.Create(reviewId)),
+            cancellationToken));
 
     private static async Task<IResult> GetReviewDetailsByIdAsync(Guid reviewId, ISender mediatr, CancellationToken cancellationToken)
         => Response<ReviewDetailsResponse>.Match(await mediatr.Send(new GetReviewDetailsByIdQuery(reviewId), cancellationToken));

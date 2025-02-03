@@ -1,16 +1,17 @@
-using System.Security.Claims;
 using Application.Common;
+using Application.Common.Context;
 using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
+
 using Domain.Common;
 using Domain.Movies.Errors;
 using Domain.Movies.Reviews;
 using Domain.Movies.Reviews.Errors;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
-using Domain.Users.Errors;
-using Domain.Users.ValueObjects;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Reviews.Create;
@@ -22,13 +23,7 @@ public class CreateReviewCommandHandler(
 {
     public async Task<Result<ReviewId>> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        var httpContext = httpContextAccessor.HttpContext;
-        if (httpContext is null)
-            return Result<ReviewId>.Failure(Error.ServerError());
-
-        var userId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (userId is null)
-            return Result<ReviewId>.Failure(UserErrors.NotFound());
+        var userId = new ContextHelper(httpContextAccessor).GetUserId();
 
         var movieId = MovieId.Create(request.MovieId);
         var movie = await movieRepository.GetByIdAsync(movieId, cancellationToken);
@@ -37,16 +32,16 @@ public class CreateReviewCommandHandler(
 
         var userRevivew = await reviewRepository
             .GetReviewByAuthorIdAndMovieIdAsync(
-                UserId.Create(Guid.Parse(userId)),
+                userId,
                 movieId,
                 cancellationToken);
 
         if (userRevivew is not null)
-            return Result<ReviewId>.Failure(ReviewErrors.UserAlreadyReviewed(userId));
+            return Result<ReviewId>.Failure(ReviewErrors.UserAlreadyReviewed(userId?.ToString() ?? "User Not Found"));
 
         var review = Review.Create(
             request.Rating,
-            UserId.Create(Guid.Parse(userId)),
+            userId,
             request.Text ?? string.Empty,
             request.ContainsSpoilers);
 

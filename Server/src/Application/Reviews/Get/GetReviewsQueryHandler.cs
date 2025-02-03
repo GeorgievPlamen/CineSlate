@@ -1,11 +1,15 @@
 using Application.Common;
+using Application.Common.Context;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
+
 using MediatR;
+
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Reviews.Get;
 
-public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository) : IRequestHandler<GetReviewsQuery, Result<Paged<ReviewResponse>>>
+public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor) : IRequestHandler<GetReviewsQuery, Result<Paged<ReviewResponse>>>
 {
     public async Task<Result<Paged<ReviewResponse>>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
@@ -13,10 +17,13 @@ public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRep
 
         var users = await userRepository.GetManyByIdAsync(pagedReviews.Values.Select(r => r.Author), cancellationToken);
 
+        var userId = new ContextHelper(httpContextAccessor).GetUserId();
+
         var reviewResponses = pagedReviews.Values
             .Select(r => r.ToResponse(
                 users.FirstOrDefault(u => u.Id.Value == r.Author.Value)?
-                .Username.Value ?? "Username not found"))
+                .Username.Value ?? "Username not found",
+                r.HasUserLiked(userId)))
             .ToList();
 
         return Result<Paged<ReviewResponse>>.Success(new Paged<ReviewResponse>(

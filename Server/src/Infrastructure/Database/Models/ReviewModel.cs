@@ -10,4 +10,5 @@ public class ReviewModel : BaseModel
     public Guid AuthorId { get; set; }
     public string Text { get; set; } = null!;
     public bool ContainsSpoilers { get; set; }
+    public List<LikesModel> Likes { get; set; } = [];
 }

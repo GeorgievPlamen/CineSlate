@@ -1,4 +1,5 @@
 using Infrastructure.Database.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -32,5 +33,8 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
         builder.Property(r => r.UpdatedBy)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.HasMany(r => r.Likes)
+            .WithOne(x => x.Review);
     }
 }
