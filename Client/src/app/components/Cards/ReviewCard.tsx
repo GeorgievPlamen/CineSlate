@@ -3,6 +3,7 @@ import { Review } from '../../../pages/Reviews/models/review';
 import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
 import { BACKUP_PROFILE } from '../../config';
+import TooltipButtonLikes from './TooltipButtonLikes';
 
 interface Props {
   review: Review;
@@ -55,12 +56,13 @@ export default function ReviewCard({ review, authorPicture }: Props) {
           </div>
         )}
         {revealed && (
-          <p className="font-roboto">
+          <p className="min-h-10 font-roboto">
             {review.text && review.text.length > 0
               ? review.text
               : 'Did not share...'}
           </p>
         )}
+        <TooltipButtonLikes reviewId={review.id ?? ''} />
       </div>
     </div>
   );

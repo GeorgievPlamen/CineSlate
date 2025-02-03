@@ -19,7 +19,7 @@ export default function MovieReviewCard({ review }: Props) {
       <img
         src={IMG_PATH_W500 + review.posterPath}
         alt="poster"
-        className="w-20 rounded-l-2xl border-r border-r-grey"
+        className="w-32 rounded-l-2xl border-r border-r-grey"
       />
       <div className="mx-4 my-2 w-full">
         <div className="mb-2 flex justify-between">
@@ -47,25 +47,22 @@ export default function MovieReviewCard({ review }: Props) {
             <p>⭐{review.reviewResponse.rating}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between">
-          {review.reviewResponse.containsSpoilers && !revealed && (
-            <div className="flex items-center">
-              <p className="font-roboto">Contains spoilers:</p>
-              <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
-                Reveal
-              </Button>
-            </div>
-          )}
-          {revealed && (
-            <p className="font-roboto">
-              {review.reviewResponse.text &&
-              review.reviewResponse.text.length > 0
-                ? review.reviewResponse.text
-                : 'Did not share...'}
-            </p>
-          )}
-          <TooltipButtonLikes reviewId={review.reviewResponse.id ?? ''} />
-        </div>
+        {review.reviewResponse.containsSpoilers && !revealed && (
+          <div className="flex items-center">
+            <p className="font-roboto">Contains spoilers:</p>
+            <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
+              Reveal
+            </Button>
+          </div>
+        )}
+        {revealed && (
+          <p className="min-h-28 font-roboto">
+            {review.reviewResponse.text && review.reviewResponse.text.length > 0
+              ? review.reviewResponse.text
+              : 'Did not share...'}
+          </p>
+        )}
+        <TooltipButtonLikes reviewId={review.reviewResponse.id ?? ''} />
       </div>
     </div>
   );
