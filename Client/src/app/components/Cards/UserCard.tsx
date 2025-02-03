@@ -32,6 +32,7 @@ export default function UserCard({ user, className }: Props) {
           <p className="text-xl">
             {username[0]}
             <span className="text-xs text-grey"> #{username[1]}</span>
+            <p className="font-roboto text-sm text-grey">{user?.bio}</p>
           </p>
         </div>
       </div>
