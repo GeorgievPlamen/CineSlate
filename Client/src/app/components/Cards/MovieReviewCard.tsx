@@ -3,6 +3,7 @@ import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
 import { IMG_PATH_W500 } from '../../config';
 import { ReviewWithMovieDetailsResponse } from '../../../pages/CriticDetails/api/criticDetailsApi';
+import TooltipButtonLikes from './TooltipButtonLikes';
 
 interface Props {
   review: ReviewWithMovieDetailsResponse;
@@ -46,21 +47,25 @@ export default function MovieReviewCard({ review }: Props) {
             <p>⭐{review.reviewResponse.rating}</p>
           </div>
         </div>
-        {review.reviewResponse.containsSpoilers && !revealed && (
-          <div className="flex items-center">
-            <p className="font-roboto">Contains spoilers:</p>
-            <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
-              Reveal
-            </Button>
-          </div>
-        )}
-        {revealed && (
-          <p className="font-roboto">
-            {review.reviewResponse.text && review.reviewResponse.text.length > 0
-              ? review.reviewResponse.text
-              : 'Did not share...'}
-          </p>
-        )}
+        <div className="flex flex-col justify-between">
+          {review.reviewResponse.containsSpoilers && !revealed && (
+            <div className="flex items-center">
+              <p className="font-roboto">Contains spoilers:</p>
+              <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
+                Reveal
+              </Button>
+            </div>
+          )}
+          {revealed && (
+            <p className="font-roboto">
+              {review.reviewResponse.text &&
+              review.reviewResponse.text.length > 0
+                ? review.reviewResponse.text
+                : 'Did not share...'}
+            </p>
+          )}
+          <TooltipButtonLikes reviewId={review.reviewResponse.id ?? ''} />
+        </div>
       </div>
     </div>
   );
