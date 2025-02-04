@@ -28,11 +28,12 @@ export default function UserCard({ user, className }: Props) {
         className="h-20 w-20 rounded-full object-cover"
       />
       <div className="mx-4 my-2 w-80">
-        <div className="mb-2 flex justify-between">
+        <div className="mb-2 flex flex-col justify-between">
           <p className="text-xl">
             {username[0]}
             <span className="text-xs text-grey"> #{username[1]}</span>
           </p>
+          <p className="font-roboto text-sm text-grey">{user?.bio}</p>
         </div>
       </div>
     </NavLink>

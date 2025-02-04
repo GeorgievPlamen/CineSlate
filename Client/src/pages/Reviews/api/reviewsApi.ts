@@ -1,6 +1,6 @@
 import { cineslateApi } from '../../../app/api/cineslateApi';
 import { Paged } from '../../../app/models/paged';
-import { Review } from '../models/review';
+import { Review, ReviewDetails } from '../models/review';
 
 const reviewsApi = cineslateApi.injectEndpoints({
   endpoints: (build) => ({
@@ -10,11 +10,18 @@ const reviewsApi = cineslateApi.injectEndpoints({
     >({
       query: ({ movieId, page }) => `/reviews/${movieId}?page=${page}`,
     }),
-    reviewDetailsById: build.query<Review, { reviewId: string }>({
+    reviewDetailsById: build.query<ReviewDetails, { reviewId: string }>({
       query: ({ reviewId }) => `reviews/details/${reviewId}`,
     }),
     ownedReviewsByMovieId: build.query<Review, { movieId: number }>({
       query: ({ movieId }) => `reviews/own/${movieId}`,
+    }),
+    likeReview: build.mutation<Review, { reviewId: string }>({
+      query: ({ reviewId }) => ({
+        url: `reviews/like/${reviewId}`,
+        method: 'POST',
+        body: {},
+      }),
     }),
     addReview: build.mutation<
       { location: string | null },
@@ -70,4 +77,5 @@ export const {
   useOwnedReviewsByMovieIdQuery,
   useUpdateReviewMutation,
   useReviewDetailsByIdQuery,
+  useLikeReviewMutation,
 } = reviewsApi;

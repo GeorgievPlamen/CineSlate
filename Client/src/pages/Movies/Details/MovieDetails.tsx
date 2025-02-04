@@ -39,6 +39,10 @@ export default function MovieDetails() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    if (isAuthenticated) refetchReviews();
+  }, [refetchReviews, isAuthenticated]);
+
+  useEffect(() => {
     if (!reviewData) return;
 
     const authorIds = [

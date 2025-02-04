@@ -1,11 +1,15 @@
 using System.Security.Claims;
+
 using Application.Common;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
+
 using Domain.Common;
 using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Reviews.GetOwnedByMovieId;
@@ -39,6 +43,6 @@ public class GetOwnedReviewsByMovieIdQueryHandler(
         if (user is null)
             return Result<ReviewResponse>.Failure(Error.ServerError());
 
-        return Result<ReviewResponse>.Success(result.ToResponse(user.Username.Value));
+        return Result<ReviewResponse>.Success(result.ToResponse(user.Username.Value, result.HasUserLiked(user.Id)));
     }
 }

@@ -1,6 +1,8 @@
 using Domain.Movies.Reviews;
+using Domain.Movies.Reviews.ValueObjects;
 using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
+
 using Infrastructure.Database.Models;
 
 namespace Infrastructure.Repositories.MappingExtensions;
@@ -25,4 +27,20 @@ public static class ReviewMappings
             MovieId.Create(model.Movie.Id),
             model.Text,
             model.ContainsSpoilers);
+
+    public static Review Unwrap(this ReviewModel model, List<Like> likes)
+    {
+        var review = Review.Create(
+            model.Id,
+            model.Rating,
+            UserId.Create(model.AuthorId),
+            MovieId.Create(model.Movie.Id),
+            model.Text,
+            model.ContainsSpoilers);
+
+        review.AddLikes(likes);
+
+        return review;
+    }
+
 }
