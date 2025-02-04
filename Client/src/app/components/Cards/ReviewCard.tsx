@@ -3,7 +3,7 @@ import { Review } from '../../../pages/Reviews/models/review';
 import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
 import { BACKUP_PROFILE } from '../../config';
-import TooltipButtonLikes from './TooltipButtonLikes';
+import LikesButton from '../Buttons/LikesButton';
 
 interface Props {
   review: Review;
@@ -30,7 +30,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
             <NavLink
-              className={'hover:text-primary'}
+              className={'font-arvo hover:text-primary'}
               to={`/critics/${review.authorId}`}
             >
               {username[0]}
@@ -62,7 +62,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
               : 'Did not share...'}
           </p>
         )}
-        <TooltipButtonLikes reviewId={review.id ?? ''} />
+        <LikesButton reviewId={review.id ?? ''} />
       </div>
     </div>
   );

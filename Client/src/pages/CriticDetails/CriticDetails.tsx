@@ -23,10 +23,8 @@ function CriticDetails() {
 
   useEffect(() => {
     async function GetUsers() {
-      console.log(id);
       const users = await getUsersByIds({ ids: [id ?? ''] });
 
-      console.log(users);
       if (users.data) dispatch(setCritics(users.data as Critic[]));
     }
 

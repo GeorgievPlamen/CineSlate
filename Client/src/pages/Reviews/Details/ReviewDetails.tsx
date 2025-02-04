@@ -22,9 +22,6 @@ function ReviewDetails() {
     { skip: reviewData?.movieId === undefined }
   );
 
-  console.log(reviewData);
-  console.log(movieData);
-
   if (isReviewLoading || isMovieLoading) return <Loading />;
 
   return (

@@ -3,7 +3,7 @@ import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
 import { IMG_PATH_W500 } from '../../config';
 import { ReviewWithMovieDetailsResponse } from '../../../pages/CriticDetails/api/criticDetailsApi';
-import TooltipButtonLikes from './TooltipButtonLikes';
+import LikesButton from '../Buttons/LikesButton';
 
 interface Props {
   review: ReviewWithMovieDetailsResponse;
@@ -19,14 +19,14 @@ export default function MovieReviewCard({ review }: Props) {
       <img
         src={IMG_PATH_W500 + review.posterPath}
         alt="poster"
-        className="w-32 rounded-l-2xl border-r border-r-grey"
+        className="w-28 rounded-l-2xl border-r border-r-grey object-cover"
       />
       <div className="mx-4 my-2 w-full">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
             <NavLink
               to={`/movies/${review.movieId}`}
-              className={'hover:text-primary'}
+              className={'font-arvo hover:text-primary'}
             >
               {review.title}
             </NavLink>
@@ -56,13 +56,13 @@ export default function MovieReviewCard({ review }: Props) {
           </div>
         )}
         {revealed && (
-          <p className="min-h-28 font-roboto">
+          <p className="min-h-20 font-roboto">
             {review.reviewResponse.text && review.reviewResponse.text.length > 0
               ? review.reviewResponse.text
               : 'Did not share...'}
           </p>
         )}
-        <TooltipButtonLikes reviewId={review.reviewResponse.id ?? ''} />
+        <LikesButton reviewId={review?.reviewResponse?.id ?? ''} />
       </div>
     </div>
   );

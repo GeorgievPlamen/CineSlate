@@ -29,11 +29,11 @@ public static class ReviewsEndpoint
     {
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
-        reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
-        reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous();
-        reviews.MapGet("/details/{reviewId}", GetReviewDetailsByIdAsync).AllowAnonymous();
+        reviews.MapGet(Get, GetReviewsAsync);
+        reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync);
+        reviews.MapGet("/details/{reviewId}", GetReviewDetailsByIdAsync);
         reviews.MapGet("/own/{movieId}", GetOwnedReviewsByMovieIdAsync);
-        reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync).AllowAnonymous();
+        reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync);
 
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPost("/like/{reviewId}", LikeReviewAsync);

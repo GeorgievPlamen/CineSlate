@@ -11,6 +11,21 @@ export const Review = z.object({
   authorId: z.string().optional(),
   authorUsername: z.string().optional(),
   containsSpoilers: z.boolean(),
+  likes: z.number(),
+  hasUserLiked: z.boolean(),
 });
 
+const ReviewDetailsProps = z.object({
+  usersWhoLiked: z.array(
+    z.object({
+      value: z.string(),
+      onlyName: z.string(),
+    })
+  ),
+});
+
+const ReviewDetails = Review.merge(ReviewDetailsProps);
+
 export type Review = z.infer<typeof Review>;
+
+export type ReviewDetails = z.infer<typeof ReviewDetails>;
