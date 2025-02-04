@@ -129,7 +129,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
 
     public async Task<bool> UpdateLikesAsync(ReviewId reviewId, List<Like> likes, CancellationToken cancellationToken)
     {
-        var oldReview = await dbContext.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
+        var oldReview = await dbContext.Reviews.Include(x => x.Likes).FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
 
         if (oldReview is null)
             return false;
