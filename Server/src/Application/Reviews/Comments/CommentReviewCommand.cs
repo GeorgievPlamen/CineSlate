@@ -6,4 +6,4 @@ using MediatR;
 
 namespace Application.Reviews.Comments;
 
-public record CommentReviewCommand(ReviewId ReviewId, string Comment) : IRequest<Result<ReviewDetailsResponse>>;
+public record CommentReviewCommand(ReviewId ReviewId, string Comment) : IRequest<Result<Unit>>;

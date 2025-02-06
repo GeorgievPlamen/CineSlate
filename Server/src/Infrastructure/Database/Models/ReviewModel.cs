@@ -11,4 +11,5 @@ public class ReviewModel : BaseModel
     public string Text { get; set; } = null!;
     public bool ContainsSpoilers { get; set; }
     public List<LikesModel> Likes { get; set; } = [];
+    public List<CommentModel> Comments { get; set; } = [];
 }
