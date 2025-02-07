@@ -25,6 +25,7 @@ public class Review(ReviewId id) : Entity<ReviewId>(id)
 
     public void AddComment(List<Comment> comments) => _comments.AddRange(comments);
     public void RemoveComment(Comment comment) => _comments.Remove(comment);
+    public bool HasUserCommented(UserId userId) => _comments.FirstOrDefault(x => x.FromUserId == userId) is not null;
 
     public static Review Create(int rating, UserId ratedBy, string text = "", bool containsSpoilers = false)
     {

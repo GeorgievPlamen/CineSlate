@@ -35,7 +35,6 @@ public static class ReviewsEndpoint
         reviews.MapGet("/details/{reviewId}", GetReviewDetailsByIdAsync);
         reviews.MapGet("/own/{movieId}", GetOwnedReviewsByMovieIdAsync);
         reviews.MapGet("/user/{userId}", GetReviewsByUserIdAsync);
-        reviews.MapGet("/comments/{reviewId}", GetReviewCommentsByIdAsync);
 
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPost("/like/{reviewId}", LikeReviewAsync);
@@ -46,11 +45,6 @@ public static class ReviewsEndpoint
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
 
-    private static async Task<IResult> GetReviewCommentsByIdAsync(Guid reviewId, ISender mediatr, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     private static async Task<IResult> CommentReviewAsync(Guid reviewId, string comment, ISender mediatr, CancellationToken cancellationToken)
         => Response<Unit>.Match(await mediatr.Send(new CommentReviewCommand(
             ReviewId.Create(reviewId),
@@ -58,7 +52,7 @@ public static class ReviewsEndpoint
             cancellationToken));
 
     private static async Task<IResult> LikeReviewAsync(Guid reviewId, ISender mediatr, CancellationToken cancellationToken)
-        => Response<ReviewDetailsResponse>.Match(await mediatr.Send(new LikeReviewCommand(
+        => Response<ReviewResponse>.Match(await mediatr.Send(new LikeReviewCommand(
             ReviewId.Create(reviewId)),
             cancellationToken));
 

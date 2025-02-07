@@ -1,5 +1,3 @@
-
-
 using Application.Common;
 using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
@@ -23,6 +21,6 @@ public class GetReviewDetailsByIdQueryHandler(IReviewRepository reviewRepository
 
         return result is null
             ? Result<ReviewDetailsResponse>.Failure(ReviewErrors.NotFound(id))
-            : Result<ReviewDetailsResponse>.Success(result.ToDetailsResponse(result.HasUserLiked(userId), result.Likes.Select(x => x.FromUser).ToList())); ;
+            : Result<ReviewDetailsResponse>.Success(result.ToDetailsResponse(result.HasUserLiked(userId), result.HasUserCommented(userId)));
     }
 }

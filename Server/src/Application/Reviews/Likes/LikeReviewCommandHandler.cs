@@ -1,4 +1,3 @@
-
 using Application.Common;
 using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
@@ -15,26 +14,25 @@ namespace Application.Reviews.Likes;
 public class LikeReviewCommandHandler(
     IReviewRepository reviewRepository,
     IUserRepository userRepository,
-    IAppContext appContext) : IRequestHandler<LikeReviewCommand, Result<ReviewDetailsResponse>>
+    IAppContext appContext) : IRequestHandler<LikeReviewCommand, Result<ReviewResponse>>
 {
-    public async Task<Result<ReviewDetailsResponse>> Handle(LikeReviewCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ReviewResponse>> Handle(LikeReviewCommand request, CancellationToken cancellationToken)
     {
         var userId = appContext.GetUserId();
 
         var review = await reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken);
         if (review is null)
-            return Result<ReviewDetailsResponse>.Failure(ReviewErrors.NotFound(request.ReviewId));
+            return Result<ReviewResponse>.Failure(ReviewErrors.NotFound(request.ReviewId));
+
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        if (user is null)
+            return Result<ReviewResponse>.Failure(UserErrors.NotFound());
 
         var matchedLike = review.Likes.FirstOrDefault(x => x.FromUserId == userId);
-
         var hasUserLiked = false;
 
         if (matchedLike is null)
         {
-            var user = await userRepository.GetByIdAsync(userId, cancellationToken);
-            if (user is null)
-                return Result<ReviewDetailsResponse>.Failure(UserErrors.NotFound());
-
             review.AddLikes([Like.Create(userId, user.Username)]);
             hasUserLiked = true;
         }
@@ -45,6 +43,6 @@ public class LikeReviewCommandHandler(
 
         await reviewRepository.UpdateLikesAsync(request.ReviewId, [.. review.Likes], cancellationToken);
 
-        return Result<ReviewDetailsResponse>.Success(review.ToDetailsResponse(hasUserLiked, review.Likes.Select(x => x.FromUser).ToList()));
+        return Result<ReviewResponse>.Success(review.ToResponse(user.Username.OnlyName, hasUserLiked));
     }
 }
