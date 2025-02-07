@@ -108,7 +108,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .Include(r => r.Comments)
             .FirstOrDefaultAsync(x => x.Id == reviewId.Value, cancellationToken);
 
-        return result?.Unwrap(result.Likes.Unwrap());
+        return result?.Unwrap(result.Likes.Unwrap(), result.Comments.Unwrap());
     }
 
     public async Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken)

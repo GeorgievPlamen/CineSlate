@@ -17,6 +17,8 @@ using Domain.Movies.Reviews.ValueObjects;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace Api.Features.Reviews;
 
 public static class ReviewsEndpoint
@@ -45,7 +47,7 @@ public static class ReviewsEndpoint
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
 
-    private static async Task<IResult> CommentReviewAsync(Guid reviewId, string comment, ISender mediatr, CancellationToken cancellationToken)
+    private static async Task<IResult> CommentReviewAsync(Guid reviewId, [FromBody] string comment, ISender mediatr, CancellationToken cancellationToken)
         => Response<Unit>.Match(await mediatr.Send(new CommentReviewCommand(
             ReviewId.Create(reviewId),
             comment),

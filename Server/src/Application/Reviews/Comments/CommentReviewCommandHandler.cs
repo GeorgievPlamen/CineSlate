@@ -41,6 +41,8 @@ public class CommentReviewCommandHandler(
             review.AddComment([Comment.Create(userId, user.Username, request.Comment)]);
         }
 
+        await reviewRepository.UpdateCommentsAsync(review.Id, [.. review.Comments], cancellationToken);
+
         return Result<Unit>.Success(new());
     }
 }

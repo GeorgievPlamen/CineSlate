@@ -169,3 +169,11 @@ Authorization: {{Token}}
 POST {{Api_HostAddress}}reviews/like/ed78f023-2fde-46b2-a805-f5d08737fe23 HTTP/1.1
 Content-Type: application/json
 Authorization: {{Token}}
+
+### Comment Review
+
+POST {{Api_HostAddress}}reviews/comment/ed78f023-2fde-46b2-a805-f5d08737fe23 HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}
+
+"This is the comment"
