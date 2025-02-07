@@ -13,13 +13,27 @@ export const Review = z.object({
   containsSpoilers: z.boolean(),
   likes: z.number(),
   hasUserLiked: z.boolean(),
-});
-
-const ReviewDetailsProps = z.object({
   usersWhoLiked: z.array(
     z.object({
       value: z.string(),
       onlyName: z.string(),
+    })
+  ),
+});
+
+const ReviewDetailsProps = z.object({
+  hasUserCommented: z.boolean(),
+  comments: z.record(
+    z.string(),
+    z.object({
+      fromUserId: z.object({
+        value: z.string(),
+      }),
+      fromUser: z.object({
+        value: z.string(),
+        onlyName: z.string(),
+      }),
+      value: z.string(),
     })
   ),
 });
