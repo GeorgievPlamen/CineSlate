@@ -1,9 +1,12 @@
 using Application.Movies.Interfaces;
+
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
+
 using Infrastructure.Database;
 using Infrastructure.Database.Models;
 using Infrastructure.Repositories.MappingExtensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
@@ -133,7 +136,7 @@ public class MovieRepository(CineSlateContext dbContext) : IMovieRepository
 
         foreach (var genre in model.Genres)
         {
-            genre.Name = movie.Genres.First(g => genre.Id == g.Id).Value;
+            genre.Name = movie?.Genres?.FirstOrDefault(g => genre.Id == g.Id)?.Value ?? "";
         }
     }
 }
