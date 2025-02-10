@@ -32,7 +32,6 @@ export default function LikesButton({ reviewId }: Props) {
       <Tooltip content={data?.usersWhoLiked.map((u) => u.onlyName).join(' ')}>
         <p
           className="hover:underline"
-          onMouseEnter={() => console.log('fetch data')}
         >
           {data?.likes}
         </p>

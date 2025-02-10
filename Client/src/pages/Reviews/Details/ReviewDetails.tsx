@@ -6,6 +6,7 @@ import { BACKUP_PROFILE, IMG_PATH } from '../../../app/config';
 import { useState } from 'react';
 import CommentCard from '../../../app/components/Cards/CommentCard';
 import { useGetUsersByIdQuery } from '../../Users/api/userApiRTK';
+import LikesButton from '../../../app/components/Buttons/LikesButton';
 
 function ReviewDetails() {
   const { id } = useParams();
@@ -94,6 +95,9 @@ function ReviewDetails() {
                 : 'Did not share...'}
             </p>
             <p>⭐{reviewData?.rating}</p>
+          </div>
+          <div className="m-4">
+            <LikesButton reviewId={id ?? ''} />
           </div>
         </section>
       </div>
