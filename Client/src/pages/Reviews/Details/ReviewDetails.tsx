@@ -7,15 +7,20 @@ import { useState } from 'react';
 import CommentCard from '../../../app/components/Cards/CommentCard';
 import { useGetUsersByIdQuery } from '../../Users/api/userApiRTK';
 import LikesButton from '../../../app/components/Buttons/LikesButton';
+import Backdrop from '../../../app/components/Backdrop/Backdrop';
+import AddComment from './AddComment';
 
 function ReviewDetails() {
   const { id } = useParams();
   const [imageIsLoading, setImageIsLoading] = useState(true);
 
-  const { data: reviewData, isLoading: isReviewLoading } =
-    useReviewDetailsByIdQuery({
-      reviewId: id ?? '',
-    });
+  const {
+    data: reviewData,
+    isLoading: isReviewLoading,
+    refetch,
+  } = useReviewDetailsByIdQuery({
+    reviewId: id ?? '',
+  });
 
   const { data: movieData, isLoading: isMovieLoading } = useMovieDetailsQuery(
     {
@@ -34,6 +39,7 @@ function ReviewDetails() {
 
   return (
     <article className="mx-auto mt-10 flex w-full flex-col items-center justify-center">
+      <Backdrop path={movieData?.backdropPath} />
       <div className="flex">
         <section>
           <img
@@ -102,6 +108,11 @@ function ReviewDetails() {
         </section>
       </div>
       <section>
+        {reviewData?.hasUserCommented ? (
+          <>{/* <SubmitButton className="mb-2" text={'Remove Comment'} /> */}</>
+        ) : (
+          <AddComment reviewId={id ?? ''} refetchComments={refetch} />
+        )}
         {Object.entries(reviewData?.comments ?? '').map(([id, comment]) => (
           <CommentCard key={id} comment={comment} />
         ))}
