@@ -3,6 +3,7 @@ using Api.Features.Reviews.Requests.cs;
 
 using Application.Common;
 using Application.Reviews;
+using Application.Reviews.Comments;
 using Application.Reviews.Create;
 using Application.Reviews.Get;
 using Application.Reviews.GetByMovieId;
@@ -15,6 +16,8 @@ using Application.Reviews.Update;
 using Domain.Movies.Reviews.ValueObjects;
 
 using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Features.Reviews;
 
@@ -37,14 +40,21 @@ public static class ReviewsEndpoint
 
         reviews.MapPost(Create, CreateReviewAsync).WithName("Created");
         reviews.MapPost("/like/{reviewId}", LikeReviewAsync);
+        reviews.MapPost("/comment/{reviewId}", CommentReviewAsync);
 
         reviews.MapPut(Update, UpdateReviewAsync);
 
         reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
     }
 
+    private static async Task<IResult> CommentReviewAsync(Guid reviewId, [FromBody] string comment, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Unit>.Match(await mediatr.Send(new CommentReviewCommand(
+            ReviewId.Create(reviewId),
+            comment),
+            cancellationToken));
+
     private static async Task<IResult> LikeReviewAsync(Guid reviewId, ISender mediatr, CancellationToken cancellationToken)
-        => Response<ReviewDetailsResponse>.Match(await mediatr.Send(new LikeReviewCommand(
+        => Response<ReviewResponse>.Match(await mediatr.Send(new LikeReviewCommand(
             ReviewId.Create(reviewId)),
             cancellationToken));
 

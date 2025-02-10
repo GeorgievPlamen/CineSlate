@@ -9,7 +9,6 @@ using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
 
 using Infrastructure.Database;
-using Infrastructure.Database.Models;
 using Infrastructure.Repositories.MappingExtensions;
 
 using Microsoft.EntityFrameworkCore;
@@ -106,9 +105,10 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .AsNoTracking()
             .Include(r => r.Movie)
             .Include(r => r.Likes)
+            .Include(r => r.Comments)
             .FirstOrDefaultAsync(x => x.Id == reviewId.Value, cancellationToken);
 
-        return result?.Unwrap(result.Likes.Unwrap());
+        return result?.Unwrap(result.Likes.Unwrap(), result.Comments.Unwrap());
     }
 
     public async Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken)
@@ -135,6 +135,20 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             return false;
 
         oldReview.Likes = likes.Unwrap(oldReview);
+
+        dbContext.Update(oldReview);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    public async Task<bool> UpdateCommentsAsync(ReviewId reviewId, List<Comment> comments, CancellationToken cancellationToken)
+    {
+        var oldReview = await dbContext.Reviews.Include(x => x.Comments).FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
+
+        if (oldReview is null)
+            return false;
+
+        oldReview.Comments = comments.Unwrap(oldReview);
 
         dbContext.Update(oldReview);
 

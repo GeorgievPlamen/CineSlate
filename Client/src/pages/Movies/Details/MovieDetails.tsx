@@ -24,6 +24,7 @@ export default function MovieDetails() {
   const {
     data,
     isError,
+    isLoading,
     refetch: refetchMovieDetails,
   } = useMovieDetailsQuery({ id });
 
@@ -61,6 +62,8 @@ export default function MovieDetails() {
   }, [getUsersByIds, reviewData]);
 
   if (isError) return <ErrorMessage />;
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

@@ -43,4 +43,20 @@ public static class ReviewMappings
         return review;
     }
 
+    public static Review Unwrap(this ReviewModel model, List<Like> likes, List<Comment> comments)
+    {
+        var review = Review.Create(
+            model.Id,
+            model.Rating,
+            UserId.Create(model.AuthorId),
+            MovieId.Create(model.Movie.Id),
+            model.Text,
+            model.ContainsSpoilers);
+
+        review.AddLikes(likes);
+
+        review.AddComment(comments);
+
+        return review;
+    }
 }

@@ -36,5 +36,8 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
 
         builder.HasMany(r => r.Likes)
             .WithOne(x => x.Review);
+
+        builder.HasMany(r => r.Comments)
+            .WithOne(x => x.Review);
     }
 }

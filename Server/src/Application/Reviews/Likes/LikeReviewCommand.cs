@@ -6,4 +6,4 @@ using MediatR;
 
 namespace Application.Reviews.Likes;
 
-public record LikeReviewCommand(ReviewId ReviewId) : IRequest<Result<ReviewDetailsResponse>>;
+public record LikeReviewCommand(ReviewId ReviewId) : IRequest<Result<ReviewResponse>>;

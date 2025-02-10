@@ -1,4 +1,5 @@
 using Domain.Movies.Reviews;
+using Domain.Movies.Reviews.ValueObjects;
 using Domain.Users.ValueObjects;
 
 namespace Application.Reviews;
@@ -12,7 +13,8 @@ public record ReviewResponse(
     string AuthorUsername,
     bool ContainsSpoilers,
     int Likes,
-    bool HasUserLiked);
+    bool HasUserLiked,
+    List<Username> UsersWhoLiked);
 
 public record ReviewDetailsResponse(
     Guid Id,
@@ -23,7 +25,9 @@ public record ReviewDetailsResponse(
     bool ContainsSpoilers,
     int Likes,
     bool HasUserLiked,
-    List<Username> UsersWhoLiked);
+    List<Username> UsersWhoLiked,
+    bool HasUserCommented,
+    Dictionary<Guid, Comment> Comments);
 
 public record ReviewWithMovieDetailsResponse(
     string Title,
@@ -46,12 +50,13 @@ public static class Converter
             authorUsername,
             review.ContainsSpoilers,
             review.LikesCount,
-            hasUserLiked);
+            hasUserLiked,
+            [.. review.Likes.Select(x => x.FromUser)]);
 
     public static ReviewDetailsResponse ToDetailsResponse(
         this Review review,
         bool hasUserLiked,
-        List<Username> usersWhoLiked) => new(
+        bool hasUserCommented) => new(
             review.Id.Value,
             review.Rating,
             review.Text,
@@ -60,5 +65,7 @@ public static class Converter
             review.ContainsSpoilers,
             review.LikesCount,
             hasUserLiked,
-            usersWhoLiked);
+            [.. review.Likes.Select(x => x.FromUser)],
+            hasUserCommented,
+            review.Comments.ToDictionary(x => x.FromUserId.Value));
 }
