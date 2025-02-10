@@ -21,25 +21,26 @@ export const Review = z.object({
   ),
 });
 
+const Comment = z.object({
+  fromUserId: z.object({
+    value: z.string(),
+  }),
+  fromUser: z.object({
+    value: z.string(),
+    onlyName: z.string(),
+  }),
+  value: z.string(),
+});
+
 const ReviewDetailsProps = z.object({
   hasUserCommented: z.boolean(),
-  comments: z.record(
-    z.string(),
-    z.object({
-      fromUserId: z.object({
-        value: z.string(),
-      }),
-      fromUser: z.object({
-        value: z.string(),
-        onlyName: z.string(),
-      }),
-      value: z.string(),
-    })
-  ),
+  comments: z.record(z.string(), Comment),
 });
 
 const ReviewDetails = Review.merge(ReviewDetailsProps);
 
 export type Review = z.infer<typeof Review>;
+
+export type Comment = z.infer<typeof Comment>;
 
 export type ReviewDetails = z.infer<typeof ReviewDetails>;
