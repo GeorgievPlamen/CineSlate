@@ -26,6 +26,7 @@ public class CreateReviewCommandHandler(
 
         var movieId = MovieId.Create(request.MovieId);
         var movie = await movieRepository.GetByIdAsync(movieId, cancellationToken);
+        
         if (movie is null)
             return Result<ReviewId>.Failure(MovieErrors.NotFound(movieId));
 

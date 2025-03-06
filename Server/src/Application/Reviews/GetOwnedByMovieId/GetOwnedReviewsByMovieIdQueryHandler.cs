@@ -24,6 +24,7 @@ public class GetOwnedReviewsByMovieIdQueryHandler(
     public async Task<Result<ReviewResponse>> Handle(GetOwnedReviewsByMovieIdQuery request, CancellationToken cancellationToken)
     {
         var httpContext = httpContextAccessor.HttpContext;
+
         if (httpContext is null)
             return Result<ReviewResponse>.Failure(Error.ServerError());
 
@@ -36,10 +37,12 @@ public class GetOwnedReviewsByMovieIdQueryHandler(
             return Result<ReviewResponse>.Failure(Error.NotFound());
 
         var email = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+
         if (email is null)
             return Result<ReviewResponse>.Failure(Error.ServerError());
 
         var user = await userRepository.GetAsync(email.Value, cancellationToken);
+        
         if (user is null)
             return Result<ReviewResponse>.Failure(Error.ServerError());
 

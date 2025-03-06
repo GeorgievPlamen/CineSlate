@@ -22,11 +22,13 @@ public class UpdateReviewCommandHandler(
     public async Task<Result<ReviewId>> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
     {
         var httpContext = httpContextAccessor.HttpContext;
+
         if (httpContext is null)
             return Result<ReviewId>.Failure(Error.ServerError());
 
         var userId = UserId.Create(
             Guid.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!));
+            
         if (userId is null)
             return Result<ReviewId>.Failure(UserErrors.NotFound());
 
