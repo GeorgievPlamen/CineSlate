@@ -22,12 +22,14 @@ public class CommentReviewCommandHandler(
         var userId = appContext.GetUserId();
 
         var review = await reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken);
+
         if (review is null)
             return Result<Unit>.Failure(ReviewErrors.NotFound(request.ReviewId));
 
         var matchedComment = review.Comments.FirstOrDefault(x => x.FromUserId == userId);
 
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+
         if (user is null)
             return Result<Unit>.Failure(UserErrors.NotFound());
 

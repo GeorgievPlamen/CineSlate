@@ -20,6 +20,7 @@ public class GetReviewsByUserIdQueryHandler(
         var userId = UserId.Create(request.UserId);
 
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        
         if (user is null)
             return Result<Paged<ReviewWithMovieDetailsResponse>>.Failure(Error.ServerError());
 

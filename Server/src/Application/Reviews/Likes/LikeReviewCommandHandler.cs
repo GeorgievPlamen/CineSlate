@@ -21,10 +21,12 @@ public class LikeReviewCommandHandler(
         var userId = appContext.GetUserId();
 
         var review = await reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken);
+
         if (review is null)
             return Result<ReviewResponse>.Failure(ReviewErrors.NotFound(request.ReviewId));
 
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        
         if (user is null)
             return Result<ReviewResponse>.Failure(UserErrors.NotFound());
 

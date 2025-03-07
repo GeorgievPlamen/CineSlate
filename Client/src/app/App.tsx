@@ -7,7 +7,6 @@ import {
 import Critics from '../pages/Critics/Critics';
 import Home from '../pages/Home';
 import Movies from '../pages/Movies/Movies';
-import Quizzess from '../pages/Quizzes/Quizzess';
 import { loginAction } from '../pages/Users/api/loginAction';
 import { registerAction } from '../pages/Users/api/registerAction';
 import Login from '../pages/Users/Login';
@@ -55,10 +54,6 @@ export default function App() {
             {
               path: '/critics/:id',
               element: <CriticDetails />,
-            },
-            {
-              path: '/quizzes',
-              element: <Quizzess />,
             },
             {
               path: '/login',
