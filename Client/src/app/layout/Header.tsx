@@ -58,17 +58,6 @@ function Header() {
               Critics
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/quizzes"
-              className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
-              }
-            >
-              Quizz
-            </NavLink>
-          </li>
         </ul>
         {user?.username?.length > 0 ? (
           <DropdownButton>
