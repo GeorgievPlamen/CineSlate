@@ -1,14 +1,17 @@
 import { NavLink } from 'react-router-dom';
+import { useAppSelector } from '../app/store/reduxHooks';
 
 function Home() {
+  const user = useAppSelector((state) => state.users.user);
+
   return (
     <div className="flex flex-col items-center justify-center rounded-xl p-8">
       <div className="max-w-4xl">
-        <h1 className="mb-6 text-center font-arvo text-3xl font-bold text-primary md:text-4xl">
+        <h1 className="mb-12 text-center font-arvo text-3xl font-bold text-primary md:text-4xl">
           Find Your Next Favorite Movie Instantly! 🎬🍿
         </h1>
 
-        <section className="mb-8">
+        <section className="mb-12">
           <p className="mb-4 text-lg text-grey">
             <span className="font-arvo text-xl font-bold italic text-secondary">
               Welcome to CineSlate
@@ -44,7 +47,7 @@ function Home() {
           </ul>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-12">
           <p className="mb-4 text-lg text-grey">
             <span className="font-arvo text-xl font-bold italic text-secondary">
               Everyone's a Critic
@@ -71,7 +74,7 @@ function Home() {
           </ul>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-12">
           <p className="mb-4 text-lg text-grey">
             <span className="font-arvo text-xl font-bold italic text-secondary">
               Community-Driven
@@ -96,7 +99,7 @@ function Home() {
             today!{' '}
             <span className="font-bold text-whitesmoke">
               <NavLink
-                to="login"
+                to={user?.username?.length > 0 ? '/my-details' : 'login'}
                 className={({ isActive }) =>
                   'rounded p-1 text-whitesmoke underline hover:bg-primary active:bg-opacity-80' +
                   ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
