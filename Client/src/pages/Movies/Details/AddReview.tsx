@@ -57,8 +57,13 @@ export default function AddReview({ onSuccess }: Props) {
     setHoverSubtitle(subtitle);
   }
 
+  console.log(errors);
+
   async function handleOnSubmit(formData: FieldValues) {
     let isSuccess;
+
+    console.log(formData);
+    console.log(ownReviewData);
 
     if (ownReviewData) {
       const { data } = await updateReview({

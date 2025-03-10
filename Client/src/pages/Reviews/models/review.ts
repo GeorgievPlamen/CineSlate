@@ -11,14 +11,16 @@ export const Review = z.object({
   authorId: z.string().optional(),
   authorUsername: z.string().optional(),
   containsSpoilers: z.boolean(),
-  likes: z.number(),
-  hasUserLiked: z.boolean(),
-  usersWhoLiked: z.array(
-    z.object({
-      value: z.string(),
-      onlyName: z.string(),
-    })
-  ),
+  likes: z.number().optional(),
+  hasUserLiked: z.boolean().optional(),
+  usersWhoLiked: z
+    .array(
+      z.object({
+        value: z.string(),
+        onlyName: z.string(),
+      })
+    )
+    .optional(),
 });
 
 const Comment = z.object({
