@@ -15,6 +15,8 @@ function Header() {
     setTimeout(() => setIsBouncing(false), 1500);
   };
 
+  // debounce search 500ms
+
   return (
     <header className="fixed flex w-full bg-background py-2 shadow shadow-dark">
       <nav className="flex w-full items-center justify-evenly">

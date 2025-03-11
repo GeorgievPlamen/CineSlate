@@ -1,9 +1,12 @@
 using System.Text.Json;
+
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
+
 using Infrastructure.Common.Models;
 using Infrastructure.MoviesClient;
+
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.MovieClient;
@@ -80,5 +83,10 @@ public class TMDBClient : IMovieClient
             movieDetailed.Runtime,
             movieDetailed.Status,
             movieDetailed.Tagline);
+    }
+
+    public Task<Paged<ExternalMovie>> GetMoviesByTitle(string searchCriteria, int pageNumber, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException(); // TODO
     }
 }

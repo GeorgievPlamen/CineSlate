@@ -1,9 +1,13 @@
 
+
 using Api.Common;
+
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Details;
+using Application.Movies.GetMoviesByTitle;
 using Application.Movies.PagedMoviesQuery;
+
 using MediatR;
 
 namespace Api.Features.Movies;
@@ -26,8 +30,11 @@ public static class MoviesEndpoint
         movies.MapGet(GetPopular, GetPopularAsync);
         movies.MapGet(GetTopRated, GetTopRatedAsync);
         movies.MapGet(GetUpcoming, GetUpcomingAsync);
+        movies.MapGet("/search", GetMoviesByTitle);
     }
 
+    private static async Task<IResult> GetMoviesByTitle(string title, ISender mediatr, CancellationToken cancellationToken, int page = 1)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByTitleQuery(title, page), cancellationToken));
 
     private static async Task<IResult> GetMovieDetailsByIdAsync(int id, ISender mediatr, CancellationToken cancellationToken)
         => Response<MovieDetailed>.Match(await mediatr.Send(new GetMovieDetailsQuery(id), cancellationToken));
