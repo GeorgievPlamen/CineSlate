@@ -23,6 +23,8 @@ public class TMDBClient : IMovieClient
 
     private string UriForMovieDetailsWithKey(int id)
         => $"/3/movie/{id}?api_key={_apiKeys.TMDBKey}";
+    private string UriForMovieSearchWithKey(string searchCriteria, int pageNumber)
+        => $"/3/search/movie?query={searchCriteria}?page=${pageNumber}&api_key={_apiKeys.TMDBKey}";
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
     {
@@ -85,8 +87,27 @@ public class TMDBClient : IMovieClient
             movieDetailed.Tagline);
     }
 
-    public Task<Paged<ExternalMovie>> GetMoviesByTitle(string searchCriteria, int pageNumber, CancellationToken cancellationToken)
+    public async Task<Paged<ExternalMovie>> GetMoviesByTitle(string searchCriteria, int pageNumber, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException(); // TODO
+        var response = await _httpClient.GetAsync(UriForMovieSearchWithKey(searchCriteria, pageNumber));
+
+        var movies = JsonSerializer.Deserialize<TMDBMovies>( // TODO
+            await response.Content.ReadAsStringAsync(cancellationToken),
+            _jsonSerializerOptions);
+
+        if (movies is null || movies.Results is null) return new([]);
+
+        return new(movies.Results.Select(
+            x => new ExternalMovie(
+                x.Id,
+                x.Title,
+                x.Overview,
+                x.Release_date,
+                x.Poster_path,
+                x.Genre_ids)).ToList(),
+            movies.Page,
+            movies.Page < 500,
+            movies.Page > 1,
+            movies.Total_Results);
     }
 }
