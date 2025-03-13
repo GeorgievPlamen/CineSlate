@@ -24,7 +24,7 @@ public class TMDBClient : IMovieClient
     private string UriForMovieDetailsWithKey(int id)
         => $"/3/movie/{id}?api_key={_apiKeys.TMDBKey}";
     private string UriForMovieSearchWithKey(string searchCriteria, int pageNumber)
-        => $"/3/search/movie?query={searchCriteria}?page=${pageNumber}&api_key={_apiKeys.TMDBKey}";
+        => $"/3/search/movie?query={searchCriteria}&page={pageNumber}&api_key={_apiKeys.TMDBKey}";
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
     {
@@ -42,7 +42,7 @@ public class TMDBClient : IMovieClient
             await response.Content.ReadAsStringAsync(cancellationToken),
             _jsonSerializerOptions);
 
-        if (movies is null || movies.Results is null) return new([]);
+        if (movies is null || movies.Results is null || movies.Results.Length == 0) return new([]);
 
         return new(movies.Results.Select(
             x => new ExternalMovie(
@@ -91,11 +91,13 @@ public class TMDBClient : IMovieClient
     {
         var response = await _httpClient.GetAsync(UriForMovieSearchWithKey(searchCriteria, pageNumber));
 
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+
         var movies = JsonSerializer.Deserialize<TMDBMovies>( // TODO
-            await response.Content.ReadAsStringAsync(cancellationToken),
+            responseContent,
             _jsonSerializerOptions);
 
-        if (movies is null || movies.Results is null) return new([]);
+        if (movies is null || movies.Results is null || movies.Results.Length == 0) return new([]);
 
         return new(movies.Results.Select(
             x => new ExternalMovie(
