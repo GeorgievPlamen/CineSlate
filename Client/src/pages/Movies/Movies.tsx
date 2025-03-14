@@ -5,6 +5,7 @@ import Button from '../../app/components/Buttons/Button';
 import useScroll from '../../app/hooks/useScroll';
 import Spinner from '../../app/components/Spinner';
 import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
+import { useMovieFilters } from './moviesSlice';
 
 export default function Movies() {
   const [page, setPage] = useState(1);
@@ -14,6 +15,10 @@ export default function Movies() {
     page,
     moviesBy: MoviesBy.GetNowPlaying,
   });
+
+  const { searchTerm } = useMovieFilters();
+
+  console.log(searchTerm); // TODO use on api
 
   useEffect(() => {
     if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));

@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { userSlice } from '../../pages/Users/userSlice';
 import { cineslateApi } from '../api/cineslateApi';
 import { criticsSlice } from '../../pages/Critics/criticsSlice';
+import { moviesSlice } from '../../pages/Movies/moviesSlice';
 
 export const store = configureStore({
   reducer: {
     users: userSlice.reducer,
     [cineslateApi.reducerPath]: cineslateApi.reducer,
     critics: criticsSlice.reducer,
+    movies: moviesSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(cineslateApi.middleware),

@@ -1,19 +1,30 @@
 import { NavLink } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
-import { useState } from 'react';
-import { useAppSelector } from '../store/reduxHooks';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
+import useDebounce from '../hooks/useDebounce';
+import { setSearchTermFilter } from '../../pages/Movies/moviesSlice';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
   const user = useAppSelector((state) => state.users.user);
 
+  const [searchTerm, setSearchTerm] = useState<string>();
+  const debouncedSearchTerm = useDebounce(searchTerm);
+
   const handleBounce = () => {
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 1500);
   };
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (debouncedSearchTerm) dispatch(setSearchTermFilter(debouncedSearchTerm));
+  }, [debouncedSearchTerm, dispatch]);
 
   // debounce search 500ms
 
@@ -30,6 +41,7 @@ function Header() {
         </NavLink>
         <div className="w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
           <input
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
             type="search"
             name="search"
