@@ -18,7 +18,7 @@ function Header() {
   // debounce search 500ms
 
   return (
-    <header className="fixed flex w-full bg-background py-2 shadow shadow-dark">
+    <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
