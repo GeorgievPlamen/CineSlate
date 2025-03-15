@@ -21,13 +21,19 @@ function Header() {
     setTimeout(() => setIsBouncing(false), 1500);
   };
 
-  const navigateToMovies = useCallback(
-    () => navigate('/movies?search=' + debouncedSearchTerm),
-    [debouncedSearchTerm, navigate]
-  );
+  const navigateToMovies = useCallback(() => {
+    if (debouncedSearchTerm === undefined) return;
+
+    let search;
+
+    if (debouncedSearchTerm?.length > 0) {
+      search = '?search=' + debouncedSearchTerm;
+      navigate('/movies' + search);
+    } else navigate('/movies');
+  }, [debouncedSearchTerm, navigate]);
 
   useEffect(() => {
-    navigateToMovies();
+    if (debouncedSearchTerm !== undefined) navigateToMovies();
   }, [debouncedSearchTerm, navigate, navigateToMovies]);
 
   return (

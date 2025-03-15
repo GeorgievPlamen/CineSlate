@@ -1,5 +1,9 @@
 import MovieCard from '../../app/components/Cards/MovieCard';
-import { MoviesBy, usePagedMoviesQuery } from './api/moviesApi';
+import {
+  MoviesBy,
+  usePagedMoviesQuery,
+  usePagedMoviesSearchByTitleQuery,
+} from './api/moviesApi';
 import { useEffect, useState } from 'react';
 import Button from '../../app/components/Buttons/Button';
 import useScroll from '../../app/hooks/useScroll';
@@ -22,9 +26,17 @@ export default function Movies() {
     { skip: !!search }
   );
 
-  // const { searchTerm } = useMovieFilters();
-
-  console.log(search);
+  const {
+    data: searchedMovies,
+    isFetching: isSearchedMoviesFetching,
+    isError: isSearchedMoviesError,
+  } = usePagedMoviesSearchByTitleQuery(
+    {
+      page,
+      searchTerm: search ?? '',
+    },
+    { skip: search ? search?.length === 0 : true }
+  );
 
   useEffect(() => {
     if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));
@@ -43,10 +55,20 @@ export default function Movies() {
             posterPath={m.posterPath}
           />
         ))}
+        {searchedMovies?.values.map((m) => (
+          <MovieCard
+            key={m.id}
+            title={m.title}
+            id={m.id}
+            rating={m.rating}
+            releaseDate={m.releaseDate}
+            posterPath={m.posterPath}
+          />
+        ))}
       </article>
       <div className="mb-20 mt-10 flex justify-center">
-        {isFetching && page < 5 && <Spinner />}
-        {isError && <ErrorMessage />}
+        {(isFetching || isSearchedMoviesFetching) && page < 5 && <Spinner />}
+        {isError || (isSearchedMoviesError && <ErrorMessage />)}
         {page > 4 && (
           <Button
             onClick={() => setPage((prev) => prev + 1)}
