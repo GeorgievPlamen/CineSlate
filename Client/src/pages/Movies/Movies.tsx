@@ -5,20 +5,26 @@ import Button from '../../app/components/Buttons/Button';
 import useScroll from '../../app/hooks/useScroll';
 import Spinner from '../../app/components/Spinner';
 import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
-import { useMovieFilters } from './moviesSlice';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
   const [page, setPage] = useState(1);
   const { nearBottom } = useScroll();
 
-  const { data, isFetching, isError } = usePagedMoviesQuery({
-    page,
-    moviesBy: MoviesBy.GetNowPlaying,
-  });
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get('search');
 
-  const { searchTerm } = useMovieFilters();
+  const { data, isFetching, isError } = usePagedMoviesQuery(
+    {
+      page,
+      moviesBy: MoviesBy.GetNowPlaying,
+    },
+    { skip: !!search }
+  );
 
-  console.log(searchTerm); // TODO use on api
+  // const { searchTerm } = useMovieFilters();
+
+  console.log(search);
 
   useEffect(() => {
     if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));

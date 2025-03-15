@@ -1,12 +1,11 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/reduxHooks';
+import { useCallback, useEffect, useState } from 'react';
+import { useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
 import useDebounce from '../hooks/useDebounce';
-import { setSearchTermFilter } from '../../pages/Movies/moviesSlice';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -15,18 +14,21 @@ function Header() {
   const [searchTerm, setSearchTerm] = useState<string>();
   const debouncedSearchTerm = useDebounce(searchTerm);
 
+  const navigate = useNavigate();
+
   const handleBounce = () => {
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 1500);
   };
 
-  const dispatch = useAppDispatch();
+  const navigateToMovies = useCallback(
+    () => navigate('/movies?search=' + debouncedSearchTerm),
+    [debouncedSearchTerm, navigate]
+  );
 
   useEffect(() => {
-    if (debouncedSearchTerm) dispatch(setSearchTermFilter(debouncedSearchTerm));
-  }, [debouncedSearchTerm, dispatch]);
-
-  // debounce search 500ms
+    navigateToMovies();
+  }, [debouncedSearchTerm, navigate, navigateToMovies]);
 
   return (
     <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
@@ -46,8 +48,15 @@ function Header() {
             type="search"
             name="search"
             className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter') return;
+              navigateToMovies();
+            }}
           />
-          <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
+          <MagnifyingGlassIcon
+            onClick={navigateToMovies}
+            className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400"
+          />
         </div>
         <ul className="flex gap-4">
           <li>
