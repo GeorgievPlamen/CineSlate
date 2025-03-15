@@ -12,7 +12,7 @@ public record TMDBMovie(
     string Overview,
     double Popularity,
     string Poster_path,
-    DateOnly Release_date,
+    string Release_date,
     string Title,
     bool Video,
     double Vote_average,

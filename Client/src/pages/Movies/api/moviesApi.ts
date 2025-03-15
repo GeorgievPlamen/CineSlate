@@ -28,10 +28,34 @@ const moviesApi = cineslateApi.injectEndpoints({
         return currentArg?.page !== previousArg?.page;
       },
     }),
+
     movieDetails: build.query<MovieDetails, { id: string | undefined }>({
       query: ({ id }) => `/movies/${id}`,
+    }),
+
+    pagedMoviesSearchByTitle: build.query<
+      Paged<Movie>,
+      { page: number; searchTerm: string }
+    >({
+      query: ({ page, searchTerm }) =>
+        `/movies/search?title=${searchTerm}&page=${page}`,
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        return `${endpointName}-${queryArgs.searchTerm}`;
+      },
+      merge: (cache, newData) => {
+        cache.values.push(...newData.values);
+        cache.currentPage = newData.currentPage;
+        cache.totalCount = newData.totalCount;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page !== previousArg?.page;
+      },
     }),
   }),
 });
 
-export const { usePagedMoviesQuery, useMovieDetailsQuery } = moviesApi;
+export const {
+  usePagedMoviesQuery,
+  useMovieDetailsQuery,
+  usePagedMoviesSearchByTitleQuery,
+} = moviesApi;

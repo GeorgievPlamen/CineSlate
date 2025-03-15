@@ -1,22 +1,43 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
+import useDebounce from '../hooks/useDebounce';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
   const user = useAppSelector((state) => state.users.user);
+
+  const [searchTerm, setSearchTerm] = useState<string>();
+  const debouncedSearchTerm = useDebounce(searchTerm);
+
+  const navigate = useNavigate();
 
   const handleBounce = () => {
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 1500);
   };
 
+  const navigateToMovies = useCallback(() => {
+    if (debouncedSearchTerm === undefined) return;
+
+    let search;
+
+    if (debouncedSearchTerm?.length > 0) {
+      search = '?search=' + debouncedSearchTerm;
+      navigate('/movies' + search);
+    } else navigate('/movies');
+  }, [debouncedSearchTerm, navigate]);
+
+  useEffect(() => {
+    if (debouncedSearchTerm !== undefined) navigateToMovies();
+  }, [debouncedSearchTerm, navigate, navigateToMovies]);
+
   return (
-    <header className="fixed flex w-full bg-background py-2 shadow shadow-dark">
+    <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
       <nav className="flex w-full items-center justify-evenly">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
@@ -28,12 +49,20 @@ function Header() {
         </NavLink>
         <div className="w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
           <input
+            onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
             type="search"
             name="search"
             className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter') return;
+              navigateToMovies();
+            }}
           />
-          <MagnifyingGlassIcon className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400" />
+          <MagnifyingGlassIcon
+            onClick={navigateToMovies}
+            className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400"
+          />
         </div>
         <ul className="flex gap-4">
           <li>

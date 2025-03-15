@@ -20,6 +20,7 @@ export default function MovieDetails() {
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageIsLoading, setImageIsLoading] = useState(true);
   const [getUsersByIds, { data: usersData }] = useLazyGetUsersByIdQuery();
+  const { isAuthenticated } = useAuth();
 
   const {
     data,
@@ -32,12 +33,13 @@ export default function MovieDetails() {
     data: reviewData,
     isFetching: isReviewsFetching,
     refetch: refetchReviews,
-  } = useReviewsByMovieIdQuery({
-    movieId: Number(id),
-    page: reviewsPage,
-  });
-
-  const { isAuthenticated } = useAuth();
+  } = useReviewsByMovieIdQuery(
+    {
+      movieId: Number(id),
+      page: reviewsPage,
+    },
+    { skip: !isAuthenticated }
+  );
 
   useEffect(() => {
     if (isAuthenticated) refetchReviews();

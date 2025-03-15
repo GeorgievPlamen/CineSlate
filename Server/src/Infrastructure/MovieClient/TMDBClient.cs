@@ -1,9 +1,12 @@
 using System.Text.Json;
+
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
+
 using Infrastructure.Common.Models;
 using Infrastructure.MoviesClient;
+
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.MovieClient;
@@ -20,6 +23,8 @@ public class TMDBClient : IMovieClient
 
     private string UriForMovieDetailsWithKey(int id)
         => $"/3/movie/{id}?api_key={_apiKeys.TMDBKey}";
+    private string UriForMovieSearchWithKey(string searchCriteria, int pageNumber)
+        => $"/3/search/movie?query={searchCriteria}&page={pageNumber}&api_key={_apiKeys.TMDBKey}";
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
     {
@@ -37,14 +42,14 @@ public class TMDBClient : IMovieClient
             await response.Content.ReadAsStringAsync(cancellationToken),
             _jsonSerializerOptions);
 
-        if (movies is null || movies.Results is null) return new([]);
+        if (movies is null || movies.Results is null || movies.Results.Length == 0) return new([]);
 
         return new(movies.Results.Select(
             x => new ExternalMovie(
                 x.Id,
                 x.Title,
                 x.Overview,
-                x.Release_date,
+                DateOnly.TryParse(x.Release_date, out var dateOnly) ? dateOnly : DateOnly.MinValue,
                 x.Poster_path,
                 x.Genre_ids)).ToList(),
             movies.Page,
@@ -80,5 +85,31 @@ public class TMDBClient : IMovieClient
             movieDetailed.Runtime,
             movieDetailed.Status,
             movieDetailed.Tagline);
+    }
+
+    public async Task<Paged<ExternalMovie>> GetMoviesByTitle(string searchCriteria, int pageNumber, CancellationToken cancellationToken)
+    {
+        var response = await _httpClient.GetAsync(UriForMovieSearchWithKey(searchCriteria, pageNumber));
+
+        var responseContent = await response.Content.ReadAsStringAsync(cancellationToken);
+
+        var movies = JsonSerializer.Deserialize<TMDBMovies>( // TODO
+            responseContent,
+            _jsonSerializerOptions);
+
+        if (movies is null || movies.Results is null || movies.Results.Length == 0) return new([]);
+
+        return new(movies.Results.Select(
+            x => new ExternalMovie(
+                x.Id,
+                x.Title,
+                x.Overview,
+                DateOnly.TryParse(x.Release_date, out var dateOnly) ? dateOnly : DateOnly.MinValue,
+                x.Poster_path,
+                x.Genre_ids)).ToList(),
+            movies.Page,
+            movies.Page < 500,
+            movies.Page > 1,
+            movies.Total_Results);
     }
 }
