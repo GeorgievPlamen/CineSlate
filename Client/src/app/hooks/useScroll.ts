@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function useScroll() {
   const [nearBottom, setNearBottom] = useState(false);
+  const [beyondScreen, setBeyondScreen] = useState(false);
 
   useEffect(() => {
     function handleScroll() {
@@ -15,6 +16,12 @@ export default function useScroll() {
       } else {
         setNearBottom(false);
       }
+
+      if (scrollPosition + 300 > windowPosition) {
+        setBeyondScreen(true);
+      } else {
+        setBeyondScreen(false);
+      }
     }
 
     window.addEventListener('scroll', handleScroll);
@@ -24,5 +31,5 @@ export default function useScroll() {
     };
   }, []);
 
-  return { nearBottom };
+  return { nearBottom, beyondScreen };
 }

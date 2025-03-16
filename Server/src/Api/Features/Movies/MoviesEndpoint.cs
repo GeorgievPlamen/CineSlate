@@ -1,10 +1,12 @@
 
 
+
 using Api.Common;
 
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Details;
+using Application.Movies.GetMoviesByFilters;
 using Application.Movies.GetMoviesByTitle;
 using Application.Movies.PagedMoviesQuery;
 
@@ -30,10 +32,14 @@ public static class MoviesEndpoint
         movies.MapGet(GetPopular, GetPopularAsync);
         movies.MapGet(GetTopRated, GetTopRatedAsync);
         movies.MapGet(GetUpcoming, GetUpcomingAsync);
-        movies.MapGet("/search", GetMoviesByTitle);
+        movies.MapGet("/search", GetMoviesByTitleAsync);
+        movies.MapGet("/filter", GetMoviesByFiltersAsync);
     }
 
-    private static async Task<IResult> GetMoviesByTitle(string title, ISender mediatr, CancellationToken cancellationToken, int page = 1)
+    private static async Task<IResult> GetMoviesByFiltersAsync(int[]? genreIds, int? year, ISender mediatr, CancellationToken cancellationToken, int page = 1)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByFilterQuery(page, genreIds, year), cancellationToken));
+
+    private static async Task<IResult> GetMoviesByTitleAsync(string title, ISender mediatr, CancellationToken cancellationToken, int page = 1)
         => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByTitleQuery(title, page), cancellationToken));
 
     private static async Task<IResult> GetMovieDetailsByIdAsync(int id, ISender mediatr, CancellationToken cancellationToken)
