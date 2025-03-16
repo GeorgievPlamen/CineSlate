@@ -15,19 +15,26 @@ import Filters from './Filters';
 import ChevronUp from '../../app/assets/icons/ChevronUp';
 
 export default function Movies() {
-  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState({ default: 1, search: 1, filter: 1 });
   const { nearBottom, beyondScreen } = useScroll();
 
   const [searchParams] = useSearchParams();
   const search = searchParams.get('search');
   const genreIds = searchParams.getAll('genreIds');
 
+  const isDefaultMovies =
+    (search ? search?.length === 0 : true) && genreIds.length === 0;
+  const isSearchingMovies = search ? search?.length > 0 : false;
+  const isFilteringMovies = genreIds.length > 0;
+
+  console.log(pages);
+
   const { data, isFetching, isError } = usePagedMoviesQuery(
     {
-      page,
+      page: pages.default,
       moviesBy: MoviesBy.GetNowPlaying,
     },
-    { skip: !!search || genreIds.length !== 0 }
+    { skip: !isDefaultMovies }
   );
 
   const {
@@ -36,10 +43,10 @@ export default function Movies() {
     isError: isSearchedMoviesError,
   } = usePagedMoviesSearchByTitleQuery(
     {
-      page,
+      page: pages.search,
       searchTerm: search ?? '',
     },
-    { skip: search ? search?.length === 0 : true }
+    { skip: !isSearchingMovies }
   );
 
   const {
@@ -48,61 +55,84 @@ export default function Movies() {
     isError: isFilteredMoviesError,
   } = usePagedMoviesSearchByFiltersQuery(
     {
-      page,
+      page: pages.filter,
       genreIds: genreIds,
       year: '2024',
     },
-    { skip: genreIds.length === 0 }
+    { skip: !isFilteringMovies }
   );
 
   useEffect(() => {
-    if (nearBottom) setPage((prev) => (prev > 4 ? prev : prev + 1));
-  }, [nearBottom]);
+    if (nearBottom) {
+      setPages((prev) => {
+        if (isDefaultMovies) {
+          return { ...prev, default: prev.default + 1 };
+        } else if (isFilteringMovies) {
+          return { ...prev, filter: prev.filter + 1 };
+        } else {
+          return { ...prev, search: prev.search + 1 };
+        }
+      });
+    }
+  }, [isDefaultMovies, isFilteringMovies, isSearchingMovies, nearBottom]);
 
   return (
     <>
       <Filters />
       <article className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
-        {data?.values.map((m) => (
-          <MovieCard
-            key={m.id}
-            title={m.title}
-            id={m.id}
-            rating={m.rating}
-            releaseDate={m.releaseDate}
-            posterPath={m.posterPath}
-          />
-        ))}
-        {searchedMovies?.values.map((m) => (
-          <MovieCard
-            key={m.id}
-            title={m.title}
-            id={m.id}
-            rating={m.rating}
-            releaseDate={m.releaseDate}
-            posterPath={m.posterPath}
-          />
-        ))}
-        {filteredMovies?.values.map((m) => (
-          <MovieCard
-            key={m.id}
-            title={m.title}
-            id={m.id}
-            rating={m.rating}
-            releaseDate={m.releaseDate}
-            posterPath={m.posterPath}
-          />
-        ))}
+        {isDefaultMovies &&
+          data?.values.map((m) => (
+            <MovieCard
+              key={m.id}
+              title={m.title}
+              id={m.id}
+              rating={m.rating}
+              releaseDate={m.releaseDate}
+              posterPath={m.posterPath}
+            />
+          ))}
+        {isSearchingMovies &&
+          searchedMovies?.values.map((m) => (
+            <MovieCard
+              key={m.id}
+              title={m.title}
+              id={m.id}
+              rating={m.rating}
+              releaseDate={m.releaseDate}
+              posterPath={m.posterPath}
+            />
+          ))}
+        {isFilteringMovies &&
+          filteredMovies?.values.map((m) => (
+            <MovieCard
+              key={m.id}
+              title={m.title}
+              id={m.id}
+              rating={m.rating}
+              releaseDate={m.releaseDate}
+              posterPath={m.posterPath}
+            />
+          ))}
       </article>
       <div className="mb-20 mt-10 flex justify-center">
         {(isFetching || isSearchedMoviesFetching || isFilteredMoviesFetching) &&
-          page < 5 && <Spinner />}
+          pages.default < 5 && <Spinner />}
         {(isError || isFilteredMoviesError || isSearchedMoviesError) && (
           <ErrorMessage />
         )}
-        {page > 4 && (
+        {pages.default > 4 && (
           <Button
-            onClick={() => setPage((prev) => prev + 1)}
+            onClick={() =>
+              setPages((prev) => {
+                if (isDefaultMovies) {
+                  return { ...prev, default: prev.default + 1 };
+                } else if (isFilteringMovies) {
+                  return { ...prev, filter: prev.filter + 1 };
+                } else {
+                  return { ...prev, search: prev.search + 1 };
+                }
+              })
+            }
             className="w-fit px-10"
             isLoading={isFetching}
           >
