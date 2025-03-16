@@ -12,10 +12,11 @@ import Spinner from '../../app/components/Spinner';
 import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
 import { useSearchParams } from 'react-router-dom';
 import Filters from './Filters';
+import ChevronUp from '../../app/assets/icons/ChevronUp';
 
 export default function Movies() {
   const [page, setPage] = useState(1);
-  const { nearBottom } = useScroll();
+  const { nearBottom, beyondScreen } = useScroll();
 
   const [searchParams] = useSearchParams();
   const search = searchParams.get('search');
@@ -109,6 +110,14 @@ export default function Movies() {
           </Button>
         )}
       </div>
+      {beyondScreen && (
+        <button
+          onClick={() => scrollTo(0, 0)}
+          className="fixed bottom-20 right-10 animate-bounce rounded-full p-1 text-primary hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80"
+        >
+          <ChevronUp />
+        </button>
+      )}
     </>
   );
 }
