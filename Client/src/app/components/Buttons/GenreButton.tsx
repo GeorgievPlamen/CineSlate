@@ -36,7 +36,7 @@ export default function GenreButton({ name, genreId }: Props) {
     <button
       onClick={handleClick}
       className={
-        'm-2 h-10 rounded-full border px-4 py-1 hover:outline hover:outline-1 active:bg-opacity-80 ' +
+        'm-2 h-8 rounded-full px-2 text-sm hover:outline hover:outline-1 active:bg-opacity-80 ' +
         (genreIds.includes(String(genreId)) ? 'bg-primary' : 'bg-background')
       }
     >

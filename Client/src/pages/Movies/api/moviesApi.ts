@@ -54,14 +54,14 @@ const moviesApi = cineslateApi.injectEndpoints({
 
     pagedMoviesSearchByFilters: build.query<
       Paged<Movie>,
-      { page: number; genreIds?: number[]; year?: number }
+      { page: number; genreIds?: string[]; year?: string }
     >({
       query: ({ page, genreIds, year }) => {
         let genreIdsQuery;
         let yearQuery = '&year=';
 
         if (genreIds) {
-          genreIdsQuery = genreIds.map((id) => `&genreIds=${id}`);
+          genreIdsQuery = genreIds.map((id) => `&genreIds=${id}`).join('');
         }
 
         if (yearQuery) {
