@@ -1,0 +1,62 @@
+
+using Application.Common;
+using Application.Movies.Interfaces;
+
+using Domain.Common;
+using Domain.Movies;
+using Domain.Movies.ValueObjects;
+
+using MediatR;
+
+namespace Application.Movies.GetMoviesByFilters;
+
+public class GetMoviesByFilterQueryHandler(IMovieClient moviesClient, IMovieRepository moviesRepository) : IRequestHandler<GetMoviesByFilterQuery, Result<Paged<Movie>>>
+{
+    public async Task<Result<Paged<Movie>>> Handle(GetMoviesByFilterQuery request, CancellationToken cancellationToken)
+    {
+        var movies = await moviesClient
+            .GetMoviesByGenreAndYear(request.PageNumber, request.GenreIds, request.Year, cancellationToken);
+
+        if (movies.Values.Count == 0)
+            return Result<Paged<Movie>>.Failure(Error.ServerError());
+
+        var movieIds = movies.Values
+            .Select(m => MovieId.Create(m.Id))
+            .ToList();
+
+        var knownMovies = await moviesRepository
+            .GetManyByIdsAsync(movieIds, cancellationToken);
+
+        var unknownMovieIds = movieIds
+            .Except(knownMovies.Select(m => m.Id))
+            .Select(id => id.Value)
+            .ToList();
+
+        var unknownMovies = movies.Values
+            .Where(m => unknownMovieIds.Contains(m.Id))
+            .ToList();
+
+        var movieAggregates = unknownMovies.Select(x => MovieAggregate.Create(
+            MovieId.Create(x.Id),
+            x.Title,
+            x.Description,
+            x.ReleaseDate,
+            x.PosterPath,
+            x.GenreIds.Select(id => Genre.Create(id))));
+
+        if (movieAggregates.Any())
+        {
+            await moviesRepository.CreateManyAsync(movieAggregates, cancellationToken);
+            knownMovies.AddRange(movieAggregates);
+        }
+
+        var response = knownMovies.Select(x => x.ToMovie()).ToList();
+
+        return Result<Paged<Movie>>.Success(new(
+            response,
+            movies.CurrentPage,
+            movies.HasNextPage,
+            movies.HasPreviousPage,
+            movies.TotalCount));
+    }
+}

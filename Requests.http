@@ -1,9 +1,9 @@
-@Api_HostAddress = http://localhost:5000/api/
-# @Api_HostAddress = http://localhost:8080/api/ 
+# @Api_HostAddress = http://localhost:5000/api/
+@Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MWMyNzc2ZC03ODA2LTQyNzctOTRjOS1lNjIwNzA5YWZhZGIiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiM5MWMyNyIsImp0aSI6IjE5OTViZmMyLTA4YmYtNDg0ZC1hM2ZmLTAyNmU3OGRhMzVlYyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDE3NjI0MTEsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.mv97aRGr14COAeNEZJSAlaUHSLbvr7Yr20igUCVXd_A
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MWMyNzc2ZC03ODA2LTQyNzctOTRjOS1lNjIwNzA5YWZhZGIiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiM5MWMyNyIsImp0aSI6ImQ1ZjJmYzlmLTBhODMtNGZjOS04YTllLTAxOTJkNjcxYjJjMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDIxMTE4NTYsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.MOCcWpROV0yyW4zlRxX1p0-28WqUhGqAIMfQ9dxKr5w
 
 ### Login Success
 
@@ -65,6 +65,12 @@ Authorization: {{Token}}
 ### Movies Search By Title
 
 GET {{Api_HostAddress}}movies/search?title=nosferatu&page=1
+content-type: application/json
+Authorization: {{Token}}
+
+### Movies Search By Filters
+
+GET {{Api_HostAddress}}movies/filter?genreIds=16&genreIds=35&year=2024
 content-type: application/json
 Authorization: {{Token}}
 
