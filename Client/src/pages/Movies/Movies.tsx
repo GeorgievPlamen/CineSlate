@@ -10,6 +10,7 @@ import useScroll from '../../app/hooks/useScroll';
 import Spinner from '../../app/components/Spinner';
 import ErrorMessage from '../../app/components/ErrorMessage/ErrorMessage';
 import { useSearchParams } from 'react-router-dom';
+import Filters from './Filters';
 
 export default function Movies() {
   const [page, setPage] = useState(1);
@@ -44,6 +45,7 @@ export default function Movies() {
 
   return (
     <>
+      <Filters />
       <article className="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
         {data?.values.map((m) => (
           <MovieCard

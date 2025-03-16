@@ -119,7 +119,7 @@ export default function MovieDetails() {
               <p className="my-4 font-serif text-xl italic">{data?.tagline}</p>
               <section className="mt-4 h-full flex-row gap-2">
                 {data?.genres.map((g) => (
-                  <GenreButton key={g.id} name={g.value} />
+                  <GenreButton key={g.id} name={g.value} genreId={g.id} />
                 ))}
               </section>
             </section>
