@@ -33,13 +33,10 @@ export default function MovieDetails() {
     data: reviewData,
     isFetching: isReviewsFetching,
     refetch: refetchReviews,
-  } = useReviewsByMovieIdQuery(
-    {
-      movieId: Number(id),
-      page: reviewsPage,
-    },
-    { skip: !isAuthenticated }
-  );
+  } = useReviewsByMovieIdQuery({
+    movieId: Number(id),
+    page: reviewsPage,
+  });
 
   useEffect(() => {
     if (isAuthenticated) refetchReviews();
