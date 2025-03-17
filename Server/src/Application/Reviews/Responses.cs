@@ -41,7 +41,7 @@ public static class Converter
     public static ReviewResponse ToResponse(
         this Review review,
         string authorUsername,
-        bool hasUserLiked) => new(
+        bool? hasUserLiked) => new(
             review.Id.Value,
             review.Rating,
             review.Text,
@@ -50,7 +50,7 @@ public static class Converter
             authorUsername,
             review.ContainsSpoilers,
             review.LikesCount,
-            hasUserLiked,
+            hasUserLiked ?? false,
             [.. review.Likes.Select(x => x.FromUser)]);
 
     public static ReviewDetailsResponse ToDetailsResponse(

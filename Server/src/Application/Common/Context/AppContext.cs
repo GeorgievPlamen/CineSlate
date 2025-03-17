@@ -14,8 +14,8 @@ public class AppContext(IHttpContextAccessor httpContextAccessor) : IAppContext
     {
         var httpContext = httpContextAccessor.HttpContext ?? throw new InvalidOperationException("Http context is null.");
 
-        var userId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? throw new InvalidOperationException("User Id was not found in the claims");
+        var userId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-        return UserId.Create(Guid.Parse(userId));
+        return userId is not null ? UserId.Create(Guid.Parse(userId)) : UserId.Create(Guid.Empty);
     }
 }

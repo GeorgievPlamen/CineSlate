@@ -29,7 +29,7 @@ public class GetReviewsByMovieIdQueryHandler(IReviewRepository reviewRepository,
             .Select(r => r.ToResponse(
                 users.FirstOrDefault(u => u.Id.Value == r.Author.Value)?
                 .Username.Value ?? "Username not found",
-                r.HasUserLiked(userId)))
+                userId.HasValue() && r.HasUserLiked(userId)))
             .ToList();
 
         return Result<Paged<ReviewResponse>>.Success(new Paged<ReviewResponse>(
