@@ -17,11 +17,6 @@ namespace Api.Features.Movies;
 public static class MoviesEndpoint
 {
     public const string Uri = "api/movies";
-    public static string GetMovieDetailsById(int id) => $"/{id}";
-    public const string GetNowPlaying = "/now_playing";
-    public const string GetPopular = "/popular";
-    public const string GetTopRated = "/top_rated";
-    public const string GetUpcoming = "/upcoming";
 
     public static void MapMovies(this WebApplication app)
     {
