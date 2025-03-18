@@ -28,10 +28,10 @@ public static class MoviesEndpoint
         var movies = app.MapGroup(Uri);
 
         movies.MapGet("/{id}", GetMovieDetailsByIdAsync);
-        movies.MapGet(GetNowPlaying, GetNowPlayingAsync);
-        movies.MapGet(GetPopular, GetPopularAsync);
-        movies.MapGet(GetTopRated, GetTopRatedAsync);
-        movies.MapGet(GetUpcoming, GetUpcomingAsync);
+        movies.MapGet("/now_playing", GetNowPlayingAsync);
+        movies.MapGet("/popular", GetPopularAsync);
+        movies.MapGet("/top_rated", GetTopRatedAsync);
+        movies.MapGet("/upcoming", GetUpcomingAsync);
         movies.MapGet("/search", GetMoviesByTitleAsync);
         movies.MapGet("/filter", GetMoviesByFiltersAsync);
     }

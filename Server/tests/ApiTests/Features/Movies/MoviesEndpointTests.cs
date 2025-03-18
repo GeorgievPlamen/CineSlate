@@ -1,11 +1,17 @@
 using System.Net;
+
 using Api.Features.Movies;
+
 using ApiTests.Common;
+
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Interfaces;
+
 using FluentAssertions;
+
 using NSubstitute;
+
 using TestUtilities;
 using TestUtilities.Fakers;
 
@@ -30,7 +36,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetNowPlaying));
+        var result = await Client.GetAsync(TestUri("/now_playing"));
 
         // Assert
         result.Should().NotBeNull();
@@ -49,7 +55,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetPopular));
+        var result = await Client.GetAsync(TestUri("/popular"));
 
         // Assert
         result.Should().NotBeNull();
@@ -68,7 +74,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetTopRated));
+        var result = await Client.GetAsync(TestUri("/top_rated"));
 
         // Assert
         result.Should().NotBeNull();
@@ -87,7 +93,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetUpcoming));
+        var result = await Client.GetAsync(TestUri("/upcoming"));
 
         // Assert
         result.Should().NotBeNull();
@@ -110,7 +116,51 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
             .Returns(externalMovieDetailed);
 
         // Act
-        var result = await Client.GetAsync(TestUri(MoviesEndpoint.GetMovieDetailsById(movieModels[0].Id)));
+        var result = await Client.GetAsync(TestUri($"/{movieModels[0].Id}"));
+
+        // Assert
+        result.Should().NotBeNull();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async Task GetMoviesGetMoviesByTitle_ShouldReturnPagedResponseWithMovies()
+    {
+        // Arrange
+        await AuthenticateAsync();
+
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
+        var movieModels = MovieFaker.GenerateMovieModels(5);
+
+        await Api.SeedDatabaseAsync(movieModels);
+
+        Api.MoviesClientMock.GetMoviesByTitle(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
+
+        // Act
+        var result = await Client.GetAsync(TestUri("/search?title=" + externalMovies[0].Title));
+
+        // Assert
+        result.Should().NotBeNull();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async Task GetMoviesByFilters_ShouldReturnPagedResponseWithMovies()
+    {
+        // Arrange
+        await AuthenticateAsync();
+
+        var externalMovies = MovieFaker.GenerateExternalMovies(5);
+        var movieModels = MovieFaker.GenerateMovieModels(5);
+
+        await Api.SeedDatabaseAsync(movieModels);
+
+        Api.MoviesClientMock.GetMoviesByGenreAndYear(Arg.Any<int>(), Arg.Any<int[]?>(), Arg.Any<int?>(), Arg.Any<CancellationToken>())
+            .Returns(new Paged<ExternalMovie>(externalMovies));
+
+        // Act
+        var result = await Client.GetAsync(TestUri("/filter?genreIds=" + externalMovies[0].GenreIds[0]));
 
         // Assert
         result.Should().NotBeNull();
