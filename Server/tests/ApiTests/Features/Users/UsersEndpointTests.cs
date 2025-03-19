@@ -1,16 +1,21 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
+
 using Api.Features.Users;
 using Api.Features.Users.Requests;
+
+using ApiTests.Common;
+
 using Infrastructure.Repositories.MappingExtensions;
+
 using TestUtilities;
 using TestUtilities.Fakers;
 
 namespace ApiTests.Features.Users;
 
-public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
+public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
 {
-    private readonly HttpClient _httpClient = api.CreateClient();
     private static string TestUri(string uri) => $"{UsersEndpoint.Uri}{uri}";
 
     [Fact]
@@ -20,7 +25,7 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var request = new RegisterRequest("John", "john.doe@example.com", "Password123!");
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
+        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -33,10 +38,10 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new RegisterRequest(user.Username.OnlyName, user.Email, "Password123!");
 
-        await api.SeedDatabaseAsync([user.ToModel()]);
+        await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
+        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -49,10 +54,10 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new LoginRequest(user.Email, Constants.ValidPassword);
 
-        await api.SeedDatabaseAsync([user.ToModel()]);
+        await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
+        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -65,10 +70,10 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateValid();
         var request = new LoginRequest(user.Email, "invalidpassword");
 
-        await api.SeedDatabaseAsync([user.ToModel()]);
+        await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
+        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -81,12 +86,27 @@ public class UsersEndpointTests(ApiFactory api) : IClassFixture<ApiFactory>
         var user = UserFaker.GenerateMany(2);
         var request = new GetUsersRequest([.. user.Select(u => u.Id.Value)]);
 
-        await api.SeedDatabaseAsync(user.Select(u => u.ToModel()));
+        await factory.SeedDatabaseAsync(user.Select(u => u.ToModel()));
 
         // Act
-        var response = await _httpClient.PostAsJsonAsync(TestUri("/"), request);
+        var response = await Client.PostAsJsonAsync(TestUri("/"), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Update_ShouldReturnOk_WhenValid()
+    {
+        // Arrange
+        var userId = await AuthenticateAsync();
+
+        var body = JsonSerializer.Serialize(new { pictureBase64 = "" });
+
+        // Act
+        var response = await Client.PutAsJsonAsync(TestUri($"/{userId}?bio={"testBio"}"), body);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // TODO fix test
     }
 }
