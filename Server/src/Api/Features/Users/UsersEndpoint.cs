@@ -21,21 +21,18 @@ namespace Api.Features.Users;
 public static class UsersEndpoint
 {
     public const string Uri = "/api/users";
-    public const string Me = "/me";
-    public const string Login = "/login";
-    public const string Register = "/register";
 
     public static void MapUsers(this WebApplication app)
     {
         var users = app.MapGroup(Uri);
 
-        users.MapGet(Me, GetMeAsync).RequireAuthorization();
+        users.MapGet("/me", GetMeAsync).RequireAuthorization();
         users.MapGet("/{page}", GetLatestUsersAsync);
 
         users.MapPost("/", GetUsersAsync);
-        users.MapPost(Login, LoginAsync);
+        users.MapPost("/login", LoginAsync);
         users.MapPost("/refresh-token", RefreshTokenAsync);
-        users.MapPost(Register, RegisterAsync).WithName(Uri + Register);
+        users.MapPost("/register", RegisterAsync).WithName(Uri + "/register");
         users.MapPut("/{id}", UpdateAsync).RequireAuthorization();
     }
 
@@ -69,5 +66,5 @@ public static class UsersEndpoint
             request.Username,
             request.Email,
             request.Password),
-            cancellationToken), Uri + Register);
+            cancellationToken), Uri + "/register");
 }

@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 using Api.Features.Users;
 using Api.Features.Users.Requests;
@@ -25,7 +24,7 @@ public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
         var request = new RegisterRequest("John", "john.doe@example.com", "Password123!");
 
         // Act
-        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
+        var response = await Client.PostAsJsonAsync(TestUri("/register"), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -41,7 +40,7 @@ public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
         await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Register), request);
+        var response = await Client.PostAsJsonAsync(TestUri("/register"), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -57,7 +56,7 @@ public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
         await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
+        var response = await Client.PostAsJsonAsync(TestUri("/login"), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -73,7 +72,7 @@ public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
         await factory.SeedDatabaseAsync([user.ToModel()]);
 
         // Act
-        var response = await Client.PostAsJsonAsync(TestUri(UsersEndpoint.Login), request);
+        var response = await Client.PostAsJsonAsync(TestUri("/login"), request);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -101,12 +100,54 @@ public class UsersEndpointTests(ApiFactory factory) : AuthenticatedTest(factory)
         // Arrange
         var userId = await AuthenticateAsync();
 
-        var body = JsonSerializer.Serialize(new { pictureBase64 = "" });
-
         // Act
-        var response = await Client.PutAsJsonAsync(TestUri($"/{userId}?bio={"testBio"}"), body);
+        var response = await Client.PutAsync(TestUri($"/{userId}?bio={"testBio"}"), null);
 
         // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode); // TODO fix test
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetLatestUsers_ShouldReturnLatestUsers()
+    {
+        // Arrange
+        var user = UserFaker.GenerateMany(2);
+
+        await factory.SeedDatabaseAsync(user.Select(u => u.ToModel()));
+
+        // Act
+        var response = await Client.GetAsync(TestUri("/1"));
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetMe_ShouldReturnUser()
+    {
+        // Arrange
+        await AuthenticateAsync();
+
+        // Act
+        var response = await Client.GetAsync(TestUri("/me"));
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PostRefreshToken_ShouldReturnNewToken()
+    {
+        // Arrange
+        await AuthenticateAsync();
+
+        Assert.NotNull(RefreshToken);
+        var request = new RefreshTokenRequest(RefreshToken);
+
+        // Act
+        var response = await Client.PostAsJsonAsync(TestUri("/refresh-token"), request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

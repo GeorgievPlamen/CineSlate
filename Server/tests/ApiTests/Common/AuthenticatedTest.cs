@@ -16,9 +16,12 @@ namespace ApiTests.Common;
 
 public abstract class AuthenticatedTest(ApiFactory factory) : IClassFixture<ApiFactory>
 {
+    private string _authToken = null!;
+
     protected readonly ApiFactory Api = factory;
     protected readonly HttpClient Client = factory.CreateClient();
-    private string _authToken = null!;
+
+    protected string? RefreshToken;
 
     protected async Task<Guid> AuthenticateAsync()
     {
@@ -40,6 +43,7 @@ public abstract class AuthenticatedTest(ApiFactory factory) : IClassFixture<ApiF
             userId = loginResponse?.Id ?? Guid.Empty;
 
             _authToken = loginResponse?.Token ?? "Could not get token";
+            RefreshToken = loginResponse?.RefreshToken;
         }
 
         Client.DefaultRequestHeaders.Authorization = new(JwtBearerDefaults.AuthenticationScheme, _authToken);
