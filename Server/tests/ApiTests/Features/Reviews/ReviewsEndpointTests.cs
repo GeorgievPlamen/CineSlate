@@ -104,7 +104,7 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
         await Api.SeedDatabaseAsync(movieModels);
 
         // Act
-        var result = await Client.PostAsync(TestUri($"/like/{reviews[0]}"), null);
+        var result = await Client.PostAsync(TestUri($"/like/{reviews[0].Id}"), null);
 
         // Assert
         result.Should().NotBeNull();
@@ -112,7 +112,7 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
     }
 
     [Fact]
-    public async Task CommentLikeReview_ShouldReturn_200Ok()
+    public async Task CommentReview_ShouldReturn_200Ok()
     {
         // Arrange
         var movieModels = MovieFaker.GenerateMovieModels(1);
@@ -125,7 +125,7 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
         var comment = JsonContent.Create("This is a fake comment");
 
         // Act
-        var result = await Client.PostAsync(TestUri($"/comment/{reviews[0]}"), comment);
+        var result = await Client.PostAsync(TestUri($"/comment/{reviews[0].Id}"), comment);
 
         // Assert
         result.Should().NotBeNull();
@@ -137,15 +137,13 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
     public async Task GetOwnReviews_ShouldReturn_ListofOwnReviews()
     {
         // Arrange
-        var movieModels = MovieFaker.GenerateMovieModels(1);
-        var reviews = ReviewFaker.GenerateReviews(5);
-        movieModels[0].Reviews = reviews;
+        var authorId = await AuthenticateAsync();
+        var reviews = ReviewFaker.GenerateReviews(5, authorId);
 
-        await AuthenticateAsync();
-        await Api.SeedDatabaseAsync(movieModels);
+        await Api.SeedDatabaseAsync(reviews);
 
         // Act
-        var result = await Client.GetAsync(TestUri($"/own/{movieModels[0].Id}"));
+        var result = await Client.GetAsync(TestUri($"/own/{reviews[0].Movie.Id}"));
 
         // Assert
         result.Should().NotBeNull();
@@ -157,15 +155,13 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
     public async Task GetReviewsByUserId_ShouldReturn_ListofUserReviews()
     {
         // Arrange
-        var movieModels = MovieFaker.GenerateMovieModels(1);
-        var reviews = ReviewFaker.GenerateReviews(5);
-        movieModels[0].Reviews = reviews;
+        var authorId = await AuthenticateAsync();
+        var reviews = ReviewFaker.GenerateReviews(5, authorId);
 
-        await AuthenticateAsync();
-        await Api.SeedDatabaseAsync(movieModels);
+        await Api.SeedDatabaseAsync(reviews);
 
         // Act
-        var result = await Client.GetAsync(TestUri($"/user/{reviews[0].AuthorId}"));
+        var result = await Client.GetAsync(TestUri($"/user/{authorId}"));
 
         // Assert
         result.Should().NotBeNull();
@@ -174,17 +170,14 @@ public class ReviewsEndpointTests(ApiFactory factory) : AuthenticatedTest(factor
 
 
     [Fact]
-    public async Task UpdareReview_ShouldReturn_ListofUserReviews()
+    public async Task UpdateReview_ShouldReturn_ListofUserReviews()
     {
         // Arrange
-        var movieModels = MovieFaker.GenerateMovieModels(1);
-        var reviews = ReviewFaker.GenerateReviews(5);
-        movieModels[0].Reviews = reviews;
-
+        var authorId = await AuthenticateAsync();
+        var reviews = ReviewFaker.GenerateReviews(5, authorId);
         var request = new UpdateReviewRequest(reviews[0].Id, 3, "Fake review text", false);
 
-        await AuthenticateAsync();
-        await Api.SeedDatabaseAsync(movieModels);
+        await Api.SeedDatabaseAsync(reviews);
 
         // Act
         var result = await Client.PutAsJsonAsync(TestUri($"/"), request);
