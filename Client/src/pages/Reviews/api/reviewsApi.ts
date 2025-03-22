@@ -47,7 +47,8 @@ const reviewsApi = cineslateApi.injectEndpoints({
         method: 'POST',
         body: { rating, movieId, text, containsSpoilers },
       }),
-      transformResponse: (_, meta) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (_, meta: any) => {
         const locationHeader = meta?.response?.headers?.get('Location') ?? null;
 
         return {
@@ -70,7 +71,8 @@ const reviewsApi = cineslateApi.injectEndpoints({
         method: 'PUT',
         body: { reviewId, rating, movieId, text, containsSpoilers },
       }),
-      transformResponse: (_, meta) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (_, meta: any) => {
         const locationHeader = meta?.response?.headers?.get('Location') ?? null;
 
         return {
