@@ -19,8 +19,6 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
 {
     public async Task<Paged<Review>> GetReviewsAsync(int page, ReviewsBy reviewsBy, int count, CancellationToken cancellationToken)
     {
-        // TODO order by latest/popular based on reviewsBy
-
         var result = await dbContext.Reviews
             .AsNoTracking()
             .Include(r => r.Movie)
@@ -71,7 +69,7 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .Include(r => r.Movie)
             .Include(r => r.Likes)
             .Where(r => r.AuthorId == userId.Value)
-            .OrderBy(r => r.CreatedAt)
+            .OrderByDescending(r => r.UpdatedAt)
             .Take(count)
             .Skip(count * (page - 1))
             .ToListAsync(cancellationToken);
