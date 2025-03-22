@@ -64,9 +64,11 @@ jobs:
       - name: Build And Push
         uses: docker/build-push-action@v6
         with:
+          context: ./Server
+          file: ./Server/Dockerfile
           push: true
-          tags: georgievp/cineslate:latest 
-    
+          tags: georgievp/cineslate:latest
+          
   deploy:
     needs: docker_push
     runs-on: ubuntu-latest
