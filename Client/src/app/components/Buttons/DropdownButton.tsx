@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface Props {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 export default function DropdownButton({ children }: Props) {

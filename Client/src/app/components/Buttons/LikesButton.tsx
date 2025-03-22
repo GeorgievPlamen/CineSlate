@@ -29,13 +29,11 @@ export default function LikesButton({ reviewId }: Props) {
           <HeartIconOutlined className="hover:text-opacity-80 active:text-opacity-50" />
         )}
       </button>
-      <Tooltip content={data?.usersWhoLiked.map((u) => u.onlyName).join(' ')}>
-        <p
-          className="hover:underline"
-        >
-          {data?.likes}
-        </p>
-      </Tooltip>
+      {data?.usersWhoLiked && (
+        <Tooltip content={data.usersWhoLiked.map((u) => u.onlyName).join(' ')}>
+          <p className="hover:underline">{data?.likes}</p>
+        </Tooltip>
+      )}
     </div>
   );
 }
