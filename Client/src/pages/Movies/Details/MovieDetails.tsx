@@ -18,7 +18,7 @@ export default function MovieDetails() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
-  const [imageIsLoading, setImageIsLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [getUsersByIds, { data: usersData }] = useLazyGetUsersByIdQuery();
   const { isAuthenticated } = useAuth();
 
@@ -67,19 +67,18 @@ export default function MovieDetails() {
   return (
     <>
       <Backdrop path={data?.backdropPath} />
-      {imageIsLoading && <Loading />}
       <article className="mt-20">
         <article className="mx-auto flex w-full flex-col items-center justify-center">
           <div className="flex">
             <div className="flex flex-col items-center justify-center">
               <img
                 className={
-                  'mb-4 w-80 rounded-lg border border-grey' +
-                  ` ${imageIsLoading ? 'hidden' : ''}`
+                  'mb-4 w-80 rounded-lg border border-grey transition-opacity duration-200 ' +
+                  (imageLoaded ? 'opacity-100' : 'opacity-0')
                 }
                 src={IMG_PATH + data?.posterPath}
                 alt="poster"
-                onLoad={() => setImageIsLoading(false)}
+                onLoad={() => setImageLoaded(true)}
               />
               {isAuthenticated ? (
                 <AddReview
