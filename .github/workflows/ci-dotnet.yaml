@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build And Push
-        uses: docker/builld-push-action@v5
+        uses: docker/builld-push-action@v6
         with:
           push: true
           tags: georgievp/cineslate:latest
