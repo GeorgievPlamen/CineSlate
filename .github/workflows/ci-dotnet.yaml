@@ -45,8 +45,7 @@ jobs:
   docker_push:
     needs: build
     runs-on: ubuntu-latest
-    # Run on a push to master OR on a closed, merged PR
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     steps:
       - uses: actions/checkout@v4
       
@@ -60,7 +59,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build And Push
-        uses: docker/builld-push-action@v6
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: georgievp/cineslate:latest
@@ -68,7 +67,7 @@ jobs:
   deploy:
     needs: docker_push
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     steps:
       - name: Deploy to Azure Web App for Containers
         uses: azure/webapps-deploy@v2
