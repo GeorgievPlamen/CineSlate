@@ -87,27 +87,27 @@ function ReviewDetails() {
                   className={'hover:text-primary'}
                   to={`/critics/${reviewData?.authorId}`}
                 >
-                  <h2 className="mb-2 mt-5 min-w-44 font-arvo text-xl">
+                  <h2 className="mt-5 min-w-44 font-arvo text-xl">
                     {user?.username.split('#')[0]}
                   </h2>
                 </NavLink>
               </div>
             </div>
           </div>
-          <div className="flex w-fit gap-2 rounded-2xl border border-grey bg-background p-2">
+          <h4 className="mb-4 font-arvo text-lg">⭐{reviewData?.rating}</h4>
+          <div className="flex gap-2 rounded-2xl border bg-background p-2">
             <p className="font-roboto">
               {reviewData?.text && reviewData?.text.length > 0
                 ? reviewData?.text
                 : 'Did not share...'}
             </p>
-            <p>⭐{reviewData?.rating}</p>
           </div>
           <div className="m-4">
             <LikesButton reviewId={id ?? ''} />
           </div>
         </section>
       </div>
-      <section>
+      <section className="w-1/3">
         {reviewData?.hasUserCommented ? (
           <>{/* <SubmitButton className="mb-2" text={'Remove Comment'} /> */}</>
         ) : (
