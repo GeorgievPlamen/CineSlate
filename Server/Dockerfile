@@ -15,8 +15,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-ENV ASPNETCORE_URLS=http://0.0.0.0:80
-
 USER $APP_UID
 
 ENTRYPOINT ["dotnet", "Api.dll"]
