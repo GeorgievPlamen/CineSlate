@@ -6,6 +6,8 @@ function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center rounded-xl p-8">
+      <h1>test</h1>
+      <h1>{import.meta.env.VITE_CINESLATE_API_URL}</h1>
       <div className="max-w-4xl">
         <h1 className="mb-12 text-center font-arvo text-3xl font-bold text-primary md:text-4xl">
           Find Your Next Favorite Movie Instantly! 🎬🍿
