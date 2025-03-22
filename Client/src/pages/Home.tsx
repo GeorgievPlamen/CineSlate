@@ -101,7 +101,7 @@ function Home() {
               <NavLink
                 to={user?.username?.length > 0 ? '/my-details' : 'login'}
                 className={({ isActive }) =>
-                  'rounded p-1 text-whitesmoke underline hover:bg-primary active:bg-opacity-80' +
+                  'rounded p-1 text-primary underline hover:bg-primary hover:text-whitesmoke active:bg-opacity-80' +
                   ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
                 }
               >

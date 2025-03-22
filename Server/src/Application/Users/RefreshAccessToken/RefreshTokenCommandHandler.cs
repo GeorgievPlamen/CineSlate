@@ -14,6 +14,7 @@ public class RefreshTokenCommandHandler(IUserIdentity userIdentity, IUserReposit
     public async Task<Result<LoginResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var currentRefreshToken = await userRepository.GetRefreshTokenAsync(request.RefreshToken, cancellationToken);
+
         if (currentRefreshToken is null)
             return Result<LoginResponse>.Failure(UserErrors.TokenEpired());
 
@@ -24,11 +25,13 @@ public class RefreshTokenCommandHandler(IUserIdentity userIdentity, IUserReposit
             return Result<LoginResponse>.Failure(Error.ServerError());
 
         var user = await userRepository.GetByIdAsync(currentRefreshToken.UserId, cancellationToken);
+
         if (user is null)
             return Result<LoginResponse>.Failure(UserErrors.NotFound());
 
         var token = userIdentity.GenerateRefreshToken();
         var refreshToken = RefreshToken.Create(Guid.NewGuid(), user.Id, token);
+
         if (!await userRepository.CreateRefreshTokenAsync(refreshToken, cancellationToken))
             return Result<LoginResponse>.Failure(Error.ServerError());
 

@@ -33,6 +33,7 @@ public class CineSlateContext(
                 ClaimTypes.Email)?.Value ?? "Could not get email. User Not logged in.";
 
             entry.Entity.SetUpdated(email, DateTimeOffset.UtcNow);
+            entry.Entity.UpdateVersion();
 
             if (entry.State == EntityState.Added)
                 entry.Entity.SetCreated(email ?? "Unknown", DateTimeOffset.UtcNow);
