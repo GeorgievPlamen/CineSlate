@@ -5,14 +5,14 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { CINESLATE_API_URL } from '../config';
 import { RootState } from '../store/store';
 import { redirect } from 'react-router-dom';
 import { setUser } from '../../pages/Users/userSlice';
 import { User } from '../../pages/Users/Models/userType';
+import { CINESLATE_API_URL } from '../config';
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: CINESLATE_API_URL,
+  baseUrl: import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).users.user.token;
     if (token) {
