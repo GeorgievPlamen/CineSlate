@@ -22,7 +22,8 @@ namespace Infrastructure.Database.Migrations
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,11 +53,31 @@ namespace Infrastructure.Database.Migrations
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +86,8 @@ namespace Infrastructure.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Bio = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    AvatarBlob = table.Column<byte[]>(type: "bytea", nullable: true),
                     PasswordHash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Roles = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Username_OnlyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -72,7 +95,8 @@ namespace Infrastructure.Database.Migrations
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,7 +140,8 @@ namespace Infrastructure.Database.Migrations
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,10 +154,89 @@ namespace Infrastructure.Database.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CommentModel",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReviewId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Comment = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Username_OnlyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Username_Value = table.Column<string>(type: "character varying(110)", maxLength: 110, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommentModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommentModel_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikesModel",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReviewId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username_OnlyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Username_Value = table.Column<string>(type: "character varying(110)", maxLength: 110, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikesModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LikesModel_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentModel_ReviewId",
+                table: "CommentModel",
+                column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentModel_UserId",
+                table: "CommentModel",
+                column: "UserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_GenreModelMovieModel_MoviesId",
                 table: "GenreModelMovieModel",
                 column: "MoviesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikesModel_ReviewId",
+                table: "LikesModel",
+                column: "ReviewId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikesModel_UserId",
+                table: "LikesModel",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_Value",
+                table: "RefreshTokens",
+                column: "Value",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_AuthorId",
@@ -165,16 +269,25 @@ namespace Infrastructure.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CommentModel");
+
+            migrationBuilder.DropTable(
                 name: "GenreModelMovieModel");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "LikesModel");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Movies");
