@@ -38,20 +38,20 @@ function ReviewDetails() {
   if (isReviewLoading || isMovieLoading) return <Loading />;
 
   return (
-    <article className="mx-auto mt-10 flex w-full flex-col items-center justify-center">
+    <article className="mx-auto my-10 flex w-full flex-col items-center justify-center">
       <Backdrop path={movieData?.backdropPath} />
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         <section>
           <img
             className={
-              'mb-4 w-52 rounded-lg border border-grey' +
+              'mx-auto mb-4 w-52 rounded-lg border border-grey' +
               ` ${imageIsLoading ? 'hidden' : ''}`
             }
             src={IMG_PATH + movieData?.posterPath}
             alt="poster"
             onLoad={() => setImageIsLoading(false)}
           />
-          <div className="flex w-fit flex-col items-center gap-4">
+          <div className="mx-auto flex w-fit flex-col items-center gap-4 sm:mx-4">
             <NavLink
               className={'hover:text-primary'}
               to={`/movies/${reviewData?.movieId}`}
@@ -68,7 +68,7 @@ function ReviewDetails() {
             </div>
           </div>
         </section>
-        <section className="ml-10 w-96">
+        <section className="ml-10 w-2/3">
           <div className="min-h-20 min-w-32">
             <div className="flex gap-4">
               <h3 className="my-4 font-arvo text-lg">By: </h3>
