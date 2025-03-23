@@ -84,7 +84,6 @@ if (appConfig != null)
             .AddMeter(appConfig.Name)
             .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddConsoleExporter()
             .AddPrometheusExporter()
             .AddOtlpExporter());
 }
