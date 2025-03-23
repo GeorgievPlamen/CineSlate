@@ -34,7 +34,7 @@ function Home() {
             </li>
             <li>
               <span className="font-bold text-whitesmoke">
-                Filter by Genre & Year:
+                Filter by Genre:
               </span>{' '}
               Find exactly what you're in the mood for.
             </li>
