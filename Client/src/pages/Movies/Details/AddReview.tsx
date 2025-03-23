@@ -46,7 +46,7 @@ export default function AddReview({ onSuccess }: Props) {
 
   useEffect(() => {
     if (ownReviewData) {
-      setValue('rating', ownReviewData.rating);
+      setValue('rating', `${ownReviewData.rating}`);
       setValue('text', ownReviewData.text);
       setValue('containsSpoilers', ownReviewData.containsSpoilers);
     }
