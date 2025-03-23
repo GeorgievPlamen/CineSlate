@@ -6,12 +6,6 @@ on:
       - master
     paths:
       - 'Client/**'
-  pull_request:
-    types: [closed]
-    branches:
-      - master
-    paths:
-      - 'Client/**'
   workflow_dispatch:
 jobs:
   build_and_deploy_job:
