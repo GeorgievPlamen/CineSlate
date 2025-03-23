@@ -101,7 +101,7 @@ app.UseMiddleware<TraceMiddleware>();
 app.MapPrometheusScrapingEndpoint();
 
 app.MapGet("api/", () => Results.Ok("Hello there :)"));
-app.MapGet("api/settings", (IOptions<ApiKeys> options) => Results.Ok(options.Value));
+
 app.MapUsers();
 app.MapMovies();
 app.MapReviews();
