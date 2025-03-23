@@ -64,19 +64,19 @@ services:
       - "5050:80"
     restart: always
 
-  migrate:
-    container_name: cineslate_migrations
-    build:
-      context: ./Server
-      dockerfile: Dockerfile.migrations
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=cineslate;Username=postgres;Password=secretpassword;
-    command: >
-      sh -c "dotnet ef database update --project /source/src/Infrastructure/Infrastructure.csproj --startup-project /source/src/Api/Api.csproj"
+  # migrate:
+  #   container_name: cineslate_migrations
+  #   build:
+  #     context: ./Server
+  #     dockerfile: Dockerfile.migrations
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Docker
+  #     - ConnectionStrings__CineSlate=Host=postgres;Port=5432;Database=cineslate;Username=postgres;Password=secretpassword;
+  #   command: >
+  #     sh -c "dotnet ef database update --project /source/src/Infrastructure/Infrastructure.csproj --startup-project /source/src/Api/Api.csproj"
 
   # prometheus:
   #   image: prom/prometheus

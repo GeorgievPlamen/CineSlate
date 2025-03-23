@@ -1,4 +1,5 @@
 using Api.Common;
+using Api.Extensions;
 using Api.Features.Admin;
 using Api.Features.Movies;
 using Api.Features.Reviews;
@@ -9,6 +10,7 @@ using Application;
 using Application.Common.Tracing;
 
 using Infrastructure;
+using Infrastructure.Common.Models;
 
 using Microsoft.Extensions.Options;
 
@@ -31,7 +33,8 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
+    .ReadFrom
+    .Configuration(configuration)
     .CreateLogger();
 
 Log.Information("Starting web application");
@@ -45,7 +48,7 @@ builder.Services.AddCors(opt =>
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins("http://localhost:3000", "http://localhost:3030")
+        .WithOrigins("http://localhost:3000", "http://localhost:3030", "https://orange-glacier-08896bc03.6.azurestaticapps.net")
         .WithExposedHeaders("Location"));
 });
 builder.Services.AddEndpointsApiExplorer();
@@ -98,14 +101,13 @@ app.UseExceptionHandler();
 app.UseMiddleware<TraceMiddleware>();
 app.MapPrometheusScrapingEndpoint();
 
-app.MapGet("api/", () =>
-{
-    return Results.Ok("Hello there :)");
-});
-
+app.MapGet("api/", () => Results.Ok("Hello there :)"));
+app.MapGet("api/settings", (IOptions<ApiKeys> options) => Results.Ok(options.Value));
 app.MapUsers();
 app.MapMovies();
 app.MapReviews();
 app.MapAdmin();
+
+await app.UpdatePendingMigrations();
 
 app.Run();
