@@ -21,6 +21,8 @@
   This is a fullstack web application for movie reviews. Goal is to practice new technical skills and software design concepts.
 </p>
 
+### [Visit live website](https://orange-glacier-08896bc03.6.azurestaticapps.net/)
+
 ## Setup and build
 
 Create a .env file in root folder containing:
