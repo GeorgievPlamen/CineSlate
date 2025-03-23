@@ -10,6 +10,7 @@ on:
     types: [closed]
     branches:
       - master
+    paths:
       - 'Client/**'
   workflow_dispatch:
 jobs:
