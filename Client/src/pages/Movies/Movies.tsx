@@ -27,8 +27,6 @@ export default function Movies() {
   const isSearchingMovies = search ? search?.length > 0 : false;
   const isFilteringMovies = genreIds.length > 0;
 
-  console.log(pages);
-
   const { data, isFetching, isError } = usePagedMoviesQuery(
     {
       page: pages.default,

@@ -8,8 +8,6 @@ interface Props {
 export default function Backdrop({ path }: Props) {
   const [loaded, setLoaded] = useState(false);
 
-  console.log(loaded);
-
   return (
     <div className="absolute -z-40">
       <img
