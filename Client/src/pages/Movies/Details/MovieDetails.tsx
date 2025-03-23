@@ -69,7 +69,7 @@ export default function MovieDetails() {
       <Backdrop path={data?.backdropPath} />
       <article className="mt-20">
         <article className="mx-auto flex w-full flex-col items-center justify-center">
-          <div className="flex">
+          <div className="flex flex-col sm:flex-row">
             <div className="flex flex-col items-center justify-center">
               <img
                 className={
@@ -96,7 +96,7 @@ export default function MovieDetails() {
                 </p>
               )}
             </div>
-            <section className="mx-10 my-5 w-1/2 max-w-[700px]">
+            <section className="mx-auto my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
                 <h2 className="mb-2 font-arvo text-3xl font-bold">
                   {data?.title}

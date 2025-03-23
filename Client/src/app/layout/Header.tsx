@@ -6,6 +6,8 @@ import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
 import useDebounce from '../hooks/useDebounce';
+import DropdownMobile from '../components/Buttons/DropdownMobile';
+import BarsIcon from '../Icons/BarsIcon';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -38,7 +40,7 @@ function Header() {
 
   return (
     <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
-      <nav className="flex w-full items-center justify-evenly">
+      <nav className="hidden w-full items-center justify-evenly md:flex">
         <NavLink to="/" className="flex w-min items-center justify-center">
           <img
             src={CineSlateLogo}
@@ -47,7 +49,7 @@ function Header() {
             onClick={handleBounce}
           />
         </NavLink>
-        <div className="w-fulm 0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
+        <div className="0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
@@ -114,6 +116,24 @@ function Header() {
             Sign in
           </NavLink>
         )}
+      </nav>
+      <nav className="flex w-full items-center justify-between md:hidden">
+        <div className="0 relative mx-2 flex w-2/3 max-w-md items-center rounded-full bg-whitesmoke">
+          <input
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search Movies"
+            type="search"
+            name="search"
+            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter') return;
+              navigateToMovies();
+            }}
+          />
+        </div>
+        <DropdownMobile>
+          <BarsIcon />
+        </DropdownMobile>
       </nav>
     </header>
   );
