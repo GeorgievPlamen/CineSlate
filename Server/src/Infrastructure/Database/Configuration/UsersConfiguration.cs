@@ -1,4 +1,5 @@
 using Infrastructure.Database.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -46,5 +47,8 @@ public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
         name.Property(n => n!.OnlyName)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

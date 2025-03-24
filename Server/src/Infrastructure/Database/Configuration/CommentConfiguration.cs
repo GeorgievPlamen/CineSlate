@@ -32,5 +32,8 @@ public class CommentConfiguration : IEntityTypeConfiguration<CommentModel>
         builder.Property(x => x.Comment)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

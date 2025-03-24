@@ -1,4 +1,5 @@
 using Infrastructure.Database.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,5 +19,8 @@ public class GenresConfiguration : IEntityTypeConfiguration<GenreModel>
         builder.Property(u => u.UpdatedBy)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

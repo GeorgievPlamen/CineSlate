@@ -39,5 +39,8 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
 
         builder.HasMany(r => r.Comments)
             .WithOne(x => x.Review);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

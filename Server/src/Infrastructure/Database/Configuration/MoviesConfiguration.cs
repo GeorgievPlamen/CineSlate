@@ -1,4 +1,5 @@
 using Infrastructure.Database.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -57,5 +58,8 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
 
         builder.Property(m => m.Rating)
             .HasPrecision(2);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }
