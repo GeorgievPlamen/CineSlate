@@ -28,5 +28,8 @@ public class LikesConfiguration : IEntityTypeConfiguration<LikesModel>
         name.Property(n => n!.OnlyName)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }

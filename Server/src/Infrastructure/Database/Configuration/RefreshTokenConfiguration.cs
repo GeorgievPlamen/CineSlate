@@ -24,5 +24,8 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTokenMo
         builder.Property(x => x.UpdatedBy)
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(x => x.Version)
+            .IsRowVersion();
     }
 }
