@@ -59,7 +59,9 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
         builder.Property(m => m.Rating)
             .HasPrecision(2);
 
-        builder.Property(x => x.Version)
+        builder.Property(e => e.Version)
+            .HasColumnName("xmin")
+            .HasColumnType("xid")
             .IsRowVersion();
     }
 }

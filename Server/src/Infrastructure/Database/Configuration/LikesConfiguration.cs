@@ -29,7 +29,9 @@ public class LikesConfiguration : IEntityTypeConfiguration<LikesModel>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(x => x.Version)
+        builder.Property(e => e.Version)
+            .HasColumnName("xmin")
+            .HasColumnType("xid")
             .IsRowVersion();
     }
 }

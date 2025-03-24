@@ -23,7 +23,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,7 +54,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,7 +73,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,7 +96,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,7 +141,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -168,7 +168,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,7 +194,7 @@ namespace Infrastructure.Database.Migrations
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UpdatedBy = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {

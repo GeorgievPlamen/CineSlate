@@ -25,7 +25,9 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTokenMo
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(x => x.Version)
+        builder.Property(e => e.Version)
+            .HasColumnName("xmin")
+            .HasColumnType("xid")
             .IsRowVersion();
     }
 }
