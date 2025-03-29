@@ -4,6 +4,8 @@ using Domain.Watchlist;
 using Domain.Watchlist.ValueObjects;
 
 using Infrastructure.Database;
+using Infrastructure.Repositories.MappingExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -11,21 +13,39 @@ public class WatchlistRepository(CineSlateContext dbContext) : IWatchlistReposit
 {
     public async Task<bool> CreateWatchlistAsync(WatchlistAggregate watchlist, CancellationToken cancellationToken)
     {
+        dbContext.Add(watchlist.ToModel());
+
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     public async Task<bool> DeleteWatchlistAsync(WatchlistId id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var affectedRows = await dbContext.Watchlists
+            .Where(x => x.Id == id.Value)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        return affectedRows > 0;
     }
 
     public async Task<WatchlistAggregate?> GetWatchlistAsync(WatchlistId id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var watchlist = await dbContext.Watchlists
+            .Include(x => x.MovieToWatchModels)
+            .FirstOrDefaultAsync(x => x.Id == id.Value, cancellationToken);
+
+        return watchlist?.Unwrap();
     }
 
     public async Task<bool> UpdateWatchlistAsync(WatchlistAggregate watchlist, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var newWatchlist = watchlist.ToModel();
+
+        var affectedRows = await dbContext.Watchlists
+            .Where(x => x.Id == newWatchlist.Id)
+            .ExecuteUpdateAsync(
+                x => x.SetProperty(p => p.MovieToWatchModels, newWatchlist.MovieToWatchModels),
+                cancellationToken);
+
+        return affectedRows > 0;
     }
 }

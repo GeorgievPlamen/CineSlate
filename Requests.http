@@ -1,9 +1,9 @@
-# @Api_HostAddress = http://localhost:5000/api/
-@Api_HostAddress = http://localhost:8080/api/ 
+@Api_HostAddress = http://localhost:5000/api/
+# @Api_HostAddress = http://localhost:8080/api/ 
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MWMyNzc2ZC03ODA2LTQyNzctOTRjOS1lNjIwNzA5YWZhZGIiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiM5MWMyNyIsImp0aSI6ImQ1ZjJmYzlmLTBhODMtNGZjOS04YTllLTAxOTJkNjcxYjJjMyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDIxMTE4NTYsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.MOCcWpROV0yyW4zlRxX1p0-28WqUhGqAIMfQ9dxKr5w
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYjNhOWJhZi1jY2Q5LTRhNzktODFhMC1hZDI5MTQ1ZWU2YzAiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiNmYjNhOSIsImp0aSI6IjZhZjYxZTg3LThhZDItNDYwOS1iZDI3LTRjNWE3ZGYwNmRjYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDMyNDE0OTMsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.P4nYkS0ZjxGK6IDs0DKHJjbqweyEHvkD6EYOsar1xsE
 
 ### Login Success
 
@@ -189,3 +189,9 @@ Content-Type: application/json
 Authorization: {{Token}}
 
 "This is the comment"
+
+### Watchlist - Add
+
+POST {{Api_HostAddress}}watchlist/1077782 HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}

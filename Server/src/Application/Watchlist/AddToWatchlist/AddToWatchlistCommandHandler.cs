@@ -31,7 +31,7 @@ public class AddToWatchlistCommandHandler(
             return Result<Unit>.Failure(UserErrors.NotFound());
 
         var movieId = MovieId.Create(request.MovieId);
-        var movie = movieRepository.GetByIdAsync(movieId, cancellationToken);
+        var movie = await movieRepository.GetByIdAsync(movieId, cancellationToken);
 
         if (movie is null)
             return Result<Unit>.Failure(MovieErrors.NotFound(movieId));

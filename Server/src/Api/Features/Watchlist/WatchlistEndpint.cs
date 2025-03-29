@@ -18,7 +18,7 @@ public static class WatchlistEndpoint
         var watchlist = app.MapGroup(Uri).RequireAuthorization();
 
         watchlist.MapGet("/", GetWatchlistAsync);
-        watchlist.MapPost("/", AddToWatchlistAsync);
+        watchlist.MapPost("/{movieId}", AddToWatchlistAsync);
         watchlist.MapPut("/", UpdateWatchlistAsync);
         watchlist.MapDelete("/", RemoveFromWatchlistAsync);
     }
