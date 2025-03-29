@@ -1,10 +1,12 @@
 using Application.Watchlist.Interfaces;
 
+using Domain.Users.ValueObjects;
 using Domain.Watchlist;
 using Domain.Watchlist.ValueObjects;
 
 using Infrastructure.Database;
 using Infrastructure.Repositories.MappingExtensions;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -32,6 +34,15 @@ public class WatchlistRepository(CineSlateContext dbContext) : IWatchlistReposit
         var watchlist = await dbContext.Watchlists
             .Include(x => x.MovieToWatchModels)
             .FirstOrDefaultAsync(x => x.Id == id.Value, cancellationToken);
+
+        return watchlist?.Unwrap();
+    }
+
+    public async Task<WatchlistAggregate?> GetWatchlistByUserIdAsync(UserId id, CancellationToken cancellationToken)
+    {
+        var watchlist = await dbContext.Watchlists
+            .Include(x => x.MovieToWatchModels)
+            .FirstOrDefaultAsync(x => x.UserId == id.Value, cancellationToken);
 
         return watchlist?.Unwrap();
     }
