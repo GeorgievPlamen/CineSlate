@@ -11,21 +11,5 @@ public class GenresConfiguration : IEntityTypeConfiguration<GenreModel>
     {
         builder.Property(g => g.Name)
             .HasMaxLength(100);
-
-        builder.Property(u => u.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(u => u.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(x => x.Version)
-            .IsRowVersion();
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

@@ -26,10 +26,6 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
 
         builder.HasIndex(r => r.CreatedAt);
 
-        builder.Property(r => r.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
         builder.Property(r => r.UpdatedBy)
             .IsRequired()
             .HasMaxLength(200);
@@ -39,10 +35,5 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<ReviewModel>
 
         builder.HasMany(r => r.Comments)
             .WithOne(x => x.Review);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

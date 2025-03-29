@@ -23,6 +23,28 @@ public class CineSlateContext(
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CineSlateContext).Assembly);
 
+
+        foreach (var entityType in modelBuilder.Model
+            .GetEntityTypes()
+            .Where(x => typeof(BaseModel).IsAssignableFrom(x.ClrType)))
+        {
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.CreatedBy))
+                .IsRequired()
+                .HasMaxLength(200);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.UpdatedBy))
+                .IsRequired()
+                .HasMaxLength(200);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.Version))
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .IsRowVersion();
+        }
+
         base.OnModelCreating(modelBuilder);
     }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

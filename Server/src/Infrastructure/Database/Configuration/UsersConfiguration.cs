@@ -30,14 +30,6 @@ public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(u => u.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(u => u.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
         var name = builder.ComplexProperty(u => u.Username);
 
         name.Property(n => n!.Value)
@@ -47,10 +39,5 @@ public class UsersConfiguration : IEntityTypeConfiguration<UserModel>
         name.Property(n => n!.OnlyName)
             .IsRequired()
             .HasMaxLength(100);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }
