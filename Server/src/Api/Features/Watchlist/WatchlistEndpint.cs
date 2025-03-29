@@ -1,7 +1,7 @@
 
 using Api.Common;
 
-using Application.Watchlist;
+using Application.Watchlist.AddToWatchlist;
 
 using MediatR;
 

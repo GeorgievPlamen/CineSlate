@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.Watchlist;
+namespace Application.Watchlist.AddToWatchlist;
 
 public class AddToWatchlistCommandValidator : AbstractValidator<AddToWatchlistCommand>
 {

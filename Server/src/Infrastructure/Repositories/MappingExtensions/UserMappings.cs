@@ -1,5 +1,6 @@
 using Domain.Users;
 using Domain.Users.ValueObjects;
+using Domain.Watchlist.ValueObjects;
 
 using Infrastructure.Database.Models;
 
@@ -27,6 +28,7 @@ public static class UserMappings
                model.Username.OnlyName,
                model.Email,
                model.PasswordHash,
+               model.WatchlistId.HasValue ? WatchlistId.Create(model.WatchlistId.Value) : null,
                model.Bio ?? "",
                model.Roles);
 

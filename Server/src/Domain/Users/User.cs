@@ -1,6 +1,7 @@
 using Domain.Common.Models;
 using Domain.Users.Enums;
 using Domain.Users.ValueObjects;
+using Domain.Watchlist.ValueObjects;
 
 namespace Domain.Users;
 
@@ -14,6 +15,7 @@ public class User : AggregateRoot<UserId>
     public string? AvatarBase64 { get; private set; }
     public string PasswordHash { get; private set; } = null!;
     public Roles Role { get; private set; }
+    public WatchlistId WatchlistId { get; private set; } = null!;
 
     public static User Create(string userName, string email, string passwordHash, Roles role = Roles.User)
     {
@@ -28,7 +30,7 @@ public class User : AggregateRoot<UserId>
         };
     }
 
-    public static User Create(UserId userId, string userName, string email, string passwordHash, string bio = "", Roles role = Roles.User)
+    public static User Create(UserId userId, string userName, string email, string passwordHash, WatchlistId? watchlistId, string bio = "", Roles role = Roles.User)
     => new(userId)
     {
         Username = Username.Create(userName, userId),
@@ -36,9 +38,10 @@ public class User : AggregateRoot<UserId>
         PasswordHash = passwordHash,
         Bio = bio,
         Role = role,
+        WatchlistId = watchlistId!
     };
 
     public void UpdateBio(string bio) => Bio = bio;
-
+    public void AddWatchlist(WatchlistId watchlistId) => WatchlistId = watchlistId;
     public void UpdateProfilePicture(string imageBase64) => AvatarBase64 = imageBase64;
 }

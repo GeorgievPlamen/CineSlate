@@ -1,6 +1,8 @@
 using Application.Movies;
 using Application.Movies.Interfaces;
+
 using Bogus;
+
 using Infrastructure.Database.Models;
 
 namespace TestUtilities.Fakers;

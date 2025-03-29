@@ -13,6 +13,8 @@ function Login() {
   const response = useActionData() as UserResponse;
   useHandleUserResponse(response);
 
+  console.log(response);
+
   return (
     <Form
       noValidate
@@ -24,7 +26,7 @@ function Login() {
       <PasswordField errors={response?.errors} />
       <ValidationError
         isError={response?.errors?.includes(userErrors.NotFound)}
-        message={userErrors.NotFound}
+        message={'User with email not found or password is wrong.'}
       />
       <Linebreak />
       <SubmitButton text="Sign in" />

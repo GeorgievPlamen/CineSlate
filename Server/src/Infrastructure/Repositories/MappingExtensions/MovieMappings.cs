@@ -1,5 +1,6 @@
 using Domain.Movies;
 using Domain.Movies.ValueObjects;
+
 using Infrastructure.Database.Models;
 
 namespace Infrastructure.Repositories.MappingExtensions;

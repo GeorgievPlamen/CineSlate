@@ -14,4 +14,5 @@ public class UserModel : BaseModel
     public byte[]? AvatarBlob { get; set; }
     public string PasswordHash { get; set; } = null!;
     public Roles Roles { get; set; }
+    public Guid? WatchlistId { get; set; }
 }
