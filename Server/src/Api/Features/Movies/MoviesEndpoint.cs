@@ -1,11 +1,13 @@
 
 
 
+
 using Api.Common;
 
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Details;
+using Application.Movies.FromWatchlist;
 using Application.Movies.GetMoviesByFilters;
 using Application.Movies.GetMoviesByTitle;
 using Application.Movies.PagedMoviesQuery;
@@ -29,6 +31,7 @@ public static class MoviesEndpoint
         movies.MapGet("/upcoming", GetUpcomingAsync);
         movies.MapGet("/search", GetMoviesByTitleAsync);
         movies.MapGet("/filter", GetMoviesByFiltersAsync);
+        movies.MapGet("/watchlist", GetMoviesFromWatchlistAsync);
     }
 
     private static async Task<IResult> GetMoviesByFiltersAsync(int[]? genreIds, int? year, ISender mediatr, CancellationToken cancellationToken, int page = 1)
@@ -51,4 +54,8 @@ public static class MoviesEndpoint
 
     private static async Task<IResult> GetUpcomingAsync(int? page, ISender mediatr, CancellationToken cancellationToken)
         => Response<Paged<Movie>>.Match(await mediatr.Send(new GetPagedMoviesQuery(MoviesBy.upcoming, page ?? 1), cancellationToken));
+
+    private static async Task<IResult> GetMoviesFromWatchlistAsync(ISender mediatr, CancellationToken cancellationToken)
+        => Response<List<Movie>>.Match(await mediatr.Send(new GetMoviesFromWatchlistQuery(), cancellationToken));
+
 }
