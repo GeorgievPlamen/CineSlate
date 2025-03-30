@@ -43,5 +43,6 @@ public class User : AggregateRoot<UserId>
 
     public void UpdateBio(string bio) => Bio = bio;
     public void AddWatchlist(WatchlistId watchlistId) => WatchlistId = watchlistId;
+    public void RemoveWatchlist() => WatchlistId = null!;
     public void UpdateProfilePicture(string imageBase64) => AvatarBase64 = imageBase64;
 }

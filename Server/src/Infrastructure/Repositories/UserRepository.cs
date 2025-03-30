@@ -66,8 +66,7 @@ public class UserRepository(CineSlateContext dbContext) : IUserRepository
 
         savedUser.Bio = userModel.Bio;
         savedUser.AvatarBlob = userModel.AvatarBlob;
-
-        dbContext.Update(savedUser);
+        savedUser.WatchlistId = userModel.WatchlistId;
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }

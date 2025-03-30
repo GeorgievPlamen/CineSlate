@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYjNhOWJhZi1jY2Q5LTRhNzktODFhMC1hZDI5MTQ1ZWU2YzAiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiNmYjNhOSIsImp0aSI6IjZhZjYxZTg3LThhZDItNDYwOS1iZDI3LTRjNWE3ZGYwNmRjYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDMyNDE0OTMsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.P4nYkS0ZjxGK6IDs0DKHJjbqweyEHvkD6EYOsar1xsE
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYjNhOWJhZi1jY2Q5LTRhNzktODFhMC1hZDI5MTQ1ZWU2YzAiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiNmYjNhOSIsImp0aSI6ImVjYzAzZTYyLTA5MjktNGRjYi1hNTRmLTM5ZjRjMGZhZDAxNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDMzMjM4NzQsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.tW_ESwH4KqIBifwSKS8wxpIIsWRqhmurPbGHSqzeCUM
 
 ### Login Success
 
@@ -192,6 +192,30 @@ Authorization: {{Token}}
 
 ### Watchlist - Add
 
-POST {{Api_HostAddress}}watchlist/1077782 HTTP/1.1
+POST {{Api_HostAddress}}watchlist/822119 HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}
+
+### Watchlist - Get
+
+GET {{Api_HostAddress}}watchlist/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}
+
+### Watchlist - Remove movie
+
+POST {{Api_HostAddress}}watchlist/remove?movieId=157336&watched=false HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}
+
+### Watchlist - Delete
+
+DELETE {{Api_HostAddress}}watchlist/ HTTP/1.1
+Content-Type: application/json
+Authorization: {{Token}}
+
+### Watchlist - Update watched status
+
+PUT {{Api_HostAddress}}watchlist/822119?watched=true HTTP/1.1
 Content-Type: application/json
 Authorization: {{Token}}

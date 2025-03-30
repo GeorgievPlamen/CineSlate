@@ -32,6 +32,7 @@ public class WatchlistRepository(CineSlateContext dbContext) : IWatchlistReposit
     public async Task<WatchlistAggregate?> GetWatchlistAsync(WatchlistId id, CancellationToken cancellationToken)
     {
         var watchlist = await dbContext.Watchlists
+            .AsNoTracking()
             .Include(x => x.MovieToWatchModels)
             .FirstOrDefaultAsync(x => x.Id == id.Value, cancellationToken);
 
@@ -41,6 +42,7 @@ public class WatchlistRepository(CineSlateContext dbContext) : IWatchlistReposit
     public async Task<WatchlistAggregate?> GetWatchlistByUserIdAsync(UserId id, CancellationToken cancellationToken)
     {
         var watchlist = await dbContext.Watchlists
+            .AsNoTracking()
             .Include(x => x.MovieToWatchModels)
             .FirstOrDefaultAsync(x => x.UserId == id.Value, cancellationToken);
 
@@ -51,12 +53,15 @@ public class WatchlistRepository(CineSlateContext dbContext) : IWatchlistReposit
     {
         var newWatchlist = watchlist.ToModel();
 
-        var affectedRows = await dbContext.Watchlists
-            .Where(x => x.Id == newWatchlist.Id)
-            .ExecuteUpdateAsync(
-                x => x.SetProperty(p => p.MovieToWatchModels, newWatchlist.MovieToWatchModels),
-                cancellationToken);
+        var oldWatchlist = await dbContext.Watchlists
+            .Include(x => x.MovieToWatchModels)
+            .FirstOrDefaultAsync(x => x.Id == newWatchlist.Id);
 
-        return affectedRows > 0;
+        if (oldWatchlist is null) return false;
+
+        oldWatchlist.MovieToWatchModels.Clear();
+        oldWatchlist.MovieToWatchModels = newWatchlist.MovieToWatchModels;
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }

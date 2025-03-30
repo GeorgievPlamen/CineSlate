@@ -19,7 +19,8 @@ public static class UserMappings
             Bio = user.Bio,
             AvatarBlob = user.AvatarBase64 is not null
                 ? Convert.FromBase64String(user.AvatarBase64)
-                : null
+                : null,
+            WatchlistId = user.WatchlistId?.Value
         };
     public static User Unwrap(this UserModel model)
     {

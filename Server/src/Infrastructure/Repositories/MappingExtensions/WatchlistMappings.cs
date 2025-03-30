@@ -2,6 +2,7 @@ using Domain.Movies.ValueObjects;
 using Domain.Users.ValueObjects;
 using Domain.Watchlist;
 using Domain.Watchlist.ValueObjects;
+
 using Infrastructure.Database.Models;
 
 namespace Infrastructure.Repositories.MappingExtensions;
@@ -24,7 +25,8 @@ public static class WatchlistMappings
 
     public static WatchlistAggregate Unwrap(this WatchlistModel model) => WatchlistAggregate.Create
     (
-        UserId.Create(model.Id),
+        WatchlistId.Create(model.Id),
+        UserId.Create(model.UserId),
         [.. model.MovieToWatchModels.Select(x => MovieToWatch.Create(MovieId.Create(x.MovieId), x.Watched))]
     );
 }

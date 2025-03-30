@@ -1,5 +1,7 @@
 using System.Text;
 
+using Api.Common.Interfaces;
+
 using Application.Common.Interfaces;
 using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
@@ -61,6 +63,7 @@ public static class InfrastructureServices
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IWatchlistRepository, WatchlistRepository>();
         services.AddScoped<IMovieClient, TMDBClient>();
+        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
