@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/postcss": "^4.1.17",
+    "@tanstack/react-query": "^5.90.11",
     "@types/react-redux": "^7.1.34",
     "axios": "^1.13.2",
     "react": "^19.2.0",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tailwindcss/forms": "^0.5.9",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react-swc": "^4.2.2",
