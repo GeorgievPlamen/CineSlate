@@ -11,14 +11,6 @@ public class LikesConfiguration : IEntityTypeConfiguration<LikesModel>
     {
         builder.HasIndex(x => x.UserId);
 
-        builder.Property(m => m.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(m => m.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
         var name = builder.ComplexProperty(u => u.Username);
 
         name.Property(n => n!.Value)
@@ -28,10 +20,5 @@ public class LikesConfiguration : IEntityTypeConfiguration<LikesModel>
         name.Property(n => n!.OnlyName)
             .IsRequired()
             .HasMaxLength(100);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

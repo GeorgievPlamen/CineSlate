@@ -73,7 +73,7 @@ export default function MovieDetails() {
             <div className="flex flex-col items-center justify-center">
               <img
                 className={
-                  'mb-4 w-80 rounded-lg border border-grey transition-opacity duration-200 ' +
+                  'border-grey mb-4 w-80 rounded-lg border transition-opacity duration-200 ' +
                   (imageLoaded ? 'opacity-100' : 'opacity-0')
                 }
                 src={IMG_PATH + data?.posterPath}
@@ -98,7 +98,7 @@ export default function MovieDetails() {
             </div>
             <section className="mx-auto my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
-                <h2 className="mb-2 font-arvo text-3xl font-bold">
+                <h2 className="font-arvo mb-2 text-3xl font-bold">
                   {data?.title}
                 </h2>
                 <p className="text-sm font-light">

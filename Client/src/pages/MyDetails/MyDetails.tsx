@@ -93,7 +93,7 @@ function MyDetails() {
             </div>
             {editing && (
               <label htmlFor="avatar">
-                <UploadIcon className="absolute left-24 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary p-1 text-whitesmoke hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80" />
+                <UploadIcon className="bg-primary text-whitesmoke hover:outline-whitesmoke active:bg-opacity-80 absolute top-1 left-24 flex h-8 w-8 items-center justify-center rounded-full p-1 hover:outline hover:outline-1" />
                 <input
                   type="file"
                   className="hidden"
@@ -110,30 +110,30 @@ function MyDetails() {
               {editing ? <CheckIcon /> : <EditIcon />}
             </Button>
             <div className="flex flex-col">
-              <h2 className="mb-2 mt-5 min-w-44 font-arvo text-xl">
+              <h2 className="font-arvo mt-5 mb-2 min-w-44 text-xl">
                 {user?.username.split('#')[0]}
               </h2>
               {editing ? (
                 <TextField
                   defaultValue={user?.bio}
                   register={register('bio')}
-                  className="font-roboto text-sm text-grey"
+                  className="font-roboto text-grey text-sm"
                 />
               ) : (
-                <p className="font-roboto text-sm text-grey">{user?.bio}</p>
+                <p className="font-roboto text-grey text-sm">{user?.bio}</p>
               )}
             </div>
           </div>
           <div className="p-2">
-            <p className="text-center font-arvo text-lg">
+            <p className="font-arvo text-center text-lg">
               {reviewData?.totalCount}
             </p>
-            <p className="text-xs font-light text-grey">Reviews</p>
+            <p className="text-grey text-xs font-light">Reviews</p>
           </div>
         </div>
       </section>
       <section className="m-auto w-2/3">
-        <h3 className="my-4 ml-2 font-arvo text-lg">Recent Reviews</h3>
+        <h3 className="font-arvo my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviewData?.values.map((r) => (
             <MovieReviewCard key={r.movieId} review={r} />

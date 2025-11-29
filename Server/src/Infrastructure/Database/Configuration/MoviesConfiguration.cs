@@ -45,23 +45,10 @@ public class MoviesConfiguration : IEntityTypeConfiguration<MovieModel>
         builder.HasMany(m => m.Genres)
             .WithMany(g => g.Movies);
 
-        builder.Property(m => m.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(m => m.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
         builder.HasMany(m => m.Reviews)
             .WithOne(r => r.Movie);
 
         builder.Property(m => m.Rating)
             .HasPrecision(2);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

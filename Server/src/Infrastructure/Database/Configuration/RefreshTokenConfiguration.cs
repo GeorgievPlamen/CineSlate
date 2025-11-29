@@ -16,18 +16,5 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTokenMo
 
         builder.HasIndex(x => x.Value)
             .IsUnique();
-
-        builder.Property(x => x.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(x => x.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

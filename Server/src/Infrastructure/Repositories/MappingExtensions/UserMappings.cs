@@ -1,5 +1,6 @@
 using Domain.Users;
 using Domain.Users.ValueObjects;
+using Domain.Watchlist.ValueObjects;
 
 using Infrastructure.Database.Models;
 
@@ -18,7 +19,8 @@ public static class UserMappings
             Bio = user.Bio,
             AvatarBlob = user.AvatarBase64 is not null
                 ? Convert.FromBase64String(user.AvatarBase64)
-                : null
+                : null,
+            WatchlistId = user.WatchlistId?.Value
         };
     public static User Unwrap(this UserModel model)
     {
@@ -27,6 +29,7 @@ public static class UserMappings
                model.Username.OnlyName,
                model.Email,
                model.PasswordHash,
+               model.WatchlistId.HasValue ? WatchlistId.Create(model.WatchlistId.Value) : null,
                model.Bio ?? "",
                model.Roles);
 

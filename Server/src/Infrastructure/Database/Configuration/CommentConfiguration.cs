@@ -11,14 +11,6 @@ public class CommentConfiguration : IEntityTypeConfiguration<CommentModel>
     {
         builder.HasIndex(x => x.UserId);
 
-        builder.Property(m => m.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(m => m.UpdatedBy)
-            .IsRequired()
-            .HasMaxLength(200);
-
         var name = builder.ComplexProperty(u => u.Username);
 
         name.Property(n => n!.Value)
@@ -32,10 +24,5 @@ public class CommentConfiguration : IEntityTypeConfiguration<CommentModel>
         builder.Property(x => x.Comment)
             .IsRequired()
             .HasMaxLength(200);
-
-        builder.Property(e => e.Version)
-            .HasColumnName("xmin")
-            .HasColumnType("xid")
-            .IsRowVersion();
     }
 }

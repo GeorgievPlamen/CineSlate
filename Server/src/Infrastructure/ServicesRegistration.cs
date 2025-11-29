@@ -1,13 +1,19 @@
 using System.Text;
+
+using Api.Common.Interfaces;
+
 using Application.Common.Interfaces;
 using Application.Movies.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
+using Application.Watchlist.Interfaces;
+
 using Infrastructure.Common;
 using Infrastructure.Common.Models;
 using Infrastructure.Database;
 using Infrastructure.MovieClient;
 using Infrastructure.Repositories;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -55,7 +61,9 @@ public static class InfrastructureServices
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IWatchlistRepository, WatchlistRepository>();
         services.AddScoped<IMovieClient, TMDBClient>();
+        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

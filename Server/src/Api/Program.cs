@@ -4,6 +4,7 @@ using Api.Features.Admin;
 using Api.Features.Movies;
 using Api.Features.Reviews;
 using Api.Features.Users;
+using Api.Features.Watchlist;
 using Api.Middleware;
 
 using Application;
@@ -106,6 +107,7 @@ app.MapUsers();
 app.MapMovies();
 app.MapReviews();
 app.MapAdmin();
+app.MapWatchlist();
 
 await app.UpdatePendingMigrations();
 

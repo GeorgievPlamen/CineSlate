@@ -44,7 +44,7 @@ function ReviewDetails() {
         <section>
           <img
             className={
-              'mx-auto mb-4 w-52 rounded-lg border border-grey' +
+              'border-grey mx-auto mb-4 w-52 rounded-lg border' +
               ` ${imageIsLoading ? 'hidden' : ''}`
             }
             src={IMG_PATH + movieData?.posterPath}
@@ -56,7 +56,7 @@ function ReviewDetails() {
               className={'hover:text-primary'}
               to={`/movies/${reviewData?.movieId}`}
             >
-              <h2 className="mb-2 w-full max-w-52 text-wrap text-center font-arvo text-xl font-bold">
+              <h2 className="font-arvo mb-2 w-full max-w-52 text-center text-xl font-bold text-wrap">
                 {movieData?.title}
               </h2>
             </NavLink>
@@ -71,7 +71,7 @@ function ReviewDetails() {
         <section className="ml-10 w-2/3">
           <div className="min-h-20 min-w-32">
             <div className="flex gap-4">
-              <h3 className="my-4 font-arvo text-lg">By: </h3>
+              <h3 className="font-arvo my-4 text-lg">By: </h3>
               <div className="flex gap-2">
                 <img
                   src={
@@ -87,15 +87,15 @@ function ReviewDetails() {
                   className={'hover:text-primary'}
                   to={`/critics/${reviewData?.authorId}`}
                 >
-                  <h2 className="mt-5 min-w-44 font-arvo text-xl">
+                  <h2 className="font-arvo mt-5 min-w-44 text-xl">
                     {user?.username.split('#')[0]}
                   </h2>
                 </NavLink>
               </div>
             </div>
           </div>
-          <h4 className="mb-4 font-arvo text-lg">⭐{reviewData?.rating}</h4>
-          <div className="flex gap-2 rounded-2xl border bg-background p-2">
+          <h4 className="font-arvo mb-4 text-lg">⭐{reviewData?.rating}</h4>
+          <div className="bg-background flex gap-2 rounded-2xl border p-2">
             <p className="font-roboto">
               {reviewData?.text && reviewData?.text.length > 0
                 ? reviewData?.text

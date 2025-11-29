@@ -13,18 +13,20 @@ function Login() {
   const response = useActionData() as UserResponse;
   useHandleUserResponse(response);
 
+  console.log(response);
+
   return (
     <Form
       noValidate
       method="post"
-      className="mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border border-whitesmoke bg-background p-4"
+      className="border-whitesmoke bg-background mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border p-4"
     >
       <Heading2 title="Login" />
       <EmailField errors={response?.errors} />
       <PasswordField errors={response?.errors} />
       <ValidationError
         isError={response?.errors?.includes(userErrors.NotFound)}
-        message={userErrors.NotFound}
+        message={'User with email not found or password is wrong.'}
       />
       <Linebreak />
       <SubmitButton text="Sign in" />

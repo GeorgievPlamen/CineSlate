@@ -295,6 +295,28 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Models.MovieToWatchModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Watched")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("WatchlistId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WatchlistId");
+
+                    b.ToTable("MovieToWatchModel");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Models.RefreshTokenModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -448,6 +470,9 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("xid")
                         .HasColumnName("xmin");
 
+                    b.Property<Guid?>("WatchlistId")
+                        .HasColumnType("uuid");
+
                     b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.UserModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
@@ -471,6 +496,45 @@ namespace Infrastructure.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Infrastructure.Database.Models.WatchlistModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<uint?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Watchlists");
                 });
 
             modelBuilder.Entity("GenreModelMovieModel", b =>
@@ -510,6 +574,17 @@ namespace Infrastructure.Database.Migrations
                     b.Navigation("Review");
                 });
 
+            modelBuilder.Entity("Infrastructure.Database.Models.MovieToWatchModel", b =>
+                {
+                    b.HasOne("Infrastructure.Database.Models.WatchlistModel", "Watchlist")
+                        .WithMany("MovieToWatchModels")
+                        .HasForeignKey("WatchlistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Watchlist");
+                });
+
             modelBuilder.Entity("Infrastructure.Database.Models.ReviewModel", b =>
                 {
                     b.HasOne("Infrastructure.Database.Models.MovieModel", "Movie")
@@ -531,6 +606,11 @@ namespace Infrastructure.Database.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Infrastructure.Database.Models.WatchlistModel", b =>
+                {
+                    b.Navigation("MovieToWatchModels");
                 });
 #pragma warning restore 612, 618
         }

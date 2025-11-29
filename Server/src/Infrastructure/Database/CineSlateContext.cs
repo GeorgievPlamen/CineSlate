@@ -18,10 +18,33 @@ public class CineSlateContext(
     public DbSet<GenreModel> Genres { get; set; } = null!;
     public DbSet<ReviewModel> Reviews { get; set; } = null!;
     public DbSet<RefreshTokenModel> RefreshTokens { get; set; } = null!;
+    public DbSet<WatchlistModel> Watchlists { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CineSlateContext).Assembly);
+
+
+        foreach (var entityType in modelBuilder.Model
+            .GetEntityTypes()
+            .Where(x => typeof(BaseModel).IsAssignableFrom(x.ClrType)))
+        {
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.CreatedBy))
+                .IsRequired()
+                .HasMaxLength(200);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.UpdatedBy))
+                .IsRequired()
+                .HasMaxLength(200);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property(nameof(BaseModel.Version))
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .IsRowVersion();
+        }
 
         base.OnModelCreating(modelBuilder);
     }

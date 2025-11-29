@@ -166,4 +166,25 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
         result.Should().NotBeNull();
         result.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+
+    [Fact]
+    public async Task GetMoviesFromWatchlist_ShouldReturn_Success()
+    {
+        // Arrange
+        var userId = await AuthenticateAsync();
+
+        var movieModels = MovieFaker.GenerateMovieModels(5);
+        var watchlist = WatchlistFaker.GenerateWatchlist(userId);
+
+        watchlist.MovieToWatchModels[0].MovieId = movieModels[0].Id;
+
+        await Api.SeedDatabaseAsync([.. movieModels, watchlist]);
+
+        // Act
+        var result = await Client.GetAsync(TestUri("/watchlist"));
+
+        // Assert
+        result.Should().NotBeNull();
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 }

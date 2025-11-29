@@ -113,12 +113,12 @@ export default function AddReview({ onSuccess }: Props) {
           />
           {isHovering ? (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(hoverRating > 0 && { fill: 'yellow' })}
             />
           ) : (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(Number(getValues('rating')) > 0 && { fill: 'yellow' })}
             />
           )}
@@ -135,12 +135,12 @@ export default function AddReview({ onSuccess }: Props) {
           />
           {isHovering ? (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(hoverRating > 1 && { fill: 'yellow' })}
             />
           ) : (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(Number(getValues('rating')) > 1 && { fill: 'yellow' })}
             />
           )}
@@ -157,12 +157,12 @@ export default function AddReview({ onSuccess }: Props) {
           />
           {isHovering ? (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(hoverRating > 2 && { fill: 'yellow' })}
             />
           ) : (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(Number(getValues('rating')) > 2 && { fill: 'yellow' })}
             />
           )}
@@ -179,12 +179,12 @@ export default function AddReview({ onSuccess }: Props) {
           />
           {isHovering ? (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(hoverRating > 3 && { fill: 'yellow' })}
             />
           ) : (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(Number(getValues('rating')) > 3 && { fill: 'yellow' })}
             />
           )}
@@ -201,12 +201,12 @@ export default function AddReview({ onSuccess }: Props) {
           />
           {isHovering ? (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(hoverRating > 4 && { fill: 'yellow' })}
             />
           ) : (
             <Star
-              className="absolute -left-1 top-0.5"
+              className="absolute top-0.5 -left-1"
               {...(Number(getValues('rating')) > 4 && { fill: 'yellow' })}
             />
           )}
@@ -216,7 +216,7 @@ export default function AddReview({ onSuccess }: Props) {
       <textarea
         placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
-          'mb-4 h-10 w-80 resize-none rounded-lg border border-grey bg-background px-2 pt-1 text-center font-thin outline-none transition-[height]' +
+          'border-grey bg-background mb-4 h-10 w-80 resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
         {...register('text')}
