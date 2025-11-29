@@ -112,7 +112,7 @@ export default function Movies() {
             />
           ))}
       </article>
-      <div className="mb-20 mt-10 flex justify-center">
+      <div className="mt-10 mb-20 flex justify-center">
         {(isFetching || isSearchedMoviesFetching || isFilteredMoviesFetching) &&
           pages.default < 5 && <Spinner />}
         {(isError || isFilteredMoviesError || isSearchedMoviesError) && (
@@ -141,7 +141,7 @@ export default function Movies() {
       {beyondScreen && (
         <button
           onClick={() => scrollTo(0, 0)}
-          className="fixed bottom-20 right-10 animate-bounce rounded-full p-1 text-primary hover:outline hover:outline-1 hover:outline-whitesmoke active:bg-opacity-80"
+          className="text-primary hover:outline-whitesmoke active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline hover:outline-1"
         >
           <ChevronUp />
         </button>
