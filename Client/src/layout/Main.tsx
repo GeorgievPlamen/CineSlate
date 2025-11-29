@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 function Main() {
   return (
-    <main className="mt-[69px] flex-grow">
+    <main className="mt-[69px] grow">
       <Outlet />
     </main>
   );
