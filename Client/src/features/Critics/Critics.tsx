@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { useGetLatestUsersQuery } from '../Users/api/userApiRTK';
-import Loading from '../../components/Loading/Loading';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import UserCard from '../../components/Cards/UserCard';
-import Button from '../../components/Buttons/Button';
 import { useSetCritics } from './criticsSlice';
+import UserCard from '@/components/Cards/UserCard';
+import Button from '@/components/Buttons/Button';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import Loading from '@/components/Loading/Loading';
 
-function Critics() {
+export default function Critics() {
   const [page, setPage] = useState(1);
   const { data, isFetching, isError } = useGetLatestUsersQuery({ page });
+
+  // TODO: refactor to useQuery
 
   useSetCritics(data?.values);
 
@@ -33,4 +35,3 @@ function Critics() {
     </section>
   );
 }
-export default Critics;
