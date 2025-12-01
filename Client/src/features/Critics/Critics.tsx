@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { useGetLatestUsersQuery } from '../Users/api/userApiRTK';
 import { useSetCritics } from './criticsSlice';
 import UserCard from '@/components/Cards/UserCard';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
+import { useQuery } from '@tanstack/react-query';
+import { usersApi } from '../Users/api/usersApi';
 
 export default function Critics() {
   const [page, setPage] = useState(1);
-  const { data, isFetching, isError } = useGetLatestUsersQuery({ page });
-
-  // TODO: refactor to useQuery
+  const {data , isFetching, isError} = useQuery({
+    queryKey: ["latestUsers", page],
+    queryFn: () => usersApi.getLatestUsers(page)
+  })
 
   useSetCritics(data?.values);
 

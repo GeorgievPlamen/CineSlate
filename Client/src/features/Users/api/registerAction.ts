@@ -4,7 +4,7 @@ import { UserResponse } from '../Models/UserResponse';
 import { isProblemDetails, getErrorDetails } from '../../../api/errors';
 import { LOCAL_JWT, LOCAL_REFRESH } from '../../../config';
 import { validate } from '../../../utils/validate';
-import { userApi } from './userApi';
+import { usersApi } from './usersApi';
 
 export async function registerAction({
   request,
@@ -15,9 +15,9 @@ export async function registerAction({
 
     if (errors.length > 0) return { errors };
 
-    await userApi.register(input);
+    await usersApi.register(input);
 
-    const user = await userApi.login(input);
+    const user = await usersApi.login(input);
     localStorage.setItem(LOCAL_JWT, user?.token ?? '');
     localStorage.setItem(LOCAL_REFRESH, user?.refreshToken ?? '');
 

@@ -1,20 +1,20 @@
 import axios from 'axios';
 import { CINESLATE_API_URL, LOCAL_JWT } from '../config';
 
-const api = axios.create({
+const apiClient = axios.create({
   baseURL: import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-api.interceptors.request.use((config) => {
+apiClient.interceptors.request.use((config) => {
   const token = `Bearer ${localStorage.getItem(LOCAL_JWT)}`;
   config.headers['Authorization'] = token;
   return config;
 });
 
-api.interceptors.response.use(
+apiClient.interceptors.response.use(
   (response) => response?.data,
   (error) =>
     Promise.reject({
@@ -26,4 +26,4 @@ api.interceptors.response.use(
     })
 );
 
-export default api;
+export default apiClient;

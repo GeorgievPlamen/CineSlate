@@ -4,7 +4,7 @@ import { UserResponse } from '../Models/UserResponse';
 import { getErrorDetails, isProblemDetails } from '../../../api/errors';
 import { LOCAL_JWT, LOCAL_REFRESH } from '../../../config';
 import { validate } from '../../../utils/validate';
-import { userApi } from './userApi';
+import { usersApi } from './usersApi';
 
 export async function loginAction({
   request,
@@ -15,7 +15,7 @@ export async function loginAction({
 
     if (errors.length > 0) return { errors };
 
-    const user = await userApi.login(input);
+    const user = await usersApi.login(input);
 
     localStorage.setItem(LOCAL_JWT, user?.token ?? '');
 
