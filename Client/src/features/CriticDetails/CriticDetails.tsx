@@ -1,17 +1,15 @@
 import { useParams } from 'react-router-dom';
 import Button from '../../components/Buttons/Button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useGetReviewsByAuthorIdQuery } from './api/criticDetailsApi';
 import { BACKUP_PROFILE } from '../../config';
 import MovieReviewCard from '../../components/Cards/MovieReviewCard';
-import { Critic, setCritics, useCriticById } from '../Critics/criticsSlice';
-import { useLazyGetUsersByIdQuery } from '../Users/api/userApiRTK';
-import { useAppDispatch } from '../../store/reduxHooks';
+import { useQuery } from '@tanstack/react-query';
+import { usersApi } from '../Users/api/usersApi';
+import appContants from '@/common/appConstants';
 
 function CriticDetails() {
   const { id } = useParams();
-  const [getUsersByIds] = useLazyGetUsersByIdQuery();
-  const critic = useCriticById(id);
   const [reviewsPage, setReviewsPage] = useState(1);
   const { data: reviewData, isFetching: isReviewsFetching } =
     useGetReviewsByAuthorIdQuery({
@@ -19,19 +17,15 @@ function CriticDetails() {
       page: reviewsPage,
     });
 
-  const dispatch = useAppDispatch();
+  const { data } = useQuery({
+      queryKey: ['getUsersByIds', id],
+      queryFn: () => usersApi.postGetUsersByIdQuery([id ?? '']),
+      enabled: !!id,
+      staleTime: appContants.STALE_TIME
+    })
 
-  useEffect(() => {
-    async function GetUsers() {
-      const users = await getUsersByIds({ ids: [id ?? ''] });
-
-      if (users.data) dispatch(setCritics(users.data as Critic[]));
-    }
-
-    if (id) {
-      GetUsers();
-    }
-  }, [dispatch, getUsersByIds, id]);
+  const critic = data?.[0];
+  // TODO: render not found critic 
 
   return (
     <article className="m-auto flex w-2/3 flex-col">

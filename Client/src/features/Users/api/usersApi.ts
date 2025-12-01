@@ -1,6 +1,7 @@
+import apiClient from '@/api/api';
 import { Paged } from '@/models/paged';
-import apiClient from '../../../api/api';
 import { User } from '../Models/userType';
+
 
 export const usersApi = {
   login: async (formData: FormData): Promise<User> =>
@@ -12,5 +13,8 @@ export const usersApi = {
     return apiClient.post('users/refresh-token', { refreshToken: refreshToken });
   },
   getLatestUsers: async (page: number): Promise<Paged<User>> =>
-    apiClient.get(`/users/${page}`)
+    apiClient.get(`/users/${page}`),
+
+  postGetUsersByIdQuery: async (ids: string[]): Promise<User[]> =>
+    apiClient.post("/users", { UserIds: ids })
 };
