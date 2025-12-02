@@ -3,7 +3,7 @@ import { Paged } from '@/models/paged';
 import { User } from '../Models/userType';
 
 
-export const usersApi = {
+export const usersClient = {
   login: async (formData: FormData): Promise<User> =>
     apiClient.post('users/login', formData),
   register: async (formData: FormData): Promise<User> =>

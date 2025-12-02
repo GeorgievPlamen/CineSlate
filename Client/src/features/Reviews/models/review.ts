@@ -39,6 +39,14 @@ const ReviewDetailsProps = z.object({
   comments: z.record(z.string(), Comment),
 });
 
+export interface ReviewWithMovieDetailsResponse {
+  title: string;
+  movieId: number;
+  releaseDate: string;
+  posterPath: string;
+  reviewResponse: Review;
+}
+
 const ReviewDetails = Review.merge(ReviewDetailsProps);
 
 export type Review = z.infer<typeof Review>;

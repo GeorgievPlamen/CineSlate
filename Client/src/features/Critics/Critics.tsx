@@ -4,14 +4,14 @@ import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { useQuery } from '@tanstack/react-query';
-import { usersApi } from '../Users/api/usersApi';
+import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';
 
 export default function Critics() {
   const [page, setPage] = useState(1);
   const {data , isFetching, isError} = useQuery({
     queryKey: ["latestUsers", page],
-    queryFn: () => usersApi.getLatestUsers(page),
+    queryFn: () => usersClient.getLatestUsers(page),
     staleTime: appContants.STALE_TIME
   })
 

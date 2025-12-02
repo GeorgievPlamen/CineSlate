@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '../../components/Buttons/Button';
 import MovieReviewCard from '../../components/Cards/MovieReviewCard';
 import { BACKUP_PROFILE } from '../../config';
-import { useGetReviewsByAuthorIdQuery } from '../CriticDetails/api/criticDetailsApi';
 import { useDispatchUser, useUser } from '../Users/userSlice';
 import { useUpdateUserMutation } from './api/myDetailsApi';
 import EditIcon from '../../Icons/EditIcon';
@@ -12,22 +11,24 @@ import { useForm } from 'react-hook-form';
 import { UserModel } from './models/UserModel';
 import { zodResolver } from '@hookform/resolvers/zod';
 import UploadIcon from '../../Icons/UploadIcon';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { reviewsClient } from '../Reviews/api/reviewsClient';
 
 function MyDetails() {
   const user = useUser();
   const [updateUser] = useUpdateUserMutation();
-  const [reviewsPage, setReviewsPage] = useState(1);
   const [editing, setEditing] = useState(false);
   const { setMyBio, setMyAvatarBase64 } = useDispatchUser();
 
-  const { data: reviewData, isFetching: isReviewsFetching } =
-    useGetReviewsByAuthorIdQuery(
-      {
-        id: user?.id ?? '',
-        page: reviewsPage,
-      },
-      { skip: !user.id }
-    );
+  const {data: reviewsData, fetchNextPage, isFetching: isReviewsFetching } = useInfiniteQuery({
+    queryKey: ['reviewByAuthorId', user?.id],
+    queryFn: ({ pageParam }) => reviewsClient.getReviewsByAuthorId(user?.id ?? '', pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    enabled: !!user?.id
+  })
+
+  const reviews = reviewsData?.pages.flatMap(page => page.values);
 
   const { register, getValues } = useForm<UserModel>({
     resolver: zodResolver(UserModel),
@@ -126,7 +127,7 @@ function MyDetails() {
           </div>
           <div className="p-2">
             <p className="font-arvo text-center text-lg">
-              {reviewData?.totalCount}
+              {reviewsData?.pages[0]?.totalCount}
             </p>
             <p className="text-grey text-xs font-light">Reviews</p>
           </div>
@@ -135,12 +136,12 @@ function MyDetails() {
       <section className="m-auto w-2/3">
         <h3 className="font-arvo my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
-          {reviewData?.values.map((r) => (
+          {reviews?.map((r) => (
             <MovieReviewCard key={r.movieId} review={r} />
           ))}
-          {reviewData?.hasNextPage && (
+          {reviewsData?.pages[reviewsData.pages.length - 1]?.hasNextPage && (
             <Button
-              onClick={() => setReviewsPage((prev) => prev + 1)}
+              onClick={fetchNextPage}
               className="w-fit px-10"
               isLoading={isReviewsFetching}
             >

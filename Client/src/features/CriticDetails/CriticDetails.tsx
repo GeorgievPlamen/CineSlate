@@ -1,31 +1,32 @@
 import { useParams } from 'react-router-dom';
 import Button from '../../components/Buttons/Button';
-import { useState } from 'react';
-import { useGetReviewsByAuthorIdQuery } from './api/criticDetailsApi';
 import { BACKUP_PROFILE } from '../../config';
 import MovieReviewCard from '../../components/Cards/MovieReviewCard';
-import { useQuery } from '@tanstack/react-query';
-import { usersApi } from '../Users/api/usersApi';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';
+import { reviewsClient } from '../Reviews/api/reviewsClient';
 
 function CriticDetails() {
   const { id } = useParams();
-  const [reviewsPage, setReviewsPage] = useState(1);
-  const { data: reviewData, isFetching: isReviewsFetching } =
-    useGetReviewsByAuthorIdQuery({
-      id: id ?? '',
-      page: reviewsPage,
-    });
 
   const { data } = useQuery({
-      queryKey: ['getUsersByIds', id],
-      queryFn: () => usersApi.postGetUsersByIdQuery([id ?? '']),
-      enabled: !!id,
-      staleTime: appContants.STALE_TIME
-    })
+    queryKey: ['getUsersByIds', id],
+    queryFn: () => usersClient.postGetUsersByIdQuery([id ?? '']),
+    enabled: !!id,
+    staleTime: appContants.STALE_TIME
+  })
 
+  const {data: reviewsData, fetchNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['reviewByAuthorId', id],
+    queryFn: ({ pageParam }) => reviewsClient.getReviewsByAuthorId(id ?? '', pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    enabled: !!id
+  })
+
+  const reviews = reviewsData?.pages.flatMap(page => page.values);
   const critic = data?.[0];
-  // TODO: render not found critic 
 
   return (
     <article className="m-auto flex w-2/3 flex-col">
@@ -51,7 +52,7 @@ function CriticDetails() {
           </div>
           <div className="p-2">
             <p className="font-arvo text-center text-lg">
-              {reviewData?.totalCount}
+              {reviewsData?.pages[0]?.totalCount}
             </p>
             <p className="text-grey text-xs font-light">Reviews</p>
           </div>
@@ -60,14 +61,14 @@ function CriticDetails() {
       <section className="m-auto w-2/3">
         <h3 className="font-arvo my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
-          {reviewData?.values.map((r) => (
+          {reviews?.map((r) => (
             <MovieReviewCard key={r.movieId} review={r} />
           ))}
-          {reviewData?.hasNextPage && (
+          {reviewsData?.pages[reviewsData.pages.length - 1].hasNextPage && (
             <Button
-              onClick={() => setReviewsPage((prev) => prev + 1)}
+              onClick={fetchNextPage}
               className="w-fit px-10"
-              isLoading={isReviewsFetching}
+              isLoading={isFetching}
             >
               Load More
             </Button>
