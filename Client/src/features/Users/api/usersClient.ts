@@ -19,7 +19,7 @@ export const usersClient = {
   getLatestUsers: async (page: number): Promise<Paged<User>> =>
     apiClient.get(`/users/${page}`),
 
-  postGetUsersByIdQuery: async (ids: string[]): Promise<User[]> =>
+  getUsersByIds: async (ids: string[]): Promise<User[]> =>
     apiClient.post('/users', { UserIds: ids }),
 
   updateUser: async (id: string, bio: string, pictureBase64: string) =>

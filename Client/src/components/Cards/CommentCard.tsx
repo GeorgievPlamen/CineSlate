@@ -1,15 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { Comment } from '../../features/Reviews/models/review';
 import { BACKUP_PROFILE } from '../../config';
-import { useGetUsersByIdQuery } from '../../features/Users/api/userApiRTK';
+import { usersClient } from '@/features/Users/api/usersClient';
+import { useQuery } from '@tanstack/react-query';
 
 interface Props {
   comment: Comment;
 }
 
 export default function CommentCard({ comment }: Props) {
-  const { data: usersData } = useGetUsersByIdQuery({
-    ids: [comment.fromUserId.value ?? ''],
+  const { data: usersData } = useQuery({
+    queryKey: ['getUsersByIds', comment.fromUserId.value],
+    queryFn: () => usersClient.getUsersByIds([comment.fromUserId.value ?? '']),
   });
 
   return (

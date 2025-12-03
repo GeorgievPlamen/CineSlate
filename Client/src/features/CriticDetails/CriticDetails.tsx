@@ -12,7 +12,7 @@ function CriticDetails() {
 
   const { data } = useQuery({
     queryKey: ['getUsersByIds', id],
-    queryFn: () => usersClient.postGetUsersByIdQuery([id ?? '']),
+    queryFn: () => usersClient.getUsersByIds([id ?? '']),
     enabled: !!id,
     staleTime: appContants.STALE_TIME
   })

@@ -1,9 +1,8 @@
 import { HeartIconOutlined, HeartIcon } from '../../Icons/HeartIcon';
 import Tooltip from '../Tooltip/Tooltip';
-import {
-  useLikeReviewMutation,
-  useReviewDetailsByIdQuery,
-} from '../../features/Reviews/api/reviewsApi';
+import { useLikeReviewMutation } from '../../features/Reviews/api/reviewsApi';
+import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
+import { useQuery } from '@tanstack/react-query';
 
 interface Props {
   reviewId: string;
@@ -11,8 +10,9 @@ interface Props {
 
 export default function LikesButton({ reviewId }: Props) {
   const [likeReview] = useLikeReviewMutation();
-  const { data, refetch } = useReviewDetailsByIdQuery({
-    reviewId: reviewId,
+  const { data, refetch } = useQuery({
+    queryKey: ['reviewDetailsById', reviewId],
+    queryFn: () => reviewsClient.reviewDetailsById(reviewId ?? ''),
   });
 
   async function handleLike() {

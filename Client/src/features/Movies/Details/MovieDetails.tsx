@@ -1,5 +1,4 @@
 import { NavLink, useParams } from 'react-router-dom';
-import { useMovieDetailsQuery } from '../api/moviesApi';
 import { IMG_PATH } from '../../../config';
 import Backdrop from '../../../components/Backdrop/Backdrop';
 import { useEffect, useState } from 'react';
@@ -12,14 +11,23 @@ import useAuth from '../../../hooks/useAuth';
 import { useReviewsByMovieIdQuery } from '../../Reviews/api/reviewsApi';
 import Button from '../../../components/Buttons/Button';
 import { Review } from '../../Reviews/models/review';
-import { useLazyGetUsersByIdQuery } from '../../Users/api/userApiRTK';
+import { useQuery } from '@tanstack/react-query';
+import { moviesClient } from '../api/moviesClient';
+import { usersClient } from '@/features/Users/api/usersClient';
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [getUsersByIds, { data: usersData }] = useLazyGetUsersByIdQuery();
+  const [authorIds, setAuthorIds] = useState<string[]>([]);
+
+  const { data: usersData } = useQuery({
+    queryKey: ['getUsersByIds', authorIds],
+    queryFn: () => usersClient.getUsersByIds([...authorIds]),
+    enabled: authorIds.length > 0,
+  });
+
   const { isAuthenticated } = useAuth();
 
   const {
@@ -27,7 +35,10 @@ export default function MovieDetails() {
     isError,
     isLoading,
     refetch: refetchMovieDetails,
-  } = useMovieDetailsQuery({ id });
+  } = useQuery({
+    queryKey: ['movieDetails', id],
+    queryFn: () => moviesClient.getMovieDetails(`${id}`),
+  });
 
   const {
     data: reviewData,
@@ -51,14 +62,14 @@ export default function MovieDetails() {
         .map((x) => x.authorId),
     ];
 
-    getUsersByIds({ ids: authorIds as string[] });
+    setAuthorIds(authorIds as string[]);
 
     setReviews((prev) =>
       prev.length < reviewData.currentPage * 20
         ? [...reviewData.values]
         : [...prev, ...reviewData.values]
     );
-  }, [getUsersByIds, reviewData]);
+  }, [reviewData]);
 
   if (isError) return <ErrorMessage />;
 
