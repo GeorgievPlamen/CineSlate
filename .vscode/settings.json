@@ -1,6 +1,6 @@
 {
   "prettier.configPath": ".\\Client\\.prettierrc",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
 }

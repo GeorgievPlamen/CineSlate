@@ -3,7 +3,6 @@ import Button from '../../components/Buttons/Button';
 import MovieReviewCard from '../../components/Cards/MovieReviewCard';
 import { BACKUP_PROFILE } from '../../config';
 import { useDispatchUser, useUser } from '../Users/userSlice';
-import { useUpdateUserMutation } from './api/myDetailsApi';
 import EditIcon from '../../Icons/EditIcon';
 import { CheckIcon } from '@heroicons/react/16/solid';
 import TextField from '../../components/Fields/TextField';
@@ -11,69 +10,88 @@ import { useForm } from 'react-hook-form';
 import { UserModel } from './models/UserModel';
 import { zodResolver } from '@hookform/resolvers/zod';
 import UploadIcon from '../../Icons/UploadIcon';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
+import { usersClient } from '../Users/api/usersClient';
 
 function MyDetails() {
   const user = useUser();
-  const [updateUser] = useUpdateUserMutation();
   const [editing, setEditing] = useState(false);
   const { setMyBio, setMyAvatarBase64 } = useDispatchUser();
+  const updateUserMutation = useMutation({
+    mutationFn: ({
+      id,
+      bio,
+      pictureBase64,
+    }: {
+      id: string;
+      bio: string;
+      pictureBase64: string;
+    }) => usersClient.updateUser(id, bio, pictureBase64),
+  });
 
-  const {data: reviewsData, fetchNextPage, isFetching: isReviewsFetching } = useInfiniteQuery({
+  const {
+    data: reviewsData,
+    fetchNextPage,
+    isFetching: isReviewsFetching,
+  } = useInfiniteQuery({
     queryKey: ['reviewByAuthorId', user?.id],
-    queryFn: ({ pageParam }) => reviewsClient.getReviewsByAuthorId(user?.id ?? '', pageParam),
+    queryFn: ({ pageParam }) =>
+      reviewsClient.getReviewsByAuthorId(user?.id ?? '', pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.currentPage + 1,
-    enabled: !!user?.id
-  })
+    enabled: !!user?.id,
+  });
 
-  const reviews = reviewsData?.pages.flatMap(page => page.values);
+  const reviews = reviewsData?.pages.flatMap((page) => page.values);
 
   const { register, getValues } = useForm<UserModel>({
     resolver: zodResolver(UserModel),
   });
 
   async function handleEdit() {
-    if (editing) {
-      const { bio, avatar } = getValues();
-      let avatarBase64: string | undefined;
-
-      if (avatar?.[0]) {
-        const reader = new FileReader();
-        reader.onload = async () => {
-          avatarBase64 = reader.result as string;
-
-          if (bio && user.id) {
-            await updateUser({
-              bio: bio,
-              id: user?.id,
-              pictureBase64: avatarBase64?.split(',')[1] ?? '',
-            });
-
-            setMyBio(bio);
-            if (avatarBase64) setMyAvatarBase64(avatarBase64);
-          }
-        };
-
-        reader.readAsDataURL(avatar?.[0]);
-
-        return setEditing(!editing);
-      }
-
-      if (bio && user.id) {
-        await updateUser({
-          bio: bio,
-          id: user?.id,
-          pictureBase64: avatarBase64?.split(',')[1] ?? '',
-        });
-
-        setMyBio(bio);
-        if (avatarBase64) setMyAvatarBase64(avatarBase64);
-      }
+    if (!editing) {
+      setEditing(true);
+      return;
     }
 
-    setEditing(!editing);
+    const { bio, avatar } = getValues();
+    let avatarBase64: string | undefined;
+
+    if (avatar?.[0]) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        avatarBase64 = reader.result as string;
+
+        if (bio && user.id) {
+          await updateUserMutation.mutateAsync({
+            bio: bio,
+            id: user?.id,
+            pictureBase64: avatarBase64?.split(',')[1] ?? '',
+          });
+
+          setMyBio(bio);
+          if (avatarBase64) setMyAvatarBase64(avatarBase64);
+        }
+      };
+
+      reader.readAsDataURL(avatar?.[0]);
+
+      return setEditing(!editing);
+    }
+
+    if (bio && user.id) {
+      await updateUserMutation.mutateAsync({
+        bio: bio,
+        id: user?.id,
+        pictureBase64: avatarBase64?.split(',')[1] ?? '',
+      });
+
+      setMyBio(bio);
+      if (avatarBase64) setMyAvatarBase64(avatarBase64);
+    }
+
+    setEditing(false);
   }
 
   return (
@@ -94,7 +112,7 @@ function MyDetails() {
             </div>
             {editing && (
               <label htmlFor="avatar">
-                <UploadIcon className="bg-primary text-whitesmoke hover:outline-whitesmoke active:bg-opacity-80 absolute top-1 left-24 flex h-8 w-8 items-center justify-center rounded-full p-1 hover:outline hover:outline-1" />
+                <UploadIcon className="bg-primary text-whitesmoke hover:outline-whitesmoke active:bg-opacity-80 absolute top-1 left-24 flex h-8 w-8 items-center justify-center rounded-full p-1 hover:outline" />
                 <input
                   type="file"
                   className="hidden"
