@@ -1,4 +1,3 @@
-import MovieCard from '../../components/Cards/MovieCard';
 import {
   MoviesBy,
   usePagedMoviesQuery,
@@ -6,13 +5,15 @@ import {
   usePagedMoviesSearchByTitleQuery,
 } from './api/moviesApi';
 import { useEffect, useState } from 'react';
-import Button from '../../components/Buttons/Button';
-import useScroll from '../../hooks/useScroll';
-import Spinner from '../../components/Spinner';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+
 import { useSearchParams } from 'react-router-dom';
 import Filters from './Filters';
-import ChevronUp from '../../assets/icons/ChevronUp';
+import useScroll from '@/hooks/useScroll';
+import ChevronUp from '@/assets/icons/ChevronUp';
+import Button from '@/components/Buttons/Button';
+import MovieCard from '@/components/Cards/MovieCard';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import Spinner from '@/components/Spinner';
 
 export default function Movies() {
   const [pages, setPages] = useState({ default: 1, search: 1, filter: 1 });
