@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
-import SubmitButton from '../../../components/Buttons/SubmitButton';
-import { useCommentReviewMutation } from '../api/reviewsApi';
+import SubmitButton from '@/components/Buttons/SubmitButton';
+import { useMutation } from '@tanstack/react-query';
+import { reviewsClient } from '../api/reviewsClient';
 
 interface Props {
   reviewId: string;
@@ -9,14 +10,22 @@ interface Props {
 
 export default function AddComment({ reviewId, refetchComments }: Props) {
   const { register, handleSubmit } = useForm<{ comment: string }>();
-  const [commentReview] = useCommentReviewMutation();
+  const commentReviewMutation = useMutation({
+    mutationFn: ({
+      reviewId,
+      comment,
+    }: {
+      reviewId: string;
+      comment: string;
+    }) => reviewsClient.commentReview(reviewId, comment),
+  });
 
   return (
     <form
       onSubmit={handleSubmit(({ comment }) => {
-        commentReview({ reviewId, comment: '"' + comment + '"' }).then(() =>
-          refetchComments()
-        );
+        commentReviewMutation
+          .mutateAsync({ reviewId, comment: '"' + comment + '"' })
+          .then(() => refetchComments());
       })}
     >
       <textarea

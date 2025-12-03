@@ -1,15 +1,15 @@
 import { NavLink, useParams } from 'react-router-dom';
-import Loading from '../../../components/Loading/Loading';
-import { BACKUP_PROFILE, IMG_PATH } from '../../../config';
 import { useState } from 'react';
-import CommentCard from '../../../components/Cards/CommentCard';
-import LikesButton from '../../../components/Buttons/LikesButton';
-import Backdrop from '../../../components/Backdrop/Backdrop';
 import AddComment from './AddComment';
 import { useQuery } from '@tanstack/react-query';
 import { reviewsClient } from '../api/reviewsClient';
 import { moviesClient } from '@/features/Movies/api/moviesClient';
 import { usersClient } from '@/features/Users/api/usersClient';
+import Backdrop from '@/components/Backdrop/Backdrop';
+import LikesButton from '@/components/Buttons/LikesButton';
+import CommentCard from '@/components/Cards/CommentCard';
+import Loading from '@/components/Loading/Loading';
+import { IMG_PATH, BACKUP_PROFILE } from '@/config';
 
 function ReviewDetails() {
   const { id } = useParams();

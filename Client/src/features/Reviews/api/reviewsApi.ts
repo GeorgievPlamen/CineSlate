@@ -20,16 +20,6 @@ const reviewsApi = cineslateApi.injectEndpoints({
         body: {},
       }),
     }),
-    commentReview: build.mutation<
-      Review,
-      { reviewId: string; comment: string }
-    >({
-      query: ({ reviewId, comment }) => ({
-        url: `reviews/comment/${reviewId}`,
-        method: 'POST',
-        body: comment,
-      }),
-    }),
     addReview: build.mutation<
       { location: string | null },
       {
@@ -86,5 +76,4 @@ export const {
   useOwnedReviewsByMovieIdQuery,
   useUpdateReviewMutation,
   useLikeReviewMutation,
-  useCommentReviewMutation,
 } = reviewsApi;
