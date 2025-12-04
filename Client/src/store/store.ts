@@ -1,16 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { userSlice } from '../features/Users/userSlice';
-import { cineslateApi } from '../api/cineslateApi';
-import { moviesSlice } from '../features/Movies/moviesSlice';
 
 export const store = configureStore({
   reducer: {
     users: userSlice.reducer,
-    [cineslateApi.reducerPath]: cineslateApi.reducer,
-    movies: moviesSlice.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(cineslateApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,10 +1,4 @@
-import {
-  MoviesBy,
-  usePagedMoviesQuery,
-  usePagedMoviesSearchByFiltersQuery,
-  usePagedMoviesSearchByTitleQuery,
-} from './api/moviesApi';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import Filters from './Filters';
@@ -14,11 +8,11 @@ import Button from '@/components/Buttons/Button';
 import MovieCard from '@/components/Cards/MovieCard';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Spinner from '@/components/Spinner';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { MoviesBy, moviesClient } from './api/moviesClient';
+import ToPagedData from '@/utils/toPagedData';
 
 export default function Movies() {
-  const [pages, setPages] = useState({ default: 1, search: 1, filter: 1 });
-  const { nearBottom, beyondScreen } = useScroll();
-
   const [searchParams] = useSearchParams();
   const search = searchParams.get('search');
   const genreIds = searchParams.getAll('genreIds');
@@ -27,53 +21,89 @@ export default function Movies() {
     (search ? search?.length === 0 : true) && genreIds.length === 0;
   const isSearchingMovies = search ? search?.length > 0 : false;
   const isFilteringMovies = genreIds.length > 0;
+  const { nearBottom, beyondScreen } = useScroll();
 
-  const { data, isFetching, isError } = usePagedMoviesQuery(
-    {
-      page: pages.default,
-      moviesBy: MoviesBy.GetNowPlaying,
-    },
-    { skip: !isDefaultMovies }
-  );
+  const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['getPagedMovies'],
+    queryFn: ({ pageParam }) =>
+      moviesClient.getPagedMovies(MoviesBy.GetNowPlaying, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    select: (data) => ToPagedData(data),
+    enabled: isDefaultMovies,
+  });
 
   const {
     data: searchedMovies,
     isFetching: isSearchedMoviesFetching,
     isError: isSearchedMoviesError,
-  } = usePagedMoviesSearchByTitleQuery(
-    {
-      page: pages.search,
-      searchTerm: search ?? '',
-    },
-    { skip: !isSearchingMovies }
-  );
+    fetchNextPage: fetchNextPageByTitle,
+  } = useInfiniteQuery({
+    queryKey: ['getPagedMoviesSearchByTitle', search],
+    queryFn: ({ pageParam }) =>
+      moviesClient.getPagedMoviesSearchByTitle(search ?? '', pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    select: (data) => ToPagedData(data),
+    enabled: isSearchingMovies,
+  });
 
   const {
     data: filteredMovies,
     isFetching: isFilteredMoviesFetching,
     isError: isFilteredMoviesError,
-  } = usePagedMoviesSearchByFiltersQuery(
-    {
-      page: pages.filter,
-      genreIds: genreIds,
-      year: '2024',
-    },
-    { skip: !isFilteringMovies }
-  );
+    fetchNextPage: fetchNextPageByFilters,
+  } = useInfiniteQuery({
+    queryKey: ['getPagedMoviesSearchByFilters', genreIds],
+    queryFn: ({ pageParam }) =>
+      moviesClient.getPagedMoviesSearchByFilters(
+        genreIds,
+        `${new Date().getFullYear()}`,
+        pageParam
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    select: (data) => ToPagedData(data),
+    enabled: isFilteringMovies,
+  });
 
   useEffect(() => {
-    if (nearBottom) {
-      setPages((prev) => {
-        if (isDefaultMovies) {
-          return { ...prev, default: prev.default + 1 };
-        } else if (isFilteringMovies) {
-          return { ...prev, filter: prev.filter + 1 };
-        } else {
-          return { ...prev, search: prev.search + 1 };
-        }
-      });
+    if (!nearBottom) return;
+
+    if (isDefaultMovies && data?.hasNextPage && data?.currentPage < 6) {
+      fetchNextPage();
     }
-  }, [isDefaultMovies, isFilteringMovies, isSearchingMovies, nearBottom]);
+
+    if (
+      isFilteringMovies &&
+      filteredMovies?.hasNextPage &&
+      filteredMovies?.currentPage < 6
+    ) {
+      fetchNextPageByFilters();
+    }
+
+    if (
+      isSearchingMovies &&
+      searchedMovies?.hasNextPage &&
+      searchedMovies?.currentPage < 6
+    ) {
+      fetchNextPageByTitle();
+    }
+  }, [
+    data?.currentPage,
+    data?.hasNextPage,
+    fetchNextPage,
+    fetchNextPageByFilters,
+    fetchNextPageByTitle,
+    filteredMovies?.currentPage,
+    filteredMovies?.hasNextPage,
+    isDefaultMovies,
+    isFilteringMovies,
+    isSearchingMovies,
+    nearBottom,
+    searchedMovies?.currentPage,
+    searchedMovies?.hasNextPage,
+  ]);
 
   return (
     <>
@@ -114,35 +144,48 @@ export default function Movies() {
           ))}
       </article>
       <div className="mt-10 mb-20 flex justify-center">
-        {(isFetching || isSearchedMoviesFetching || isFilteredMoviesFetching) &&
-          pages.default < 5 && <Spinner />}
+        {(isFetching ||
+          isSearchedMoviesFetching ||
+          isFilteredMoviesFetching) && <Spinner />}
         {(isError || isFilteredMoviesError || isSearchedMoviesError) && (
           <ErrorMessage />
         )}
-        {pages.default > 4 && (
-          <Button
-            onClick={() =>
-              setPages((prev) => {
-                if (isDefaultMovies) {
-                  return { ...prev, default: prev.default + 1 };
-                } else if (isFilteringMovies) {
-                  return { ...prev, filter: prev.filter + 1 };
-                } else {
-                  return { ...prev, search: prev.search + 1 };
+        {(isDefaultMovies && data?.currentPage && data?.currentPage > 5) ||
+          (isSearchingMovies &&
+            searchedMovies?.currentPage &&
+            searchedMovies?.currentPage > 5) ||
+          (isFilteringMovies &&
+            filteredMovies?.currentPage &&
+            filteredMovies?.currentPage > 5 && (
+              <Button
+                onClick={() => {
+                  if (isDefaultMovies && data?.hasNextPage) {
+                    fetchNextPage();
+                  }
+
+                  if (isFilteringMovies && filteredMovies?.hasNextPage) {
+                    fetchNextPageByFilters();
+                  }
+
+                  if (isSearchingMovies && searchedMovies?.hasNextPage) {
+                    fetchNextPageByTitle();
+                  }
+                }}
+                className="w-fit px-10"
+                isLoading={
+                  isFetching ||
+                  isFilteredMoviesFetching ||
+                  isSearchedMoviesFetching
                 }
-              })
-            }
-            className="w-fit px-10"
-            isLoading={isFetching}
-          >
-            Load More
-          </Button>
-        )}
+              >
+                Load More
+              </Button>
+            ))}
       </div>
       {beyondScreen && (
         <button
           onClick={() => scrollTo(0, 0)}
-          className="text-primary hover:outline-whitesmoke active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline hover:outline-1"
+          className="text-primary hover:outline-whitesmoke active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline"
         >
           <ChevronUp />
         </button>

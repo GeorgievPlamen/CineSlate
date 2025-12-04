@@ -9,8 +9,14 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = `Bearer ${localStorage.getItem(LOCAL_JWT)}`;
-  config.headers['Authorization'] = token;
+  const token = localStorage.getItem(LOCAL_JWT);
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+
   return config;
 });
 
@@ -25,5 +31,7 @@ apiClient.interceptors.response.use(
       detail: error?.response?.data?.detail,
     })
 );
+
+// TODO: get refresh token if it expires, when removing redux
 
 export default apiClient;

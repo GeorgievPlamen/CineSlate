@@ -6,6 +6,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
+import ToPagedData from '@/utils/toPagedData';
 
 function CriticDetails() {
   const { id } = useParams();
@@ -14,18 +15,23 @@ function CriticDetails() {
     queryKey: ['getUsersByIds', id],
     queryFn: () => usersClient.getUsersByIds([id ?? '']),
     enabled: !!id,
-    staleTime: appContants.STALE_TIME
-  })
+    staleTime: appContants.STALE_TIME,
+  });
 
-  const {data: reviewsData, fetchNextPage, isFetching } = useInfiniteQuery({
+  const {
+    data: reviewsData,
+    fetchNextPage,
+    isFetching,
+  } = useInfiniteQuery({
     queryKey: ['reviewByAuthorId', id],
-    queryFn: ({ pageParam }) => reviewsClient.getReviewsByAuthorId(id ?? '', pageParam),
+    queryFn: ({ pageParam }) =>
+      reviewsClient.getReviewsByAuthorId(id ?? '', pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.currentPage + 1,
-    enabled: !!id
-  })
+    select: (data) => ToPagedData(data),
+    enabled: !!id,
+  });
 
-  const reviews = reviewsData?.pages.flatMap(page => page.values);
   const critic = data?.[0];
 
   return (
@@ -52,7 +58,7 @@ function CriticDetails() {
           </div>
           <div className="p-2">
             <p className="font-arvo text-center text-lg">
-              {reviewsData?.pages[0]?.totalCount}
+              {reviewsData?.totalCount}
             </p>
             <p className="text-grey text-xs font-light">Reviews</p>
           </div>
@@ -61,10 +67,10 @@ function CriticDetails() {
       <section className="m-auto w-2/3">
         <h3 className="font-arvo my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
-          {reviews?.map((r) => (
+          {reviewsData?.values.map((r) => (
             <MovieReviewCard key={r.movieId} review={r} />
           ))}
-          {reviewsData?.pages[reviewsData.pages.length - 1].hasNextPage && (
+          {reviewsData?.hasNextPage && (
             <Button
               onClick={fetchNextPage}
               className="w-fit px-10"
