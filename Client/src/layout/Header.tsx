@@ -1,17 +1,17 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import CineSlateLogo from '../assets/images/cineslateLogo.png';
 import { useCallback, useEffect, useState } from 'react';
-import { useAppSelector } from '../store/reduxHooks';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
 import useDebounce from '../hooks/useDebounce';
 import DropdownMobile from '../components/Buttons/DropdownMobile';
 import BarsIcon from '../Icons/BarsIcon';
+import { useUserStore } from '@/common/store/store';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
-  const user = useAppSelector((state) => state.users.user);
+  const user = useUserStore((state) => state.user);
 
   const [searchTerm, setSearchTerm] = useState<string>();
   const debouncedSearchTerm = useDebounce(searchTerm);
@@ -55,7 +55,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            className="h-8 grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
             onKeyDown={(e) => {
               if (e.key !== 'Enter') return;
               navigateToMovies();
@@ -72,7 +72,7 @@ function Header() {
               to="/movies"
               className={({ isActive }) =>
                 'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
+                ` ${isActive ? 'outline  outline-whitesmoke' : null}`
               }
             >
               Movies
@@ -83,7 +83,7 @@ function Header() {
               to="/critics"
               className={({ isActive }) =>
                 'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
+                ` ${isActive ? 'outline  outline-whitesmoke' : null}`
               }
             >
               Critics
@@ -110,7 +110,7 @@ function Header() {
             to="login"
             className={({ isActive }) =>
               'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-              ` ${isActive ? 'outline outline-1 outline-whitesmoke' : null}`
+              ` ${isActive ? 'outline  outline-whitesmoke' : null}`
             }
           >
             Sign in
@@ -124,7 +124,7 @@ function Header() {
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="h-8 flex-grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            className="h-8 grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
             onKeyDown={(e) => {
               if (e.key !== 'Enter') return;
               navigateToMovies();

@@ -13,8 +13,6 @@ function Login() {
   const response = useActionData() as UserResponse;
   useHandleUserResponse(response);
 
-  console.log(response);
-
   return (
     <Form
       noValidate

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CINESLATE_API_URL, LOCAL_JWT } from '../config';
+import { CINESLATE_API_URL, LOCAL_JWT } from '../../config';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL,

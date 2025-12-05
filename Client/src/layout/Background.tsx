@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { LOCAL_REFRESH } from '../config';
-import { useAppDispatch } from '../store/reduxHooks';
-import { setUser } from '../features/Users/userSlice';
 import { usersClient } from '../features/Users/api/usersClient';
+import { useUserStore } from '@/common/store/store';
 
 function Background() {
-  const dispatch = useAppDispatch();
   const hasRefresh = useRef(false);
+  const setUser = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     async function getMe() {
@@ -20,11 +19,11 @@ function Background() {
       if (!user.refreshToken) return;
 
       localStorage.setItem(LOCAL_REFRESH, user.refreshToken);
-      dispatch(setUser(user));
+      setUser(user);
     }
 
     getMe();
-  }, [dispatch]);
+  }, [setUser]);
 
   return null;
 }

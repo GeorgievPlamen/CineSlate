@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../store/reduxHooks';
+import { useUserStore } from '@/common/store/store';
 
 interface Props {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface Props {
 
 export default function DropdownMobile({ children }: Props) {
   const [isListActive, setIsListActive] = useState(false);
-  const user = useAppSelector((state) => state.users.user);
+  const user = useUserStore((state) => state.user);
 
   return (
     <div className="relative mx-2">

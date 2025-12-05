@@ -1,4 +1,4 @@
-import apiClient from '@/api/api';
+import apiClient from '@/common/api/api';
 import { Movie, MovieDetails } from '../models/movieType';
 import { Paged } from '@/models/paged';
 

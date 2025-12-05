@@ -1,4 +1,4 @@
-import apiClient from '@/api/api';
+import apiClient from '@/common/api/api';
 import { Paged } from '@/models/paged';
 import { User } from '../Models/userType';
 

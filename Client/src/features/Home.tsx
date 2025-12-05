@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../store/reduxHooks';
+import { useUserStore } from '@/common/store/store';
 
 function Home() {
-  const user = useAppSelector((state) => state.users.user);
+  const user = useUserStore((state) => state.user);
 
   return (
     <div className="flex flex-col items-center justify-center rounded-xl p-8">
@@ -102,7 +102,7 @@ function Home() {
                 to={user?.username?.length > 0 ? '/my-details' : 'login'}
                 className={({ isActive }) =>
                   'text-primary hover:bg-primary hover:text-whitesmoke active:bg-opacity-80 rounded p-1 underline' +
-                  ` ${isActive ? 'outline-whitesmoke outline outline-1' : null}`
+                  ` ${isActive ? 'outline-whitesmoke outline' : null}`
                 }
               >
                 Sign up

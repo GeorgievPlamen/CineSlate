@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import Star from '../../../assets/icons/Star';
-import SubmitButton from '../../../components/Buttons/SubmitButton';
-import MobileCheckbox from '../../../components/Checkboxes/MobileCheckbox';
-import { useParams } from 'react-router-dom';
-import {
-  useAddReviewMutation,
-  useOwnedReviewsByMovieIdQuery,
-  useUpdateReviewMutation,
-} from '../../Reviews/api/reviewsApi';
-import { FieldValues, useForm } from 'react-hook-form';
-import { Review } from '../../Reviews/models/review';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
+import Star from '@/assets/icons/Star';
+import SubmitButton from '@/components/Buttons/SubmitButton';
+import MobileCheckbox from '@/components/Checkboxes/MobileCheckbox';
+import Loading from '@/components/Loading/Loading';
+import ValidationError from '@/components/ValidationError';
+import { Review } from '@/features/Reviews/models/review';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ValidationError from '../../../components/ValidationError';
-import Loading from '../../../components/Loading/Loading';
+import { useForm, FieldValues } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   onSuccess: () => void;
@@ -24,14 +22,49 @@ export default function AddReview({ onSuccess }: Props) {
   const [hoverSubtitle, setHoverSubtitle] = useState('');
   const [isTextAreaSelected, setIsTextAreaSelected] = useState(false);
   const { id: movieId } = useParams();
-  const [addReview] = useAddReviewMutation();
-  const [updateReview] = useUpdateReviewMutation();
+  const { mutateAsync: addReview } = useMutation({
+    mutationFn: ({
+      rating,
+      movieId,
+      text,
+      containsSpoilers,
+    }: {
+      rating: number;
+      movieId: number;
+      text: string;
+      containsSpoilers: boolean;
+    }) => reviewsClient.addReview(rating, movieId, text, containsSpoilers),
+  });
+  const { mutateAsync: updateReview } = useMutation({
+    mutationFn: ({
+      reviewId,
+      rating,
+      movieId,
+      text,
+      containsSpoilers,
+    }: {
+      reviewId: string;
+      rating: number;
+      movieId: number;
+      text: string;
+      containsSpoilers: boolean;
+    }) =>
+      reviewsClient.updateReview(
+        reviewId,
+        rating,
+        movieId,
+        text,
+        containsSpoilers
+      ),
+  });
+
   const {
     data: ownReviewData,
     isFetching: isOwnReviewFetching,
     refetch: refetchOwnedReview,
-  } = useOwnedReviewsByMovieIdQuery({
-    movieId: Number(movieId),
+  } = useQuery({
+    queryKey: ['', movieId],
+    queryFn: () => reviewsClient.ownedReviewsByMovieId(movieId ?? ''),
   });
 
   const {
@@ -61,7 +94,7 @@ export default function AddReview({ onSuccess }: Props) {
     let isSuccess;
 
     if (ownReviewData) {
-      const { data } = await updateReview({
+      const { location } = await updateReview({
         reviewId: ownReviewData.id ?? '',
         movieId: Number(movieId),
         containsSpoilers: formData.containsSpoilers,
@@ -69,16 +102,16 @@ export default function AddReview({ onSuccess }: Props) {
         text: formData.text,
       });
 
-      isSuccess = data !== undefined;
+      isSuccess = location !== undefined;
     } else {
-      const { data } = await addReview({
+      const { location } = await addReview({
         movieId: Number(movieId),
         containsSpoilers: formData.containsSpoilers,
         rating: formData.rating,
         text: formData.text,
       });
 
-      isSuccess = data?.location !== undefined;
+      isSuccess = location !== undefined;
 
       await refetchOwnedReview();
     }

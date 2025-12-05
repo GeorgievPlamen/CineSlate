@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '../../components/Buttons/Button';
 import MovieReviewCard from '../../components/Cards/MovieReviewCard';
 import { BACKUP_PROFILE } from '../../config';
-import { useDispatchUser, useUser } from '../Users/userSlice';
 import EditIcon from '../../Icons/EditIcon';
 import { CheckIcon } from '@heroicons/react/16/solid';
 import TextField from '../../components/Fields/TextField';
@@ -13,11 +12,12 @@ import UploadIcon from '../../Icons/UploadIcon';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
+import { useUserStore } from '@/common/store/store';
 
 function MyDetails() {
-  const user = useUser();
+  // const user = useUser();
+  const { user, setBio, setAvatarBase64 } = useUserStore((state) => state);
   const [editing, setEditing] = useState(false);
-  const { setMyBio, setMyAvatarBase64 } = useDispatchUser();
   const updateUserMutation = useMutation({
     mutationFn: ({
       id,
@@ -70,8 +70,8 @@ function MyDetails() {
             pictureBase64: avatarBase64?.split(',')[1] ?? '',
           });
 
-          setMyBio(bio);
-          if (avatarBase64) setMyAvatarBase64(avatarBase64);
+          setBio(bio);
+          if (avatarBase64) setAvatarBase64(avatarBase64);
         }
       };
 
@@ -87,8 +87,8 @@ function MyDetails() {
         pictureBase64: avatarBase64?.split(',')[1] ?? '',
       });
 
-      setMyBio(bio);
-      if (avatarBase64) setMyAvatarBase64(avatarBase64);
+      setBio(bio);
+      if (avatarBase64) setAvatarBase64(avatarBase64);
     }
 
     setEditing(false);

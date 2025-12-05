@@ -1,17 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../store/reduxHooks';
 import { useEffect } from 'react';
-import { setUser } from '../features/Users/userSlice';
 import { UserResponse } from '../features/Users/Models/UserResponse';
+import { useUserStore } from '@/common/store/store';
 
 export default function useHandleUserResponse(userResponse: UserResponse) {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const setUser = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     if (userResponse?.user) {
-      dispatch(setUser(userResponse.user));
+      setUser(userResponse.user);
       navigate('/');
     }
-  }, [dispatch, navigate, userResponse]);
+  }, [navigate, setUser, userResponse]);
 }

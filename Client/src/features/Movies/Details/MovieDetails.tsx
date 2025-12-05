@@ -1,19 +1,20 @@
 import { NavLink, useParams } from 'react-router-dom';
-import { IMG_PATH } from '../../../config';
-import Backdrop from '../../../components/Backdrop/Backdrop';
-import { useEffect, useState } from 'react';
-import Loading from '../../../components/Loading/Loading';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
-import ReviewCard from '../../../components/Cards/ReviewCard';
-import GenreButton from '../../../components/Buttons/GenreButton';
-import AddReview from './AddReview';
-import useAuth from '../../../hooks/useAuth';
-import { useReviewsByMovieIdQuery } from '../../Reviews/api/reviewsApi';
-import Button from '../../../components/Buttons/Button';
-import { Review } from '../../Reviews/models/review';
+
 import { useQuery } from '@tanstack/react-query';
 import { moviesClient } from '../api/moviesClient';
 import { usersClient } from '@/features/Users/api/usersClient';
+import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
+import Backdrop from '@/components/Backdrop/Backdrop';
+import Button from '@/components/Buttons/Button';
+import GenreButton from '@/components/Buttons/GenreButton';
+import ReviewCard from '@/components/Cards/ReviewCard';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import Loading from '@/components/Loading/Loading';
+import { IMG_PATH } from '@/config';
+import useAuth from '@/hooks/useAuth';
+import { useState, useEffect } from 'react';
+import AddReview from './AddReview';
+import { Review } from '@/features/Reviews/models/review';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -44,9 +45,9 @@ export default function MovieDetails() {
     data: reviewData,
     isFetching: isReviewsFetching,
     refetch: refetchReviews,
-  } = useReviewsByMovieIdQuery({
-    movieId: Number(id),
-    page: reviewsPage,
+  } = useQuery({
+    queryKey: ['', id, reviewsPage],
+    queryFn: () => reviewsClient.reviewsByMovieId(id ?? '', reviewsPage),
   });
 
   useEffect(() => {

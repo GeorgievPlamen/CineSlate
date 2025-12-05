@@ -1,7 +1,7 @@
 import { ActionFunctionArgs } from 'react-router-dom';
 import { userErrors } from '../Models/userErrors';
 import { UserResponse } from '../Models/UserResponse';
-import { getErrorDetails, isProblemDetails } from '../../../api/errors';
+import { getErrorDetails, isProblemDetails } from '../../../common/api/errors';
 import { LOCAL_JWT, LOCAL_REFRESH } from '../../../config';
 import { validate } from '../../../utils/validate';
 import { usersClient } from './usersClient';
