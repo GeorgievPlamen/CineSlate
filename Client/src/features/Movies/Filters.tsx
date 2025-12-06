@@ -1,5 +1,5 @@
-import GenreButton from '../../components/Buttons/GenreButton';
-import { genres } from '../../assets/tmdbGenres.json';
+import GenreButton from '@/components/Buttons/GenreButton';
+import { genres } from '@/assets/tmdbGenres.json';
 
 export default function Filters() {
   return (

@@ -1,4 +1,4 @@
-import { Paged } from '@/models/paged';
+import { Paged } from '@/common/models/paged';
 import { InfiniteData } from '@tanstack/react-query';
 
 export default function ToPagedData<T>(

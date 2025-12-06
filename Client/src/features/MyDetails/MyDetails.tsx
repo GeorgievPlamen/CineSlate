@@ -12,7 +12,7 @@ import UploadIcon from '../../Icons/UploadIcon';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
 
 function MyDetails() {
   // const user = useUser();

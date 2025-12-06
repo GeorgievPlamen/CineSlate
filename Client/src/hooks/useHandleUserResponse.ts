@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { UserResponse } from '../features/Users/Models/UserResponse';
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
+import { UserResponse } from '@/features/Users/Models/UserResponse';
 
 export default function useHandleUserResponse(userResponse: UserResponse) {
   const navigate = useNavigate();

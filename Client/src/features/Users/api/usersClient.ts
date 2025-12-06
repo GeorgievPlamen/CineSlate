@@ -1,6 +1,6 @@
-import apiClient from '@/common/api/api';
-import { Paged } from '@/models/paged';
+import { Paged } from '@/common/models/paged';
 import { User } from '../Models/userType';
+import apiClient from '@/api';
 
 export const usersClient = {
   login: async (formData: FormData): Promise<User> =>

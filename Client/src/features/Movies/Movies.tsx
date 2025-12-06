@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-
 import { useSearchParams } from 'react-router-dom';
 import Filters from './Filters';
-import useScroll from '@/hooks/useScroll';
 import ChevronUp from '@/assets/icons/ChevronUp';
 import Button from '@/components/Buttons/Button';
 import MovieCard from '@/components/Cards/MovieCard';
@@ -11,6 +9,7 @@ import Spinner from '@/components/Spinner';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { MoviesBy, moviesClient } from './api/moviesClient';
 import ToPagedData from '@/utils/toPagedData';
+import useScroll from '@/hooks/useScroll';
 
 export default function Movies() {
   const [searchParams] = useSearchParams();

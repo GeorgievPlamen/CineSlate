@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { Comment } from '../../features/Reviews/models/review';
-import { BACKUP_PROFILE } from '../../config';
+import { Comment } from '@/features/Reviews/models/review';
+import { BACKUP_PROFILE } from '@/config';
 import { usersClient } from '@/features/Users/api/usersClient';
 import { useQuery } from '@tanstack/react-query';
 

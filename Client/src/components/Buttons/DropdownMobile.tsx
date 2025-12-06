@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
 
 interface Props {
   children: ReactNode;

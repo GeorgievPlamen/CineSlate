@@ -1,6 +1,6 @@
-import apiClient from '@/common/api/api';
+import apiClient from '@/api';
 import { Movie, MovieDetails } from '../models/movieType';
-import { Paged } from '@/models/paged';
+import { Paged } from '@/common/models/paged';
 
 export enum MoviesBy {
   GetNowPlaying = '/now_playing',

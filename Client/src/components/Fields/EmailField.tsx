@@ -1,4 +1,4 @@
-import { userErrors } from '../../features/Users/Models/userErrors';
+import { userErrors } from '@/features/Users/Models/userErrors';
 import ValidationError from '../ValidationError';
 import { UserFieldErrorProps } from './UserFieldErrorProps';
 

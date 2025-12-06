@@ -11,10 +11,10 @@ import ReviewCard from '@/components/Cards/ReviewCard';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { IMG_PATH } from '@/config';
-import useAuth from '@/hooks/useAuth';
 import { useState, useEffect } from 'react';
 import AddReview from './AddReview';
 import { Review } from '@/features/Reviews/models/review';
+import useAuth from '@/hooks/useAuth';
 
 export default function MovieDetails() {
   const { id } = useParams();

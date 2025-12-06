@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Review } from '../../features/Reviews/models/review';
+import { Review } from '@/features/Reviews/models/review';
 import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
-import { BACKUP_PROFILE } from '../../config';
+import { BACKUP_PROFILE } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
 
 interface Props {

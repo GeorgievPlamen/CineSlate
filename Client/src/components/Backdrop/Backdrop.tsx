@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IMG_PATH } from '../../config';
+import { IMG_PATH } from '@/config';
 
 interface Props {
   path?: string;

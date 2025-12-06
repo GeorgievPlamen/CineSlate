@@ -1,4 +1,4 @@
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
 
 export default function useAuth() {
   const token = useUserStore((state) => state?.user?.token);

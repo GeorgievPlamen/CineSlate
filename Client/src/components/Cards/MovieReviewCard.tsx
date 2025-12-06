@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Button from '../Buttons/Button';
 import { NavLink } from 'react-router-dom';
-import { IMG_PATH_W500 } from '../../config';
-import { ReviewWithMovieDetailsResponse } from '../../features/CriticDetails/api/criticDetailsApi';
+import { IMG_PATH_W500 } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
+import { ReviewWithMovieDetailsResponse } from '@/features/Reviews/models/review';
 
 interface Props {
   review: ReviewWithMovieDetailsResponse;

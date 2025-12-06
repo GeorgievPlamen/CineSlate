@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import Button from '../../components/Buttons/Button';
-import { BACKUP_PROFILE } from '../../config';
-import MovieReviewCard from '../../components/Cards/MovieReviewCard';
+import Button from '@/components/Buttons/Button';
+import { BACKUP_PROFILE } from '@/config';
+import MovieReviewCard from '@/components/Cards/MovieReviewCard';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';

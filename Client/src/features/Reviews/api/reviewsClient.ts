@@ -1,10 +1,10 @@
-import apiClient from '@/common/api/api';
-import { Paged } from '@/models/paged';
+import { Paged } from '@/common/models/paged';
 import {
   Review,
   ReviewDetails,
   ReviewWithMovieDetailsResponse,
 } from '../models/review';
+import apiClient from '@/api';
 
 export const reviewsClient = {
   getReviewsByAuthorId: async (

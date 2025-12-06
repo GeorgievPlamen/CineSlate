@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { IMG_PATH_W500 } from '../../config';
-import SquarePlusIcon from '../../Icons/SquarePlusIcon';
+import { IMG_PATH_W500 } from '@/config';
+import SquarePlusIcon from '@/Icons/SquarePlusIcon';
 
 interface Props {
   title: string;

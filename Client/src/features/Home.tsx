@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
 
 function Home() {
   const user = useUserStore((state) => state.user);

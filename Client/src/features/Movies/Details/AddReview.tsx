@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Star from '@/assets/icons/Star';

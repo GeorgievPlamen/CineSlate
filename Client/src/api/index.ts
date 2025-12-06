@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { CINESLATE_API_URL, LOCAL_JWT } from '../../config';
-import { useUserStore } from '../store/store';
+import { CINESLATE_API_URL, LOCAL_JWT } from '@/config';
+import { useUserStore } from '../store/userStore';
 import { User } from '@/features/Users/Models/userType';
 
 const apiClient = axios.create({

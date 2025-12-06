@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { User } from '../../features/Users/Models/userType';
-import { BACKUP_PROFILE } from '../../config';
+import { User } from '@/features/Users/Models/userType';
+import { BACKUP_PROFILE } from '@/config';
 
 interface Props {
   user: User;

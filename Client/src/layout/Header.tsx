@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import DropdownButton from '../components/Buttons/DropdownButton';
 import { BACKUP_PROFILE } from '../config';
-import useDebounce from '../hooks/useDebounce';
 import DropdownMobile from '../components/Buttons/DropdownMobile';
 import BarsIcon from '../Icons/BarsIcon';
-import { useUserStore } from '@/common/store/store';
+import { useUserStore } from '@/store/userStore';
+import useDebounce from '@/hooks/useDebounce';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
