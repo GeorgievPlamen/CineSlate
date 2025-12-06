@@ -1,3 +1,4 @@
+import MyDetails from '@/features/MyDetails/MyDetails'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/my-details/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/my-details/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/my-details/"!</div>
+  return <MyDetails />
 }

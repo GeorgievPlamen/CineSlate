@@ -16,6 +16,9 @@ import { Route as MyDetailsIndexRouteImport } from './routes/my-details/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as CriticsIndexRouteImport } from './routes/critics/index'
+import { Route as ReviewsIdRouteImport } from './routes/reviews/$id'
+import { Route as MoviesIdRouteImport } from './routes/movies/$id'
+import { Route as CriticsIdRouteImport } from './routes/critics/$id'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -52,10 +55,28 @@ const CriticsIndexRoute = CriticsIndexRouteImport.update({
   path: '/critics/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewsIdRoute = ReviewsIdRouteImport.update({
+  id: '/reviews/$id',
+  path: '/reviews/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIdRoute = MoviesIdRouteImport.update({
+  id: '/movies/$id',
+  path: '/movies/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriticsIdRoute = CriticsIdRouteImport.update({
+  id: '/critics/$id',
+  path: '/critics/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/critics/$id': typeof CriticsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/reviews/$id': typeof ReviewsIdRoute
   '/critics': typeof CriticsIndexRoute
   '/login': typeof LoginIndexRoute
   '/movies': typeof MoviesIndexRoute
@@ -65,6 +86,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/critics/$id': typeof CriticsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/reviews/$id': typeof ReviewsIdRoute
   '/critics': typeof CriticsIndexRoute
   '/login': typeof LoginIndexRoute
   '/movies': typeof MoviesIndexRoute
@@ -75,6 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/critics/$id': typeof CriticsIdRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/reviews/$id': typeof ReviewsIdRoute
   '/critics/': typeof CriticsIndexRoute
   '/login/': typeof LoginIndexRoute
   '/movies/': typeof MoviesIndexRoute
@@ -86,6 +113,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/critics/$id'
+    | '/movies/$id'
+    | '/reviews/$id'
     | '/critics'
     | '/login'
     | '/movies'
@@ -95,6 +125,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/critics/$id'
+    | '/movies/$id'
+    | '/reviews/$id'
     | '/critics'
     | '/login'
     | '/movies'
@@ -104,6 +137,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/critics/$id'
+    | '/movies/$id'
+    | '/reviews/$id'
     | '/critics/'
     | '/login/'
     | '/movies/'
@@ -114,6 +150,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CriticsIdRoute: typeof CriticsIdRoute
+  MoviesIdRoute: typeof MoviesIdRoute
+  ReviewsIdRoute: typeof ReviewsIdRoute
   CriticsIndexRoute: typeof CriticsIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
@@ -172,12 +211,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CriticsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reviews/$id': {
+      id: '/reviews/$id'
+      path: '/reviews/$id'
+      fullPath: '/reviews/$id'
+      preLoaderRoute: typeof ReviewsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/$id': {
+      id: '/movies/$id'
+      path: '/movies/$id'
+      fullPath: '/movies/$id'
+      preLoaderRoute: typeof MoviesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/critics/$id': {
+      id: '/critics/$id'
+      path: '/critics/$id'
+      fullPath: '/critics/$id'
+      preLoaderRoute: typeof CriticsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CriticsIdRoute: CriticsIdRoute,
+  MoviesIdRoute: MoviesIdRoute,
+  ReviewsIdRoute: ReviewsIdRoute,
   CriticsIndexRoute: CriticsIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   MoviesIndexRoute: MoviesIndexRoute,

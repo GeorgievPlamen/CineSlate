@@ -1,3 +1,4 @@
+import Critics from '@/features/Critics/Critics'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/critics/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/critics/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/critics/"!</div>
+  return <Critics />
 }

@@ -35,11 +35,6 @@ export default function App() {
               element: <Navigate to={'/'} />,
             },
             {
-              path: '/',
-              index: true,
-              element: <Home />,
-            },
-            {
               path: '/movies',
               element: <Movies />,
             },

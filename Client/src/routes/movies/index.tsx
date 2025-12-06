@@ -1,3 +1,4 @@
+import Movies from '@/features/Movies/Movies'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/movies/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/movies/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/movies/"!</div>
+  return <Movies />
 }
