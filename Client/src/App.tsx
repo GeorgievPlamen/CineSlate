@@ -5,7 +5,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import Critics from './features/Critics/Critics';
-import Home from './features/Home';
 import Movies from './features/Movies/Movies';
 import { loginAction } from './features/Users/api/loginAction';
 import { registerAction } from './features/Users/api/registerAction';

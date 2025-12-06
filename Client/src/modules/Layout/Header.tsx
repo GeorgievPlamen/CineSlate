@@ -9,6 +9,7 @@ import DropdownButton from '@/components/Buttons/DropdownButton';
 import DropdownMobile from '@/components/Buttons/DropdownMobile';
 import { BACKUP_PROFILE } from '@/config';
 import BarsIcon from '@/Icons/BarsIcon';
+import Dropdown from '@/components/Dropdown';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -95,6 +96,7 @@ function Header() {
             </Link>
           </li>
         </ul>
+        <Dropdown />
         {user?.username?.length > 0 ? (
             <>dropdown</>
         //   <DropdownButton>
