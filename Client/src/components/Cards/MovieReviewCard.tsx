@@ -26,7 +26,7 @@ export default function MovieReviewCard({ review }: Props) {
           <p className="text-xl">
             <NavLink
               to={`/movies/${review.movieId}`}
-              className={'font-arvo hover:text-primary'}
+              className={'font-heading hover:text-primary'}
             >
               {review.title}
             </NavLink>
@@ -49,14 +49,14 @@ export default function MovieReviewCard({ review }: Props) {
         </div>
         {review.reviewResponse.containsSpoilers && !revealed && (
           <div className="flex items-center">
-            <p className="font-roboto">Contains spoilers:</p>
+            <p className="font-primary">Contains spoilers:</p>
             <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
               Reveal
             </Button>
           </div>
         )}
         {revealed && (
-          <p className="min-h-20 font-roboto">
+          <p className="min-h-20 font-primary">
             {review.reviewResponse.text && review.reviewResponse.text.length > 0
               ? review.reviewResponse.text
               : 'Did not share...'}

@@ -110,7 +110,7 @@ export default function MovieDetails() {
             </div>
             <section className="mx-auto my-5 w-1/2 max-w-[700px]">
               <div className="flex w-fit items-center gap-4">
-                <h2 className="font-arvo mb-2 text-3xl font-bold">
+                <h2 className="font-heading mb-2 text-3xl font-bold">
                   {data?.title}
                 </h2>
                 <p className="text-sm font-light">
@@ -123,7 +123,7 @@ export default function MovieDetails() {
                     : data?.rating}
                 </p>
               </div>
-              <p className="font-roboto">{data?.description}</p>
+              <p className="font-primary">{data?.description}</p>
               <p className="my-4 font-serif text-xl italic">{data?.tagline}</p>
               <section className="mt-4 h-full flex-row gap-2">
                 {data?.genres.map((g) => (

@@ -20,7 +20,7 @@ export default function Critics() {
 
   return (
     <section className="flex flex-col items-center justify-center">
-      <h2 className="font-arvo my-4 text-2xl">Our latest members</h2>
+      <h2 className="font-heading my-4 text-2xl">Our latest members</h2>
       <article className="flex w-1/2 max-w-fit flex-row flex-wrap justify-center gap-4">
         {data?.values.map((u) => <UserCard user={u} key={u.username} />)}
       </article>

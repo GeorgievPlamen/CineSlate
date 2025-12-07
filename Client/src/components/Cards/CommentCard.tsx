@@ -30,7 +30,7 @@ export default function CommentCard({ comment }: Props) {
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
             <NavLink
-              className={'font-arvo hover:text-primary'}
+              className={'font-heading hover:text-primary'}
               to={`/critics/`}
             >
               {usersData?.[0].username.split('#')[0]}
@@ -41,7 +41,7 @@ export default function CommentCard({ comment }: Props) {
             </span>
           </p>
         </div>
-        <p className="min-h-10 font-roboto">{comment.value}</p>
+        <p className="min-h-10 font-primary">{comment.value}</p>
       </div>
     </div>
   );

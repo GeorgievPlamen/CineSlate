@@ -29,12 +29,12 @@ export default function MovieCard({
         src={IMG_PATH_W500 + posterPath}
         alt="poster"
       />
-      <div className="mx-2 mb-1 flex justify-between font-roboto text-sm">
+      <div className="mx-2 mb-1 flex justify-between font-primary text-sm">
         <p>⭐{rating}</p>
         <p>{releaseDate.toString()}</p>
       </div>
       <div className="flex justify-between">
-        <p className="mx-2 flex h-full items-center font-arvo text-lg">
+        <p className="mx-2 flex h-full items-center font-heading text-lg">
           {title}
         </p>
         <button className="mr-1 text-primary hover:text-opacity-80 active:text-opacity-50">

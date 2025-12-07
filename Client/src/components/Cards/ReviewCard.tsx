@@ -30,7 +30,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
             <NavLink
-              className={'font-arvo hover:text-primary'}
+              className={'font-heading hover:text-primary'}
               to={`/critics/${review.authorId}`}
             >
               {username[0]}
@@ -49,14 +49,14 @@ export default function ReviewCard({ review, authorPicture }: Props) {
         </div>
         {review.containsSpoilers && !revealed && (
           <div className="flex items-center">
-            <p className="font-roboto">Contains spoilers:</p>
+            <p className="font-primary">Contains spoilers:</p>
             <Button className="ml-2 p-4" onClick={() => setRevealed(true)}>
               Reveal
             </Button>
           </div>
         )}
         {revealed && (
-          <p className="min-h-10 font-roboto">
+          <p className="min-h-10 font-primary">
             {review.text && review.text.length > 0
               ? review.text
               : 'Did not share...'}

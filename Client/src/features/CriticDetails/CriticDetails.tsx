@@ -50,14 +50,14 @@ function CriticDetails() {
               className="h-32 w-32 rounded-full object-cover"
             />
             <div className="flex flex-col">
-              <h2 className="font-arvo mt-5 text-xl">
+              <h2 className="font-heading mt-5 text-xl">
                 {critic?.username.split('#')[0]}
               </h2>
-              <p className="font-roboto text-muted-foreground text-sm">{critic?.bio}</p>
+              <p className="font-primary text-muted-foreground text-sm">{critic?.bio}</p>
             </div>
           </div>
           <div className="p-2">
-            <p className="font-arvo text-center text-lg">
+            <p className="font-heading text-center text-lg">
               {reviewsData?.totalCount}
             </p>
             <p className="text-muted-foreground text-xs font-light">Reviews</p>
@@ -65,7 +65,7 @@ function CriticDetails() {
         </div>
       </section>
       <section className="m-auto w-2/3">
-        <h3 className="font-arvo my-4 ml-2 text-lg">Recent Reviews</h3>
+        <h3 className="font-heading my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviewsData?.values.map((r) => (
             <MovieReviewCard key={r.movieId} review={r} />

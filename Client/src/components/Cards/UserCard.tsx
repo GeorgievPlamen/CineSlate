@@ -33,7 +33,7 @@ export default function UserCard({ user, className }: Props) {
             {username[0]}
             <span className="text-xs text-muted-foreground"> #{username[1]}</span>
           </p>
-          <p className="font-roboto text-sm text-muted-foreground">{user?.bio}</p>
+          <p className="font-primary text-sm text-muted-foreground">{user?.bio}</p>
         </div>
       </div>
     </NavLink>

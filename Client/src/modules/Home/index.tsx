@@ -7,13 +7,13 @@ function Home() {
   return (
     <div className="flex flex-col items-center justify-center rounded-xl p-8">
       <div className="max-w-4xl">
-        <h1 className="font-arvo text-primary mb-12 text-center text-3xl font-bold md:text-4xl">
+        <h1 className="font-heading text-primary mb-12 text-center text-3xl font-bold md:text-4xl">
           Find Your Next Favorite Movie Instantly! 🎬🍿
         </h1>
 
         <section className="mb-12">
           <p className="text-muted-foreground mb-4 text-lg">
-            <span className="font-arvo text-secondary text-xl font-bold italic">
+            <span className="font-heading text-secondary text-xl font-bold italic">
               Welcome to CineSlate
             </span>{' '}
             , the fastest and easiest way to discover great movies to watch!
@@ -49,7 +49,7 @@ function Home() {
 
         <section className="mb-12">
           <p className="text-muted-foreground mb-4 text-lg">
-            <span className="font-arvo text-secondary text-xl font-bold italic">
+            <span className="font-heading text-secondary text-xl font-bold italic">
               Everyone's a Critic
             </span>{' '}
             – Share Your Voice! CineSlate is powered by movie lovers like you!
@@ -76,7 +76,7 @@ function Home() {
 
         <section className="mb-12">
           <p className="text-muted-foreground mb-4 text-lg">
-            <span className="font-arvo text-secondary text-xl font-bold italic">
+            <span className="font-heading text-secondary text-xl font-bold italic">
               Community-Driven
             </span>{' '}
             – The best reviews rise to the top, shaped by the CineSlate
