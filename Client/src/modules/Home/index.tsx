@@ -12,7 +12,7 @@ function Home() {
         </h1>
 
         <section className="mb-12">
-          <p className="text-grey mb-4 text-lg">
+          <p className="text-muted-foreground mb-4 text-lg">
             <span className="font-arvo text-secondary text-xl font-bold italic">
               Welcome to CineSlate
             </span>{' '}
@@ -21,25 +21,25 @@ function Home() {
             heartwarming drama, or a mind-bending sci-fi epic, CineSlate helps
             you find the perfect film in seconds.
           </p>
-          <ul className="text-grey ml-6 list-disc space-y-2">
+          <ul className="text-muted-foreground ml-6 list-disc space-y-2">
             <li>
-              <span className="text-whitesmoke font-bold">
+              <span className="text-foreground font-bold">
                 Effortless Movie Discovery:
               </span>{' '}
               Instantly find any movie by title.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">Trending Now:</span>{' '}
+              <span className="text-foreground font-bold">Trending Now:</span>{' '}
               See the most popular movies everyone’s watching.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">
+              <span className="text-foreground font-bold">
                 Filter by Genre:
               </span>{' '}
               Find exactly what you're in the mood for.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">
+              <span className="text-foreground font-bold">
                 Fast & Responsive:
               </span>{' '}
               No waiting, no clutter—just movies!
@@ -48,7 +48,7 @@ function Home() {
         </section>
 
         <section className="mb-12">
-          <p className="text-grey mb-4 text-lg">
+          <p className="text-muted-foreground mb-4 text-lg">
             <span className="font-arvo text-secondary text-xl font-bold italic">
               Everyone's a Critic
             </span>{' '}
@@ -56,17 +56,17 @@ function Home() {
             No paid critics, no professional reviewers—just real opinions from
             real people.
           </p>
-          <ul className="text-grey ml-6 list-disc space-y-2">
+          <ul className="text-muted-foreground ml-6 list-disc space-y-2">
             <li>
-              <span className="text-whitesmoke font-bold">Write Reviews:</span>{' '}
+              <span className="text-foreground font-bold">Write Reviews:</span>{' '}
               Share your thoughts on any movie.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">Rate & Comment:</span>{' '}
+              <span className="text-foreground font-bold">Rate & Comment:</span>{' '}
               Engage in discussions and see what others think.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">
+              <span className="text-foreground font-bold">
                 Follow Users & Critics:
               </span>{' '}
               Keep up with your favorite reviewers and recommendations.
@@ -75,36 +75,36 @@ function Home() {
         </section>
 
         <section className="mb-12">
-          <p className="text-grey mb-4 text-lg">
+          <p className="text-muted-foreground mb-4 text-lg">
             <span className="font-arvo text-secondary text-xl font-bold italic">
               Community-Driven
             </span>{' '}
             – The best reviews rise to the top, shaped by the CineSlate
             community.
           </p>
-          <ul className="text-grey ml-6 list-disc space-y-2">
+          <ul className="text-muted-foreground ml-6 list-disc space-y-2">
             <li>
-              <span className="text-whitesmoke font-bold">
+              <span className="text-foreground font-bold">
                 Create &amp; Share
               </span>{' '}
               Watchlists of your favorite films.
             </li>
             <li>
-              <span className="text-whitesmoke font-bold">Stay Updated</span>{' '}
+              <span className="text-foreground font-bold">Stay Updated</span>{' '}
               with notifications on upcoming releases and discussions.
             </li>
           </ul>
-          <p className="text-grey mt-4 text-lg">
+          <p className="text-muted-foreground mt-4 text-lg">
             Start exploring, reviewing, and discussing your next favorite film
             today!{' '}
-            <span className="text-whitesmoke font-bold">
+            <span className="text-foreground font-bold">
               <Link
                 to={user?.username?.length > 0 ? '/my-details' : '/login'}
                 activeProps={{
-                  className: 'outline  outline-whitesmoke',
+                  className: 'outline  outline-foreground',
                 }}
                 className={
-                  'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80'
+                  'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
                 }
               >
                 Sign up

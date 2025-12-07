@@ -35,7 +35,7 @@ export default function CommentCard({ comment }: Props) {
             >
               {usersData?.[0].username.split('#')[0]}
             </NavLink>
-            <span className="text-xs text-grey">
+            <span className="text-xs text-muted-foreground">
               {' '}
               #{usersData?.[0].username.split('#')[1]}
             </span>

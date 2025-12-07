@@ -184,7 +184,7 @@ export default function Movies() {
       {beyondScreen && (
         <button
           onClick={() => scrollTo(0, 0)}
-          className="text-primary hover:outline-whitesmoke active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline"
+          className="text-primary hover:outline-foreground active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline"
         >
           <ChevronUp />
         </button>

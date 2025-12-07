@@ -112,7 +112,7 @@ function MyDetails() {
             </div>
             {editing && (
               <label htmlFor="avatar">
-                <UploadIcon className="bg-primary text-whitesmoke hover:outline-whitesmoke active:bg-opacity-80 absolute top-1 left-24 flex h-8 w-8 items-center justify-center rounded-full p-1 hover:outline" />
+                <UploadIcon className="bg-primary text-foreground hover:outline-foreground active:bg-opacity-80 absolute top-1 left-24 flex h-8 w-8 items-center justify-center rounded-full p-1 hover:outline" />
                 <input
                   type="file"
                   className="hidden"
@@ -136,10 +136,10 @@ function MyDetails() {
                 <TextField
                   defaultValue={user?.bio}
                   register={register('bio')}
-                  className="font-roboto text-grey text-sm"
+                  className="font-roboto text-muted-foreground text-sm"
                 />
               ) : (
-                <p className="font-roboto text-grey text-sm">{user?.bio}</p>
+                <p className="font-roboto text-muted-foreground text-sm">{user?.bio}</p>
               )}
             </div>
           </div>
@@ -147,7 +147,7 @@ function MyDetails() {
             <p className="font-arvo text-center text-lg">
               {reviewsData?.pages[0]?.totalCount}
             </p>
-            <p className="text-grey text-xs font-light">Reviews</p>
+            <p className="text-muted-foreground text-xs font-light">Reviews</p>
           </div>
         </div>
       </section>

@@ -53,14 +53,14 @@ function CriticDetails() {
               <h2 className="font-arvo mt-5 text-xl">
                 {critic?.username.split('#')[0]}
               </h2>
-              <p className="font-roboto text-grey text-sm">{critic?.bio}</p>
+              <p className="font-roboto text-muted-foreground text-sm">{critic?.bio}</p>
             </div>
           </div>
           <div className="p-2">
             <p className="font-arvo text-center text-lg">
               {reviewsData?.totalCount}
             </p>
-            <p className="text-grey text-xs font-light">Reviews</p>
+            <p className="text-muted-foreground text-xs font-light">Reviews</p>
           </div>
         </div>
       </section>

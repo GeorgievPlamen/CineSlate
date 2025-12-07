@@ -35,7 +35,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
             >
               {username[0]}
             </NavLink>
-            <span className="text-xs text-grey"> #{username[1]}</span>
+            <span className="text-xs text-muted-foreground"> #{username[1]}</span>
           </p>
           <div className="flex gap-2">
             <NavLink

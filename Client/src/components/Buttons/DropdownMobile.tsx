@@ -15,8 +15,8 @@ export default function DropdownMobile({ children }: Props) {
       <button
         onClick={() => setIsListActive(!isListActive)}
         className={
-          'active:bg-opcaity-80 flex rounded px-2 py-1 text-whitesmoke hover:bg-primary ' +
-          `${isListActive ? 'outline outline-1 outline-whitesmoke' : null}`
+          'active:bg-opcaity-80 flex rounded px-2 py-1 text-foreground hover:bg-primary ' +
+          `${isListActive ? 'outline outline-foreground' : null}`
         }
       >
         {children}
@@ -24,7 +24,7 @@ export default function DropdownMobile({ children }: Props) {
       <ul
         className={`${
           isListActive
-            ? 'w-content absolute right-0 mt-4 flex flex-col items-center gap-2 rounded-lg bg-background px-2 py-1 font-bold text-whitesmoke outline outline-1 transition-transform'
+            ? 'w-content absolute right-0 mt-4 flex flex-col items-center gap-2 rounded-lg bg-background px-2 py-1 font-bold text-foreground outline transition-transform'
             : 'hidden'
         }`}
       >

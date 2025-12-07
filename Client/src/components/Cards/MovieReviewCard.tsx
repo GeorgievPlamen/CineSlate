@@ -32,7 +32,7 @@ export default function MovieReviewCard({ review }: Props) {
             </NavLink>
             <NavLink
               to={''}
-              className="ml-2 text-lg text-grey hover:text-primary"
+              className="ml-2 text-lg text-muted-foreground hover:text-primary"
             >
               {review.releaseDate.split('-')[0]}
             </NavLink>

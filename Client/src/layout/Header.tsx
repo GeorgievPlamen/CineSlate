@@ -49,13 +49,13 @@ function Header() {
             onClick={handleBounce}
           />
         </NavLink>
-        <div className="0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-whitesmoke">
+        <div className="0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-foreground">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="h-8 grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            className="h-8 grow rounded-full bg-foreground pl-2 text-accent focus:outline-none"
             onKeyDown={(e) => {
               if (e.key !== 'Enter') return;
               navigateToMovies();
@@ -63,7 +63,7 @@ function Header() {
           />
           <MagnifyingGlassIcon
             onClick={navigateToMovies}
-            className="absolute right-2 size-6 cursor-pointer rounded-full bg-whitesmoke text-gray-400"
+            className="absolute right-2 size-6 cursor-pointer rounded-full bg-foreground text-gray-400"
           />
         </div>
         <ul className="flex gap-4">
@@ -71,8 +71,8 @@ function Header() {
             <NavLink
               to="/movies"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline  outline-whitesmoke' : null}`
+                'rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline  outline-foreground' : null}`
               }
             >
               Movies
@@ -82,8 +82,8 @@ function Header() {
             <NavLink
               to="/critics"
               className={({ isActive }) =>
-                'rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-                ` ${isActive ? 'outline  outline-whitesmoke' : null}`
+                'rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80' +
+                ` ${isActive ? 'outline  outline-foreground' : null}`
               }
             >
               Critics
@@ -109,8 +109,8 @@ function Header() {
           <NavLink
             to="login"
             className={({ isActive }) =>
-              'mx-2 rounded px-2 py-1 text-whitesmoke hover:bg-primary active:bg-opacity-80' +
-              ` ${isActive ? 'outline  outline-whitesmoke' : null}`
+              'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80' +
+              ` ${isActive ? 'outline  outline-foreground' : null}`
             }
           >
             Sign in
@@ -118,13 +118,13 @@ function Header() {
         )}
       </nav>
       <nav className="flex w-full items-center justify-between md:hidden">
-        <div className="0 relative mx-2 flex w-2/3 max-w-md items-center rounded-full bg-whitesmoke">
+        <div className="0 relative mx-2 flex w-2/3 max-w-md items-center rounded-full bg-foreground">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
             type="search"
             name="search"
-            className="h-8 grow rounded-full bg-whitesmoke pl-2 text-placeholder focus:outline-none"
+            className="h-8 grow rounded-full bg-foreground pl-2 text-accent focus:outline-none"
             onKeyDown={(e) => {
               if (e.key !== 'Enter') return;
               navigateToMovies();
