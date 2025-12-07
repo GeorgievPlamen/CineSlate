@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
 import { Route as MyDetailsIndexRouteImport } from './routes/my-details/index'
@@ -20,11 +19,6 @@ import { Route as ReviewsIdRouteImport } from './routes/reviews/$id'
 import { Route as MoviesIdRouteImport } from './routes/movies/$id'
 import { Route as CriticsIdRouteImport } from './routes/critics/$id'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,7 +67,6 @@ const CriticsIdRoute = CriticsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/critics/$id': typeof CriticsIdRoute
   '/movies/$id': typeof MoviesIdRoute
   '/reviews/$id': typeof ReviewsIdRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/critics/$id': typeof CriticsIdRoute
   '/movies/$id': typeof MoviesIdRoute
   '/reviews/$id': typeof ReviewsIdRoute
@@ -98,7 +90,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/critics/$id': typeof CriticsIdRoute
   '/movies/$id': typeof MoviesIdRoute
   '/reviews/$id': typeof ReviewsIdRoute
@@ -112,7 +103,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/critics/$id'
     | '/movies/$id'
     | '/reviews/$id'
@@ -124,7 +114,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/critics/$id'
     | '/movies/$id'
     | '/reviews/$id'
@@ -136,7 +125,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/critics/$id'
     | '/movies/$id'
     | '/reviews/$id'
@@ -149,7 +137,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   CriticsIdRoute: typeof CriticsIdRoute
   MoviesIdRoute: typeof MoviesIdRoute
   ReviewsIdRoute: typeof ReviewsIdRoute
@@ -162,13 +149,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -237,7 +217,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   CriticsIdRoute: CriticsIdRoute,
   MoviesIdRoute: MoviesIdRoute,
   ReviewsIdRoute: ReviewsIdRoute,

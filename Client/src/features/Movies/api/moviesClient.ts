@@ -23,7 +23,7 @@ export const moviesClient = {
     apiClient.get(`/movies/search?title=${searchTerm}&page=${page}`),
 
   getPagedMoviesSearchByFilters: async (
-    genreIds: string[],
+    genreIds: number[],
     year: string,
     page: number
   ): Promise<Paged<Movie>> => {

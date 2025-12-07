@@ -6,7 +6,7 @@ import { usersClient } from '@/features/Users/api/usersClient';
 import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import Button from '@/components/Buttons/Button';
-import GenreButton from '@/components/Buttons/GenreButton';
+import GenreButtonOld from '@/components/Buttons/GenreButtonOld';
 import ReviewCard from '@/components/Cards/ReviewCard';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
@@ -127,7 +127,7 @@ export default function MovieDetails() {
               <p className="my-4 font-serif text-xl italic">{data?.tagline}</p>
               <section className="mt-4 h-full flex-row gap-2">
                 {data?.genres.map((g) => (
-                  <GenreButton key={g.id} name={g.value} genreId={g.id} />
+                  <GenreButtonOld key={g.id} name={g.value} genreId={g.id} />
                 ))}
               </section>
             </section>

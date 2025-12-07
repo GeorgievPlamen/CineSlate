@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { IMG_PATH_W500 } from '@/config';
 import SquarePlusIcon from '@/Icons/SquarePlusIcon';
-import { useNavigate } from '@tanstack/react-router';
 
 interface Props {
   title: string;
@@ -10,22 +10,17 @@ interface Props {
   rating: number;
 }
 
-export default function MovieCard({
+export default function MovieCardOld({
   title,
   posterPath,
   releaseDate,
   id,
   rating,
 }: Props) {
-  const navigate = useNavigate();
+  const nav = useNavigate();
   return (
     <article
-      onClick={() =>
-        navigate({
-          to: '/movies/$id',
-          params: { id: `${id}` },
-        })
-      }
+      onClick={() => nav(`/movies/${id}`)}
       className="mx-auto flex w-60 flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
       id={`${id}`}
     >

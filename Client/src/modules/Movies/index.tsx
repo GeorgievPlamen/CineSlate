@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import Filters from './Filters';
 import ChevronUp from '@/assets/icons/ChevronUp';
 import Button from '@/components/Buttons/Button';
-import MovieCardOld from '@/components/Cards/MovieCardOld';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Spinner from '@/components/Spinner';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { MoviesBy, moviesClient } from './api/moviesClient';
 import ToPagedData from '@/utils/toPagedData';
 import useScroll from '@/hooks/useScroll';
+import { MoviesBy, moviesClient } from '@/features/Movies/api/moviesClient';
+import { genres } from '@/assets/tmdbGenres.json';
+import GenreButton from '@/components/Buttons/GenreButton';
+import { getRouteApi } from '@tanstack/react-router';
+import MovieCard from '@/components/Cards/MovieCard';
+
+const { useSearch } = getRouteApi('/movies/');
 
 export default function Movies() {
-  const [searchParams] = useSearchParams();
-  const search = searchParams.get('search');
-  const genreIds = searchParams.getAll('genreIds');
+  const { search, genreIds } = useSearch({ select: (params) => params });
 
-  const isDefaultMovies =
-    (search ? search?.length === 0 : true) && genreIds.length === 0;
+  const isDefaultMovies = !search && !genreIds;
   const isSearchingMovies = search ? search?.length > 0 : false;
-  const isFilteringMovies = genreIds.length > 0;
+  const isFilteringMovies = genreIds && genreIds.length > 0;
   const { nearBottom, beyondScreen } = useScroll();
 
   const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
@@ -56,7 +56,7 @@ export default function Movies() {
     queryKey: ['getPagedMoviesSearchByFilters', genreIds],
     queryFn: ({ pageParam }) =>
       moviesClient.getPagedMoviesSearchByFilters(
-        genreIds,
+        genreIds ?? [],
         `${new Date().getFullYear()}`,
         pageParam
       ),
@@ -104,13 +104,19 @@ export default function Movies() {
     searchedMovies?.hasNextPage,
   ]);
 
+  console.log(isDefaultMovies);
+
   return (
     <>
-      <Filters />
+      <section className="mx-auto flex w-2/3 flex-wrap items-center justify-center">
+        {genres?.map((g) => (
+          <GenreButton key={g.id} name={g.name} genreId={g.id} />
+        ))}
+      </section>
       <article className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
         {isDefaultMovies &&
           data?.values.map((m) => (
-            <MovieCardOld
+            <MovieCard
               key={m.id}
               title={m.title}
               id={m.id}
@@ -121,7 +127,7 @@ export default function Movies() {
           ))}
         {isSearchingMovies &&
           searchedMovies?.values.map((m) => (
-            <MovieCardOld
+            <MovieCard
               key={m.id}
               title={m.title}
               id={m.id}
@@ -132,7 +138,7 @@ export default function Movies() {
           ))}
         {isFilteringMovies &&
           filteredMovies?.values.map((m) => (
-            <MovieCardOld
+            <MovieCard
               key={m.id}
               title={m.title}
               id={m.id}

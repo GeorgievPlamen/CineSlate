@@ -5,7 +5,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import Critics from './features/Critics/Critics';
-import Movies from './features/Movies/Movies';
 import { loginAction } from './features/Users/api/loginAction';
 import { registerAction } from './features/Users/api/registerAction';
 import Login from './features/Users/Login';
@@ -32,10 +31,6 @@ export default function App() {
             {
               path: '*',
               element: <Navigate to={'/'} />,
-            },
-            {
-              path: '/movies',
-              element: <Movies />,
             },
             {
               path: '/movies/:id',
