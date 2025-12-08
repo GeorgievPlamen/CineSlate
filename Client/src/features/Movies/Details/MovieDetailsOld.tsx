@@ -7,16 +7,16 @@ import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import Button from '@/components/Buttons/Button';
 import GenreButtonOld from '@/components/Buttons/GenreButtonOld';
-import ReviewCard from '@/components/Cards/ReviewCard';
+import ReviewCardOld from '@/components/Cards/ReviewCardOld';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { IMG_PATH } from '@/config';
 import { useState, useEffect } from 'react';
-import AddReview from './AddReview';
+import AddReview from './AddReviewOld';
 import { Review } from '@/features/Reviews/models/review';
 import useAuth from '@/hooks/useAuth';
 
-export default function MovieDetails() {
+export default function MovieDetailsOld() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsPage, setReviewsPage] = useState(1);
@@ -134,7 +134,7 @@ export default function MovieDetails() {
           </div>
           <section className="my-10 flex flex-col gap-10">
             {reviews.map((r) => (
-              <ReviewCard
+              <ReviewCardOld
                 key={r.authorId}
                 review={r}
                 authorPicture={

@@ -49,7 +49,6 @@ apiClient.interceptors.response.use(
 
 async function GetRefreshToken(): Promise<string | null> {
   const { refreshToken } = useUserStore.getState().user;
-  console.log(refreshToken);
 
   if (!refreshToken) return null;
 

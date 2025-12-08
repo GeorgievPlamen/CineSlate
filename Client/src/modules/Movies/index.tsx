@@ -104,13 +104,16 @@ export default function Movies() {
     searchedMovies?.hasNextPage,
   ]);
 
-  console.log(isDefaultMovies);
-
   return (
     <>
       <section className="mx-auto flex w-2/3 flex-wrap items-center justify-center">
         {genres?.map((g) => (
-          <GenreButton key={g.id} name={g.name} genreId={g.id} />
+          <GenreButton
+            key={g.id}
+            name={g.name}
+            genreId={g.id}
+            currentGenreIds={genreIds}
+          />
         ))}
       </section>
       <article className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">

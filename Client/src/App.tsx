@@ -1,16 +1,10 @@
-import {
-  createBrowserRouter,
-  Link,
-  Navigate,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 import Critics from './features/Critics/Critics';
 import { loginAction } from './features/Users/api/loginAction';
 import { registerAction } from './features/Users/api/registerAction';
 import Login from './features/Users/Login';
 import Register from './features/Users/Register';
 import Layout from './layout/Layout';
-import MovieDetails from './features/Movies/Details/MovieDetails';
 import CriticDetails from './features/CriticDetails/CriticDetails';
 import MyDetails from './features/MyDetails/MyDetails';
 import ReviewDetails from './features/Reviews/Details/ReviewDetails';
@@ -28,14 +22,6 @@ export default function App() {
             </>
           ),
           children: [
-            {
-              path: '*',
-              element: <Navigate to={'/'} />,
-            },
-            {
-              path: '/movies/:id',
-              element: <MovieDetails />,
-            },
             {
               path: '/critics',
               element: <Critics />,

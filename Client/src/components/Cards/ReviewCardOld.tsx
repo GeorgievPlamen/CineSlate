@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Review } from '@/features/Reviews/models/review';
 import Button from '../Buttons/Button';
+import { NavLink } from 'react-router-dom';
 import { BACKUP_PROFILE } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
-import { Link } from '@tanstack/react-router';
 
 interface Props {
   review: Review;
   authorPicture?: string;
 }
 
-export default function ReviewCard({ review, authorPicture }: Props) {
+export default function ReviewCardOld({ review, authorPicture }: Props) {
   const [revealed, setRevealed] = useState(!review.containsSpoilers);
 
   const username = review.authorUsername?.split('#') ?? '';
@@ -29,26 +29,21 @@ export default function ReviewCard({ review, authorPicture }: Props) {
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
-            <Link
+            <NavLink
               className={'font-heading hover:text-primary'}
-              to={'/critics/$id'}
-              params={{ id: review?.authorId ?? '' }}
+              to={`/critics/${review.authorId}`}
             >
               {username[0]}
-            </Link>
-            <span className="text-xs text-muted-foreground">
-              {' '}
-              #{username[1]}
-            </span>
+            </NavLink>
+            <span className="text-xs text-muted-foreground"> #{username[1]}</span>
           </p>
           <div className="flex gap-2">
-            <Link
-              to="/reviews/$id"
-              params={{ id: review?.id ?? '' }}
+            <NavLink
+              to={`/reviews/${review.id}`}
               className={'hover:text-primary'}
             >
               To Review
-            </Link>
+            </NavLink>
             <p>⭐{review.rating}</p>
           </div>
         </div>

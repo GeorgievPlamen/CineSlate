@@ -1,25 +1,23 @@
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 
 interface Props {
   name: string;
   genreId: number;
+  currentGenreIds?: number[];
 }
 
-const { useSearch } = getRouteApi('/movies/');
-
-export default function GenreButton({ name, genreId }: Props) {
+export default function GenreButton({ name, genreId, currentGenreIds }: Props) {
   const navigate = useNavigate();
-  const { genreIds } = useSearch({ select: (params) => params });
 
   function handleClick() {
     let newIds: number[] = [];
 
-    if (!genreIds) {
+    if (!currentGenreIds) {
       newIds.push(genreId);
-    } else if (genreIds.includes(genreId)) {
-      newIds = newIds.concat(genreIds.filter((x) => x !== genreId));
+    } else if (currentGenreIds.includes(genreId)) {
+      newIds = newIds.concat(currentGenreIds.filter((x) => x !== genreId));
     } else {
-      newIds = newIds.concat(genreIds);
+      newIds = newIds.concat(currentGenreIds);
       newIds.push(genreId);
     }
 
@@ -37,7 +35,7 @@ export default function GenreButton({ name, genreId }: Props) {
       onClick={handleClick}
       className={
         'm-2 h-8 rounded-full px-2 text-sm hover:outline active:bg-opacity-80 ' +
-        (genreIds?.includes(genreId) ? 'bg-primary' : 'bg-background')
+        (currentGenreIds?.includes(genreId) ? 'bg-primary' : 'bg-background')
       }
     >
       {name}

@@ -11,8 +11,6 @@ function Background() {
     async function getMe() {
       const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
-      console.log(refreshToken);
-
       if (!refreshToken || hasRefresh.current) return;
 
       hasRefresh.current = true;
