@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Button from '../../components/Buttons/Button';
-import MovieReviewCard from '../../components/Cards/MovieReviewCard';
 import { BACKUP_PROFILE } from '../../config';
 import EditIcon from '../../Icons/EditIcon';
 import { CheckIcon } from '@heroicons/react/16/solid';
@@ -13,9 +12,9 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
 import { useUserStore } from '@/store/userStore';
+import MovieReviewCard from '@/components/Cards/MovieReviewCard';
 
 function MyDetails() {
-  // const user = useUser();
   const { user, setBio, setAvatarBase64 } = useUserStore((state) => state);
   const [editing, setEditing] = useState(false);
   const updateUserMutation = useMutation({

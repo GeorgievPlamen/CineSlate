@@ -1,15 +1,17 @@
-import { NavLink, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import AddComment from './AddComment';
 import { useQuery } from '@tanstack/react-query';
-import { reviewsClient } from '../api/reviewsClient';
 import { moviesClient } from '@/features/Movies/api/moviesClient';
 import { usersClient } from '@/features/Users/api/usersClient';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import LikesButton from '@/components/Buttons/LikesButton';
-import CommentCardOld from '@/components/Cards/CommentCardOld';
 import Loading from '@/components/Loading/Loading';
 import { IMG_PATH, BACKUP_PROFILE } from '@/config';
+import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
+import AddComment from '@/features/Reviews/Details/AddComment';
+import CommentCard from '@/components/Cards/CommentCard';
+import { getRouteApi, Link } from '@tanstack/react-router';
+
+const { useParams } = getRouteApi('/reviews/$id');
 
 function ReviewDetails() {
   const { id } = useParams();
@@ -53,14 +55,17 @@ function ReviewDetails() {
             onLoad={() => setImageIsLoading(false)}
           />
           <div className="mx-auto flex w-fit flex-col items-center gap-4 sm:mx-4">
-            <NavLink
+            <Link
               className={'hover:text-primary'}
-              to={`/movies/${reviewData?.movieId}`}
+              to={'/movies/$id'}
+              params={{
+                id: `${reviewData?.movieId}`,
+              }}
             >
               <h2 className="font-heading mb-2 w-full max-w-52 text-center text-xl font-bold text-wrap">
                 {movieData?.title}
               </h2>
-            </NavLink>
+            </Link>
             <div className="flex items-center justify-center gap-2">
               <p className="text-xs font-light">
                 {movieData?.releaseDate.toString()}
@@ -84,14 +89,17 @@ function ReviewDetails() {
                   alt="profile-pic"
                   className="h-16 w-16 rounded-full object-cover"
                 />
-                <NavLink
+                <Link
                   className={'hover:text-primary'}
-                  to={`/critics/${reviewData?.authorId}`}
+                  to={'/critics/$id'}
+                  params={{
+                    id: `${reviewData?.authorId}`,
+                  }}
                 >
                   <h2 className="font-heading mt-5 min-w-44 text-xl">
                     {user?.username.split('#')[0]}
                   </h2>
-                </NavLink>
+                </Link>
               </div>
             </div>
           </div>
@@ -115,7 +123,7 @@ function ReviewDetails() {
           <AddComment reviewId={id ?? ''} refetchComments={refetch} />
         )}
         {Object.entries(reviewData?.comments ?? '').map(([id, comment]) => (
-          <CommentCardOld key={id} comment={comment} />
+          <CommentCard key={id} comment={comment} />
         ))}
       </section>
     </article>

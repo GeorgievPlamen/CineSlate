@@ -1,6 +1,6 @@
 import { Form, NavLink, useActionData } from 'react-router-dom';
 import { UserResponse } from './Models/UserResponse';
-import SubmitButton from '@/components/Buttons/SubmitButton';
+import SubmitButtonOld from '@/components/Buttons/SubmitButtonOld';
 import EmailField from '@/components/Fields/EmailField';
 import NameField from '@/components/Fields/NameField';
 import PasswordField from '@/components/Fields/PasswordField';
@@ -23,7 +23,7 @@ function Register() {
       <PasswordField errors={response?.errors} />
       <PasswordField errors={response?.errors} isConfirmPassword />
       <Linebreak />
-      <SubmitButton text="Register" />
+      <SubmitButtonOld text="Register" />
       <div className="flex w-full justify-end text-center">
         <p className="pr-2 text-xs font-extralight">Already have an account?</p>
         <NavLink to={'/login'} className="text-xs font-bold">

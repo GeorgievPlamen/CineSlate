@@ -1,4 +1,4 @@
-import ReviewDetails from '@/features/Reviews/Details/ReviewDetails';
+import ReviewDetails from '@/modules/Review/ReviewDetails';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/reviews/$id')({
@@ -6,6 +6,5 @@ export const Route = createFileRoute('/reviews/$id')({
 });
 
 function RouteComponent() {
-  const { id } = Route.useParams();
   return <ReviewDetails />;
 }

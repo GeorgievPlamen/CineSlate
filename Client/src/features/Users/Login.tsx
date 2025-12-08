@@ -1,7 +1,7 @@
 import { Form, NavLink, useActionData } from 'react-router-dom';
 import { userErrors } from './Models/userErrors';
 import { UserResponse } from './Models/UserResponse';
-import SubmitButton from '@/components/Buttons/SubmitButton';
+import SubmitButtonOld from '@/components/Buttons/SubmitButtonOld';
 import EmailField from '@/components/Fields/EmailField';
 import PasswordField from '@/components/Fields/PasswordField';
 import Heading2 from '@/components/Heading2';
@@ -27,7 +27,7 @@ function Login() {
         message={'User with email not found or password is wrong.'}
       />
       <Linebreak />
-      <SubmitButton text="Sign in" />
+      <SubmitButtonOld text="Sign in" />
       <div className="flex w-full justify-end text-center">
         <p className="pr-2 text-xs font-extralight">New?</p>
         <NavLink to={'/register'} className="text-xs font-bold">

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
-import SubmitButton from '@/components/Buttons/SubmitButton';
 import { useMutation } from '@tanstack/react-query';
 import { reviewsClient } from '../api/reviewsClient';
+import SubmitButton from '@/components/Buttons/SubmitButton';
 
 interface Props {
   reviewId: string;
@@ -33,7 +33,11 @@ export default function AddComment({ reviewId, refetchComments }: Props) {
         className="border-grey bg-background my-4 h-20 w-full resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none"
         {...register('comment')}
       />
-      <SubmitButton className="mb-2" text={'Add Comment'} />
+      <SubmitButton
+        className="mb-2"
+        text={'Add Comment'}
+        isLoading={commentReviewMutation.isPending}
+      />
     </form>
   );
 }

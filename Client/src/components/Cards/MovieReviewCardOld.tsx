@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import Button from '../Buttons/Button';
+import { NavLink } from 'react-router-dom';
 import { IMG_PATH_W500 } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
 import { ReviewWithMovieDetailsResponse } from '@/features/Reviews/models/review';
-import { Link } from '@tanstack/react-router';
 
 interface Props {
   review: ReviewWithMovieDetailsResponse;
 }
 
-export default function MovieReviewCard({ review }: Props) {
+export default function MovieReviewCardOld({ review }: Props) {
   const [revealed, setRevealed] = useState(
     !review.reviewResponse.containsSpoilers
   );
@@ -24,30 +24,26 @@ export default function MovieReviewCard({ review }: Props) {
       <div className="mx-4 my-2 w-full">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
-            <Link
-              to={'/movies/$id'}
-              params={{ id: `${review.movieId}` }}
+            <NavLink
+              to={`/movies/${review.movieId}`}
               className={'font-heading hover:text-primary'}
             >
               {review.title}
-            </Link>
-            <Link
-              to={'/'}
+            </NavLink>
+            <NavLink
+              to={''}
               className="ml-2 text-lg text-muted-foreground hover:text-primary"
             >
               {review.releaseDate.split('-')[0]}
-            </Link>
+            </NavLink>
           </p>
           <div className="flex gap-2">
-            <Link
-              to={'/reviews/$id'}
-              params={{
-                id: review.reviewResponse.id ?? '',
-              }}
+            <NavLink
+              to={`/reviews/${review.reviewResponse.id}`}
               className={'hover:text-primary'}
             >
               To Review
-            </Link>
+            </NavLink>
             <p>⭐{review.reviewResponse.rating}</p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import CriticDetails from '@/features/CriticDetails/CriticDetails';
+import CriticDetails from '@/modules/Critics/Details';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/critics/$id')({
@@ -6,6 +6,5 @@ export const Route = createFileRoute('/critics/$id')({
 });
 
 function RouteComponent() {
-  const { id } = Route.useParams();
   return <CriticDetails />;
 }

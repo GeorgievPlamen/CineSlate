@@ -1,14 +1,14 @@
+import { NavLink } from 'react-router-dom';
 import { Comment } from '@/features/Reviews/models/review';
 import { BACKUP_PROFILE } from '@/config';
 import { usersClient } from '@/features/Users/api/usersClient';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 
 interface Props {
   comment: Comment;
 }
 
-export default function CommentCard({ comment }: Props) {
+export default function CommentCardOld({ comment }: Props) {
   const { data: usersData } = useQuery({
     queryKey: ['getUsersByIds', comment.fromUserId.value],
     queryFn: () => usersClient.getUsersByIds([comment.fromUserId.value ?? '']),
@@ -29,9 +29,12 @@ export default function CommentCard({ comment }: Props) {
       <div className="mx-4 my-2 w-80">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
-            <Link className={'font-heading hover:text-primary'} to={`/critics`}>
+            <NavLink
+              className={'font-heading hover:text-primary'}
+              to={`/critics/`}
+            >
               {usersData?.[0].username.split('#')[0]}
-            </Link>
+            </NavLink>
             <span className="text-xs text-muted-foreground">
               {' '}
               #{usersData?.[0].username.split('#')[1]}

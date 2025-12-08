@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Star from '@/assets/icons/Star';
-import SubmitButton from '@/components/Buttons/SubmitButton';
+import SubmitButtonOld from '@/components/Buttons/SubmitButtonOld';
 import MobileCheckbox from '@/components/Checkboxes/MobileCheckbox';
 import Loading from '@/components/Loading/Loading';
 import ValidationError from '@/components/ValidationError';
@@ -269,7 +269,7 @@ export default function AddReview({ onSuccess }: Props) {
           register={register}
         />
       </div>
-      <SubmitButton
+      <SubmitButtonOld
         className="mb-2"
         text={ownReviewData === undefined ? 'Add review' : 'Update review'}
       />

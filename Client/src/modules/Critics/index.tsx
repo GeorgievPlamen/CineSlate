@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import UserCardOld from '@/components/Cards/UserCardOld';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { useQuery } from '@tanstack/react-query';
-import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';
+import { usersClient } from '@/features/Users/api/usersClient';
+import UserCard from '@/components/Cards/UserCard';
 
 export default function Critics() {
   const [page, setPage] = useState(1);
@@ -22,7 +22,7 @@ export default function Critics() {
     <section className="flex flex-col items-center justify-center">
       <h2 className="font-heading my-4 text-2xl">Our latest members</h2>
       <article className="flex w-1/2 max-w-fit flex-row flex-wrap justify-center gap-4">
-        {data?.values.map((u) => <UserCardOld user={u} key={u.username} />)}
+        {data?.values.map((u) => <UserCard user={u} key={u.username} />)}
       </article>
       {data?.hasNextPage && (
         <Button

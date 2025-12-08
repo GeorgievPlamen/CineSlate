@@ -1,4 +1,4 @@
-import Critics from '@/features/Critics/Critics'
+import Critics from '@/modules/Critics'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/critics/')({

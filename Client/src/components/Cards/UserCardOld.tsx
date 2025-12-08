@@ -1,19 +1,18 @@
+import { NavLink } from 'react-router-dom';
 import { User } from '@/features/Users/Models/userType';
 import { BACKUP_PROFILE } from '@/config';
-import { Link } from '@tanstack/react-router';
 
 interface Props {
   user: User;
   className?: string;
 }
 
-export default function UserCard({ user, className }: Props) {
+export default function UserCardOld({ user, className }: Props) {
   const username = user.username?.split('#');
 
   return (
-    <Link
-      to={'/critics/$id'}
-      params={{ id: user.id ?? '' }}
+    <NavLink
+      to={`${user.id}`}
       className={
         'flex rounded-2xl border border-grey bg-background p-1 hover:border-primary ' +
         className
@@ -32,16 +31,11 @@ export default function UserCard({ user, className }: Props) {
         <div className="mb-2 flex flex-col justify-between">
           <p className="text-xl">
             {username[0]}
-            <span className="text-xs text-muted-foreground">
-              {' '}
-              #{username[1]}
-            </span>
+            <span className="text-xs text-muted-foreground"> #{username[1]}</span>
           </p>
-          <p className="font-primary text-sm text-muted-foreground">
-            {user?.bio}
-          </p>
+          <p className="font-primary text-sm text-muted-foreground">{user?.bio}</p>
         </div>
       </div>
-    </Link>
+    </NavLink>
   );
 }

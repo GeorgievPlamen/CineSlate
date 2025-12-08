@@ -1,14 +1,14 @@
 import { useParams } from 'react-router-dom';
 import Button from '@/components/Buttons/Button';
 import { BACKUP_PROFILE } from '@/config';
-import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import MovieReviewCardOld from '@/components/Cards/MovieReviewCardOld';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { usersClient } from '../Users/api/usersClient';
 import appContants from '@/common/appConstants';
 import { reviewsClient } from '../Reviews/api/reviewsClient';
 import ToPagedData from '@/utils/toPagedData';
 
-function CriticDetails() {
+function CriticDetailsOld() {
   const { id } = useParams();
 
   const { data } = useQuery({
@@ -68,7 +68,7 @@ function CriticDetails() {
         <h3 className="font-heading my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviewsData?.values.map((r) => (
-            <MovieReviewCard key={r.movieId} review={r} />
+            <MovieReviewCardOld key={r.movieId} review={r} />
           ))}
           {reviewsData?.hasNextPage && (
             <Button
@@ -85,4 +85,4 @@ function CriticDetails() {
   );
 }
 
-export default CriticDetails;
+export default CriticDetailsOld;
