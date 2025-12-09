@@ -97,7 +97,7 @@ function Header() {
           </li>
         </ul>
         <Dropdown />
-        {user?.username?.length > 0 ? (
+        {user?.username?.length > 0 ? ( // TODO
             <>dropdown</>
         //   <DropdownButton>
         //     <div className="flex items-center gap-2">

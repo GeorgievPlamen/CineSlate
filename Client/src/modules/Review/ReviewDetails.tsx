@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { moviesClient } from '@/features/Movies/api/moviesClient';
-import { usersClient } from '@/features/Users/api/usersClient';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import LikesButton from '@/components/Buttons/LikesButton';
 import Loading from '@/components/Loading/Loading';
 import { IMG_PATH, BACKUP_PROFILE } from '@/config';
-import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
-import AddComment from '@/features/Reviews/Details/AddComment';
 import CommentCard from '@/components/Cards/CommentCard';
 import { getRouteApi, Link } from '@tanstack/react-router';
+import { moviesClient } from '../Movies/api/moviesClient';
+import { usersClient } from '../Users/api/usersClient';
+import AddComment from './AddComment';
+import { reviewsClient } from './api/reviewsClient';
 
 const { useParams } = getRouteApi('/reviews/$id');
 

@@ -3,10 +3,10 @@ import { BACKUP_PROFILE } from '@/config';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import appContants from '@/common/appConstants';
 import ToPagedData from '@/utils/toPagedData';
-import { usersClient } from '@/features/Users/api/usersClient';
-import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import { getRouteApi } from '@tanstack/react-router';
 import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import { reviewsClient } from '@/modules/Review/api/reviewsClient';
+import { usersClient } from '@/modules/Users/api/usersClient';
 
 const { useParams } = getRouteApi('/critics/$id');
 

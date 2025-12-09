@@ -6,11 +6,11 @@ import Spinner from '@/components/Spinner';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ToPagedData from '@/utils/toPagedData';
 import useScroll from '@/hooks/useScroll';
-import { MoviesBy, moviesClient } from '@/features/Movies/api/moviesClient';
 import { genres } from '@/assets/tmdbGenres.json';
 import GenreButton from '@/components/Buttons/GenreButton';
 import { getRouteApi } from '@tanstack/react-router';
 import MovieCard from '@/components/Cards/MovieCard';
+import { moviesClient, MoviesBy } from './api/moviesClient';
 
 const { useSearch } = getRouteApi('/movies/');
 

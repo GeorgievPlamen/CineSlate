@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Star from '@/assets/icons/Star';
-import SubmitButtonOld from '@/components/Buttons/SubmitButtonOld';
 import MobileCheckbox from '@/components/Checkboxes/MobileCheckbox';
 import Loading from '@/components/Loading/Loading';
 import ValidationError from '@/components/ValidationError';
-import { Review } from '@/features/Reviews/models/review';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FieldValues } from 'react-hook-form';
 import { getRouteApi } from '@tanstack/react-router';
+import { reviewsClient } from '@/modules/Review/api/reviewsClient';
+import { Review } from '@/modules/Review/models/review';
+import SubmitButton from '@/components/Buttons/SubmitButton';
 
 interface Props {
   onSuccess: () => void;
@@ -269,7 +269,7 @@ export default function AddReview({ onSuccess }: Props) {
           register={register}
         />
       </div>
-      <SubmitButtonOld
+      <SubmitButton
         className="mb-2"
         text={ownReviewData === undefined ? 'Add review' : 'Update review'}
       />

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { reviewsClient } from '../api/reviewsClient';
 import SubmitButton from '@/components/Buttons/SubmitButton';
+import { reviewsClient } from './api/reviewsClient';
 
 interface Props {
   reviewId: string;

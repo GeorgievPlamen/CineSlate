@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useUserStore } from '@/store/userStore';
 import { LOCAL_REFRESH } from '@/config';
-import { usersClient } from '@/features/Users/api/usersClient';
+import { usersClient } from '../Users/api/usersClient';
 
 function Background() {
   const hasRefresh = useRef(false);

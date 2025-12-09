@@ -18,7 +18,7 @@ export interface ProblemDetails {
   detail?: string;
 }
 
-export interface HttpStatusCode {
+interface HttpStatusCode {
   code: number;
   text: string;
 }

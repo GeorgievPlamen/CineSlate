@@ -4,8 +4,8 @@ import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { useQuery } from '@tanstack/react-query';
 import appContants from '@/common/appConstants';
-import { usersClient } from '@/features/Users/api/usersClient';
 import UserCard from '@/components/Cards/UserCard';
+import { usersClient } from '../Users/api/usersClient';
 
 export default function Critics() {
   const [page, setPage] = useState(1);

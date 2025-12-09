@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { usersClient } from '@/features/Users/api/usersClient';
-import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loading from '@/components/Loading/Loading';
 import { IMG_PATH } from '@/config';
 import { useState, useEffect } from 'react';
-import { Review } from '@/features/Reviews/models/review';
 import useAuth from '@/hooks/useAuth';
-import { moviesClient } from '@/features/Movies/api/moviesClient';
 import AddReview from './AddReview';
 import { getRouteApi, Link } from '@tanstack/react-router';
 import GenreButton from '@/components/Buttons/GenreButton';
 import ReviewCard from '@/components/Cards/ReviewCard';
+import { reviewsClient } from '@/modules/Review/api/reviewsClient';
+import { Review } from '@/modules/Review/models/review';
+import { usersClient } from '@/modules/Users/api/usersClient';
+import { moviesClient } from '../api/moviesClient';
 
 const { useParams } = getRouteApi('/movies/$id');
 

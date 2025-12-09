@@ -9,10 +9,10 @@ import { UserModel } from './models/UserModel';
 import { zodResolver } from '@hookform/resolvers/zod';
 import UploadIcon from '../../Icons/UploadIcon';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import { reviewsClient } from '../Reviews/api/reviewsClient';
-import { usersClient } from '../Users/api/usersClient';
 import { useUserStore } from '@/store/userStore';
 import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import { reviewsClient } from '../Review/api/reviewsClient';
+import { usersClient } from '../Users/api/usersClient';
 
 function MyDetails() {
   const { user, setBio, setAvatarBase64 } = useUserStore((state) => state);

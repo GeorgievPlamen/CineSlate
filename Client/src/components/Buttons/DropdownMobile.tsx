@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode;
 }
 
-export default function DropdownMobile({ children }: Props) {
+export default function DropdownMobile({ children }: Props) {  // TODO
   const [isListActive, setIsListActive] = useState(false);
   const user = useUserStore((state) => state.user);
 
