@@ -44,7 +44,7 @@ function PasswordField({ errors, isConfirmPassword }: Props) {
           type={passwordInputType}
           name={fieldName}
           id={fieldName}
-          className="h-8 w-full rounded-md pl-2 pr-8 text-dark focus:outline-none"
+          className="h-8 w-full rounded-md pl-2 pr-8 text-dark focus:outline-primary focus:outline-2 bg-foreground"
         />
         <EyeIcon
           type="button"

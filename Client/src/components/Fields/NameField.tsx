@@ -26,7 +26,7 @@ function NameField({ errors }: UserFieldErrorProps) {
         type="text"
         name={fieldName}
         id={fieldName}
-        className="h-8 rounded-md px-2 text-dark focus:outline-none"
+        className="h-8 w-full rounded-md pl-2 pr-8 text-dark focus:outline-primary focus:outline-2 bg-foreground"
       />
       <ValidationError
         isError={getMessageBasedOn(errors).length > 0}

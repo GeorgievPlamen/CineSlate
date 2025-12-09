@@ -1,4 +1,3 @@
-import { ActionFunctionArgs } from 'react-router-dom';
 import { userErrors } from '../Models/userErrors';
 import { UserResponse } from '../Models/UserResponse';
 import { LOCAL_JWT, LOCAL_REFRESH } from '@/config';
@@ -6,11 +5,8 @@ import { validate } from '@/utils/validate';
 import { usersClient } from './usersClient';
 import { getErrorDetails, isProblemDetails } from '@/api/errors';
 
-export async function loginAction({
-  request,
-}: ActionFunctionArgs): Promise<UserResponse> {
+export async function loginAction(input: FormData): Promise<UserResponse> {
   try {
-    const input = await request.formData();
     const errors = validateLogin(input);
 
     if (errors.length > 0) return { errors };

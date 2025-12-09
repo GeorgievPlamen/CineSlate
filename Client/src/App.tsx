@@ -1,7 +1,5 @@
 import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
-import { loginAction } from './features/Users/api/loginAction';
 import { registerAction } from './features/Users/api/registerAction';
-import Login from './features/Users/Login';
 import Register from './features/Users/Register';
 import Layout from './layout/Layout';
 
@@ -18,11 +16,6 @@ export default function App() {
             </>
           ),
           children: [
-            {
-              path: '/login',
-              element: <Login />,
-              action: loginAction,
-            },
             {
               path: '/register',
               element: <Register />,
