@@ -16,6 +16,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const res = await loginAction(new FormData(e.currentTarget));
 
     if (res.errors) {

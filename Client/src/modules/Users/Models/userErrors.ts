@@ -6,5 +6,5 @@ export enum userErrors {
   InvalidPassword = 'Password must include 8-30 chars, with uppercase, lowercase, digit, and special symbol.',
   PasswordsMatch = "Passwords don't match.",
   NotFound = 'User with email:',
-  EmailInUse = 'There is a user already registered with this email.',
+  EmailInUse = 'There is a user already registered with email',
 }

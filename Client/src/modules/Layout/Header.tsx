@@ -28,17 +28,48 @@ function Header() {
   const navigateToMovies = useCallback(() => {
     if (debouncedSearchTerm === undefined) return;
 
-    let search;
-
     if (debouncedSearchTerm?.length > 0) {
-      search = '?search=' + debouncedSearchTerm;
-      navigate({ to: '/movies', search: search });
+      navigate({
+        to: '/movies',
+        search: {
+          search: debouncedSearchTerm,
+        },
+      });
     } else navigate({ to: '/movies' });
   }, [debouncedSearchTerm, navigate]);
 
   useEffect(() => {
     if (debouncedSearchTerm !== undefined) navigateToMovies();
   }, [debouncedSearchTerm, navigate, navigateToMovies]);
+
+  const DropdownItems = [
+    <Link to="/my-details" className="text-nowrap hover:underline">
+      My Details
+    </Link>,
+    <a
+      href="/"
+      className="text-nowrap hover:underline"
+      onClick={() => {
+        localStorage.clear();
+      }}
+    >
+      Sign out
+    </a>,
+  ];
+  const DropdownLabel = (
+    <div className="flex items-center gap-2">
+      {user?.username?.split('#')[0]}
+      <img
+        src={
+          user?.pictureBase64?.length && user?.pictureBase64?.length > 0
+            ? user.pictureBase64
+            : BACKUP_PROFILE
+        }
+        alt="profile-pic"
+        className="h-8 w-8 rounded-full object-cover"
+      />
+    </div>
+  );
 
   return (
     <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
@@ -96,23 +127,8 @@ function Header() {
             </Link>
           </li>
         </ul>
-        <Dropdown />
-        {user?.username?.length > 0 ? ( // TODO
-            <>dropdown</>
-        //   <DropdownButton>
-        //     <div className="flex items-center gap-2">
-        //       {user?.username?.split('#')[0]}
-        //       <img
-        //         src={
-        //           user?.pictureBase64?.length && user?.pictureBase64?.length > 0
-        //             ? user.pictureBase64
-        //             : BACKUP_PROFILE
-        //         }
-        //         alt="profile-pic"
-        //         className="h-8 w-8 rounded-full object-cover"
-        //       />
-        //     </div>
-        //   </DropdownButton>
+        {user?.username?.length > 0 ? (
+          <Dropdown items={DropdownItems} label={DropdownLabel} />
         ) : (
           <Link
             to="/login"

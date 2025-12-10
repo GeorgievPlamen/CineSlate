@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,17 +8,27 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
-export default function Dropdown() {
+interface Props {
+  label: ReactNode;
+  menuLabel?: ReactNode;
+  items: ReactNode[];
+}
+
+export default function Dropdown({ label, menuLabel, items }: Props) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>{label}</DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        {menuLabel && (
+          <>
+            <DropdownMenuLabel>{menuLabel}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </>
+        )}
+        {items &&
+          items.map((i, index) => (
+            <DropdownMenuItem key={index}>{i}</DropdownMenuItem>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
