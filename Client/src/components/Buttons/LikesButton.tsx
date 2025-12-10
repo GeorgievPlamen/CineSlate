@@ -1,6 +1,6 @@
 import Tooltip from '../Tooltip/Tooltip';
-import { reviewsClient } from '@/features/Reviews/api/reviewsClient';
 import { HeartIcon, HeartIconOutlined } from '@/Icons/HeartIcon';
+import { reviewsClient } from '@/modules/Review/api/reviewsClient';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 interface Props {

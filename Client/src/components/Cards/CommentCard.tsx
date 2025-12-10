@@ -1,8 +1,8 @@
-import { Comment } from '@/features/Reviews/models/review';
+import { Comment } from '@/modules/Review/models/review';
 import { BACKUP_PROFILE } from '@/config';
-import { usersClient } from '@/features/Users/api/usersClient';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
+import { usersClient } from '@/modules/Users/api/usersClient';
 
 interface Props {
   comment: Comment;
