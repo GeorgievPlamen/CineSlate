@@ -24,14 +24,14 @@ export default function MobileCheckbox({
     <div
       className={
         bgClassName +
-        ` relative h-5 w-10 rounded-full ${checked ? 'bg-primary' : 'bg-grey'}`
+        ` relative h-5 w-10 rounded-full ${checked ? 'bg-primary' : 'bg-muted'}`
       }
     >
       <input
         type="checkbox"
         className={
           className +
-          ' absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-foreground bg-foreground transition-all checked:left-[22px] checked:border checked:border-foreground checked:bg-primary hover:checked:border-foreground hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-foreground focus:checked:bg-primary'
+          ' appearance-none absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-foreground bg-foreground transition-all checked:left-[22px] checked:border checked:border-foreground checked:bg-primary hover:checked:border-foreground hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-foreground focus:checked:bg-primary'
         }
         {...register(name)}
         onChange={() => setChecked(!checked)}

@@ -251,7 +251,7 @@ export default function AddReview({ onSuccess }: Props) {
         onBlur={() => {
           setTimeout(() => {
             setIsTextAreaSelected(false);
-          }, 50);
+          }, 300);
         }}
       />
       <div className="flex h-10 items-center justify-center gap-2">
