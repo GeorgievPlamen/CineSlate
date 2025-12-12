@@ -47,7 +47,7 @@ export default function MovieDetails() {
     isFetching: isReviewsFetching,
     refetch: refetchReviews,
   } = useQuery({
-    queryKey: ['', id, reviewsPage],
+    queryKey: ['reviewsByMovieId', id, reviewsPage],
     queryFn: () => reviewsClient.reviewsByMovieId(id ?? '', reviewsPage),
   });
 
@@ -95,9 +95,9 @@ export default function MovieDetails() {
               />
               {isAuthenticated ? (
                 <AddReview
-                  onSuccess={() => {
-                    refetchMovieDetails();
-                    refetchReviews();
+                  onSuccess={async () => {
+                    await refetchMovieDetails();
+                    await refetchReviews();
                   }}
                 />
               ) : (

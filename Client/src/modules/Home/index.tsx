@@ -104,7 +104,7 @@ function Home() {
                   className: 'outline  outline-foreground',
                 }}
                 className={
-                  'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
+                  'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80 underline'
                 }
               >
                 Sign up

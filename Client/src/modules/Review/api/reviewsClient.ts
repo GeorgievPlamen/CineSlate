@@ -46,9 +46,7 @@ export const reviewsClient = {
     if (!response) return { location: null };
 
     // @ts-expect-error accepted
-    const locationHeader = response.headers.get('Location');
-
-    return { location: locationHeader };
+    return { reviewId: response.value };
   },
 
   updateReview: async (
@@ -57,7 +55,7 @@ export const reviewsClient = {
     movieId: number,
     text: string,
     containsSpoilers: boolean
-  ): Promise<{ location: string | null }> => {
+  ): Promise<{ reviewId: string | null }> => {
     const response = await apiClient.put('/reviews/', {
       reviewId,
       rating,
@@ -65,11 +63,9 @@ export const reviewsClient = {
       text,
       containsSpoilers,
     });
-    if (!response) return { location: null };
+    if (!response) return { reviewId: null };
 
     // @ts-expect-error accepted
-    const locationHeader = response.headers.get('Location');
-
-    return { location: locationHeader };
+    return { reviewId: response.value };
   },
 };

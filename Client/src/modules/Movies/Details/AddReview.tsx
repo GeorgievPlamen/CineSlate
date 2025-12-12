@@ -12,7 +12,7 @@ import { Review } from '@/modules/Review/models/review';
 import SubmitButton from '@/components/Buttons/SubmitButton';
 
 interface Props {
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
 }
 
 const { useParams } = getRouteApi('/movies/$id');
@@ -35,6 +35,7 @@ export default function AddReview({ onSuccess }: Props) {
       text: string;
       containsSpoilers: boolean;
     }) => reviewsClient.addReview(rating, movieId, text, containsSpoilers),
+    onSuccess: async () => await onSuccess(),
   });
   const { mutateAsync: updateReview } = useMutation({
     mutationFn: ({
@@ -57,6 +58,7 @@ export default function AddReview({ onSuccess }: Props) {
         text,
         containsSpoilers
       ),
+    onSuccess: async () => await onSuccess(),
   });
 
   const {
@@ -64,8 +66,9 @@ export default function AddReview({ onSuccess }: Props) {
     isFetching: isOwnReviewFetching,
     refetch: refetchOwnedReview,
   } = useQuery({
-    queryKey: ['', movieId],
+    queryKey: ['ownedReviewsByMovieId', movieId],
     queryFn: () => reviewsClient.ownedReviewsByMovieId(movieId ?? ''),
+    retry: false,
   });
 
   const {
@@ -92,33 +95,23 @@ export default function AddReview({ onSuccess }: Props) {
   }
 
   async function handleOnSubmit(formData: FieldValues) {
-    let isSuccess;
-
     if (ownReviewData) {
-      const { location } = await updateReview({
+      await updateReview({
         reviewId: ownReviewData.id ?? '',
         movieId: Number(movieId),
         containsSpoilers: formData.containsSpoilers,
         rating: formData.rating,
         text: formData.text,
       });
-
-      isSuccess = location !== undefined;
     } else {
-      const { location } = await addReview({
+      await addReview({
         movieId: Number(movieId),
         containsSpoilers: formData.containsSpoilers,
         rating: formData.rating,
         text: formData.text,
       });
 
-      isSuccess = location !== undefined;
-
       await refetchOwnedReview();
-    }
-
-    if (isSuccess) {
-      onSuccess();
     }
   }
 
@@ -131,7 +124,7 @@ export default function AddReview({ onSuccess }: Props) {
     >
       <fieldset
         aria-label="Rate this product"
-        className="mb-3 flex gap-4"
+        className="mb-3 flex gap-7"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
