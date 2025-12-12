@@ -9,15 +9,17 @@ import {
 } from '../ui/dropdown-menu';
 
 interface Props {
-  label: ReactNode;
+  children: ReactNode;
   menuLabel?: ReactNode;
   items: ReactNode[];
 }
 
-export default function Dropdown({ label, menuLabel, items }: Props) {
+export default function Dropdown({ children, menuLabel, items }: Props) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>{label}</DropdownMenuTrigger>
+      <DropdownMenuTrigger className="mx-2 rounded px-2 py-1 text-foreground hover:bg-primary">
+        {children}
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         {menuLabel && (
           <>
@@ -27,7 +29,11 @@ export default function Dropdown({ label, menuLabel, items }: Props) {
         )}
         {items &&
           items.map((i, index) => (
-            <DropdownMenuItem key={index}>{i}</DropdownMenuItem>
+            <DropdownMenuItem
+              key={index}
+            >
+              {i}
+            </DropdownMenuItem>
           ))}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,25 +1,21 @@
 import CineSlateLogo from '@/assets/images/cineslateLogo.png';
 import { useCallback, useEffect, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
-
 import { useUserStore } from '@/store/userStore';
 import useDebounce from '@/hooks/useDebounce';
 import { Link, useNavigate } from '@tanstack/react-router';
-import DropdownButton from '@/components/Buttons/DropdownButton';
-import DropdownMobile from '@/components/Buttons/DropdownMobile';
 import { BACKUP_PROFILE } from '@/config';
 import BarsIcon from '@/Icons/BarsIcon';
 import Dropdown from '@/components/Dropdown';
+import { User } from '../Users/Models/userType';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
-  const user = useUserStore((state) => state.user);
-
   const [searchTerm, setSearchTerm] = useState<string>();
   const debouncedSearchTerm = useDebounce(searchTerm);
+  const user = useUserStore((state) => state.user);
 
   const navigate = useNavigate();
-
   const handleBounce = () => {
     setIsBouncing(true);
     setTimeout(() => setIsBouncing(false), 1500);
@@ -41,35 +37,6 @@ function Header() {
   useEffect(() => {
     if (debouncedSearchTerm !== undefined) navigateToMovies();
   }, [debouncedSearchTerm, navigate, navigateToMovies]);
-
-  const DropdownItems = [
-    <Link to="/my-details" className="text-nowrap hover:underline">
-      My Details
-    </Link>,
-    <a
-      href="/"
-      className="text-nowrap hover:underline"
-      onClick={() => {
-        localStorage.clear();
-      }}
-    >
-      Sign out
-    </a>,
-  ];
-  const DropdownLabel = (
-    <div className="flex items-center gap-2">
-      {user?.username?.split('#')[0]}
-      <img
-        src={
-          user?.pictureBase64?.length && user?.pictureBase64?.length > 0
-            ? user.pictureBase64
-            : BACKUP_PROFILE
-        }
-        alt="profile-pic"
-        className="h-8 w-8 rounded-full object-cover"
-      />
-    </div>
-  );
 
   return (
     <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
@@ -128,7 +95,20 @@ function Header() {
           </li>
         </ul>
         {user?.username?.length > 0 ? (
-          <Dropdown items={DropdownItems} label={DropdownLabel} />
+          <Dropdown items={DropdownItems}>
+            <div className="flex items-center gap-2">
+              {user?.username?.split('#')[0]}
+              <img
+                src={
+                  user?.pictureBase64?.length && user?.pictureBase64?.length > 0
+                    ? user.pictureBase64
+                    : BACKUP_PROFILE
+                }
+                alt="profile-pic"
+                className="h-8 w-8 rounded-full object-cover"
+              />
+            </div>
+          </Dropdown>
         ) : (
           <Link
             to="/login"
@@ -157,11 +137,101 @@ function Header() {
             }}
           />
         </div>
-        {/* <DropdownMobile>
+        <Dropdown items={getMobileDropdownMenuItems(user)}>
           <BarsIcon />
-        </DropdownMobile> */}
+        </Dropdown>
       </nav>
     </header>
   );
 }
 export default Header;
+
+const DropdownItems = [
+  <Link
+    to="/my-details"
+    className="text-nowrap hover:underline w-full"
+    activeProps={{
+      className: 'underline',
+    }}
+  >
+    My Details
+  </Link>,
+  <a
+    href="/"
+    className="text-nowrap hover:underline w-full"
+    onClick={() => {
+      localStorage.clear();
+    }}
+  >
+    Sign out
+  </a>,
+];
+
+const getMobileDropdownMenuItems = (user?: User) => {
+  const items = [
+    <Link
+      to="/"
+      className="text-nowrap hover:underline w-full"
+      activeProps={{
+        className: 'underline',
+      }}
+    >
+      Home
+    </Link>,
+    <Link
+      to="/movies"
+      className="text-nowrap hover:underline w-full"
+      activeProps={{
+        className: 'underline',
+      }}
+    >
+      Movies
+    </Link>,
+    <Link
+      to="/critics"
+      className="text-nowrap hover:underline w-full"
+      activeProps={{
+        className: 'underline',
+      }}
+    >
+      Critics
+    </Link>,
+  ];
+
+  if (user?.username?.length && user?.username?.length > 0) {
+    items.push(
+      <Link
+        to="/my-details"
+        className="text-nowrap hover:underline w-full"
+        activeProps={{
+          className: 'underline',
+        }}
+      >
+        My Details
+      </Link>,
+      <a
+        href="/"
+        className="text-nowrap hover:underline w-full"
+        onClick={() => {
+          localStorage.clear();
+        }}
+      >
+        Sign out
+      </a>
+    );
+  } else {
+    items.push(
+      <Link
+        to="/login"
+        className="text-nowrap hover:underline w-full"
+        activeProps={{
+          className: 'underline',
+        }}
+      >
+        Sign in
+      </Link>
+    );
+  }
+
+  return items;
+};
