@@ -10,26 +10,24 @@ interface Props {
 export default function LikesButton({ reviewId }: Props) {
   const { mutateAsync: likeReview } = useMutation({
     mutationFn: () => reviewsClient.likeReview(reviewId),
+    onSuccess: () => refetch(),
   });
+
   const { data, refetch } = useQuery({
     queryKey: ['reviewDetailsById', reviewId],
     queryFn: () => reviewsClient.reviewDetailsById(reviewId ?? ''),
   });
 
-  async function handleLike() {
-    const { id } = await likeReview();
-    if (!id) await refetch();
-  }
-
   return (
     <div className="flex gap-2">
-      <button onClick={handleLike}>
+      <button onClick={() => likeReview()}>
         {data?.hasUserLiked ? (
-          <HeartIcon className="hover:text-opacity-80 active:text-opacity-50" />
+          <HeartIcon className="hover:opacity-80 active:opacity-50" />
         ) : (
-          <HeartIconOutlined className="hover:text-opacity-80 active:text-opacity-50" />
+          <HeartIconOutlined className="hover:opacity-80 active:opacity-50" />
         )}
       </button>
+
       {data?.usersWhoLiked && (
         <Tooltip content={data.usersWhoLiked.map((u) => u.onlyName).join(' ')}>
           <p className="hover:underline">{data?.likes}</p>
