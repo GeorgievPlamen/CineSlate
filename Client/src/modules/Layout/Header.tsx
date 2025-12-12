@@ -39,7 +39,7 @@ function Header() {
   }, [debouncedSearchTerm, navigate, navigateToMovies]);
 
   return (
-    <header className="fixed z-10 flex w-full bg-background py-2 shadow shadow-dark">
+    <header className="fixed z-50 flex w-full bg-background py-2 shadow shadow-dark">
       <nav className="hidden w-full items-center justify-evenly md:flex">
         <Link to="/" className="flex w-min items-center justify-center">
           <img
