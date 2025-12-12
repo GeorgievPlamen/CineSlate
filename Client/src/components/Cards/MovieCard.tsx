@@ -26,7 +26,7 @@ export default function MovieCard({
           params: { id: `${id}` },
         })
       }
-      className="mx-auto flex w-60 flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
+      className="mx-auto flex w-60 justify-between flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
       id={`${id}`}
     >
       <img

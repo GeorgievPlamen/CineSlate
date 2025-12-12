@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Button from '../Buttons/Button';
 import { IMG_PATH_W500 } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
-import { ReviewWithMovieDetailsResponse } from '@/features/Reviews/models/review';
 import { Link } from '@tanstack/react-router';
+import { ReviewWithMovieDetailsResponse } from '@/modules/Review/models/review';
 
 interface Props {
   review: ReviewWithMovieDetailsResponse;
@@ -15,14 +15,14 @@ export default function MovieReviewCard({ review }: Props) {
   );
 
   return (
-    <div className="flex rounded-2xl border border-grey bg-background">
+    <div className="flex rounded-2xl border border-grey bg-background min-w-70">
       <img
         src={IMG_PATH_W500 + review.posterPath}
         alt="poster"
         className="w-28 rounded-l-2xl border-r border-r-grey object-cover"
       />
       <div className="mx-4 my-2 w-full">
-        <div className="mb-2 flex justify-between">
+        <div className="mb-2 flex justify-between flex-col md:flex-row">
           <p className="text-xl">
             <Link
               to={'/movies/$id'}
