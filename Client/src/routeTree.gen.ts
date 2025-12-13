@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WatchlistIndexRouteImport } from './routes/watchlist/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
 import { Route as MyDetailsIndexRouteImport } from './routes/my-details/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
@@ -22,6 +23,11 @@ import { Route as CriticsIdRouteImport } from './routes/critics/$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchlistIndexRoute = WatchlistIndexRouteImport.update({
+  id: '/watchlist/',
+  path: '/watchlist/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterIndexRoute = RegisterIndexRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/movies': typeof MoviesIndexRoute
   '/my-details': typeof MyDetailsIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/watchlist': typeof WatchlistIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/movies': typeof MoviesIndexRoute
   '/my-details': typeof MyDetailsIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/watchlist': typeof WatchlistIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/movies/': typeof MoviesIndexRoute
   '/my-details/': typeof MyDetailsIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/watchlist/': typeof WatchlistIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/my-details'
     | '/register'
+    | '/watchlist'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/my-details'
     | '/register'
+    | '/watchlist'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/movies/'
     | '/my-details/'
     | '/register/'
+    | '/watchlist/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   MoviesIndexRoute: typeof MoviesIndexRoute
   MyDetailsIndexRoute: typeof MyDetailsIndexRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
+  WatchlistIndexRoute: typeof WatchlistIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watchlist/': {
+      id: '/watchlist/'
+      path: '/watchlist'
+      fullPath: '/watchlist'
+      preLoaderRoute: typeof WatchlistIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register/': {
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoviesIndexRoute: MoviesIndexRoute,
   MyDetailsIndexRoute: MyDetailsIndexRoute,
   RegisterIndexRoute: RegisterIndexRoute,
+  WatchlistIndexRoute: WatchlistIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

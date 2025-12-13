@@ -33,7 +33,7 @@ public static class UserMappings
                model.Bio ?? "",
                model.Roles);
 
-        if (model.AvatarBlob is not null)
+        if (model.AvatarBlob is not null) // TODO fix image <-> base64 mapping
             user.UpdateProfilePicture($"data:image/jpeg;base64,{Convert.ToBase64String(model.AvatarBlob)}");
 
         return user;

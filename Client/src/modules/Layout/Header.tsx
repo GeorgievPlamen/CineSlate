@@ -93,6 +93,19 @@ function Header() {
               Critics
             </Link>
           </li>
+          <li>
+            <Link
+              to="/watchlist"
+              activeProps={{
+                className: 'outline  outline-foreground',
+              }}
+              className={
+                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
+              }
+            >
+              Watchlist
+            </Link>
+          </li>
         </ul>
         {user?.username?.length > 0 ? (
           <Dropdown items={DropdownItems}>
@@ -197,6 +210,15 @@ const getMobileDropdownMenuItems = (user?: User) => {
       }}
     >
       Critics
+    </Link>,
+    <Link
+      to="/watchlist"
+      className="text-nowrap hover:underline w-full"
+      activeProps={{
+        className: 'underline',
+      }}
+    >
+      Watchlist
     </Link>,
   ];
 

@@ -11,5 +11,5 @@ public record UserResponse(
 public static class Converter
 {
     public static UserResponse ToResponse(this User user)
-        => new(user.Username.Value, user.Id.Value, user.Bio ?? "", user.AvatarBase64 ?? "");
+        => new(user.Username.Value, user.Id.Value, user.Bio ?? "", user.AvatarImageBase64 ?? "");
 }
