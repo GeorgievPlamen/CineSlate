@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Star from '@/assets/icons/Star';
-import MobileCheckbox from '@/components/Checkboxes/MobileCheckbox';
+import ToggleCheckbox from '@/components/Checkboxes/ToggleCheckbox';
 import Loading from '@/components/Loading/Loading';
 import ValidationError from '@/components/ValidationError';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -256,7 +256,7 @@ export default function AddReview({ onSuccess }: Props) {
       />
       <div className="flex h-10 items-center justify-center gap-2">
         <label htmlFor="containsSpoilers">Spoilers?</label>
-        <MobileCheckbox
+        <ToggleCheckbox
           isChecked={ownReviewData?.containsSpoilers}
           name="containsSpoilers"
           register={register}

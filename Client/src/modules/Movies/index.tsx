@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ChevronUp from '@/assets/icons/ChevronUp';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
@@ -10,22 +10,26 @@ import { genres } from '@/assets/tmdbGenres.json';
 import GenreButton from '@/components/Buttons/GenreButton';
 import { getRouteApi } from '@tanstack/react-router';
 import MovieCard from '@/components/Cards/MovieCard';
-import { moviesClient, MoviesBy } from './api/moviesClient';
+import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
+import Dropdown from '@/components/Dropdown';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const { useSearch } = getRouteApi('/movies/');
+const { useSearch, useNavigate } = getRouteApi('/movies/');
 
 export default function Movies() {
   const { search, genreIds } = useSearch({ select: (params) => params });
-
+  const navigate = useNavigate();
   const isDefaultMovies = !search && !genreIds;
   const isSearchingMovies = search ? search?.length > 0 : false;
   const isFilteringMovies = genreIds && genreIds.length > 0;
   const { nearBottom, beyondScreen } = useScroll();
+  const [moviesBy, setMoviesBy] = useState<MoviesBy>(MoviesBy.NowPlaying);
 
   const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['getPagedMovies'],
+    queryKey: ['getPagedMovies', moviesBy],
     queryFn: ({ pageParam }) =>
-      moviesClient.getPagedMovies(MoviesBy.GetNowPlaying, pageParam),
+      moviesClient.getPagedMovies(moviesBy, pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.currentPage + 1,
     select: (data) => ToPagedData(data),
@@ -104,9 +108,45 @@ export default function Movies() {
     searchedMovies?.hasNextPage,
   ]);
 
+  function handleSelectMoviesBy(moviesBy: MoviesBy) {
+    setMoviesBy(moviesBy);
+    navigate({
+      to: '/movies',
+    });
+  }
+
+  const moviesByDropdownItems = [
+    <div onClick={() => handleSelectMoviesBy(MoviesBy.NowPlaying)}>
+      {MoviesByTitleMap[MoviesBy.NowPlaying]}
+    </div>,
+    <div onClick={() => handleSelectMoviesBy(MoviesBy.Popular)}>
+      {MoviesByTitleMap[MoviesBy.Popular]}
+    </div>,
+    <div onClick={() => handleSelectMoviesBy(MoviesBy.TopRated)}>
+      {MoviesByTitleMap[MoviesBy.TopRated]}
+    </div>,
+    <div onClick={() => handleSelectMoviesBy(MoviesBy.Upcoming)}>
+      {MoviesByTitleMap[MoviesBy.Upcoming]}
+    </div>,
+  ];
+
   return (
     <>
-      <section className="mx-auto flex w-2/3 flex-wrap items-center justify-center">
+      <section className="mx-auto flex w-5/6 md:w-2/3 flex-wrap items-center justify-start">
+        <div>
+          <span className="text-xs text-muted-foreground">By: </span>
+          <Dropdown items={moviesByDropdownItems}>
+            <div
+              className={cn(
+                'flex items-center m-2 h-8 rounded-full px-1',
+                isDefaultMovies ? 'bg-primary' : 'bg-muted'
+              )}
+            >
+              <p className="w-20 text-sm">{MoviesByTitleMap[moviesBy]}</p>
+              <ChevronDown />
+            </div>
+          </Dropdown>
+        </div>
         {genres?.map((g) => (
           <GenreButton
             key={g.id}

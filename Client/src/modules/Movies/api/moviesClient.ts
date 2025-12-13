@@ -3,11 +3,18 @@ import { Movie, MovieDetails } from '../models/movieType';
 import { Paged } from '@/common/models/paged';
 
 export enum MoviesBy {
-  GetNowPlaying = '/now_playing',
-  GetPopular = '/popular',
-  GetTopRated = '/top_rated',
-  GetUpcoming = '/upcoming',
+  NowPlaying = '/now_playing',
+  Popular = '/popular',
+  TopRated = '/top_rated',
+  Upcoming = '/upcoming',
 }
+
+export const MoviesByTitleMap: Record<MoviesBy, string> = {
+  [MoviesBy.NowPlaying]: 'Now Playing',
+  [MoviesBy.Popular]: 'Popular',
+  [MoviesBy.TopRated]: 'Top Rated',
+  [MoviesBy.Upcoming]: 'Upcoming',
+};
 
 export const moviesClient = {
   getMovieDetails: async (id: string): Promise<MovieDetails> =>

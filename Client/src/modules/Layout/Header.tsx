@@ -96,7 +96,7 @@ function Header() {
         </ul>
         {user?.username?.length > 0 ? (
           <Dropdown items={DropdownItems}>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
               {user?.username?.split('#')[0]}
               <img
                 src={
@@ -138,7 +138,9 @@ function Header() {
           />
         </div>
         <Dropdown items={getMobileDropdownMenuItems(user)}>
-          <BarsIcon />
+          <div className='className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full"'>
+            <BarsIcon />
+          </div>
         </Dropdown>
       </nav>
     </header>

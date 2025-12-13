@@ -17,7 +17,7 @@ interface Props {
 export default function Dropdown({ children, menuLabel, items }: Props) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="mx-2 rounded px-2 py-1 text-foreground hover:bg-primary">
+      <DropdownMenuTrigger className="focus:outline-none">
         {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -29,11 +29,7 @@ export default function Dropdown({ children, menuLabel, items }: Props) {
         )}
         {items &&
           items.map((i, index) => (
-            <DropdownMenuItem
-              key={index}
-            >
-              {i}
-            </DropdownMenuItem>
+            <DropdownMenuItem key={index}>{i}</DropdownMenuItem>
           ))}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -11,7 +11,7 @@ interface Props {
   register: UseFormRegister<FieldValues | any>;
 }
 
-export default function MobileCheckbox({
+export default function ToggleCheckbox({
   name,
   className,
   bgClassName,
@@ -31,7 +31,7 @@ export default function MobileCheckbox({
         type="checkbox"
         className={
           className +
-          ' appearance-none absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-foreground bg-foreground transition-all checked:left-[22px] checked:border checked:border-foreground checked:bg-primary hover:checked:border-foreground hover:checked:bg-primary focus:ring-0 focus:ring-offset-0 focus:checked:border-foreground focus:checked:bg-primary'
+          ' appearance-none absolute left-0.5 top-0.5 h-4 w-4 rounded-full border border-foreground bg-foreground transition-all checked:left-[22px] checked:border checked:border-foreground hover:checked:border-foreground focus:ring-0 focus:ring-offset-0 focus:checked:border-foreground'
         }
         {...register(name)}
         onChange={() => setChecked(!checked)}
