@@ -37,10 +37,10 @@ function CriticDetails() {
   const critic = data?.[0];
 
   return (
-    <article className="m-auto flex w-2/3 flex-col">
+    <article className="m-auto flex w-2/3 flex-col items-center">
       <section className="mt-5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex w-1/4 gap-2">
+          <div className="flex w-2/4 gap-2">
             <img
               src={
                 critic?.pictureBase64?.length &&
@@ -77,7 +77,7 @@ function CriticDetails() {
           {reviewsData?.hasNextPage && (
             <Button
               onClick={fetchNextPage}
-              className="w-fit px-10"
+              className="w-fit px-10 self-center"
               isLoading={isFetching}
             >
               Load More
