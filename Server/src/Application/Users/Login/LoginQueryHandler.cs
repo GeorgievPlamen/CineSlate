@@ -37,7 +37,7 @@ public class LoginQueryHandler(IUserRepository usersRepository, IUserIdentity us
             rToken,
             foundUser.Id.Value,
             foundUser.Bio ?? "",
-            foundUser.AvatarImageBase64 ?? "");
+            foundUser.AvatarBase64 ?? "");
 
         return Result<LoginResponse>.Success(result);
     }

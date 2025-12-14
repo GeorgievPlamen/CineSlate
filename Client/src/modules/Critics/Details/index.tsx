@@ -7,6 +7,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import MovieReviewCard from '@/components/Cards/MovieReviewCard';
 import { reviewsClient } from '@/modules/Review/api/reviewsClient';
 import { usersClient } from '@/modules/Users/api/usersClient';
+import { base64ToImage } from '@/lib/utils';
 
 const { useParams } = getRouteApi('/critics/$id');
 
@@ -40,12 +41,12 @@ function CriticDetails() {
     <article className="m-auto flex w-2/3 flex-col items-center">
       <section className="mt-5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex w-2/4 gap-2">
+          <div className="flex gap-2">
             <img
               src={
                 critic?.pictureBase64?.length &&
                 critic?.pictureBase64?.length > 0
-                  ? critic.pictureBase64
+                  ? base64ToImage(critic.pictureBase64)
                   : BACKUP_PROFILE
               }
               alt="profile-pic"

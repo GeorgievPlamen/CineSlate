@@ -1,6 +1,7 @@
-import { User } from '@/features/Users/Models/userType';
 import { BACKUP_PROFILE } from '@/config';
 import { Link } from '@tanstack/react-router';
+import { base64ToImage } from '@/lib/utils';
+import { User } from '@/modules/Users/Models/userType';
 
 interface Props {
   user: User;
@@ -22,7 +23,7 @@ export default function UserCard({ user, className }: Props) {
       <img
         src={
           user?.pictureBase64?.length && user?.pictureBase64?.length > 0
-            ? user.pictureBase64
+            ? base64ToImage(user.pictureBase64)
             : BACKUP_PROFILE
         }
         alt="profile-pic"

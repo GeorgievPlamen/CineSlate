@@ -38,7 +38,7 @@ public class MeQueryHandler(
             foundUser.Email,
             foundUser.Id.Value,
             foundUser.Bio ?? "",
-            foundUser.AvatarImageBase64 ?? "");
+            foundUser.AvatarBase64 ?? "");
 
         return Result<MeResponse>.Success(result);
     }

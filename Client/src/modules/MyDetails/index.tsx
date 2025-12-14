@@ -13,6 +13,7 @@ import { useUserStore } from '@/store/userStore';
 import MovieReviewCard from '@/components/Cards/MovieReviewCard';
 import { reviewsClient } from '../Review/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
+import { base64ToImage } from '@/lib/utils';
 
 function MyDetails() {
   const { user, setBio, setAvatarBase64 } = useUserStore((state) => state);
@@ -70,7 +71,7 @@ function MyDetails() {
           });
 
           setBio(bio);
-          if (avatarBase64) setAvatarBase64(avatarBase64);
+          if (avatarBase64) setAvatarBase64(avatarBase64?.split(',')[1]);
         }
       };
 
@@ -102,7 +103,7 @@ function MyDetails() {
               <img
                 src={
                   user?.pictureBase64?.length && user?.pictureBase64?.length > 0
-                    ? user.pictureBase64
+                    ? base64ToImage(user.pictureBase64)
                     : BACKUP_PROFILE
                 }
                 alt="profile-pic"

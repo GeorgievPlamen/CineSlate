@@ -44,6 +44,6 @@ public class RefreshTokenCommandHandler(IUserIdentity userIdentity, IUserReposit
             token,
             user.Id.Value,
             user.Bio ?? "",
-            user.AvatarImageBase64 ?? ""));
+            user.AvatarBase64 ?? ""));
     }
 }
