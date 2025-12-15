@@ -1,4 +1,5 @@
 import { ProblemDetails } from '@/api/errors';
+import { moviesClient } from '@/modules/Movies/api/moviesClient';
 import Watchlist from '@/modules/Watchlist';
 import { watchlistsClient } from '@/modules/Watchlist/api/watchlistClient';
 import { isAuthenticated } from '@/store/userStore';
@@ -7,8 +8,15 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 export const Route = createFileRoute('/watchlist/')({
   loader: async () => {
     try {
-      const watchlist = await watchlistsClient.getWatchlist();
-      console.log(watchlist);
+      const { watchlist } = await watchlistsClient.getWatchlist();
+      const moviesFromWatchlist = await moviesClient.getMoviesInWatchlist();
+
+      const moviesWatchlist = moviesFromWatchlist.map((x) => {
+        const hasWatched = watchlist.find((w) => w.key === x.id)?.value ?? false;
+        return { ...x, hasWatched: hasWatched };
+      });
+
+      return moviesWatchlist;
     } catch (error) {
       const err = error as ProblemDetails;
 

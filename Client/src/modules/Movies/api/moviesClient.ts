@@ -47,4 +47,7 @@ export const moviesClient = {
       `/movies/filter?page=${page}${yearQuery}${genreIdsQuery}`
     );
   },
+
+  getMoviesInWatchlist: async (): Promise<Movie[]> =>
+    apiClient.get('/movies/watchlist'),
 };

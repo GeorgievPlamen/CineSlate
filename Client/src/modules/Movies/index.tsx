@@ -127,12 +127,7 @@ export default function Movies() {
       return;
     }
 
-    try {
-      await addToWatchlistAsync(id);
-    } catch (error) {
-      console.log(error);
-    }
-    console.log('adding to watchlist');
+    await addToWatchlistAsync(id);
   }
 
   const moviesByDropdownItems = [

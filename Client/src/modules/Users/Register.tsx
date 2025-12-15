@@ -20,7 +20,6 @@ function Register() {
     const res = await registerAction(new FormData(e.currentTarget));
 
     if (res.errors) {
-      console.log(errors);
       setErrors(res.errors);
       return;
     }

@@ -1,11 +1,12 @@
 import apiClient from '@/api';
+import { KVP } from '@/common/models/kvp';
 
-interface GetWatchlistResponse {
-  ToWatchMovie: Record<number, boolean>[];
+interface WatchlistResponse {
+  watchlist: KVP<number, boolean>[]
 }
 
 export const watchlistsClient = {
-  getWatchlist: async (): Promise<GetWatchlistResponse> =>
+  getWatchlist: async (): Promise<WatchlistResponse> =>
     apiClient.get('/watchlist/'),
 
   addToWatchlist: async (id: number): Promise<void> =>
