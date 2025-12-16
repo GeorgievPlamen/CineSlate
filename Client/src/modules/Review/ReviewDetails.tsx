@@ -10,6 +10,7 @@ import { moviesClient } from '../Movies/api/moviesClient';
 import { usersClient } from '../Users/api/usersClient';
 import AddComment from './AddComment';
 import { reviewsClient } from './api/reviewsClient';
+import { base64ToImage } from '@/lib/utils';
 
 const { useParams } = getRouteApi('/reviews/$id');
 
@@ -83,7 +84,7 @@ function ReviewDetails() {
                   src={
                     user?.pictureBase64?.length &&
                     user?.pictureBase64?.length > 0
-                      ? user.pictureBase64
+                      ? base64ToImage(user.pictureBase64)
                       : BACKUP_PROFILE
                   }
                   alt="profile-pic"

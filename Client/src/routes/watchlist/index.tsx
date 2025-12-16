@@ -20,7 +20,7 @@ export const Route = createFileRoute('/watchlist/')({
     } catch (error) {
       const err = error as ProblemDetails;
 
-      if (err.status.code === 404) {
+      if (err.status?.code === 404) {
         return [];
       }
     }

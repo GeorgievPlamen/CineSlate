@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Review } from '@/features/Reviews/models/review';
 import Button from '../Buttons/Button';
 import { BACKUP_PROFILE } from '@/config';
 import LikesButton from '../Buttons/LikesButton';
 import { Link } from '@tanstack/react-router';
+import { Review } from '@/modules/Review/models/review';
+import { base64ToImage } from '@/lib/utils';
 
 interface Props {
   review: Review;
@@ -20,7 +21,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
       <img
         src={
           authorPicture && authorPicture.length > 0
-            ? authorPicture
+            ? base64ToImage(authorPicture)
             : BACKUP_PROFILE
         }
         alt="profile-pic"
