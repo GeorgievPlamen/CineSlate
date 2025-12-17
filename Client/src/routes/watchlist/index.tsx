@@ -1,53 +1,38 @@
 import { ProblemDetails } from '@/api/errors';
 import { moviesClient } from '@/modules/Movies/api/moviesClient';
 import Watchlist from '@/modules/Watchlist';
-import { watchlistsClient } from '@/modules/Watchlist/api/watchlistClient';
 import { isAuthenticated } from '@/store/userStore';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/watchlist/')({
-  loader: async ({ context }) => {
-    try {
-      const { watchlist } = await context.queryClient.ensureQueryData({
-        queryKey: ['getWatchlist'],
-        queryFn: () => watchlistsClient.getWatchlist(),
-      });
-
-      const moviesFromWatchlist = await context.queryClient.ensureQueryData({
-        queryKey: ['getMoviesInWatchlist'],
-        queryFn: () => moviesClient.getMoviesInWatchlist(),
-      });
-
-      const moviesWatchlist = moviesFromWatchlist.map((x) => {
-        const hasWatched =
-          watchlist.find((w) => w.key === x.id)?.value ?? false;
-        return { ...x, hasWatched: hasWatched };
-      });
-
-      return moviesWatchlist;
-    } catch (error) {
-      const err = error as ProblemDetails;
-
-      if (err.status?.code === 404) {
-        return [];
-      }
+  beforeLoad: () => {
+    if (!isAuthenticated()) {
+      throw redirect({ to: '/login' });
     }
   },
+  loader: async ({ context }) =>
+    context.queryClient.ensureQueryData({
+      queryKey: ['getMoviesInWatchlist'],
+      queryFn: () => moviesClient.getMoviesInWatchlist(),
+    }),
   component: RouteComponent,
+  errorComponent: (err) => {
+    const error = err.error as unknown as ProblemDetails;
+
+    if (error.status.code === 404) {
+      return (
+        <div className="w-fit mt-12 m-auto flex">
+          <h2 className="font-heading my-4 text-2xl">
+            You have no movies in your watchlist.
+          </h2>
+        </div>
+      );
+    } else {
+      throw err;
+    }
+  },
 });
 
 function RouteComponent() {
-  if (!isAuthenticated())
-    return (
-      <div className="w-full flex justify-center mt-10">
-        <p>
-          <Link to="/login" className="underline">
-            Sign in
-          </Link>{' '}
-          to view your watchlist.
-        </p>
-      </div>
-    );
-
   return <Watchlist />;
 }

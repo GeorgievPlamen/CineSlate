@@ -3,7 +3,7 @@ import ChevronUp from '@/assets/icons/ChevronUp';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Spinner from '@/components/Spinner';
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import ToPagedData from '@/utils/toPagedData';
 import useScroll from '@/hooks/useScroll';
 import { genres } from '@/assets/tmdbGenres.json';
@@ -14,8 +14,6 @@ import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
 import Dropdown from '@/components/Dropdown';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { isAuthenticated } from '@/store/userStore';
-import { watchlistsClient } from '../Watchlist/api/watchlistClient';
 
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 
@@ -72,10 +70,6 @@ export default function Movies() {
     enabled: isFilteringMovies,
   });
 
-  const { mutateAsync: addToWatchlistAsync } = useMutation({
-    mutationFn: (id: number) => watchlistsClient.addToWatchlist(id),
-  });
-
   useEffect(() => {
     if (!nearBottom) return;
 
@@ -119,15 +113,6 @@ export default function Movies() {
     navigate({
       to: '/movies',
     });
-  }
-
-  async function handleAddToWatchlist(id: number) {
-    if (!isAuthenticated()) {
-      navigate({ to: '/watchlist' });
-      return;
-    }
-
-    await addToWatchlistAsync(id);
   }
 
   const moviesByDropdownItems = [
@@ -181,7 +166,6 @@ export default function Movies() {
               rating={m.rating}
               releaseDate={m.releaseDate}
               posterPath={m.posterPath}
-              onAddToWatchlistClick={() => handleAddToWatchlist(m.id)}
             />
           ))}
         {isSearchingMovies &&
@@ -193,7 +177,6 @@ export default function Movies() {
               rating={m.rating}
               releaseDate={m.releaseDate}
               posterPath={m.posterPath}
-              onAddToWatchlistClick={() => handleAddToWatchlist(m.id)}
             />
           ))}
         {isFilteringMovies &&
@@ -205,7 +188,6 @@ export default function Movies() {
               rating={m.rating}
               releaseDate={m.releaseDate}
               posterPath={m.posterPath}
-              onAddToWatchlistClick={() => handleAddToWatchlist(m.id)}
             />
           ))}
       </article>

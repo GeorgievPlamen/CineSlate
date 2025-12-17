@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
@@ -7,13 +7,14 @@ import { IMG_PATH } from '@/config';
 import { useState, useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import AddReview from './AddReview';
-import { getRouteApi, Link } from '@tanstack/react-router';
+import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
 import GenreButton from '@/components/Buttons/GenreButton';
 import ReviewCard from '@/components/Cards/ReviewCard';
 import { reviewsClient } from '@/modules/Review/api/reviewsClient';
 import { Review } from '@/modules/Review/models/review';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import { moviesClient } from '../api/moviesClient';
+import { watchlistsClient } from '@/modules/Watchlist/api/watchlistClient';
 
 const { useParams } = getRouteApi('/movies/$id');
 
@@ -23,11 +24,16 @@ export default function MovieDetails() {
   const [reviewsPage, setReviewsPage] = useState(1);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [authorIds, setAuthorIds] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const { data: usersData } = useQuery({
     queryKey: ['getUsersByIds', authorIds],
     queryFn: () => usersClient.getUsersByIds([...authorIds]),
     enabled: authorIds.length > 0,
+  });
+
+  const { mutateAsync: addToWatchlistAsync } = useMutation({
+    mutationFn: (id: number) => watchlistsClient.addToWatchlist(id),
   });
 
   const { isAuthenticated } = useAuth();
@@ -76,6 +82,15 @@ export default function MovieDetails() {
   if (isError) return <ErrorMessage />;
 
   if (isLoading) return <Loading />;
+
+  async function handleAddToWatchlist(id: number) {
+    if (!isAuthenticated) {
+      navigate({ to: '/watchlist' });
+      return;
+    }
+
+    await addToWatchlistAsync(id);
+  }
 
   return (
     <>
@@ -130,6 +145,14 @@ export default function MovieDetails() {
                 {data?.genres.map((g) => (
                   <GenreButton key={g.id} name={g.value} genreId={g.id} />
                 ))}
+                <div className="w-full flex justify-start">
+                  <Button
+                    onClick={async () => await handleAddToWatchlist(Number(id))}
+                    className="px-2 mt-8"
+                  >
+                    Add to watchlist
+                  </Button>
+                </div>
               </section>
             </section>
           </div>

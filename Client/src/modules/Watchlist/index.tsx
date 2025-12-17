@@ -1,34 +1,31 @@
 import Button from '@/components/Buttons/Button';
 import { IMG_PATH_W500 } from '@/config';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getRouteApi, Link, useRouter } from '@tanstack/react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getRouteApi, Link } from '@tanstack/react-router';
 import { Popcorn } from 'lucide-react';
 import { watchlistsClient } from './api/watchlistClient';
+import Spinner from '@/components/Spinner';
 
 const routeApi = getRouteApi('/watchlist/');
 
 export default function Watchlist() {
   const watchlist = routeApi.useLoaderData();
   const queryClient = useQueryClient();
-  const router = useRouter();
+
+  const { data: watchlistWatched, isLoading } = useQuery({
+    queryKey: ['getWatchlist'],
+    queryFn: () => watchlistsClient.getWatchlist(),
+  });
 
   const { mutateAsync } = useMutation({
     mutationFn: (movieId: number) => watchlistsClient.setWatched(movieId, true),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['getWatchlist'] }),
-        queryClient.invalidateQueries({
-          queryKey: ['getMoviesInWatchlist'],
-        }),
-      ]);
-
-      await router.invalidate();
-    },
+    onSuccess: async () =>
+      queryClient.invalidateQueries({ queryKey: ['getWatchlist'] }),
   });
 
   return (
     // TODO set watched
-    <section className="flex flex-col m-auto items-center justify-cente w-5/6 max-w-160 gap-6">
+    <section className="flex flex-col m-auto items-center justify-cente w-5/6 max-w-160 gap-6 mb-14">
       <div className="flex items-center gap-2">
         <h2 className="font-heading my-4 text-2xl">Movies To Watch</h2>
         <Popcorn />
@@ -62,8 +59,11 @@ export default function Watchlist() {
               </div>
             </div>
             <div className="h-full flex items-end justify-between">
-              {w.hasWatched ? (
-                <p>Already watched</p>
+              {isLoading ? (
+                <Spinner />
+              ) : watchlistWatched?.watchlist.find((x) => x.key === w.id)
+                  ?.value ? (
+                <p className="text-sm text-muted-foreground">Already watched</p>
               ) : (
                 <Button className="px-2" onClick={() => mutateAsync(w.id)}>
                   Watched?

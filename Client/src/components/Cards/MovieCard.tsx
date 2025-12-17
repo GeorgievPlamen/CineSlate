@@ -1,7 +1,5 @@
 import { IMG_PATH_W500 } from '@/config';
-import SquarePlusIcon from '@/Icons/SquarePlusIcon';
 import { Link } from '@tanstack/react-router';
-import Tooltip from '../Tooltip/Tooltip';
 
 interface Props {
   title: string;
@@ -9,7 +7,6 @@ interface Props {
   releaseDate: Date;
   id: number;
   rating: number;
-  onAddToWatchlistClick: () => Promise<void>;
 }
 
 export default function MovieCard({
@@ -18,11 +15,10 @@ export default function MovieCard({
   releaseDate,
   id,
   rating,
-  onAddToWatchlistClick,
 }: Props) {
   return (
     <article
-      className="mx-auto relative flex w-60 flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
+      className="mx-auto pb-2 relative flex w-60 flex-col rounded-lg border border-grey bg-background shadow shadow-dark hover:border-primary active:border-opacity-80"
       id={`${id}`}
     >
       <Link
@@ -43,14 +39,6 @@ export default function MovieCard({
         <p className="mx-2 flex h-full items-center font-heading text-lg">
           {title}
         </p>
-        <button
-          onClick={onAddToWatchlistClick}
-          className="mr-1 text-primary hover:text-primary-hover active:text-primary-active z-10"
-        >
-          <Tooltip content="Add to watchlist">
-            <SquarePlusIcon />
-          </Tooltip>
-        </button>
       </div>
     </article>
   );
