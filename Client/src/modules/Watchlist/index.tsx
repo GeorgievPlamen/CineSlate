@@ -1,12 +1,30 @@
 import Button from '@/components/Buttons/Button';
 import { IMG_PATH_W500 } from '@/config';
-import { getRouteApi, Link } from '@tanstack/react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getRouteApi, Link, useRouter } from '@tanstack/react-router';
 import { Popcorn } from 'lucide-react';
+import { watchlistsClient } from './api/watchlistClient';
 
 const routeApi = getRouteApi('/watchlist/');
 
 export default function Watchlist() {
   const watchlist = routeApi.useLoaderData();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { mutateAsync } = useMutation({
+    mutationFn: (movieId: number) => watchlistsClient.setWatched(movieId, true),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['getWatchlist'] }),
+        queryClient.invalidateQueries({
+          queryKey: ['getMoviesInWatchlist'],
+        }),
+      ]);
+
+      await router.invalidate();
+    },
+  });
 
   return (
     // TODO set watched
@@ -44,7 +62,13 @@ export default function Watchlist() {
               </div>
             </div>
             <div className="h-full flex items-end justify-between">
-              <Button className="px-2">Watched?</Button>
+              {w.hasWatched ? (
+                <p>Already watched</p>
+              ) : (
+                <Button className="px-2" onClick={() => mutateAsync(w.id)}>
+                  Watched?
+                </Button>
+              )}
               <p className="text-xs text-muted-foreground">
                 Added on: <span className="text-foreground">2024-05-05</span>
               </p>

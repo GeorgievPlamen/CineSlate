@@ -4,9 +4,14 @@ import Header from '@/modules/Layout/Header';
 import Main from '@/modules/Layout/Main';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import { useUserStore } from '@/store/userStore';
-import { createRootRoute } from '@tanstack/react-router';
+import { QueryClient } from '@tanstack/react-query';
+import { createRootRouteWithContext } from '@tanstack/react-router';
 
-export const Route = createRootRoute({
+export interface RouterContext {
+  queryClient: QueryClient;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async () => {
     const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 

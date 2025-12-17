@@ -10,8 +10,8 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const router = createRouter({ routeTree });
 const queryClient = new QueryClient();
+const router = createRouter({ routeTree, context: { queryClient } });
 const rootElement = document.getElementById('root')!;
 
 if (!rootElement.innerHTML) {

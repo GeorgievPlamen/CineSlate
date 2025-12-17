@@ -6,13 +6,21 @@ import { isAuthenticated } from '@/store/userStore';
 import { createFileRoute, Link } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/watchlist/')({
-  loader: async () => {
+  loader: async ({ context }) => {
     try {
-      const { watchlist } = await watchlistsClient.getWatchlist();
-      const moviesFromWatchlist = await moviesClient.getMoviesInWatchlist();
+      const { watchlist } = await context.queryClient.ensureQueryData({
+        queryKey: ['getWatchlist'],
+        queryFn: () => watchlistsClient.getWatchlist(),
+      });
+
+      const moviesFromWatchlist = await context.queryClient.ensureQueryData({
+        queryKey: ['getMoviesInWatchlist'],
+        queryFn: () => moviesClient.getMoviesInWatchlist(),
+      });
 
       const moviesWatchlist = moviesFromWatchlist.map((x) => {
-        const hasWatched = watchlist.find((w) => w.key === x.id)?.value ?? false;
+        const hasWatched =
+          watchlist.find((w) => w.key === x.id)?.value ?? false;
         return { ...x, hasWatched: hasWatched };
       });
 
