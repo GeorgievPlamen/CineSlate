@@ -6,12 +6,20 @@ import {
 } from '../models/review';
 import apiClient from '@/api';
 
+export enum ReviewsBy {
+  Latest = 'Latest',
+  Popular = 'Popular',
+}
+
 export const reviewsClient = {
   getReviewsByAuthorId: async (
     id: string,
     page: number
   ): Promise<Paged<ReviewWithMovieDetailsResponse>> =>
     apiClient.get(`/reviews/user/${id}?page=${page}`),
+
+  reviewsBy: async (page: number, by: ReviewsBy): Promise<Paged<Review>> =>
+    apiClient.get(`reviews/?page=${page}&reviewsBy=${by}`),
 
   reviewDetailsById: async (reviewId: string): Promise<ReviewDetails> =>
     apiClient.get(`reviews/details/${reviewId}`),
