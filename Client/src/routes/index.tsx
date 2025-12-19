@@ -15,7 +15,15 @@ export const Route = createFileRoute('/')({
       queryFn: () => reviewsClient.reviewsBy(1, ReviewsBy.Latest),
     });
 
-    return { movies, reviews };
+    const randomId = Number((Math.random() * 19).toFixed());
+    const randomMovieId = movies[randomId].id;
+
+    const { backdropPath } = await context.queryClient.ensureQueryData({
+      queryKey: ['movie-details-home', randomMovieId],
+      queryFn: () => moviesClient.getMovieDetails(`${randomMovieId}`),
+    });
+
+    return { movies, reviews, backdropPath };
   },
   component: Index,
 });

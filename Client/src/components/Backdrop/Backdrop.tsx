@@ -16,8 +16,8 @@ export default function Backdrop({ path }: Props) {
           alt="backdrop"
           style={{ backgroundSize: ' ' }}
           className={
-            'transition-opacity duration-500 ' +
-            (loaded ? 'opacity-50' : 'opacity-0')
+            'transition-opacity duration-500 object-contain ' +
+            (loaded ? 'opacity-65' : 'opacity-0')
           }
           onLoad={() => setLoaded(true)}
         />
