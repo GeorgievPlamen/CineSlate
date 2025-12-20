@@ -1,0 +1,93 @@
+import Button from '@/components/Buttons/Button';
+import { BACKUP_PROFILE } from '@/config';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import appContants from '@/common/appConstants';
+import ToPagedData from '@/utils/toPagedData';
+import { getRouteApi } from '@tanstack/react-router';
+import MovieReviewByAuthorCard from '@/components/Cards/MovieReviewByAuthorCard';
+import { reviewsClient } from '@/modules/Review/api/reviewsClient';
+import { usersClient } from '@/modules/Users/api/usersClient';
+import { base64ToImage } from '@/lib/utils';
+
+const { useParams } = getRouteApi('/critics/$id');
+
+function CriticDetails() {
+  const { id } = useParams();
+
+  const { data } = useQuery({
+    queryKey: ['getUsersByIds', id],
+    queryFn: () => usersClient.getUsersByIds([id ?? '']),
+    enabled: !!id,
+    staleTime: appContants.STALE_TIME,
+  });
+
+  const {
+    data: reviewsData,
+    fetchNextPage,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ['reviewByAuthorId', id],
+    queryFn: ({ pageParam }) =>
+      reviewsClient.getReviewsByAuthorId(id ?? '', pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.currentPage + 1,
+    select: (data) => ToPagedData(data),
+    enabled: !!id,
+  });
+
+  const critic = data?.[0];
+
+  return (
+    <article className="m-auto flex w-2/3 flex-col items-center">
+      <section className="mt-5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex gap-2">
+            <img
+              src={
+                critic?.pictureBase64?.length &&
+                critic?.pictureBase64?.length > 0
+                  ? base64ToImage(critic.pictureBase64)
+                  : BACKUP_PROFILE
+              }
+              alt="profile-pic"
+              className="h-32 w-32 rounded-full object-cover"
+            />
+            <div className="flex flex-col">
+              <h2 className="font-heading mt-5 text-xl">
+                {critic?.username.split('#')[0]}
+              </h2>
+              <p className="font-primary text-muted-foreground text-sm">
+                {critic?.bio}
+              </p>
+            </div>
+          </div>
+          <div className="p-2">
+            <p className="font-heading text-center text-lg">
+              {reviewsData?.totalCount}
+            </p>
+            <p className="text-muted-foreground text-xs font-light">Reviews</p>
+          </div>
+        </div>
+      </section>
+      <section className="m-auto w-2/3">
+        <h3 className="font-heading my-4 ml-2 text-lg">Recent Reviews</h3>
+        <div className="mb-20 flex flex-col gap-6">
+          {reviewsData?.values.map((r) => (
+            <MovieReviewByAuthorCard key={r.movieId} review={r} />
+          ))}
+          {reviewsData?.hasNextPage && (
+            <Button
+              onClick={fetchNextPage}
+              className="w-fit px-10 self-center"
+              isLoading={isFetching}
+            >
+              Load More
+            </Button>
+          )}
+        </div>
+      </section>
+    </article>
+  );
+}
+
+export default CriticDetails;

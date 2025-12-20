@@ -32,7 +32,7 @@ public static class ReviewsEndpoint
     {
         var reviews = app.MapGroup(Uri).RequireAuthorization();
 
-        reviews.MapGet(Get, GetReviewsAsync);
+        reviews.MapGet(Get, GetReviewsAsync).AllowAnonymous();
         reviews.MapGet("/{movieId}", GetReviewsByMovieIdAsync).AllowAnonymous();
         reviews.MapGet("/details/{reviewId}", GetReviewDetailsByIdAsync).AllowAnonymous();
         reviews.MapGet("/own/{movieId}", GetOwnedReviewsByMovieIdAsync);

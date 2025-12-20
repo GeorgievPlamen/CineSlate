@@ -1,7 +1,6 @@
 using Domain.Users;
 using Domain.Users.ValueObjects;
 using Domain.Watchlist.ValueObjects;
-
 using Infrastructure.Database.Models;
 
 namespace Infrastructure.Repositories.MappingExtensions;
@@ -34,7 +33,7 @@ public static class UserMappings
                model.Roles);
 
         if (model.AvatarBlob is not null)
-            user.UpdateProfilePicture($"data:image/jpeg;base64,{Convert.ToBase64String(model.AvatarBlob)}");
+            user.UpdateProfilePicture(Convert.ToBase64String(model.AvatarBlob));
 
         return user;
     }

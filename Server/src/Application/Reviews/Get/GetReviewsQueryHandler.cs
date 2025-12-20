@@ -1,5 +1,4 @@
 using Application.Common;
-using Application.Common.Context;
 using Application.Common.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
@@ -12,9 +11,13 @@ public class GetReviewsQueryHandler(IReviewRepository reviewRepository, IUserRep
 {
     public async Task<Result<Paged<ReviewResponse>>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
-        var pagedReviews = await reviewRepository.GetReviewsAsync(request.Page, request.ReviewsBy, Paged.DefaultSize, cancellationToken);
+        var pagedReviews = await reviewRepository.GetReviewsAsync(
+            request.Page,
+            request.ReviewsBy,
+            Paged.DefaultSize, cancellationToken);
 
-        var users = await userRepository.GetManyByIdAsync(pagedReviews.Values.Select(r => r.Author), cancellationToken);
+        var users = await userRepository.GetManyByIdAsync(
+            pagedReviews.Values.Select(r => r.Author), cancellationToken);
 
         var userId = appContext.GetUserId();
 

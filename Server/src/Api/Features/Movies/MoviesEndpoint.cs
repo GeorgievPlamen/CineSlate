@@ -1,9 +1,4 @@
-
-
-
-
 using Api.Common;
-
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Details;
@@ -11,7 +6,6 @@ using Application.Movies.FromWatchlist;
 using Application.Movies.GetMoviesByFilters;
 using Application.Movies.GetMoviesByTitle;
 using Application.Movies.PagedMoviesQuery;
-
 using MediatR;
 
 namespace Api.Features.Movies;

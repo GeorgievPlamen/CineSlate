@@ -1,9 +1,9 @@
 @Api_HostAddress = http://localhost:5000/api/
-# @Api_HostAddress = http://localhost:8080/api/ 
+# @Api_HostAddress = http://localhost:8080/api/
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmYjNhOWJhZi1jY2Q5LTRhNzktODFhMC1hZDI5MTQ1ZWU2YzAiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huIERvZTExMiNmYjNhOSIsImp0aSI6ImVjYzAzZTYyLTA5MjktNGRjYi1hNTRmLTM5ZjRjMGZhZDAxNCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NDMzMjM4NzQsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.tW_ESwH4KqIBifwSKS8wxpIIsWRqhmurPbGHSqzeCUM
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZmNmN2NkYS1jYTI5LTQyMjgtYWQ0MC1lOTc2NzU4ODNhMzgiLCJlbWFpbCI6ImpvaG5AdGVzdC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb2huI2JmY2Y3IiwianRpIjoiZDc4NmQ0YzItZWIzOC00OTE2LWI2NWUtOTA4YTY0Njc3MmU4IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc2NTYyMTcyOCwiaXNzIjoiQ2luZVNsYXRlIiwiYXVkIjoiQ2luZVNsYXRlIn0.nyhdEW7VBa-GUMKSoUAv2-KIVvC8LqlkBTDZvKBlklo
 
 ### Login Success
 
@@ -12,7 +12,7 @@ content-type: application/json
 
 {
     "email": "john@test.com",
-    "password": "SuperS3cre7!"
+    "password": "Testing123!"
 }
 
 ### Login Fail
@@ -116,7 +116,7 @@ Authorization: {{Token}}
 
 ### Review Latest 
 
-GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
+GET {{Api_HostAddress}}reviews/?page=2 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
@@ -192,7 +192,7 @@ Authorization: {{Token}}
 
 ### Watchlist - Add
 
-POST {{Api_HostAddress}}watchlist/822119 HTTP/1.1
+POST {{Api_HostAddress}}watchlist/1084242 HTTP/1.1
 Content-Type: application/json
 Authorization: {{Token}}
 

@@ -24,8 +24,8 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .Include(r => r.Movie)
             .Include(r => r.Likes)
             .OrderBy(r => r.CreatedAt)
-            .Take(count)
             .Skip(count * (page - 1))
+            .Take(count)
             .ToListAsync(cancellationToken);
 
         var total = await dbContext.Reviews.CountAsync(cancellationToken);
@@ -46,8 +46,8 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .Include(r => r.Likes)
             .Where(r => r.Movie.Id == movieId.Value)
             .OrderBy(r => r.CreatedAt)
-            .Take(count)
             .Skip(count * (page - 1))
+            .Take(count)
             .ToListAsync(cancellationToken);
 
         var total = await dbContext.Reviews
@@ -70,8 +70,8 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
             .Include(r => r.Likes)
             .Where(r => r.AuthorId == userId.Value)
             .OrderByDescending(r => r.UpdatedAt)
-            .Take(count)
             .Skip(count * (page - 1))
+            .Take(count)
             .ToListAsync(cancellationToken);
 
         var total = await dbContext.Reviews
