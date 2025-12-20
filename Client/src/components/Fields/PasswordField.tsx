@@ -1,8 +1,8 @@
-import { EyeIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import ValidationError from '../ValidationError';
 import { UserFieldErrorProps } from './UserFieldErrorProps';
 import { userErrors } from '@/modules/Users/Models/userErrors';
+import { EyeIcon } from 'lucide-react';
 
 interface Props extends UserFieldErrorProps {
   readonly isConfirmPassword?: boolean;

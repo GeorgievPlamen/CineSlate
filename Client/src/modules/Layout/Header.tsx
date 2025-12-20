@@ -1,6 +1,5 @@
 import CineSlateLogo from '@/assets/images/cineslateLogo.png';
 import { useCallback, useEffect, useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import { useUserStore } from '@/store/userStore';
 import useDebounce from '@/hooks/useDebounce';
 import { Link, useNavigate } from '@tanstack/react-router';
@@ -9,6 +8,7 @@ import BarsIcon from '@/Icons/BarsIcon';
 import Dropdown from '@/components/Dropdown';
 import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
+import { Search } from 'lucide-react';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -62,7 +62,7 @@ function Header() {
               navigateToMovies();
             }}
           />
-          <MagnifyingGlassIcon
+          <Search
             onClick={navigateToMovies}
             className="absolute right-2 size-6 cursor-pointer rounded-full bg-foreground text-gray-400"
           />
