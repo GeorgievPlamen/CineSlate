@@ -4,7 +4,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import appContants from '@/common/appConstants';
 import ToPagedData from '@/utils/toPagedData';
 import { getRouteApi } from '@tanstack/react-router';
-import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import MovieReviewByAuthorCard from '@/components/Cards/MovieReviewByAuthorCard';
 import { reviewsClient } from '@/modules/Review/api/reviewsClient';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import { base64ToImage } from '@/lib/utils';
@@ -73,7 +73,7 @@ function CriticDetails() {
         <h3 className="font-heading my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviewsData?.values.map((r) => (
-            <MovieReviewCard key={r.movieId} review={r} />
+            <MovieReviewByAuthorCard key={r.movieId} review={r} />
           ))}
           {reviewsData?.hasNextPage && (
             <Button

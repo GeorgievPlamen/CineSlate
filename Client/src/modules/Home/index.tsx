@@ -1,6 +1,6 @@
 import Backdrop from '@/components/Backdrop/Backdrop';
 import MovieCard from '@/components/Cards/MovieCard';
-import ReviewCard from '@/components/Cards/ReviewCard';
+import MovieReviewCard from '@/components/Cards/MovieReviewCard';
 import {
   Carousel,
   CarouselContent,
@@ -8,33 +8,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { useUserStore } from '@/store/userStore';
-import { getRouteApi, Link } from '@tanstack/react-router';
+import { getRouteApi } from '@tanstack/react-router';
 import AutoScroll from 'embla-carousel-auto-scroll';
 
 const route = getRouteApi('/');
 function Home() {
-  const user = useUserStore((state) => state.user);
   const { movies, reviews, backdropPath } = route.useLoaderData();
 
-  console.log(movies);
-  console.log(reviews);
-
-  // TODO MovieReviewCard
-  // TODO pick one of the movies at random and use the background image
-  // TODO smaller text
   return (
     <div className="mx-auto">
       <Backdrop path={backdropPath} />
       <div className="flex flex-col items-center justify-center rounded-xl p-8">
         <div className="max-w-4xl">
-          <h1 className="font-heading text-primary mb-8 text-center text-3xl font-bold md:text-4xl">
+          <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
             Find Your Next Favorite Movie Instantly! 🍿
           </h1>
 
           <section className="mb-8">
-            <p className="text-muted-foreground mb-4 text-lg">
-              <span className="font-heading text-secondary text-xl font-bold italic">
+            <p className="text-muted-foreground mb-4">
+              <span className="font-heading text-secondary text-lg font-bold italic">
                 Welcome to CineSlate
               </span>{' '}
               , the fastest and easiest way to discover great movies to watch!
@@ -99,8 +91,8 @@ function Home() {
             </Carousel>
           </section>
           <section className="mb-12">
-            <p className="text-muted-foreground mb-4 text-lg">
-              <span className="font-heading text-secondary text-xl font-bold italic">
+            <p className="text-muted-foreground mb-4 text">
+              <span className="font-heading text-secondary text-lg font-bold italic">
                 Everyone's a Critic
               </span>{' '}
               – Share Your Voice! CineSlate is powered by movie lovers like you!
@@ -134,9 +126,9 @@ function Home() {
                 {reviews.map((r, index) => (
                   <CarouselItem
                     key={index}
-                    className="md:basis-1/2 lg:basis-1/3"
+                    className="md:basis-1/2 lg:basis-2/3"
                   >
-                    <ReviewCard review={r} />
+                    <MovieReviewCard review={r} />
                   </CarouselItem>
                 ))}
               </CarouselContent>

@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import UploadIcon from '../../Icons/UploadIcon';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useUserStore } from '@/store/userStore';
-import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import MovieReviewByAuthorCard from '@/components/Cards/MovieReviewByAuthorCard';
 import { reviewsClient } from '../Review/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
 import { base64ToImage } from '@/lib/utils';
@@ -157,7 +157,7 @@ function MyDetails() {
         <h3 className="font-heading my-4 ml-2 text-lg">Recent Reviews</h3>
         <div className="mb-20 flex flex-col gap-6">
           {reviews?.map((r) => (
-            <MovieReviewCard key={r.movieId} review={r} />
+            <MovieReviewByAuthorCard key={r.movieId} review={r} />
           ))}
           {reviewsData?.pages[reviewsData.pages.length - 1]?.hasNextPage && (
             <Button
