@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '../../components/Buttons/Button';
 import { BACKUP_PROFILE } from '../../config';
 import EditIcon from '../../Icons/EditIcon';
-import { CheckIcon } from '@heroicons/react/16/solid';
 import TextField from '../../components/Fields/TextField';
 import { useForm } from 'react-hook-form';
 import { UserModel } from './models/UserModel';
@@ -14,6 +13,7 @@ import MovieReviewByAuthorCard from '@/components/Cards/MovieReviewByAuthorCard'
 import { reviewsClient } from '../Review/api/reviewsClient';
 import { usersClient } from '../Users/api/usersClient';
 import { base64ToImage } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
 function MyDetails() {
   const { user, setBio, setAvatarBase64 } = useUserStore((state) => state);
@@ -126,7 +126,7 @@ function MyDetails() {
               className="absolute bottom-1 left-24 min-h-8 min-w-8"
               onClick={handleEdit}
             >
-              {editing ? <CheckIcon /> : <EditIcon />}
+              {editing ? <Check /> : <EditIcon />}
             </Button>
             <div className="flex flex-col">
               <h2 className="font-heading mt-5 mb-2 min-w-44 text-xl">
