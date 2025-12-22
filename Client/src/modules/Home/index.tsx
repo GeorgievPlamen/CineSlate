@@ -19,7 +19,7 @@ function Home() {
     <div className="mx-auto">
       <Backdrop path={backdropPath} />
       <div className="flex flex-col items-center justify-center rounded-xl p-8">
-        <div className="max-w-4xl">
+        <div className="max-w-4xl w-80 md:w-full">
           <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
             Find Your Next Favorite Movie Instantly! 🍿
           </h1>
@@ -74,10 +74,7 @@ function Home() {
             >
               <CarouselContent className="-ml-1">
                 {movies.map((m) => (
-                  <CarouselItem
-                    key={m.id}
-                    className="md:basis-1/2 lg:basis-1/3"
-                  >
+                  <CarouselItem key={m.id} className="basis-1/1 md:basis-1/3">
                     <MovieCard
                       id={m.id}
                       posterPath={m.posterPath}
@@ -119,15 +116,12 @@ function Home() {
                 Keep up with your favorite reviewers and recommendations.
               </li>
             </ul>
-            <Carousel className="w-full">
+            <Carousel className="w-full hidden md:block">
               <CarouselPrevious />
               <CarouselNext />
               <CarouselContent className="-ml-1">
                 {reviews.map((r, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="md:basis-1/2 lg:basis-2/3"
-                  >
+                  <CarouselItem key={index} className="lg:basis-6/10 basis-3/4">
                     <MovieReviewCard review={r} />
                   </CarouselItem>
                 ))}
