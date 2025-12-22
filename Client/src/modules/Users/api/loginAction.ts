@@ -14,7 +14,6 @@ export async function loginAction(input: FormData): Promise<UserResponse> {
     const user = await usersClient.login(input);
 
     localStorage.setItem(LOCAL_JWT, user?.token ?? '');
-
     localStorage.setItem(LOCAL_REFRESH, user?.refreshToken ?? '');
 
     return { user };

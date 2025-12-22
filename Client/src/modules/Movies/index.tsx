@@ -199,36 +199,34 @@ export default function Movies() {
           <ErrorMessage />
         )}
         {(isDefaultMovies && data?.currentPage && data?.currentPage > 5) ||
-          (isSearchingMovies &&
-            searchedMovies?.currentPage &&
-            searchedMovies?.currentPage > 5) ||
-          (isFilteringMovies &&
-            filteredMovies?.currentPage &&
-            filteredMovies?.currentPage > 5 && (
-              <Button
-                onClick={() => {
-                  if (isDefaultMovies && data?.hasNextPage) {
-                    fetchNextPage();
-                  }
+        (isSearchingMovies &&
+          searchedMovies?.currentPage &&
+          searchedMovies?.currentPage > 5) ||
+        (isFilteringMovies &&
+          filteredMovies?.currentPage &&
+          filteredMovies?.currentPage > 5) ? (
+          <Button
+            onClick={() => {
+              if (isDefaultMovies && data?.hasNextPage) {
+                fetchNextPage();
+              }
 
-                  if (isFilteringMovies && filteredMovies?.hasNextPage) {
-                    fetchNextPageByFilters();
-                  }
+              if (isFilteringMovies && filteredMovies?.hasNextPage) {
+                fetchNextPageByFilters();
+              }
 
-                  if (isSearchingMovies && searchedMovies?.hasNextPage) {
-                    fetchNextPageByTitle();
-                  }
-                }}
-                className="w-fit px-10"
-                isLoading={
-                  isFetching ||
-                  isFilteredMoviesFetching ||
-                  isSearchedMoviesFetching
-                }
-              >
-                Load More
-              </Button>
-            ))}
+              if (isSearchingMovies && searchedMovies?.hasNextPage) {
+                fetchNextPageByTitle();
+              }
+            }}
+            className="w-fit px-10"
+            isLoading={
+              isFetching || isFilteredMoviesFetching || isSearchedMoviesFetching
+            }
+          >
+            Load More
+          </Button>
+        ) : null}
       </div>
       {beyondScreen && (
         <button
