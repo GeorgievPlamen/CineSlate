@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CINESLATE_API_URL, LOCAL_JWT } from '@/config';
+import { CINESLATE_API_URL, LOCAL_JWT, LOCAL_REFRESH } from '@/config';
 import { useUserStore } from '../store/userStore';
 import { User } from '@/modules/Users/Models/userType';
 
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
 );
 
 async function GetRefreshToken(): Promise<string | null> {
-  const { refreshToken } = useUserStore.getState().user;
+  const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
   if (!refreshToken) return null;
 
