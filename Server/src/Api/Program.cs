@@ -2,6 +2,7 @@ using Api.Common;
 using Api.Extensions;
 using Api.Features.Admin;
 using Api.Features.Movies;
+using Api.Features.Notifications;
 using Api.Features.Reviews;
 using Api.Features.Users;
 using Api.Features.Watchlist;
@@ -59,7 +60,7 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
-// builder.Services.AddSignalR().AddJsonProtocol();
+builder.Services.AddSignalR();
 
 var appConfig = builder.Configuration.GetSection("App").Get<App>();
 if (appConfig != null)
@@ -109,6 +110,8 @@ app.MapMovies();
 app.MapReviews();
 app.MapAdmin();
 app.MapWatchlist();
+
+app.MapHub<NotificationHub>("/notifications");
 
 await app.UpdatePendingMigrations();
 
