@@ -59,6 +59,7 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
+// builder.Services.AddSignalR().AddJsonProtocol();
 
 var appConfig = builder.Configuration.GetSection("App").Get<App>();
 if (appConfig != null)

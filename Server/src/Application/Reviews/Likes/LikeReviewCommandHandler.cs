@@ -4,6 +4,7 @@ using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 
 using Domain.Movies.Reviews.Errors;
+using Domain.Movies.Reviews.Events;
 using Domain.Movies.Reviews.ValueObjects;
 using Domain.Users.Errors;
 
@@ -14,6 +15,7 @@ namespace Application.Reviews.Likes;
 public class LikeReviewCommandHandler(
     IReviewRepository reviewRepository,
     IUserRepository userRepository,
+    IPublisher publisher,
     IAppContext appContext) : IRequestHandler<LikeReviewCommand, Result<ReviewResponse>>
 {
     public async Task<Result<ReviewResponse>> Handle(LikeReviewCommand request, CancellationToken cancellationToken)
@@ -26,17 +28,25 @@ public class LikeReviewCommandHandler(
             return Result<ReviewResponse>.Failure(ReviewErrors.NotFound(request.ReviewId));
 
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
-        
+
         if (user is null)
             return Result<ReviewResponse>.Failure(UserErrors.NotFound());
 
         var matchedLike = review.Likes.FirstOrDefault(x => x.FromUserId == userId);
         var hasUserLiked = false;
 
+        var publishTask = Task.CompletedTask;
+
         if (matchedLike is null)
         {
             review.AddLikes([Like.Create(userId, user.Username)]);
             hasUserLiked = true;
+            publishTask = publisher.Publish(
+                new LikedReviewEvent(
+                    user.Id.Value,
+                    user.Username.Value,
+                    review.Author.Value),
+                cancellationToken);
         }
         else
         {
@@ -44,6 +54,7 @@ public class LikeReviewCommandHandler(
         }
 
         await reviewRepository.UpdateLikesAsync(request.ReviewId, [.. review.Likes], cancellationToken);
+        await publishTask;
 
         return Result<ReviewResponse>.Success(review.ToResponse(user.Username.OnlyName, hasUserLiked));
     }

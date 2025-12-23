@@ -8,7 +8,7 @@ import BarsIcon from '@/Icons/BarsIcon';
 import Dropdown from '@/components/Dropdown';
 import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
-import { Search } from 'lucide-react';
+import { Bell, Search } from 'lucide-react';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -108,6 +108,9 @@ function Header() {
             </Link>
           </li>
         </ul>
+        <div>
+          <Bell />
+        </div>
         {user?.username?.length > 0 ? (
           <Dropdown items={DropdownItems}>
             <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
@@ -151,6 +154,7 @@ function Header() {
             }}
           />
         </div>
+        <Bell />
         <Dropdown items={getMobileDropdownMenuItems(user)}>
           <div className='className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full"'>
             <BarsIcon />
