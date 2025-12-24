@@ -1,13 +1,13 @@
+using Application.Common.Interfaces;
 using Domain.Movies.Reviews.Events;
-
 using MediatR;
 
 namespace Application.Reviews.Likes;
 
-public class LikedReviewHandler : INotificationHandler<LikedReviewEvent>
+public class LikedReviewHandler(INotifier notifier) : INotificationHandler<LikedReviewEvent>
 {
-    public Task Handle(LikedReviewEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(LikedReviewEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await notifier.NotifyUser(notification.UserId, "notify", "someone liked your review");
     }
 }

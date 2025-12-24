@@ -12,6 +12,7 @@ using Infrastructure.Common;
 using Infrastructure.Common.Models;
 using Infrastructure.Database;
 using Infrastructure.MovieClient;
+using Infrastructure.Notifier;
 using Infrastructure.Repositories;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,6 +67,7 @@ public static class InfrastructureServices
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<INotifier, SignalRNotifier>();
 
         return services;
     }

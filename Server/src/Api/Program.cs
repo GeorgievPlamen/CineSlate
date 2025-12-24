@@ -12,7 +12,6 @@ using Application;
 using Application.Common.Tracing;
 
 using Infrastructure;
-using Infrastructure.Common.Models;
 
 using Microsoft.Extensions.Options;
 
@@ -111,7 +110,7 @@ app.MapReviews();
 app.MapAdmin();
 app.MapWatchlist();
 
-app.MapHub<NotificationHub>("/notifications");
+app.MapHub<Infrastructure.NotificationHub>("/notifications");
 
 await app.UpdatePendingMigrations();
 

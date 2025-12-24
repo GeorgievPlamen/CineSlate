@@ -17,15 +17,22 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
     if (!refreshToken) return;
 
-    const user = await usersClient.refresh(refreshToken);
+    try {
+      const user = await usersClient.refresh(refreshToken);
 
-    if (!user?.refreshToken) {
+      console.log(user);
+
+      if (!user?.refreshToken) {
+        localStorage.removeItem(LOCAL_REFRESH);
+        return;
+      }
+
+      localStorage.setItem(LOCAL_REFRESH, user.refreshToken);
+      useUserStore.setState(() => ({ user: user }));
+    } catch (err) {
       localStorage.removeItem(LOCAL_REFRESH);
-      return;
+      console.log(err);
     }
-
-    localStorage.setItem(LOCAL_REFRESH, user.refreshToken);
-    useUserStore.setState(() => ({ user: user }));
   },
   component: RootComponent,
 });

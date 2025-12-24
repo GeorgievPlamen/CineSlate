@@ -1,4 +1,4 @@
-export const CINESLATE_API_URL = 'http://localhost:8080/api/';
+export const CINESLATE_API_URL = 'http://localhost:5000/api/';
 export const LOCAL_JWT = 'JWT';
 export const LOCAL_REFRESH = 'refresh-token';
 export const IMG_PATH_W500 = 'https://image.tmdb.org/t/p/w500';

@@ -14,6 +14,7 @@ import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
 import Dropdown from '@/components/Dropdown';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import signalR from '@/common/signalR';
 
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 
@@ -107,6 +108,15 @@ export default function Movies() {
     searchedMovies?.currentPage,
     searchedMovies?.hasNextPage,
   ]);
+
+  useEffect(() => {
+    signalR.init();
+    (async () => await signalR.start())();
+
+    signalR.on('notify', (args) => {
+      console.log(args);
+    });
+  }, []);
 
   function handleSelectMoviesBy(moviesBy: MoviesBy) {
     setMoviesBy(moviesBy);

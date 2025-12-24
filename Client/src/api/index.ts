@@ -25,7 +25,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response?.data,
   async (error) => {
-    if (error?.status === 401) {
+    if (error?.status === 401 && error.config._retry === false) {
       const token = await GetRefreshToken();
 
       if (!token) return;
