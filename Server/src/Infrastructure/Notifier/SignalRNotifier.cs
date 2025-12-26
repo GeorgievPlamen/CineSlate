@@ -9,6 +9,9 @@ public class SignalRNotifier(IHubContext<NotificationHub> hubContext) : INotifie
 
     public async Task NotifyUser(Guid userId, string topic, object args)
     {
-        await hubContext.Clients.All.SendAsync(topic, args);
+        var user = hubContext.Clients.User(userId.ToString());
+
+        await user.SendAsync(topic, args);
+        // await hubContext.Clients.All.SendAsync(topic, args);
     }
 }
