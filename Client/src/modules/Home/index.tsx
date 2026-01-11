@@ -116,17 +116,22 @@ function Home() {
                 Keep up with your favorite reviewers and recommendations.
               </li>
             </ul>
-            <Carousel className="w-full hidden md:block">
-              <CarouselPrevious />
-              <CarouselNext />
-              <CarouselContent className="-ml-1">
-                {reviews.map((r, index) => (
-                  <CarouselItem key={index} className="lg:basis-6/10 basis-3/4">
-                    <MovieReviewCard review={r} />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+            {reviews.length > 0 && (
+              <Carousel className="w-full hidden md:block">
+                <CarouselPrevious />
+                <CarouselNext />
+                <CarouselContent className="-ml-1">
+                  {reviews.map((r, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="lg:basis-6/10 basis-3/4"
+                    >
+                      <MovieReviewCard review={r} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            )}
           </section>
         </div>
       </div>
