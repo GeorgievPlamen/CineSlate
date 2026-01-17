@@ -114,6 +114,7 @@ export default function Movies() {
     (async () => await signalR.start())();
 
     signalR.on('notify', (args) => {
+      console.log('Received notification');
       console.log(args);
     });
   }, []);

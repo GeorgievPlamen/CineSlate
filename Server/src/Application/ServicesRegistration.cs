@@ -18,7 +18,6 @@ public static class ApplicationServices
     {
         var assembly = typeof(ApplicationServices).Assembly;
 
-        services.AddMediatR(assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssembly(assembly);
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));

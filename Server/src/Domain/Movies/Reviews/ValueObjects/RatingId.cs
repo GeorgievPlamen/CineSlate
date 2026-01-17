@@ -14,4 +14,6 @@ public class ReviewId : ValueObject
     {
         yield return Value;
     }
+
+    public override string ToString() => Value.ToString();
 }

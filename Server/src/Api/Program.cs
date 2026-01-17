@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using Api.Common;
 using Api.Extensions;
 using Api.Features.Admin;
@@ -12,6 +14,8 @@ using Application;
 using Application.Common.Tracing;
 
 using Infrastructure;
+
+using MediatR;
 
 using Microsoft.Extensions.Options;
 
@@ -60,6 +64,15 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+var webAssembly = typeof(Program).Assembly;
+var appAssembly = typeof(ApplicationServices).Assembly;
+var infraAssembly = typeof(InfrastructureServices).Assembly;
+
+builder.Services.AddMediatR(webAssembly, appAssembly, infraAssembly);
+
 
 var appConfig = builder.Configuration.GetSection("App").Get<App>();
 if (appConfig != null)
@@ -110,7 +123,7 @@ app.MapReviews();
 app.MapAdmin();
 app.MapWatchlist();
 
-app.MapHub<Infrastructure.NotificationHub>("/notifications");
+app.MapHub<NotificationHub>("/notifications");
 
 await app.UpdatePendingMigrations();
 

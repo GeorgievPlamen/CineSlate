@@ -43,9 +43,10 @@ public class LikeReviewCommandHandler(
             hasUserLiked = true;
             publishTask = publisher.Publish(
                 new LikedReviewEvent(
-                    user.Id.Value,
-                    user.Username.Value,
-                    review.Author.Value),
+                    user.Id,
+                    review.Author,
+                    review.Id,
+                    review.MovieId),
                 cancellationToken);
         }
         else
