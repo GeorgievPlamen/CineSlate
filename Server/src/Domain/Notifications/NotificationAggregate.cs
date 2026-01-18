@@ -9,7 +9,7 @@ public class NotificationAggregate(NotificationId id) : AggregateRoot<Notificati
 {
     public NotificationType Type { get; private set; }
     public UserId UserId { get; private set; } = null!;
-    public Dictionary<string, string> Metadata { get; private set; } = [];
+    public Dictionary<string, string> Data { get; private set; } = [];
     public NotificationStatus Status { get; private set; }
     public DateTimeOffset CreatedOn { get; private set; }
 

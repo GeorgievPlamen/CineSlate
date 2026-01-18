@@ -15,7 +15,7 @@ public static class NotificationMappings
             Id = notification.Id.Value,
             UserId = notification.UserId.Value,
             CreatedAt = notification.CreatedOn,
-            Metadata = notification.Metadata,
+            Data = notification.Data,
             Status = notification.Status,
             Type = notification.Type,
         };
@@ -30,9 +30,9 @@ public static class NotificationMappings
         if (notificationModel.Status == NotificationStatus.Seen)
             notification.SetSeen();
 
-        foreach (var kvp in notificationModel.Metadata)
+        foreach (var kvp in notificationModel.Data)
         {
-            notification.Metadata.Add(kvp.Key, kvp.Value);
+            notification.Data.Add(kvp.Key, kvp.Value);
         }
 
         return notification;

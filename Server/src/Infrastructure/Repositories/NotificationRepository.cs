@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
-public class NotificationRepository(CineSlateContext dbContext) : INotificaitonRepository
+public class NotificationRepository(CineSlateContext dbContext) : INotificationRepository
 {
     public async Task<bool> CreateAsync(NotificationAggregate notification, CancellationToken cancellationToken)
     {
@@ -60,7 +60,7 @@ public class NotificationRepository(CineSlateContext dbContext) : INotificaitonR
         if (oldNotification is null)
             return false;
 
-        oldNotification.Metadata = notification.Metadata;
+        oldNotification.Data = notification.Data;
         oldNotification.Status = notification.Status;
 
         dbContext.Update(oldNotification);

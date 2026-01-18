@@ -120,6 +120,7 @@ app.MapGet("api/", () => Results.Ok("Hello there :)"));
 app.MapUsers();
 app.MapMovies();
 app.MapReviews();
+app.MapNotifications();
 app.MapAdmin();
 app.MapWatchlist();
 

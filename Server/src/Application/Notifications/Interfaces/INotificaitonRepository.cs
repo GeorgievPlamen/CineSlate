@@ -6,7 +6,7 @@ using Domain.Users.ValueObjects;
 
 namespace Application.Notifications.Interfaces;
 
-public interface INotificaitonRepository
+public interface INotificationRepository
 {
     Task<NotificationAggregate?> GetByIdAsync(NotificationId id, CancellationToken cancellationToken);
     Task<Paged<NotificationAggregate>> GetManyPagedByUserIdAsync(UserId userId, int page, int count, CancellationToken cancellationToken);

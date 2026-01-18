@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Notifications.EventHandlers;
 
-public class CreateNotificationOnReviewLikedHandler(INotificaitonRepository notificaitonRepository) : INotificationHandler<LikedReviewEvent>
+public class CreateNotificationOnReviewLikedHandler(INotificationRepository notificaitonRepository) : INotificationHandler<LikedReviewEvent>
 {
     public async Task Handle(LikedReviewEvent notification, CancellationToken cancellationToken)
     {
@@ -18,10 +18,10 @@ public class CreateNotificationOnReviewLikedHandler(INotificaitonRepository noti
             NotificationType.LikedReview,
             notification.AuthorId);
 
-        notificationAggregate.Metadata.Add("user-id", notification.UserId.Value.ToString());
-        notificationAggregate.Metadata.Add("author-id", notification.AuthorId.Value.ToString());
-        notificationAggregate.Metadata.Add("review-id", notification.ReviewId.Value.ToString());
-        notificationAggregate.Metadata.Add("movie-id", notification.MovieId.Value.ToString());
+        notificationAggregate.Data.Add("user-id", notification.UserId.Value.ToString());
+        notificationAggregate.Data.Add("author-id", notification.AuthorId.Value.ToString());
+        notificationAggregate.Data.Add("review-id", notification.ReviewId.Value.ToString());
+        notificationAggregate.Data.Add("movie-id", notification.MovieId.Value.ToString());
 
         await notificaitonRepository.CreateAsync(notificationAggregate, cancellationToken);
     }

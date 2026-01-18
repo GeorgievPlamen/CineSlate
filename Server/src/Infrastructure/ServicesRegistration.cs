@@ -83,7 +83,7 @@ public static class InfrastructureServices
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IWatchlistRepository, WatchlistRepository>();
-        services.AddScoped<INotificaitonRepository, NotificationRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
 
         services.AddScoped<IMovieClient, TMDBClient>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
