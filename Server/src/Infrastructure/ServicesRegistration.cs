@@ -4,6 +4,7 @@ using Api.Common.Interfaces;
 
 using Application.Common.Interfaces;
 using Application.Movies.Interfaces;
+using Application.Notifications.Interfaces;
 using Application.Reviews.Interfaces;
 using Application.Users.Interfaces;
 using Application.Watchlist.Interfaces;
@@ -82,6 +83,8 @@ public static class InfrastructureServices
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+        services.AddScoped<INotificaitonRepository, NotificationRepository>();
+
         services.AddScoped<IMovieClient, TMDBClient>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddSingleton<IUserIdentity, UserIdentity>();
