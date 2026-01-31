@@ -35,19 +35,11 @@ public class LikeReviewCommandHandler(
         var matchedLike = review.Likes.FirstOrDefault(x => x.FromUserId == userId);
         var hasUserLiked = false;
 
-        var publishTask = Task.CompletedTask;
-
         if (matchedLike is null)
         {
             review.AddLikes([Like.Create(userId, user.Username)]);
             hasUserLiked = true;
-            publishTask = publisher.Publish(
-                new LikedReviewEvent(
-                    user.Id,
-                    review.Author,
-                    review.Id,
-                    review.MovieId),
-                cancellationToken);
+
         }
         else
         {
@@ -55,7 +47,17 @@ public class LikeReviewCommandHandler(
         }
 
         await reviewRepository.UpdateLikesAsync(request.ReviewId, [.. review.Likes], cancellationToken);
-        await publishTask;
+
+        if (matchedLike is null)
+        {
+            await publisher.Publish(
+                new LikedReviewEvent(
+                    user.Id,
+                    review.Author,
+                    review.Id,
+                    review.MovieId),
+                cancellationToken);
+        }
 
         return Result<ReviewResponse>.Success(review.ToResponse(user.Username.OnlyName, hasUserLiked));
     }
