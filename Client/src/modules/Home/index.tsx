@@ -12,6 +12,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import AutoScroll from 'embla-carousel-auto-scroll';
 
 const route = getRouteApi('/');
+
 function Home() {
   const { movies, reviews, backdropPath } = route.useLoaderData();
 

@@ -109,16 +109,6 @@ export default function Movies() {
     searchedMovies?.hasNextPage,
   ]);
 
-  useEffect(() => {
-    signalR.init();
-    (async () => await signalR.start())();
-
-    signalR.on('notify', (args) => {
-      console.log('Received notification');
-      console.log(args);
-    });
-  }, []);
-
   function handleSelectMoviesBy(moviesBy: MoviesBy) {
     setMoviesBy(moviesBy);
     navigate({

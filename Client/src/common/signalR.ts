@@ -7,13 +7,21 @@ import {
 
 const getToken = () => `${useUserStore.getState()?.user?.token}`;
 
-let connection: HubConnection;
+let connection: HubConnection | null;
 
 const signalR = {
   init: function () {
+    if (connection) {
+      console.log('There is already an existing connection.');
+      return;
+    }
+
     const token = getToken();
 
-    console.log(token);
+    if (!token) {
+      console.log('Missing user token, will not initialize signal R.');
+      return;
+    }
 
     connection = new HubConnectionBuilder()
       .withUrl('http://localhost:5000/notifications', {
@@ -25,7 +33,14 @@ const signalR = {
   },
   start: async function () {
     try {
-      await connection.start();
+      if (connection?.connectionId) {
+        console.log(
+          `Already active connection with id: ${connection.connectionId}`
+        );
+        return;
+      }
+
+      await connection?.start();
       console.log('SignalR Connected.');
     } catch (err) {
       console.log(err);
@@ -33,11 +48,12 @@ const signalR = {
   },
 
   stop: async function () {
-    await connection.stop();
+    await connection?.stop();
+    connection = null;
   },
 
-  on: async function (handler: string, callback: (args: unknown) => void) {
-    connection.on(handler, callback);
+  on: function (handler: string, callback: (args: unknown) => void) {
+    connection?.on(handler, callback);
   },
 };
 
