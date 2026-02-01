@@ -12,7 +12,7 @@ export interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  beforeLoad: async () => {
+  beforeLoad: async () => { // TODO remove this and move to auth bootstrap
     const refreshToken = localStorage.getItem(LOCAL_REFRESH);
 
     if (!refreshToken) return;

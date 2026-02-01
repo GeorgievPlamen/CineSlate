@@ -14,7 +14,6 @@ import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
 import Dropdown from '@/components/Dropdown';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import signalR from '@/common/signalR';
 
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 

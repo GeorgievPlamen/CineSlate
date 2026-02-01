@@ -9,7 +9,7 @@ const getToken = () => `${useUserStore.getState()?.user?.token}`;
 
 let connection: HubConnection | null;
 
-const signalR = {
+const realtimeClient = {
   init: function () {
     if (connection) {
       console.log('There is already an existing connection.');
@@ -24,7 +24,7 @@ const signalR = {
     }
 
     connection = new HubConnectionBuilder()
-      .withUrl('http://localhost:5000/notifications', {
+      .withUrl('http://localhost:8080/notifications', {
         accessTokenFactory: getToken,
       })
       .withAutomaticReconnect()
@@ -53,8 +53,16 @@ const signalR = {
   },
 
   on: function (handler: string, callback: (args: unknown) => void) {
+    if (!connection) {
+      throw new Error("No connection, can't register a handler!");
+    }
+
     connection?.on(handler, callback);
+  },
+
+  off: function (handler: string, callback: (args: unknown) => void) {
+    connection?.off(handler, callback);
   },
 };
 
-export default signalR;
+export default realtimeClient;
