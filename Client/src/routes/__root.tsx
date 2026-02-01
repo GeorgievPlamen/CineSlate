@@ -1,4 +1,3 @@
-import { LOCAL_REFRESH } from '@/config';
 import Footer from '@/modules/Layout/Footer';
 import Header from '@/modules/Layout/Header';
 import Main from '@/modules/Layout/Main';
