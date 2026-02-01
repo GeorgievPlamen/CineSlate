@@ -9,8 +9,6 @@ interface Props {
 export default function RealtimeProvider({ children }: Props) {
   const isAuthenticated = useUserStore((s) => s.user.username.length > 0);
 
-  console.log('rendering RealtimeProvider');
-
   useEffect(() => {
     if (isAuthenticated) {
       (async () => {

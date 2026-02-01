@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen';
 import RealtimeProvider from './common/Realtime/RealtimeProvider';
+import AuthBootstrap from './common/AuthBootstrap';
 
 declare module '@tanstack/react-router' {
   interface Register {
@@ -26,11 +27,13 @@ if (!rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RealtimeProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </RealtimeProvider>
+      <AuthBootstrap>
+        <RealtimeProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </RealtimeProvider>
+      </AuthBootstrap>
     </StrictMode>
   );
 }
