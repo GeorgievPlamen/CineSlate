@@ -12,4 +12,6 @@ public interface INotificationRepository
     Task<Paged<NotificationAggregate>> GetManyPagedByUserIdAsync(UserId userId, int page, int count, CancellationToken cancellationToken);
     Task<bool> CreateAsync(NotificationAggregate notification, CancellationToken cancellationToken);
     Task<bool> UpdateAsync(NotificationAggregate notification, CancellationToken cancellationToken);
+    Task<int> GetNewCountByUserIdAsync(UserId userId, CancellationToken cancellationToken);
+    Task<bool> SetAllSeenByUserIdAsync(UserId userId, CancellationToken cancellationToken);
 }

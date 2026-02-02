@@ -2,6 +2,7 @@ using Application.Common;
 using Application.Notifications.Interfaces;
 
 using Domain.Notifications;
+using Domain.Notifications.Enums;
 using Domain.Notifications.ValueObjects;
 using Domain.Users.ValueObjects;
 
@@ -42,7 +43,7 @@ public class NotificationRepository(CineSlateContext dbContext) : INotificationR
             .Take(count)
             .ToListAsync(cancellationToken);
 
-        var total = await dbContext.Reviews.CountAsync(x => x.AuthorId == userId.Value, cancellationToken);
+        var total = await dbContext.Notifications.CountAsync(x => x.UserId == userId.Value, cancellationToken);
 
         return new Paged<NotificationAggregate>(
             [.. result.Select(n => n.Unwrap())],
@@ -50,6 +51,23 @@ public class NotificationRepository(CineSlateContext dbContext) : INotificationR
             total - (page * count) > 0,
             page > 1,
             total);
+    }
+
+    public async Task<int> GetNewCountByUserIdAsync(UserId userId, CancellationToken cancellationToken) =>
+        await dbContext.Notifications.CountAsync(x => x.UserId == userId.Value && x.Status == NotificationStatus.New, cancellationToken);
+
+    public async Task<bool> SetAllSeenByUserIdAsync(UserId userId, CancellationToken cancellationToken)
+    {
+        var result = await dbContext.Notifications
+            .Where(x => x.UserId == userId.Value && x.Status == NotificationStatus.New)
+            .ToListAsync(cancellationToken);
+
+        foreach (var notification in result)
+        {
+            notification.Status = NotificationStatus.Seen;
+        }
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     public async Task<bool> UpdateAsync(NotificationAggregate notification, CancellationToken cancellationToken)
