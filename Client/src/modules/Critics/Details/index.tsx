@@ -10,6 +10,7 @@ import { usersClient } from '@/modules/Users/api/usersClient';
 import { base64ToImage } from '@/lib/utils';
 import { RealtimeEvents } from '@/common/Realtime/constants';
 import useRealtimeEvent from '@/common/Realtime/useRealtimeEvent';
+import logger from '@/common/logger';
 
 const { useParams } = getRouteApi('/critics/$id');
 
@@ -40,7 +41,7 @@ function CriticDetails() {
   const critic = data?.[0];
 
   // TODO remove from here once bootstrap and setup is ready
-  useRealtimeEvent(RealtimeEvents.Notify, (arg) => console.log('test', arg));
+  useRealtimeEvent(RealtimeEvents.Notify, (arg) => logger.log(arg));
 
   return (
     <article className="m-auto flex w-2/3 flex-col items-center">

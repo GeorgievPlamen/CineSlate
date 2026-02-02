@@ -1,9 +1,11 @@
+import { CINESLATE_API_URL } from '@/config';
 import { useUserStore } from '@/store/userStore';
 import {
   HubConnection,
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
+import logger from '../logger';
 
 const getToken = () => `${useUserStore.getState()?.user?.token}`;
 
@@ -12,21 +14,25 @@ let connection: HubConnection | null;
 const realtimeClient = {
   init: function () {
     if (connection) {
-      console.log('There is already an existing connection.');
+      logger.log('There is already an existing connection.');
       return;
     }
 
     const token = getToken();
 
     if (!token) {
-      console.log('Missing user token, will not initialize signal R.');
+      logger.log('Missing user token, will not initialize signal R.');
       return;
     }
 
     connection = new HubConnectionBuilder()
-      .withUrl('http://localhost:8080/notifications', {
-        accessTokenFactory: getToken,
-      })
+      .withUrl(
+        (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) +
+          'notifications',
+        {
+          accessTokenFactory: getToken,
+        }
+      )
       .withAutomaticReconnect()
       .configureLogging(LogLevel.Information)
       .build();
@@ -34,16 +40,16 @@ const realtimeClient = {
   start: async function () {
     try {
       if (connection?.connectionId) {
-        console.log(
+        logger.log(
           `Already active connection with id: ${connection.connectionId}`
         );
         return;
       }
 
       await connection?.start();
-      console.log('SignalR Connected.');
+      logger.log('SignalR Connected.');
     } catch (err) {
-      console.log(err);
+      logger.log(err);
     }
   },
 
@@ -54,7 +60,8 @@ const realtimeClient = {
 
   on: function (handler: string, callback: (args: unknown) => void) {
     if (!connection) {
-      throw new Error("No connection, can't register a handler!");
+      logger.log("No connection, can't register a handler!");
+      return;
     }
 
     connection?.on(handler, callback);

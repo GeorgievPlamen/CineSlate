@@ -2,6 +2,7 @@ import { LOCAL_REFRESH } from '@/config';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import { useUserStore } from '@/store/userStore';
 import { ReactNode, useEffect } from 'react';
+import logger from './logger';
 
 interface Props {
   children: ReactNode;
@@ -17,7 +18,8 @@ export default function AuthBootstrap({ children }: Props) {
       try {
         const user = await usersClient.refresh(refreshToken);
 
-        console.log(user);
+        logger.log('Fetching refresh token.');
+        logger.log(user);
 
         if (!user?.refreshToken) {
           localStorage.removeItem(LOCAL_REFRESH);
@@ -28,7 +30,7 @@ export default function AuthBootstrap({ children }: Props) {
         useUserStore.setState(() => ({ user: user }));
       } catch (err) {
         localStorage.removeItem(LOCAL_REFRESH);
-        console.log(err);
+        logger.log(err);
       }
     })();
   }, []);

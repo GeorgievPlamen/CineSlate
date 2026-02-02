@@ -4,7 +4,7 @@ import { useUserStore } from '../store/userStore';
 import { User } from '@/modules/Users/Models/userType';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL,
+  baseURL: (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) + "api",
   headers: {
     'Content-Type': 'application/json',
   },
