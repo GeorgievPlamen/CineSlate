@@ -21,7 +21,7 @@ public static class NotificationsEndpoint
         reviews.MapGet("/", GetMyNotificationsAsync);
         reviews.MapGet("/new-count", GetMyNewNotificationsCountAsync);
 
-        reviews.MapPut("/set-all-seen", SetAllSeenByUserIdAsync);
+        reviews.MapPut("/set-all-seen", SetAllSeen);
     }
 
     private static async Task<IResult> GetMyNotificationsAsync(int page, ISender mediatr, CancellationToken cancellationToken)
@@ -30,6 +30,6 @@ public static class NotificationsEndpoint
     private static async Task<IResult> GetMyNewNotificationsCountAsync(ISender mediatr, CancellationToken cancellationToken)
         => Response<int>.Match(await mediatr.Send(new GetMyNewNotificationsCountQuery(), cancellationToken));
 
-    private static async Task<IResult> SetAllSeenByUserIdAsync(ISender mediatr, CancellationToken cancellationToken)
+    private static async Task<IResult> SetAllSeen(ISender mediatr, CancellationToken cancellationToken)
         => Response<bool>.Match(await mediatr.Send(new SetAllSeenByUserIdCommand(), cancellationToken));
 }
