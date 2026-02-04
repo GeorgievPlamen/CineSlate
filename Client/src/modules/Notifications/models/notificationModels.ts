@@ -1,10 +1,10 @@
 export interface NotificationResponse {
-  Id: string;
-  UserId: string;
-  Type: NotificationType;
-  Status: NotificationStatus;
-  Data: Record<string, string>;
-  CreatedOn: Date;
+  id: string;
+  userId: string;
+  type: NotificationType;
+  status: NotificationStatus;
+  data: Record<string, string>;
+  createdOn: Date;
 }
 
 export enum NotificationType {
