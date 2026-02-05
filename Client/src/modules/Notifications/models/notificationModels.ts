@@ -8,8 +8,8 @@ export interface NotificationResponse {
 }
 
 export enum NotificationType {
-  LikedReview,
-  CommentedReview,
+  LikedReview = 'LikedReview',
+  CommentedReview = 'CommentedReview',
 }
 
 export enum NotificationStatus {

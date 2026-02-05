@@ -16,6 +16,7 @@ interface Props {
   items?: ReactNode[];
   classNameTrigger?: string;
   classNameMenu?: string;
+  classNameMenuItem?: string;
   onOpen?: (open: boolean) => void;
   onLoadMore?: () => void;
 }
@@ -26,6 +27,7 @@ export default function Dropdown({
   items,
   classNameTrigger,
   classNameMenu,
+  classNameMenuItem,
   onOpen,
   onLoadMore,
 }: Props) {
@@ -44,7 +46,9 @@ export default function Dropdown({
           </>
         )}
         {items?.map((i, index) => (
-          <DropdownMenuItem key={index}>{i}</DropdownMenuItem>
+          <DropdownMenuItem key={index} className={cn(classNameMenuItem)}>
+            {i}
+          </DropdownMenuItem>
         ))}
         {onLoadMore && (
           <Button onClick={onLoadMore} className="w-full mt-2">

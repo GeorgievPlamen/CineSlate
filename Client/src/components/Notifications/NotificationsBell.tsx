@@ -4,15 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Bell } from 'lucide-react';
 import Dropdown from '../Dropdown';
 import { useState } from 'react';
-import NotificationItem from './NotificationItem';
-import Button from '../Buttons/Button';
+import renderNotification from './renderNotification';
 
-// TODO add dropdown
 // TODO set all seen on click
 // TODO fetch my notifications per 10
-// TODO add load more to dropdown
 // TODO sync realtime for new notifications
 // TODO fix created on on BE
+
 export default function NotificationsBell() {
   const token = useUserStore((x) => x.user.token);
   const [page, setPage] = useState(1);
@@ -33,9 +31,9 @@ export default function NotificationsBell() {
   if (!token) return;
   console.log('render');
 
-  const notifications = myNotificationsData?.values.map((n) => (
-    <NotificationItem notification={n} key={n.id} />
-  ));
+  const notifications = myNotificationsData?.values.map((n) =>
+    renderNotification(n)
+  );
 
   return (
     <Dropdown
