@@ -17,6 +17,8 @@ interface Props {
   classNameTrigger?: string;
   classNameMenu?: string;
   classNameMenuItem?: string;
+  triggerDisabled?: boolean;
+  isFetching?: boolean;
   onOpen?: (open: boolean) => void;
   onLoadMore?: () => void;
 }
@@ -28,6 +30,8 @@ export default function Dropdown({
   classNameTrigger,
   classNameMenu,
   classNameMenuItem,
+  triggerDisabled,
+  isFetching,
   onOpen,
   onLoadMore,
 }: Props) {
@@ -35,10 +39,11 @@ export default function Dropdown({
     <DropdownMenu onOpenChange={onOpen}>
       <DropdownMenuTrigger
         className={cn('focus:outline-none', classNameTrigger)}
+        disabled={triggerDisabled}
       >
         {children}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={cn(classNameMenu)}>
+      <DropdownMenuContent className={cn(classNameMenu, 'scrollbar')}>
         {menuLabel && (
           <>
             <DropdownMenuLabel>{menuLabel}</DropdownMenuLabel>
@@ -51,7 +56,11 @@ export default function Dropdown({
           </DropdownMenuItem>
         ))}
         {onLoadMore && (
-          <Button onClick={onLoadMore} className="w-full mt-2">
+          <Button
+            onClick={onLoadMore}
+            className="w-full mt-2"
+            isLoading={isFetching}
+          >
             Load More
           </Button>
         )}

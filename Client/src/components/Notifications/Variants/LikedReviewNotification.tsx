@@ -5,7 +5,7 @@ import { moviesClient } from '@/modules/Movies/api/moviesClient';
 import { NotificationResponse } from '@/modules/Notifications/models/notificationModels';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 
 interface Props {
@@ -19,6 +19,7 @@ export default function LikedReviewNotification({ notification }: Props) {
   const reviewId = notification.data['review-id'];
 
   const [imageIsLoading, setImageIsLoading] = useState(true);
+  const nav = useNavigate();
 
   const isValid = !!userId && !!movieId && !!authorId && !!reviewId;
 
@@ -45,12 +46,9 @@ export default function LikedReviewNotification({ notification }: Props) {
   }
 
   return (
-    <Link
-      to={'/reviews/$id'}
-      params={{
-        id: reviewId,
-      }}
-      className="flex items-center justify-around gap-2"
+    <button
+      onClick={() => nav({ to: '/reviews/$id', params: { id: reviewId } })}
+      className="flex items-center justify-around gap-2 text-start"
     >
       <img
         src={
@@ -75,6 +73,7 @@ export default function LikedReviewNotification({ notification }: Props) {
         alt="poster"
         onLoad={() => setImageIsLoading(false)}
       />
-    </Link>
+      {/* </Link> */}
+    </button>
   );
 }

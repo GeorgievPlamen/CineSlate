@@ -21,7 +21,7 @@ public class GetMyNotificationsQueryHandler(IHttpContextAccessor httpContextAcce
         ArgumentException.ThrowIfNullOrWhiteSpace(userIdClaim?.Value);
         var userId = UserId.Create(Guid.Parse(userIdClaim?.Value!));
 
-        var result = await notificationRepository.GetManyPagedByUserIdAsync(userId, request.Page, 10, cancellationToken);
+        var result = await notificationRepository.GetManyPagedByUserIdAsync(userId, request.Page, request.Quantity, cancellationToken);
 
         return Result<Paged<NotificationResponse>>.Success(new(
             [.. result.Values.Select(x => new NotificationResponse(

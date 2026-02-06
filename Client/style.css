@@ -125,3 +125,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: oklch(0.279 0.041 260.031);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: oklch(53.344% 0.14843 252.048);
+    border-radius: 100vh;
+    border: 2px solid oklch(0.279 0.041 260.031);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: oklch(70.344% 0.14843 252.048);
+  }
+}

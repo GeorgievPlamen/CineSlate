@@ -24,8 +24,8 @@ public static class NotificationsEndpoint
         reviews.MapPut("/set-all-seen", SetAllSeen);
     }
 
-    private static async Task<IResult> GetMyNotificationsAsync(int page, ISender mediatr, CancellationToken cancellationToken)
-        => Response<Paged<NotificationResponse>>.Match(await mediatr.Send(new GetMyNotificationsQuery(page), cancellationToken));
+    private static async Task<IResult> GetMyNotificationsAsync(int page, int quantity, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Paged<NotificationResponse>>.Match(await mediatr.Send(new GetMyNotificationsQuery(page, quantity), cancellationToken));
 
     private static async Task<IResult> GetMyNewNotificationsCountAsync(ISender mediatr, CancellationToken cancellationToken)
         => Response<int>.Match(await mediatr.Send(new GetMyNewNotificationsCountQuery(), cancellationToken));
