@@ -9,7 +9,5 @@ public class NotificationHub : Hub
     public override async Task OnConnectedAsync()
     {
         Console.WriteLine($"\nNew connection:  \n\tConnectionId: '{Context.ConnectionId}'\n\tUserId: '{Context.UserIdentifier}'");
-
-        await Clients.Caller.SendAsync("notify", "Hello from SignalR");
     }
 }

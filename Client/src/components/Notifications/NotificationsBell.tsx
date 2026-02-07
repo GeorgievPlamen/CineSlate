@@ -1,28 +1,23 @@
 import { notificationsClient } from '@/modules/Notifications/api/notificationsClient';
 import { useUserStore } from '@/store/userStore';
-import { useQuery, useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { Bell } from 'lucide-react';
 import Dropdown from '../Dropdown';
 import renderNotification from './renderNotification';
 import ToPagedData from '@/utils/toPagedData';
+import NewNotificationsCount from './NewNotificationsCount';
+import { useState } from 'react';
 
-// TODO sync realtime for new notifications
 // TODO fix created on on BE
 const NOTIFICATIONS_QUANTITY = 6;
 
 export default function NotificationsBell() {
   const token = useUserStore((x) => x.user.token);
-
-  const { data: newNotificationsCount, refetch: refetchNewNotificaitonsCount } =
-    useQuery({
-      queryKey: ['new-notifications-count'],
-      queryFn: () => notificationsClient.getNewCount(),
-      enabled: !!token,
-    });
+  const [newNotificationsCount, setNewNotificationsCount] = useState(0);
 
   const { mutateAsync: setAllSeen } = useMutation({
     mutationFn: () => notificationsClient.setAllSeen(),
-    onSuccess: () => refetchNewNotificaitonsCount(),
+    onSuccess: () => setNewNotificationsCount(0),
   });
 
   const {
@@ -53,9 +48,6 @@ export default function NotificationsBell() {
   const hasAnyNotifications =
     myNotificationsData?.values && myNotificationsData?.values.length > 0;
 
-  const hasAnyNewNotifications =
-    newNotificationsCount !== undefined && newNotificationsCount > 0;
-
   const onLoadMore = hasMoreNotifications ? () => fetchNextPage() : undefined;
 
   return (
@@ -69,11 +61,10 @@ export default function NotificationsBell() {
       isFetching={isFetching}
     >
       <Bell size={26} />
-      {hasAnyNewNotifications && (
-        <div className="text-xs rounded-full bg-red-500 size-4 text-center absolute bottom-0 right-0 m-0.5">
-          {newNotificationsCount}
-        </div>
-      )}
+      <NewNotificationsCount
+        newNotificationsCount={newNotificationsCount}
+        setNewNotificationsCount={setNewNotificationsCount}
+      />
     </Dropdown>
   );
 }
