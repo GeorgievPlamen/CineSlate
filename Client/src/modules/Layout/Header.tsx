@@ -9,6 +9,7 @@ import Dropdown from '@/components/Dropdown';
 import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
 import { Search } from 'lucide-react';
+import NotificationsBell from '@/components/Notifications/NotificationsBell';
 
 function Header() {
   const [isBouncing, setIsBouncing] = useState(false);
@@ -108,34 +109,40 @@ function Header() {
             </Link>
           </li>
         </ul>
-        {user?.username?.length > 0 ? (
-          <Dropdown items={DropdownItems}>
-            <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
-              {user?.username?.split('#')[0]}
-              <img
-                src={
-                  user?.pictureBase64?.length && user?.pictureBase64?.length > 0
-                    ? base64ToImage(user.pictureBase64)
-                    : BACKUP_PROFILE
-                }
-                alt="profile-pic"
-                className="h-8 w-8 rounded-full object-cover"
-              />
-            </div>
-          </Dropdown>
-        ) : (
-          <Link
-            to="/login"
-            activeProps={{
-              className: 'outline  outline-foreground',
-            }}
-            className={
-              'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
-            }
-          >
-            Sign in
-          </Link>
-        )}
+        <div className="flex gap-4 items-center">
+          <div>
+            <NotificationsBell />
+          </div>
+          {user?.username?.length > 0 ? (
+            <Dropdown items={DropdownItems}>
+              <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
+                {user?.username?.split('#')[0]}
+                <img
+                  src={
+                    user?.pictureBase64?.length &&
+                    user?.pictureBase64?.length > 0
+                      ? base64ToImage(user.pictureBase64)
+                      : BACKUP_PROFILE
+                  }
+                  alt="profile-pic"
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              </div>
+            </Dropdown>
+          ) : (
+            <Link
+              to="/login"
+              activeProps={{
+                className: 'outline  outline-foreground',
+              }}
+              className={
+                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
+              }
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
       </nav>
       <nav className="flex w-full items-center justify-between md:hidden">
         <div className="0 relative mx-2 flex w-2/3 max-w-md items-center rounded-full bg-foreground">
@@ -151,6 +158,7 @@ function Header() {
             }}
           />
         </div>
+        <NotificationsBell />
         <Dropdown items={getMobileDropdownMenuItems(user)}>
           <div className='className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full"'>
             <BarsIcon />

@@ -18,9 +18,10 @@ namespace Infrastructure.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "hstore");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("GenreModelMovieModel", b =>
@@ -77,7 +78,7 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("xid")
                         .HasColumnName("xmin");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.CommentModel.Username#Username", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Username", "Infrastructure.Database.Models.CommentModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
 
@@ -175,7 +176,7 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnType("xid")
                         .HasColumnName("xmin");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.LikesModel.Username#Username", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Username", "Infrastructure.Database.Models.LikesModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
 
@@ -315,6 +316,54 @@ namespace Infrastructure.Database.Migrations
                     b.HasIndex("WatchlistId");
 
                     b.ToTable("MovieToWatchModel");
+                });
+
+            modelBuilder.Entity("Infrastructure.Database.Models.NotificationModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Dictionary<string, string>>("Data")
+                        .IsRequired()
+                        .HasColumnType("hstore");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<uint?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Infrastructure.Database.Models.RefreshTokenModel", b =>
@@ -473,7 +522,7 @@ namespace Infrastructure.Database.Migrations
                     b.Property<Guid?>("WatchlistId")
                         .HasColumnType("uuid");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Username", "Infrastructure.Database.Models.UserModel.Username#Username", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Username", "Infrastructure.Database.Models.UserModel.Username#Username", b1 =>
                         {
                             b1.IsRequired();
 

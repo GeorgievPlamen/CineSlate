@@ -13,4 +13,6 @@ public class WatchlistId : ValueObject
 
     public static WatchlistId Create() => new() { Value = Guid.NewGuid() };
     public static WatchlistId Create(Guid value) => new() { Value = value };
+
+    public override string ToString() => Value.ToString();
 }

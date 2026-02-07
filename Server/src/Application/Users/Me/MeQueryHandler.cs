@@ -18,7 +18,6 @@ public class MeQueryHandler(
     IRequestHandler<MeQuery, Result<MeResponse>>
 {
     private readonly HttpContext? _httpContext = httpContextAccessor?.HttpContext;
-    private readonly IUserRepository _userRepository = userRepository;
 
     public async Task<Result<MeResponse>> Handle(MeQuery request, CancellationToken cancellationToken)
     {
@@ -29,7 +28,7 @@ public class MeQueryHandler(
         if (email is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound());
 
-        var foundUser = await _userRepository.GetAsync(email.Value, cancellationToken);
+        var foundUser = await userRepository.GetAsync(email.Value, cancellationToken);
         if (foundUser is null)
             return Result<MeResponse>.Failure(UserErrors.NotFound());
 

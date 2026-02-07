@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Backdrop from '@/components/Backdrop/Backdrop';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
@@ -7,7 +7,12 @@ import { IMG_PATH } from '@/config';
 import { useState, useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import AddReview from './AddReview';
-import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
+import {
+  getRouteApi,
+  Link,
+  useNavigate,
+  useRouter,
+} from '@tanstack/react-router';
 import GenreButton from '@/components/Buttons/GenreButton';
 import ReviewCard from '@/components/Cards/ReviewCard';
 import { reviewsClient } from '@/modules/Review/api/reviewsClient';
@@ -18,6 +23,8 @@ import { watchlistsClient } from '@/modules/Watchlist/api/watchlistClient';
 
 const { useParams } = getRouteApi('/movies/$id');
 
+// TODO: invalidate router and refetch watchlist movies when we add a movie to watchlist
+
 export default function MovieDetails() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -25,16 +32,34 @@ export default function MovieDetails() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [authorIds, setAuthorIds] = useState<string[]>([]);
   const navigate = useNavigate();
-
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { data: usersData } = useQuery({
     queryKey: ['getUsersByIds', authorIds],
     queryFn: () => usersClient.getUsersByIds([...authorIds]),
     enabled: authorIds.length > 0,
   });
 
+  const { data: watchlist, refetch: refetchWatchlist } = useQuery({
+    queryKey: ['getWatchlist'],
+    queryFn: () => watchlistsClient.getWatchlist(),
+  });
+
   const { mutateAsync: addToWatchlistAsync } = useMutation({
     mutationFn: (id: number) => watchlistsClient.addToWatchlist(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['getMoviesInWatchlist'],
+      });
+      router.invalidate();
+      refetchWatchlist();
+    },
   });
+
+  const isMovieInWatchlist =
+    watchlist?.watchlist.find((x) => x.key === Number(id)) !== undefined;
+
+  console.log(isMovieInWatchlist);
 
   const { isAuthenticated } = useAuth();
 
@@ -64,19 +89,21 @@ export default function MovieDetails() {
   useEffect(() => {
     if (!reviewData) return;
 
-    const authorIds = [
-      ...reviewData.values
+    const setReviewData = () => {
+      const authorIds = reviewData.values
         .filter((x) => x.authorId !== undefined)
-        .map((x) => x.authorId),
-    ];
+        .map((x) => x.authorId);
 
-    setAuthorIds(authorIds as string[]);
+      setAuthorIds(authorIds as string[]);
 
-    setReviews((prev) =>
-      prev.length < reviewData.currentPage * 20
-        ? [...reviewData.values]
-        : [...prev, ...reviewData.values]
-    );
+      setReviews((prev) =>
+        prev.length < reviewData.currentPage * 20
+          ? [...reviewData.values]
+          : [...prev, ...reviewData.values]
+      );
+    };
+
+    setReviewData();
   }, [reviewData]);
 
   if (isError) return <ErrorMessage />;
@@ -145,14 +172,18 @@ export default function MovieDetails() {
                 {data?.genres.map((g) => (
                   <GenreButton key={g.id} name={g.value} genreId={g.id} />
                 ))}
-                <div className="w-full flex justify-start">
-                  <Button
-                    onClick={async () => await handleAddToWatchlist(Number(id))}
-                    className="px-2 mt-8"
-                  >
-                    Add to watchlist
-                  </Button>
-                </div>
+                {!isMovieInWatchlist && (
+                  <div className="w-full flex justify-start">
+                    <Button
+                      onClick={async () =>
+                        await handleAddToWatchlist(Number(id))
+                      }
+                      className="px-2 mt-8"
+                    >
+                      Add to watchlist
+                    </Button>
+                  </div>
+                )}
               </section>
             </section>
           </div>

@@ -56,21 +56,21 @@ function MyDetails() {
     }
 
     const { bio, avatar } = getValues();
-    let avatarBase64: string | undefined;
+    let avatarBase64: string | undefined
 
     if (avatar?.[0]) {
       const reader = new FileReader();
       reader.onload = async () => {
         avatarBase64 = reader.result as string;
 
-        if (bio && user.id) {
+        if (user.id) {
           await updateUserMutation.mutateAsync({
-            bio: bio,
+            bio: bio ?? "",
             id: user?.id,
             pictureBase64: avatarBase64?.split(',')[1] ?? '',
           });
 
-          setBio(bio);
+          setBio(bio ?? "");
           if (avatarBase64) setAvatarBase64(avatarBase64?.split(',')[1]);
         }
       };

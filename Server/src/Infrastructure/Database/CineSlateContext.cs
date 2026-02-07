@@ -19,6 +19,7 @@ public class CineSlateContext(
     public DbSet<ReviewModel> Reviews { get; set; } = null!;
     public DbSet<RefreshTokenModel> RefreshTokens { get; set; } = null!;
     public DbSet<WatchlistModel> Watchlists { get; set; } = null!;
+    public DbSet<NotificationModel> Notifications { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

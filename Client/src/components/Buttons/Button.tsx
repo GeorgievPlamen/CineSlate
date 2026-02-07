@@ -23,6 +23,7 @@ export default function Button({
         ' ' +
         className
       }
+      disabled={isLoading}
     >
       {isLoading ? <Spinner /> : children}
     </button>

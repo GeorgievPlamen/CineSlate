@@ -4,7 +4,7 @@ import { useUserStore } from '../store/userStore';
 import { User } from '@/modules/Users/Models/userType';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL,
+  baseURL: (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) + "api",
   headers: {
     'Content-Type': 'application/json',
   },
@@ -25,7 +25,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response?.data,
   async (error) => {
-    if (error?.status === 401) {
+    if (error?.status === 401 && error.config._retry === false) {
       const token = await GetRefreshToken();
 
       if (!token) return;

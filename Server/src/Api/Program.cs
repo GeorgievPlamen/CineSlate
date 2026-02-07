@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 using Api.Common;
 using Api.Extensions;
 using Api.Features.Admin;
 using Api.Features.Movies;
+using Api.Features.Notifications;
 using Api.Features.Reviews;
 using Api.Features.Users;
 using Api.Features.Watchlist;
@@ -11,7 +14,8 @@ using Application;
 using Application.Common.Tracing;
 
 using Infrastructure;
-using Infrastructure.Common.Models;
+
+using MediatR;
 
 using Microsoft.Extensions.Options;
 
@@ -59,6 +63,16 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddSerilog();
 builder.Services.AddOpenApi();
+builder.Services.AddSignalR();
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+var webAssembly = typeof(Program).Assembly;
+var appAssembly = typeof(ApplicationServices).Assembly;
+var infraAssembly = typeof(InfrastructureServices).Assembly;
+
+builder.Services.AddMediatR(webAssembly, appAssembly, infraAssembly);
+
 
 var appConfig = builder.Configuration.GetSection("App").Get<App>();
 if (appConfig != null)
@@ -106,8 +120,11 @@ app.MapGet("api/", () => Results.Ok("Hello there :)"));
 app.MapUsers();
 app.MapMovies();
 app.MapReviews();
+app.MapNotifications();
 app.MapAdmin();
 app.MapWatchlist();
+
+app.MapHub<NotificationHub>("/notifications");
 
 await app.UpdatePendingMigrations();
 
