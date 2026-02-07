@@ -8,6 +8,7 @@ import Spinner from '@/components/Spinner';
 
 const routeApi = getRouteApi('/watchlist/');
 
+// TODO: implement added on
 export default function Watchlist() {
   const watchlist = routeApi.useLoaderData();
   const queryClient = useQueryClient();
@@ -30,7 +31,10 @@ export default function Watchlist() {
         <Popcorn />
       </div>
       {watchlist?.map((w) => (
-        <div className="flex rounded-2xl border border-grey bg-background min-w-70 w-full">
+        <div
+          key={w.id}
+          className="flex rounded-2xl border border-grey bg-background min-w-70 w-full"
+        >
           <img
             src={IMG_PATH_W500 + w.posterPath}
             alt="poster"
@@ -68,9 +72,9 @@ export default function Watchlist() {
                   Watched?
                 </Button>
               )}
-              <p className="text-xs text-muted-foreground">
+              {/* <p className="text-xs text-muted-foreground">
                 Added on: <span className="text-foreground">2024-05-05</span>
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
