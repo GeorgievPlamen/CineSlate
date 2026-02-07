@@ -25,7 +25,8 @@ public static class NotificationMappings
         var notification = NotificationAggregate.Create(
             new NotificationId(notificationModel.Id),
             notificationModel.Type,
-            UserId.Create(notificationModel.UserId));
+            UserId.Create(notificationModel.UserId),
+            notificationModel.CreatedAt);
 
         if (notificationModel.Status == NotificationStatus.Seen)
             notification.SetSeen();

@@ -24,7 +24,6 @@ export default function Watchlist() {
   });
 
   return (
-    // TODO set watched
     <section className="flex flex-col m-auto items-center justify-cente w-5/6 max-w-160 gap-6 mb-14">
       <div className="flex items-center gap-2">
         <h2 className="font-heading my-4 text-2xl">Movies To Watch</h2>

@@ -8,7 +8,6 @@ import ToPagedData from '@/utils/toPagedData';
 import NewNotificationsCount from './NewNotificationsCount';
 import { useState } from 'react';
 
-// TODO fix created on on BE
 const NOTIFICATIONS_QUANTITY = 6;
 
 export default function NotificationsBell() {
