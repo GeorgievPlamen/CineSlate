@@ -11,9 +11,10 @@ export const Route = createFileRoute('/watchlist/')({
     }
   },
   loader: async ({ context }) =>
-    context.queryClient.ensureQueryData({
+    context.queryClient.fetchQuery({
       queryKey: ['getMoviesInWatchlist'],
       queryFn: () => moviesClient.getMoviesInWatchlist(),
+      staleTime: 600_000
     }),
   component: RouteComponent,
   errorComponent: (err) => {
