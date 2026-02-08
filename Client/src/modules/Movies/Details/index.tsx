@@ -7,12 +7,7 @@ import { IMG_PATH } from '@/config';
 import { useState, useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import AddReview from './AddReview';
-import {
-  getRouteApi,
-  Link,
-  useNavigate,
-  useRouter,
-} from '@tanstack/react-router';
+import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
 import GenreButton from '@/components/Buttons/GenreButton';
 import ReviewCard from '@/components/Cards/ReviewCard';
 import { reviewsClient } from '@/modules/Review/api/reviewsClient';
@@ -23,8 +18,6 @@ import { watchlistsClient } from '@/modules/Watchlist/api/watchlistClient';
 
 const { useParams } = getRouteApi('/movies/$id');
 
-// TODO: invalidate router and refetch watchlist movies when we add a movie to watchlist
-
 export default function MovieDetails() {
   const { id } = useParams();
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -32,7 +25,6 @@ export default function MovieDetails() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [authorIds, setAuthorIds] = useState<string[]>([]);
   const navigate = useNavigate();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const { data: usersData } = useQuery({
     queryKey: ['getUsersByIds', authorIds],
@@ -51,7 +43,6 @@ export default function MovieDetails() {
       queryClient.invalidateQueries({
         queryKey: ['getMoviesInWatchlist'],
       });
-      router.invalidate();
       refetchWatchlist();
     },
   });
