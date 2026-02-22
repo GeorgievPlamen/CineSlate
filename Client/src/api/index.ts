@@ -4,7 +4,16 @@ import { useUserStore } from '../store/userStore';
 import { User } from '@/modules/Users/Models/userType';
 
 const apiClient = axios.create({
-  baseURL: (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) + "api",
+  baseURL:
+    (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) + 'api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+const refreshClient = axios.create({
+  baseURL:
+    (import.meta.env.VITE_CINESLATE_API_URL ?? CINESLATE_API_URL) + 'api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -25,7 +34,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response?.data,
   async (error) => {
-    if (error?.status === 401 && error.config._retry === false) {
+    if (error?.status === 401 && !error.config._retry) {
       const token = await GetRefreshToken();
 
       if (!token) return;
@@ -33,6 +42,7 @@ apiClient.interceptors.response.use(
       const originalRequest = error.config;
       originalRequest._retry = true;
       originalRequest.headers.Authorization = `Bearer ${token}`;
+      localStorage.setItem(LOCAL_JWT, token ?? '');
 
       return apiClient(originalRequest);
     }
@@ -52,14 +62,19 @@ async function GetRefreshToken(): Promise<string | null> {
 
   if (!refreshToken) return null;
 
-  const refreshResult = await apiClient.post<User>('/users/refresh-token', {
+  const refreshResult = await refreshClient.post<User>('/users/refresh-token', {
     refreshToken: refreshToken,
   });
 
+  const user = refreshResult.data;
+
   if (!refreshResult) return null;
 
-  useUserStore.setState({ user: refreshResult.data });
-  return refreshResult.data.token ?? null;
+  useUserStore.setState({ user: user });
+  localStorage.setItem(LOCAL_JWT, user.token ?? '');
+  localStorage.setItem(LOCAL_REFRESH, user.refreshToken ?? '');
+
+  return user.token ?? null;
 }
 
 export default apiClient;
