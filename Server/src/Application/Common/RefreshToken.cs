@@ -4,7 +4,7 @@ namespace Application.Common;
 
 public class RefreshToken
 {
-    private const int RefreshTokenExpiry = 7;
+    private const int RefreshTokenExpiry = 14; // TODO: Move to settings
 
     public Guid Id { get; private set; }
     public UserId? UserId { get; private set; }

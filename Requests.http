@@ -3,7 +3,7 @@
 // 5000 for local development.
 // 8080 for docker development.
 
-@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmN2VkMTJhNi0zZTJiLTQ0OGUtOWFjZS1iZjJkYmU4MDQ0ZjgiLCJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiSm9obiNmN2VkMSIsImp0aSI6IjgyNTJjMWRhLTU4NzYtNDMyMy1hNGVlLWJhNGExYzg5YTI5NCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NzA0NjAzODIsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.t7_jk2mskk3fqY3a1jAmwL1Q9owwhDDpHYIVaxrWg18
+@Token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmN2VkMTJhNi0zZTJiLTQ0OGUtOWFjZS1iZjJkYmU4MDQ0ZjgiLCJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiSm9obiNmN2VkMSIsImp0aSI6IjdlOGI3ZGVhLWIyYmEtNGZhNS1iNmQ1LTY3NmRkYzhkMTEzOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3NzE3NDk0MjEsImlzcyI6IkNpbmVTbGF0ZSIsImF1ZCI6IkNpbmVTbGF0ZSJ9.KkCtUDqmD6fykRqmkSSrgFcAmBX2ubADg0_ehzCh8ao
 
 ### Login Success
 
@@ -31,7 +31,7 @@ POST {{Api_HostAddress}}users/refresh-token HTTP/1.1
 content-type: application/json
 
 {
-    "refreshToken": "Pwehkpf3+k9L0PAlHwa/ERv1tMir5XzBEqwc7JSOyLw="
+    "refreshToken": "w1g1CN/i7ojIw51YFHhD9KYa631OZFILxC3CoGU+SmE="
 }
 
 ### Register Success
@@ -116,13 +116,13 @@ Authorization: {{Token}}
 
 ### Review Latest 
 
-GET {{Api_HostAddress}}reviews/?page=2 HTTP/1.1
+GET {{Api_HostAddress}}reviews/?page=1 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
 ### Owned Review by movie Id
 
-GET {{Api_HostAddress}}reviews/own/645757 HTTP/1.1
+GET {{Api_HostAddress}}reviews/own/83533 HTTP/1.1
 content-type: application/json
 Authorization: {{Token}}
 
