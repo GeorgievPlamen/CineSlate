@@ -41,4 +41,5 @@ jobs:
           github_id_token: ${{ steps.idtoken.outputs.result }}
         env:
           VITE_CINESLATE_API_URL: ${{ secrets.VITE_CINESLATE_API_URL }}
+          VITE_ENABLE_DEBUG_LOGS: ${{ secrets.VITE_ENABLE_DEBUG_LOGS }}
 
