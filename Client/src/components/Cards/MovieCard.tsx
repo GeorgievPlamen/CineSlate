@@ -1,5 +1,6 @@
 import { IMG_PATH_W500 } from '@/config';
 import { Link } from '@tanstack/react-router';
+import { Skeleton } from '../ui/skeleton';
 
 interface Props {
   title: string;
@@ -43,3 +44,5 @@ export default function MovieCard({
     </article>
   );
 }
+
+export const MovieCardSkeleton = () => <Skeleton className="min-h-114  w-60" />;
