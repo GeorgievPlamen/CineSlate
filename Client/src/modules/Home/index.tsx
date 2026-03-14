@@ -8,17 +8,33 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { getRouteApi } from '@tanstack/react-router';
+import { useQuery } from '@tanstack/react-query';
 import AutoScroll from 'embla-carousel-auto-scroll';
-
-const route = getRouteApi('/');
+import { MoviesBy, moviesClient } from '../Movies/api/moviesClient';
+import { ReviewsBy, reviewsClient } from '../Review/api/reviewsClient';
 
 function Home() {
-  const { movies, reviews, backdropPath } = route.useLoaderData();
+  const { data: movies } = useQuery({
+    queryKey: ['movies-nowplaying-home'],
+    queryFn: () => moviesClient.getPagedMovies(MoviesBy.NowPlaying, 1),
+  });
+
+  const { data: reviews } = useQuery({
+    queryKey: ['reviews-latest-home'],
+    queryFn: () => reviewsClient.reviewsBy(1, ReviewsBy.Latest),
+  });
+
+  const randomId = Number((Math.random() * 19).toFixed());
+  const randomMovieId = movies?.values[randomId]?.id;
+
+  const { data: randomMovieDetails } = useQuery({
+    queryKey: ['movie-details-home', randomMovieId],
+    queryFn: () => moviesClient.getMovieDetails(`${randomMovieId}`),
+  });
 
   return (
     <div className="mx-auto">
-      <Backdrop path={backdropPath} />
+      <Backdrop path={randomMovieDetails?.backdropPath} />
       <div className="flex flex-col items-center justify-center rounded-xl p-8">
         <div className="max-w-4xl w-80 md:w-full">
           <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
@@ -74,7 +90,7 @@ function Home() {
               ]}
             >
               <CarouselContent className="-ml-1">
-                {movies.map((m) => (
+                {movies?.values.map((m) => (
                   <CarouselItem key={m.id} className="basis-1/1 md:basis-1/3">
                     <MovieCard
                       id={m.id}
@@ -117,14 +133,14 @@ function Home() {
                 Keep up with your favorite reviewers and recommendations.
               </li>
             </ul>
-            {reviews.length > 0 && (
+            {reviews && reviews?.values?.length > 0 && (
               <Carousel className="w-full hidden md:block">
                 <CarouselPrevious />
                 <CarouselNext />
                 <CarouselContent className="-ml-1">
-                  {reviews.map((r, index) => (
+                  {reviews?.values.map((r) => (
                     <CarouselItem
-                      key={index}
+                      key={r.id}
                       className="lg:basis-6/10 basis-3/4"
                     >
                       <MovieReviewCard review={r} />
