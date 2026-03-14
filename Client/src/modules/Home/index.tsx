@@ -1,6 +1,8 @@
 import Backdrop from '@/components/Backdrop/Backdrop';
-import MovieCard from '@/components/Cards/MovieCard';
-import MovieReviewCard from '@/components/Cards/MovieReviewCard';
+import MovieCard, { MovieCardSkeleton } from '@/components/Cards/MovieCard';
+import MovieReviewCard, {
+  MovieReviewCardSkeleton,
+} from '@/components/Cards/MovieReviewCard';
 import {
   Carousel,
   CarouselContent,
@@ -8,17 +10,33 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { getRouteApi } from '@tanstack/react-router';
+import { useQuery } from '@tanstack/react-query';
 import AutoScroll from 'embla-carousel-auto-scroll';
-
-const route = getRouteApi('/');
+import { MoviesBy, moviesClient } from '../Movies/api/moviesClient';
+import { ReviewsBy, reviewsClient } from '../Review/api/reviewsClient';
 
 function Home() {
-  const { movies, reviews, backdropPath } = route.useLoaderData();
+  const { data: movies, isLoading: isMoviesLoading } = useQuery({
+    queryKey: ['movies-nowplaying-home'],
+    queryFn: () => moviesClient.getPagedMovies(MoviesBy.NowPlaying, 1),
+  });
+
+  const { data: reviews, isLoading: isReviewsLoading } = useQuery({
+    queryKey: ['reviews-latest-home'],
+    queryFn: () => reviewsClient.reviewsBy(1, ReviewsBy.Latest),
+  });
+
+  const randomId = Number((Math.random() * 19).toFixed());
+  const randomMovieId = movies?.values[randomId]?.id;
+
+  const { data: randomMovieDetails } = useQuery({
+    queryKey: ['movie-details-home', randomMovieId],
+    queryFn: () => moviesClient.getMovieDetails(`${randomMovieId}`),
+  });
 
   return (
     <div className="mx-auto">
-      <Backdrop path={backdropPath} />
+      <Backdrop path={randomMovieDetails?.backdropPath} />
       <div className="flex flex-col items-center justify-center rounded-xl p-8">
         <div className="max-w-4xl w-80 md:w-full">
           <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
@@ -74,17 +92,29 @@ function Home() {
               ]}
             >
               <CarouselContent className="-ml-1">
-                {movies.map((m) => (
-                  <CarouselItem key={m.id} className="basis-1/1 md:basis-1/3">
-                    <MovieCard
-                      id={m.id}
-                      posterPath={m.posterPath}
-                      rating={m.rating}
-                      releaseDate={m.releaseDate}
-                      title={m.title}
-                    />
-                  </CarouselItem>
-                ))}
+                {isMoviesLoading
+                  ? Array.from({ length: 10 }).map(() => (
+                      <CarouselItem
+                        key={crypto.randomUUID()}
+                        className="basis-1/1 md:basis-1/3"
+                      >
+                        <MovieCardSkeleton />
+                      </CarouselItem>
+                    ))
+                  : movies?.values.map((m) => (
+                      <CarouselItem
+                        key={m.id}
+                        className="basis-1/1 md:basis-1/3"
+                      >
+                        <MovieCard
+                          id={m.id}
+                          posterPath={m.posterPath}
+                          rating={m.rating}
+                          releaseDate={m.releaseDate}
+                          title={m.title}
+                        />
+                      </CarouselItem>
+                    ))}
               </CarouselContent>
             </Carousel>
           </section>
@@ -117,21 +147,39 @@ function Home() {
                 Keep up with your favorite reviewers and recommendations.
               </li>
             </ul>
-            {reviews.length > 0 && (
+            {isReviewsLoading ? (
               <Carousel className="w-full hidden md:block">
                 <CarouselPrevious />
                 <CarouselNext />
                 <CarouselContent className="-ml-1">
-                  {reviews.map((r, index) => (
+                  {Array.from({ length: 10 }).map(() => (
                     <CarouselItem
-                      key={index}
+                      key={crypto.randomUUID()}
                       className="lg:basis-6/10 basis-3/4"
                     >
-                      <MovieReviewCard review={r} />
+                      <MovieReviewCardSkeleton />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
               </Carousel>
+            ) : (
+              reviews &&
+              reviews?.values?.length > 0 && (
+                <Carousel className="w-full hidden md:block">
+                  <CarouselPrevious />
+                  <CarouselNext />
+                  <CarouselContent className="-ml-1">
+                    {reviews?.values.map((r) => (
+                      <CarouselItem
+                        key={r.id}
+                        className="lg:basis-6/10 basis-3/4"
+                      >
+                        <MovieReviewCard review={r} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              )
             )}
           </section>
         </div>

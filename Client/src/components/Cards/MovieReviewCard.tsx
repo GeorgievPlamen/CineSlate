@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { usersClient } from '@/modules/Users/api/usersClient';
 import appContants from '@/common/appConstants';
 import { base64ToImage } from '@/lib/utils';
+import { Skeleton } from '../ui/skeleton';
 
 interface Props {
   review: Review;
@@ -92,3 +93,7 @@ export default function MovieReviewCard({ review }: Props) {
     </div>
   );
 }
+
+export const MovieReviewCardSkeleton = () => (
+  <Skeleton className="h-42 w-120" />
+);
