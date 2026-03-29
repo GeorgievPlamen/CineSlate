@@ -30,7 +30,7 @@ public class GetMyNotificationsQueryHandler(IHttpContextAccessor httpContextAcce
                 x.Type,
                 x.Status,
                 x.Data,
-                x.CreatedOn))],
+                x.CreatedAt))],
             result.CurrentPage,
             result.HasNextPage,
             result.HasPreviousPage,

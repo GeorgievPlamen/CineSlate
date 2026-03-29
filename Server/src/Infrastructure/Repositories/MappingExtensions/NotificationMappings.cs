@@ -14,7 +14,7 @@ public static class NotificationMappings
         {
             Id = notification.Id.Value,
             UserId = notification.UserId.Value,
-            CreatedAt = notification.CreatedOn,
+            CreatedAt = notification.CreatedAt,
             Data = notification.Data,
             Status = notification.Status,
             Type = notification.Type,

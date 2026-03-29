@@ -14,7 +14,8 @@ public record ReviewResponse(
     bool ContainsSpoilers,
     int Likes,
     bool HasUserLiked,
-    List<Username> UsersWhoLiked);
+    List<Username> UsersWhoLiked,
+    DateTimeOffset CreatedAt);
 
 public record ReviewDetailsResponse(
     Guid Id,
@@ -27,7 +28,8 @@ public record ReviewDetailsResponse(
     bool HasUserLiked,
     List<Username> UsersWhoLiked,
     bool HasUserCommented,
-    Dictionary<Guid, Comment> Comments);
+    Dictionary<Guid, Comment> Comments,
+    DateTimeOffset CreatedAt);
 
 public record ReviewWithMovieDetailsResponse(
     string Title,
@@ -51,7 +53,8 @@ public static class Converter
             review.ContainsSpoilers,
             review.LikesCount,
             hasUserLiked ?? false,
-            [.. review.Likes.Select(x => x.FromUser)]);
+            [.. review.Likes.Select(x => x.FromUser)],
+            review.CreatedAt);
 
     public static ReviewDetailsResponse ToDetailsResponse(
         this Review review,
@@ -67,5 +70,6 @@ public static class Converter
             hasUserLiked,
             [.. review.Likes.Select(x => x.FromUser)],
             hasUserCommented,
-            review.Comments.ToDictionary(x => x.FromUserId.Value));
+            review.Comments.ToDictionary(x => x.FromUserId.Value),
+            review.CreatedAt);
 }

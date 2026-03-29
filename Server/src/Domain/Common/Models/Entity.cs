@@ -4,6 +4,8 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IEntity whe
 {
     private readonly List<DomainEvent> _domainEvents = [];
     public TId Id { get; private set; } = id;
+    public DateTimeOffset CreatedAt { get; internal set; }
+
     public IReadOnlyCollection<DomainEvent> DomainEvents => [.. _domainEvents];
 
     public void Raise(DomainEvent domainEvent) => _domainEvents.Add(domainEvent);

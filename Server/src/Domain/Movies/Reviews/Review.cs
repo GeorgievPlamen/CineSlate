@@ -54,7 +54,7 @@ public class Review(ReviewId id) : Entity<ReviewId>(id)
             };
     }
 
-    public static Review Create(Guid reviewId, int rating, UserId ratedBy, MovieId movieId, string text = "", bool containsSpoilers = false)
+    public static Review Create(Guid reviewId, int rating, UserId ratedBy, MovieId movieId, string text = "", bool containsSpoilers = false, DateTimeOffset? createdAt = null)
     {
         return rating < 1 || rating > 5
             ? throw new RatingOutOfRangeException()
@@ -65,6 +65,7 @@ public class Review(ReviewId id) : Entity<ReviewId>(id)
                 MovieId = movieId,
                 Text = text,
                 ContainsSpoilers = containsSpoilers,
+                CreatedAt = createdAt ?? DateTimeOffset.MinValue
             };
     }
 }
