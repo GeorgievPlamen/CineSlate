@@ -2,7 +2,8 @@ import * as path from 'path';
 import { defineConfig } from 'vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,11 +12,8 @@ export default defineConfig({
       target: 'react',
       autoCodeSplitting: true,
     }),
-    react({
-      babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    }),
+    react(),
+    babel({ presets: [reactCompilerPreset({ compilationMode: 'infer' })] }),
     tailwindcss(),
   ],
   preview: {
