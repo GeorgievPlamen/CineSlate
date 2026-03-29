@@ -26,12 +26,13 @@ public class TMDBClient : IMovieClient
     private string UriForMovieSearchWithKey(string searchCriteria, int pageNumber)
         => $"/3/search/movie?query={searchCriteria}&page={pageNumber}&api_key={_apiKeys.TMDBKey}";
 
-    private string UriForMovieSearchWithKey(int pageNumber, int[]? genreIds = null, int? year = null)
+    private string UriForMovieSearchWithKey(int pageNumber, int[]? genreIds = null, int? yearFrom = null, int? yearTo = null)
     {
-        var yearQuery = year is null ? null : $"&primary_release_year={year}";
+        var yearFromQuery = yearFrom is null ? null : $"&primary_release_date.gte={yearFrom}-01-01";
+        var yearToQuery = yearTo is null ? null : $"&primary_release_date.lte={yearTo}-12-31";
         var genresQuery = genreIds is null ? null : $"&with_genres={string.Join(',', genreIds)}";
 
-        return $"/3/discover/movie?language=en-US&page={pageNumber}{yearQuery}&sort_by=popularity.desc{genresQuery}&api_key={_apiKeys.TMDBKey}";
+        return $"/3/discover/movie?language=en-US&page={pageNumber}{yearFromQuery}{yearToQuery}&sort_by=popularity.desc{genresQuery}&api_key={_apiKeys.TMDBKey}";
     }
 
     public TMDBClient(IHttpClientFactory httpClientFactory, IOptions<ApiKeys> apiKeyOptions)
@@ -84,9 +85,9 @@ public class TMDBClient : IMovieClient
         return await DeserializeToExtenralMovie(response, cancellationToken);
     }
 
-    public async Task<Paged<ExternalMovie>> GetMoviesByGenreAndYear(int pageNumber, int[]? genreIds, int? year, CancellationToken cancellationToken)
+    public async Task<Paged<ExternalMovie>> GetMoviesByGenreAndYear(int pageNumber, int[]? genreIds, int? yearFrom, int? yearTo, CancellationToken cancellationToken)
     {
-        var response = await _httpClient.GetAsync(UriForMovieSearchWithKey(pageNumber, genreIds, year));
+        var response = await _httpClient.GetAsync(UriForMovieSearchWithKey(pageNumber, genreIds, yearFrom, yearTo));
 
         return await DeserializeToExtenralMovie(response, cancellationToken);
     }
