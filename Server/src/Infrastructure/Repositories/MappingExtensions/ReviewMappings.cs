@@ -26,7 +26,8 @@ public static class ReviewMappings
             UserId.Create(model.AuthorId),
             MovieId.Create(model.Movie.Id),
             model.Text,
-            model.ContainsSpoilers);
+            model.ContainsSpoilers,
+            model.CreatedAt);
 
     public static Review Unwrap(this ReviewModel model, List<Like> likes)
     {
@@ -36,7 +37,8 @@ public static class ReviewMappings
             UserId.Create(model.AuthorId),
             MovieId.Create(model.Movie.Id),
             model.Text,
-            model.ContainsSpoilers);
+            model.ContainsSpoilers,
+            model.CreatedAt);
 
         review.AddLikes(likes);
 
@@ -51,7 +53,8 @@ public static class ReviewMappings
             UserId.Create(model.AuthorId),
             MovieId.Create(model.Movie.Id),
             model.Text,
-            model.ContainsSpoilers);
+            model.ContainsSpoilers,
+            model.CreatedAt);
 
         review.AddLikes(likes);
 
