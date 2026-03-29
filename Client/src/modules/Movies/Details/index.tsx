@@ -160,9 +160,11 @@ export default function MovieDetails() {
               <p className="font-primary">{data?.description}</p>
               <p className="my-4 font-serif text-xl italic">{data?.tagline}</p>
               <section className="mt-4 h-full flex-row gap-2">
-                {data?.genres.map((g) => (
-                  <GenreButton key={g.id} name={g.value} genreId={g.id} />
-                ))}
+                {data?.genres.map((g) =>
+                  g.value.length > 0 ? (
+                    <GenreButton key={g.id} name={g.value} genreId={g.id} />
+                  ) : null
+                )}
                 {!isMovieInWatchlist && (
                   <div className="w-full flex justify-start">
                     <Button

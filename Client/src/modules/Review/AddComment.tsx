@@ -30,7 +30,7 @@ export default function AddComment({ reviewId, refetchComments }: Props) {
     >
       <textarea
         placeholder={'Share your thoughts?'}
-        className="border-grey bg-background my-4 h-20 w-full resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none"
+        className="border-grey bg-panel my-4 h-20 w-full resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none"
         {...register('comment')}
       />
       <SubmitButton

@@ -32,7 +32,7 @@ export default function MovieReviewCard({ review }: Props) {
   const critic = critics?.[0];
 
   return (
-    <div className="flex rounded-2xl border border-grey bg-background w-120 h-full">
+    <div className="flex rounded-2xl border border-grey bg-panel w-120 h-full">
       <img
         src={IMG_PATH_W500 + movie?.posterPath}
         alt="poster"

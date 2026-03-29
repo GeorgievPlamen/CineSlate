@@ -243,7 +243,7 @@ export default function AddReview({ onSuccess }: Props) {
       <textarea
         placeholder={isTextAreaSelected ? '' : 'Share your thoughts?'}
         className={
-          'border-grey bg-background mb-4 h-10 w-80 resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none' +
+          'border-grey bg-panel mb-4 h-10 w-80 resize-none rounded-lg border px-2 pt-1 text-center font-thin transition-[height] outline-none' +
           ` ${isTextAreaSelected && 'h-28'}`
         }
         {...register('text')}

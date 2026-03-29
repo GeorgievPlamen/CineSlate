@@ -36,7 +36,7 @@ export default function Login() {
     <form
       noValidate
       method="post"
-      className="border-foreground bg-background mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border p-4"
+      className="border-foreground bg-panel mx-auto mt-10 flex w-80 flex-col items-center gap-3 rounded-xl border p-4"
       onSubmit={handleSubmit}
     >
       <Heading2 title="Login" />

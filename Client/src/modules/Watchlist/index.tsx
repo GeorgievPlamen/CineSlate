@@ -33,7 +33,7 @@ export default function Watchlist() {
       {watchlist?.map((w) => (
         <div
           key={w.id}
-          className="flex rounded-2xl border border-grey bg-background min-w-70 w-full"
+          className="flex rounded-2xl border border-grey bg-panel min-w-70 w-full"
         >
           <img
             src={IMG_PATH_W500 + w.posterPath}

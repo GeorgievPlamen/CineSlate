@@ -16,7 +16,7 @@ export default function UserCard({ user, className }: Props) {
       to={'/critics/$id'}
       params={{ id: user.id ?? '' }}
       className={
-        'flex rounded-2xl border border-grey bg-background p-1 hover:border-primary ' +
+        'flex rounded-2xl border border-grey bg-panel p-1 hover:border-primary ' +
         className
       }
     >

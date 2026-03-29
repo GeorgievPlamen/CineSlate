@@ -17,7 +17,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
   const username = review.authorUsername?.split('#') ?? '';
 
   return (
-    <div className="flex rounded-2xl border border-grey bg-background p-1">
+    <div className="flex rounded-2xl border border-grey bg-panel p-1">
       <img
         src={
           authorPicture && authorPicture.length > 0
