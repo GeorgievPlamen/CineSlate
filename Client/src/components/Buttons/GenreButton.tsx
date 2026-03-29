@@ -35,7 +35,7 @@ export default function GenreButton({ name, genreId, currentGenreIds }: Props) {
       onClick={handleClick}
       className={
         'm-2 h-8 rounded-full px-2 text-sm hover:outline active:bg-opacity-80 ' +
-        (currentGenreIds?.includes(genreId) ? 'bg-primary' : 'bg-background')
+        (currentGenreIds?.includes(genreId) ? 'bg-primary' : 'bg-panel')
       }
     >
       {name}

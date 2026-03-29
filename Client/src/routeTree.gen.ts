@@ -76,12 +76,12 @@ export interface FileRoutesByFullPath {
   '/critics/$id': typeof CriticsIdRoute
   '/movies/$id': typeof MoviesIdRoute
   '/reviews/$id': typeof ReviewsIdRoute
-  '/critics': typeof CriticsIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/movies': typeof MoviesIndexRoute
-  '/my-details': typeof MyDetailsIndexRoute
-  '/register': typeof RegisterIndexRoute
-  '/watchlist': typeof WatchlistIndexRoute
+  '/critics/': typeof CriticsIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/my-details/': typeof MyDetailsIndexRoute
+  '/register/': typeof RegisterIndexRoute
+  '/watchlist/': typeof WatchlistIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -115,12 +115,12 @@ export interface FileRouteTypes {
     | '/critics/$id'
     | '/movies/$id'
     | '/reviews/$id'
-    | '/critics'
-    | '/login'
-    | '/movies'
-    | '/my-details'
-    | '/register'
-    | '/watchlist'
+    | '/critics/'
+    | '/login/'
+    | '/movies/'
+    | '/my-details/'
+    | '/register/'
+    | '/watchlist/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -172,42 +172,42 @@ declare module '@tanstack/react-router' {
     '/watchlist/': {
       id: '/watchlist/'
       path: '/watchlist'
-      fullPath: '/watchlist'
+      fullPath: '/watchlist/'
       preLoaderRoute: typeof WatchlistIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register/': {
       id: '/register/'
       path: '/register'
-      fullPath: '/register'
+      fullPath: '/register/'
       preLoaderRoute: typeof RegisterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-details/': {
       id: '/my-details/'
       path: '/my-details'
-      fullPath: '/my-details'
+      fullPath: '/my-details/'
       preLoaderRoute: typeof MyDetailsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movies/': {
       id: '/movies/'
       path: '/movies'
-      fullPath: '/movies'
+      fullPath: '/movies/'
       preLoaderRoute: typeof MoviesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
       id: '/login/'
       path: '/login'
-      fullPath: '/login'
+      fullPath: '/login/'
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/critics/': {
       id: '/critics/'
       path: '/critics'
-      fullPath: '/critics'
+      fullPath: '/critics/'
       preLoaderRoute: typeof CriticsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }

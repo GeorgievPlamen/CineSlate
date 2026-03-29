@@ -1,4 +1,3 @@
-import CineSlateLogo from '@/assets/images/cineslateLogo.png';
 import { useCallback, useEffect, useState } from 'react';
 import { useUserStore } from '@/store/userStore';
 import useDebounce from '@/hooks/useDebounce';
@@ -10,18 +9,14 @@ import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
 import { Search } from 'lucide-react';
 import NotificationsBell from '@/components/Notifications/NotificationsBell';
+import HeaderLink from '@/components/HeaderLink';
 
 function Header() {
-  const [isBouncing, setIsBouncing] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>();
   const debouncedSearchTerm = useDebounce(searchTerm);
   const user = useUserStore((state) => state.user);
 
   const navigate = useNavigate();
-  const handleBounce = () => {
-    setIsBouncing(true);
-    setTimeout(() => setIsBouncing(false), 1500);
-  };
 
   const navigateToMovies = useCallback(() => {
     if (debouncedSearchTerm === undefined) return;
@@ -41,21 +36,19 @@ function Header() {
   }, [debouncedSearchTerm, navigate, navigateToMovies]);
 
   return (
-    <header className="fixed z-50 flex w-full bg-background py-2 shadow shadow-dark">
-      <nav className="hidden w-full items-center justify-evenly md:flex">
-        <Link to="/" className="flex w-min items-center justify-center">
-          <img
-            src={CineSlateLogo}
-            alt="Cineslate Logo"
-            className={`mx-10 w-16 ${isBouncing ? 'animate-bounce' : ''}`}
-            onClick={handleBounce}
-          />
+    <header className="sticky top-0 z-50 flex w-full bg-background border-b border-b-border">
+      <nav className="hidden w-full items-center justify-between md:flex min-h-18 px-6">
+        <Link to="/" className="flex w-min justify-center">
+          <h1 className="text-2xl font-bold tracking-wider font-heading pl-8">
+            <span>CINE</span>
+            <span className="text-secondary">SLATE</span>
+          </h1>
         </Link>
         <div className="0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-foreground">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
-            type="search"
+            type="text"
             name="search"
             className="h-8 grow rounded-full bg-foreground pl-2 text-accent focus:outline-none"
             onKeyDown={(e) => {
@@ -68,83 +61,45 @@ function Header() {
             className="absolute right-2 size-6 cursor-pointer rounded-full bg-foreground text-gray-400"
           />
         </div>
-        <ul className="flex gap-4">
-          <li>
-            <Link
-              to="/movies"
-              activeProps={{
-                className: 'outline  outline-foreground',
-              }}
-              className={
-                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
-              }
-            >
-              Movies
-            </Link>
+        <ul className="flex gap-4 items-center relative h-full">
+          <li className="h-full">
+            <HeaderLink label="Movies" linkOptions={{ to: '/movies' }} />
           </li>
-          <li>
-            <Link
-              to="/critics"
-              activeProps={{
-                className: 'outline  outline-foreground',
-              }}
-              className={
-                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
-              }
-            >
-              Critics
-            </Link>
+          <li className="h-full">
+            <HeaderLink label="Critics" linkOptions={{ to: '/critics' }} />
           </li>
-          <li>
-            <Link
-              to="/watchlist"
-              activeProps={{
-                className: 'outline  outline-foreground',
-              }}
-              className={
-                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
-              }
-            >
-              Watchlist
-            </Link>
+          <li className="h-full">
+            <HeaderLink label="Watchlist" linkOptions={{ to: '/watchlist' }} />
           </li>
-        </ul>
-        <div className="flex gap-4 items-center">
-          <div>
+          <li className="flex gap-4 items-center">
             <NotificationsBell />
-          </div>
+          </li>
           {user?.username?.length > 0 ? (
-            <Dropdown items={DropdownItems}>
-              <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
-                {user?.username?.split('#')[0]}
-                <img
-                  src={
-                    user?.pictureBase64?.length &&
-                    user?.pictureBase64?.length > 0
-                      ? base64ToImage(user.pictureBase64)
-                      : BACKUP_PROFILE
-                  }
-                  alt="profile-pic"
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-              </div>
-            </Dropdown>
+            <li>
+              <Dropdown items={DropdownItems}>
+                <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
+                  {user?.username?.split('#')[0]}
+                  <img
+                    src={
+                      user?.pictureBase64?.length &&
+                      user?.pictureBase64?.length > 0
+                        ? base64ToImage(user.pictureBase64)
+                        : BACKUP_PROFILE
+                    }
+                    alt="profile-pic"
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                </div>
+              </Dropdown>
+            </li>
           ) : (
-            <Link
-              to="/login"
-              activeProps={{
-                className: 'outline  outline-foreground',
-              }}
-              className={
-                'mx-2 rounded px-2 py-1 text-foreground hover:bg-primary active:bg-opacity-80'
-              }
-            >
-              Sign in
-            </Link>
+            <li className="h-full">
+              <HeaderLink label="Sign in" linkOptions={{ to: '/login' }} />
+            </li>
           )}
-        </div>
+        </ul>
       </nav>
-      <nav className="flex w-full items-center justify-between md:hidden">
+      <nav className="flex w-full items-center justify-between md:hidden min-h-18 px-6">
         <div className="0 relative mx-2 flex w-2/3 max-w-md items-center rounded-full bg-foreground">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}

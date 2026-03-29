@@ -105,7 +105,7 @@ function ReviewDetails() {
             </div>
           </div>
           <h4 className="font-heading mb-4 text-lg">⭐{reviewData?.rating}</h4>
-          <div className="bg-background flex gap-2 rounded-2xl border p-2">
+          <div className="bg-panel flex gap-2 rounded-2xl border p-2">
             <p className="font-primary">
               {reviewData?.text && reviewData?.text.length > 0
                 ? reviewData?.text

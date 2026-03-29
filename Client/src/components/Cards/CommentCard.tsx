@@ -15,7 +15,7 @@ export default function CommentCard({ comment }: Props) {
   });
 
   return (
-    <div className="my-5 flex rounded-2xl border border-grey bg-background p-1">
+    <div className="my-5 flex rounded-2xl border border-grey bg-panel p-1">
       <img
         src={
           usersData?.[0].pictureBase64 &&

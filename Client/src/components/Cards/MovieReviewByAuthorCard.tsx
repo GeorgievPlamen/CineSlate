@@ -15,7 +15,7 @@ export default function MovieReviewByAuthorCard({ review }: Props) {
   );
 
   return (
-    <div className="flex rounded-2xl border border-grey bg-background min-w-70">
+    <div className="flex rounded-2xl border border-grey bg-panel min-w-70">
       <img
         src={IMG_PATH_W500 + review.posterPath}
         alt="poster"

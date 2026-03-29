@@ -191,7 +191,7 @@ export default function Movies() {
             />
           ))}
       </article>
-      <div className="mt-10 mb-20 flex justify-center">
+      <div className="my-10 flex justify-center">
         {(isFetching ||
           isSearchedMoviesFetching ||
           isFilteredMoviesFetching) && <Spinner />}
