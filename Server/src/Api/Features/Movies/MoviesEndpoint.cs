@@ -1,4 +1,5 @@
 using Api.Common;
+
 using Application.Common;
 using Application.Movies;
 using Application.Movies.Details;
@@ -6,6 +7,7 @@ using Application.Movies.FromWatchlist;
 using Application.Movies.GetMoviesByFilters;
 using Application.Movies.GetMoviesByTitle;
 using Application.Movies.PagedMoviesQuery;
+
 using MediatR;
 
 namespace Api.Features.Movies;
@@ -28,8 +30,8 @@ public static class MoviesEndpoint
         movies.MapGet("/watchlist", GetMoviesFromWatchlistAsync);
     }
 
-    private static async Task<IResult> GetMoviesByFiltersAsync(int[]? genreIds, int? year, ISender mediatr, CancellationToken cancellationToken, int page = 1)
-        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByFilterQuery(page, genreIds, year), cancellationToken));
+    private static async Task<IResult> GetMoviesByFiltersAsync(int[]? genreIds, int? yearFrom, int? yearTo, ISender mediatr, CancellationToken cancellationToken, int page = 1)
+        => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByFilterQuery(page, genreIds, yearFrom, yearTo), cancellationToken));
 
     private static async Task<IResult> GetMoviesByTitleAsync(string title, ISender mediatr, CancellationToken cancellationToken, int page = 1)
         => Response<Paged<Movie>>.Match(await mediatr.Send(new GetMoviesByTitleQuery(title, page), cancellationToken));

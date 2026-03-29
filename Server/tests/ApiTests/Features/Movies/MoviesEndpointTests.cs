@@ -156,7 +156,7 @@ public class MoviesEndpointTests(ApiFactory factory) : AuthenticatedTest(factory
 
         await Api.SeedDatabaseAsync(movieModels);
 
-        Api.MoviesClientMock.GetMoviesByGenreAndYear(Arg.Any<int>(), Arg.Any<int[]?>(), Arg.Any<int?>(), Arg.Any<CancellationToken>())
+        Api.MoviesClientMock.GetMoviesByGenreAndYear(Arg.Any<int>(), Arg.Any<int[]?>(), Arg.Any<int?>(), Arg.Any<int?>(), Arg.Any<CancellationToken>())
             .Returns(new Paged<ExternalMovie>(externalMovies));
 
         // Act

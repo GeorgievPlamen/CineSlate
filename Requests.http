@@ -70,7 +70,7 @@ Authorization: {{Token}}
 
 ### Movies Search By Filters
 
-GET {{Api_HostAddress}}movies/filter?genreIds=16&genreIds=35&year=2024
+GET {{Api_HostAddress}}movies/filter?genreIds=16&genreIds=35&yearFrom=2020&yearTo=2022
 content-type: application/json
 Authorization: {{Token}}
 

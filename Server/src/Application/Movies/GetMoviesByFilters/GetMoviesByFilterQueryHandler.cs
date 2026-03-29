@@ -15,7 +15,7 @@ public class GetMoviesByFilterQueryHandler(IMovieClient moviesClient, IMovieRepo
     public async Task<Result<Paged<Movie>>> Handle(GetMoviesByFilterQuery request, CancellationToken cancellationToken)
     {
         var movies = await moviesClient
-            .GetMoviesByGenreAndYear(request.PageNumber, request.GenreIds, request.Year, cancellationToken);
+            .GetMoviesByGenreAndYear(request.PageNumber, request.GenreIds, request.YearFrom, request.YearTo, cancellationToken);
 
         if (movies.Values.Count == 0)
             return Result<Paged<Movie>>.Failure(Error.ServerError());
