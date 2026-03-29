@@ -48,7 +48,7 @@ function Header() {
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
-            type="search"
+            type="text"
             name="search"
             className="h-8 grow rounded-full bg-foreground pl-2 text-accent focus:outline-none"
             onKeyDown={(e) => {

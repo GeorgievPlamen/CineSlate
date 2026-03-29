@@ -20,7 +20,7 @@ export default function Backdrop({ path }: Props) {
         }
         onLoad={() => setLoaded(true)}
       />
-      <div className="absolute top-0 h-full w-full bg-radial-[at_center] from-background/60 via-background/99 to-background" />
+      <div className="absolute top-0 h-full w-full bg-radial-[at_center] from-muted-background/60 via-muted-background/99 to-muted-background" />
     </div>
   );
 }
