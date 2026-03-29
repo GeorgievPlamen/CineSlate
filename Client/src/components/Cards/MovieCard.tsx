@@ -19,7 +19,7 @@ export default function MovieCard({
 }: Props) {
   return (
     <article
-      className="mx-auto pb-2 relative flex w-60 flex-col rounded-lg border border-grey bg-panel shadow shadow-dark hover:border-primary active:border-opacity-80 h-full"
+      className="transition-transform duration-300 hover:scale-105 mx-auto relative flex w-60 flex-col rounded-lg border border-grey bg-panel shadow hover:border-primary active:border-opacity-80 h-full"
       id={`${id}`}
     >
       <Link
@@ -28,17 +28,21 @@ export default function MovieCard({
         params={{ id: `${id}` }}
       />
       <img
-        className="mb-2 rounded-t-lg"
+        className="h-full mb-1 rounded-t-lg "
         src={IMG_PATH_W500 + posterPath}
         alt="poster"
       />
-      <div className="mx-2 mb-1 flex justify-between font-primary text-sm">
-        <p>⭐{rating}</p>
-        <p className="text-muted-foreground">{releaseDate.toString()}</p>
-      </div>
-      <div className="flex justify-between h-full">
-        <p className="mx-2 flex h-full items-center font-heading text-lg">
-          {title}
+      <div className="flex flex-col gap-2">
+        <div className="flex">
+          <span className="mx-2 flex h-full items-center truncate">
+            {title}
+          </span>
+        </div>
+        <p className="mx-2 mb-1 flex h-full items-end justify-between font-primary">
+          <span className="text-muted-foreground  text-xs">
+            {releaseDate.toString()}
+          </span>
+          <span className="text-sm ">⭐{rating.toFixed(1)}</span>
         </p>
       </div>
     </article>
