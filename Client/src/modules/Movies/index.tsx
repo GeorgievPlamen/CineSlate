@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
-import ChevronUp from '@/assets/icons/ChevronUp';
+import { useState } from 'react';
 import Button from '@/components/Buttons/Button';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Spinner from '@/components/Spinner';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ToPagedData from '@/utils/toPagedData';
-import useScroll from '@/hooks/useScroll';
 import { genres } from '@/assets/tmdbGenres.json';
 import GenreButton from '@/components/Buttons/GenreButton';
 import { getRouteApi } from '@tanstack/react-router';
@@ -14,6 +12,7 @@ import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
 import Dropdown from '@/components/Dropdown';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 
@@ -23,7 +22,6 @@ export default function Movies() {
   const isDefaultMovies = !search && !genreIds;
   const isSearchingMovies = search ? search?.length > 0 : false;
   const isFilteringMovies = genreIds && genreIds.length > 0;
-  const { nearBottom, beyondScreen } = useScroll();
   const [moviesBy, setMoviesBy] = useState<MoviesBy>(MoviesBy.NowPlaying);
 
   const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
@@ -70,11 +68,9 @@ export default function Movies() {
     enabled: isFilteringMovies,
   });
 
-  useEffect(() => {
-    if (!nearBottom) return;
-
+  async function fetchNext() {
     if (isDefaultMovies && data?.hasNextPage && data?.currentPage < 6) {
-      fetchNextPage();
+      await fetchNextPage();
     }
 
     if (
@@ -82,7 +78,7 @@ export default function Movies() {
       filteredMovies?.hasNextPage &&
       filteredMovies?.currentPage < 6
     ) {
-      fetchNextPageByFilters();
+      await fetchNextPageByFilters();
     }
 
     if (
@@ -90,23 +86,11 @@ export default function Movies() {
       searchedMovies?.hasNextPage &&
       searchedMovies?.currentPage < 6
     ) {
-      fetchNextPageByTitle();
+      await fetchNextPageByTitle();
     }
-  }, [
-    data?.currentPage,
-    data?.hasNextPage,
-    fetchNextPage,
-    fetchNextPageByFilters,
-    fetchNextPageByTitle,
-    filteredMovies?.currentPage,
-    filteredMovies?.hasNextPage,
-    isDefaultMovies,
-    isFilteringMovies,
-    isSearchingMovies,
-    nearBottom,
-    searchedMovies?.currentPage,
-    searchedMovies?.hasNextPage,
-  ]);
+  }
+
+  const { loadMoreRef } = useInfiniteScroll(fetchNext);
 
   function handleSelectMoviesBy(moviesBy: MoviesBy) {
     setMoviesBy(moviesBy);
@@ -156,7 +140,10 @@ export default function Movies() {
           />
         ))}
       </section>
-      <article className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40">
+      <section
+        id="movieSection"
+        className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40"
+      >
         {isDefaultMovies &&
           data?.values.map((m) => (
             <MovieCard
@@ -190,8 +177,8 @@ export default function Movies() {
               posterPath={m.posterPath}
             />
           ))}
-      </article>
-      <div className="my-10 flex justify-center">
+      </section>
+      <div className="my-10 flex justify-center" ref={loadMoreRef}>
         {(isFetching ||
           isSearchedMoviesFetching ||
           isFilteredMoviesFetching) && <Spinner />}
@@ -228,14 +215,6 @@ export default function Movies() {
           </Button>
         ) : null}
       </div>
-      {beyondScreen && (
-        <button
-          onClick={() => scrollTo(0, 0)}
-          className="text-primary hover:outline-foreground active:bg-opacity-80 fixed right-10 bottom-20 animate-bounce rounded-full p-1 hover:outline"
-        >
-          <ChevronUp />
-        </button>
-      )}
     </>
   );
 }
