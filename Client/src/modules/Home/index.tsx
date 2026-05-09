@@ -38,7 +38,7 @@ function Home() {
     <div className="mx-auto">
       <Backdrop path={randomMovieDetails?.backdropPath} />
       <div className="flex flex-col items-center justify-center rounded-xl pt-8">
-        <div className="max-w-4xl w-80 md:w-full">
+        <div className="max-w-250 w-80 md:w-full">
           <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
             Find Your Next Favorite Movie Instantly! 🍿
           </h1>

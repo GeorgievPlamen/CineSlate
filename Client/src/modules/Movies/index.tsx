@@ -5,21 +5,15 @@ import Spinner from '@/components/Spinner';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ToPagedData from '@/utils/toPagedData';
 import { genres } from '@/assets/tmdbGenres.json';
-import GenreButton from '@/components/Buttons/GenreButton';
 import { getRouteApi } from '@tanstack/react-router';
 import MovieCard from '@/components/Cards/MovieCard';
 import { moviesClient, MoviesBy, MoviesByTitleMap } from './api/moviesClient';
-import Dropdown from '@/components/Dropdown';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import SortByDropdown from './Components/SortByDropdown';
-import ToggleCheckbox from '@/components/Checkboxes/ToggleCheckbox';
-import { Checkbox } from '@/components/ui/checkbox';
 import SectionBreak from '@/components/SectionBreak';
 import GenreCheckbox from '@/components/Checkboxes/GenreCheckbox';
-import { Slider } from '@/components/ui/slider';
 import YearSlider from '@/components/Sliders/YearSlider';
+import { FilterIcon } from 'lucide-react';
 
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 
@@ -33,6 +27,7 @@ export default function Movies() {
   const isFilteringMovies = genreIds && genreIds.length > 0;
   const [moviesBy, setMoviesBy] = useState<MoviesBy>(MoviesBy.NowPlaying);
   const [years, setYears] = useState([1950, currentYear]);
+  const [isMobileFiltersShown, setIsMobileFiltersShown] = useState(false);
 
   const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
     queryKey: ['getPagedMovies', moviesBy],
@@ -137,121 +132,143 @@ export default function Movies() {
   ];
 
   return (
-    <>
-      <section className="mx-auto flex w-5/6 md:w-2/3 flex-wrap items-center justify-start">
-        {genres?.map((g) => (
-          <GenreButton
-            key={g.id}
-            name={g.name}
-            genreId={g.id}
-            currentGenreIds={genreIds}
-          />
-        ))}
-        <SortByDropdown items={moviesByDropdownItems} moviesBy={moviesBy} />
-      </section>
-      <section className="flex">
-        <div className="flex flex-col border bg-muted rounded-lg ml-4 h-fit">
-          <div className="p-1 px-2">
-            <span>FILTERS</span>
+    <section className="flex mt-2">
+      <div className="md:hidden">
+        <button className='fixed' onClick={() => setIsMobileFiltersShown((x) => !x)}>
+          <FilterIcon />
+        </button>
+        {isMobileFiltersShown && (
+          <div>
+            <div className="z-40 flex flex-col items-center fixed ml-4">
+              <SortByDropdown
+                items={moviesByDropdownItems}
+                moviesBy={moviesBy}
+              />
+              <div className="flex flex-col border bg-muted rounded-lg h-fit mt-2 max-h-screen scroll-auto">
+                <div className="p-1 px-2 flex flex-col flex-wrap gap-2 mb-2">
+                  <span className="text-primary">Genre</span>
+                  {genres?.map((g) => (
+                    <GenreCheckbox
+                      key={g.id}
+                      name={g.name}
+                      genreId={g.id}
+                      currentGenreIds={genreIds}
+                    />
+                  ))}
+                </div>
+                <SectionBreak />
+                <div className="p-1 px-2 w-40">
+                  <span className="text-primary">Year</span>
+                  <YearSlider years={years} setYears={setYears} />
+                </div>
+              </div>
+            </div>
           </div>
-          <SectionBreak />
-          <div className="p-1 px-2 flex flex-col gap-2">
-            <span>Genre</span>
-            {genres?.map((g) => (
-              <GenreCheckbox
-                key={g.id}
-                name={g.name}
-                genreId={g.id}
-                currentGenreIds={genreIds}
+        )}
+      </div>
+      <div className="hidden md:flex">
+        <div className="w-50" /> {/*Space for the filters*/}
+        <div className="flex flex-col items-center fixed ml-4 mt-2">
+          <SortByDropdown items={moviesByDropdownItems} moviesBy={moviesBy} />
+          <div className="flex flex-col border bg-muted rounded-lg h-fit mt-2">
+            <div className="p-1 px-2 flex flex-col flex-wrap gap-2 mb-2">
+              <span className="text-primary">Genre</span>
+              {genres?.map((g) => (
+                <GenreCheckbox
+                  key={g.id}
+                  name={g.name}
+                  genreId={g.id}
+                  currentGenreIds={genreIds}
+                />
+              ))}
+            </div>
+            <SectionBreak />
+            <div className="p-1 px-2 w-40">
+              <span className="text-primary">Year</span>
+              <YearSlider years={years} setYears={setYears} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full">
+        <div
+          id="movieSection"
+          className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  2xl:grid-cols-5"
+        >
+          {isDefaultMovies &&
+            data?.values.map((m) => (
+              <MovieCard
+                key={m.id}
+                title={m.title}
+                id={m.id}
+                rating={m.rating}
+                releaseDate={m.releaseDate}
+                posterPath={m.posterPath}
               />
             ))}
-          </div>
-          <SectionBreak />
-          <div className="p-1 px-2 w-40">
-            <span>Year</span>
-            <YearSlider years={years} setYears={setYears} />
-          </div>
+          {isSearchingMovies &&
+            searchedMovies?.values.map((m) => (
+              <MovieCard
+                key={m.id}
+                title={m.title}
+                id={m.id}
+                rating={m.rating}
+                releaseDate={m.releaseDate}
+                posterPath={m.posterPath}
+              />
+            ))}
+          {isFilteringMovies &&
+            filteredMovies?.values.map((m) => (
+              <MovieCard
+                key={m.id}
+                title={m.title}
+                id={m.id}
+                rating={m.rating}
+                releaseDate={m.releaseDate}
+                posterPath={m.posterPath}
+              />
+            ))}
         </div>
-        <div className="flex flex-col w-full">
-          <div
-            id="movieSection"
-            className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:px-40"
-          >
-            {isDefaultMovies &&
-              data?.values.map((m) => (
-                <MovieCard
-                  key={m.id}
-                  title={m.title}
-                  id={m.id}
-                  rating={m.rating}
-                  releaseDate={m.releaseDate}
-                  posterPath={m.posterPath}
-                />
-              ))}
-            {isSearchingMovies &&
-              searchedMovies?.values.map((m) => (
-                <MovieCard
-                  key={m.id}
-                  title={m.title}
-                  id={m.id}
-                  rating={m.rating}
-                  releaseDate={m.releaseDate}
-                  posterPath={m.posterPath}
-                />
-              ))}
-            {isFilteringMovies &&
-              filteredMovies?.values.map((m) => (
-                <MovieCard
-                  key={m.id}
-                  title={m.title}
-                  id={m.id}
-                  rating={m.rating}
-                  releaseDate={m.releaseDate}
-                  posterPath={m.posterPath}
-                />
-              ))}
-          </div>
-          <div className="my-10 flex justify-center" ref={loadMoreRef}>
-            {(isFetching ||
-              isSearchedMoviesFetching ||
-              isFilteredMoviesFetching) && <Spinner />}
-            {(isError || isFilteredMoviesError || isSearchedMoviesError) && (
-              <ErrorMessage />
-            )}
-            {(isDefaultMovies && data?.currentPage && data?.currentPage > 5) ||
-            (isSearchingMovies &&
-              searchedMovies?.currentPage &&
-              searchedMovies?.currentPage > 5) ||
-            (isFilteringMovies &&
-              filteredMovies?.currentPage &&
-              filteredMovies?.currentPage > 5) ? (
-              <Button
-                onClick={() => {
-                  if (isDefaultMovies && data?.hasNextPage) {
-                    fetchNextPage();
-                  }
-
-                  if (isFilteringMovies && filteredMovies?.hasNextPage) {
-                    fetchNextPageByFilters();
-                  }
-
-                  if (isSearchingMovies && searchedMovies?.hasNextPage) {
-                    fetchNextPageByTitle();
-                  }
-                }}
-                className="w-fit px-10"
-                isLoading={
-                  isFetching ||
-                  isFilteredMoviesFetching ||
-                  isSearchedMoviesFetching
+        <div className="my-10 flex justify-center" ref={loadMoreRef}>
+          {(isFetching ||
+            isSearchedMoviesFetching ||
+            isFilteredMoviesFetching) && <Spinner />}
+          {(isError || isFilteredMoviesError || isSearchedMoviesError) && (
+            <ErrorMessage />
+          )}
+          {(isDefaultMovies && data?.currentPage && data?.currentPage > 5) ||
+          (isSearchingMovies &&
+            searchedMovies?.currentPage &&
+            searchedMovies?.currentPage > 5) ||
+          (isFilteringMovies &&
+            filteredMovies?.currentPage &&
+            filteredMovies?.currentPage > 5) ? (
+            <Button
+              onClick={() => {
+                if (isDefaultMovies && data?.hasNextPage) {
+                  fetchNextPage();
                 }
-              >
-                Load More
-              </Button>
-            ) : null}
-          </div>
+
+                if (isFilteringMovies && filteredMovies?.hasNextPage) {
+                  fetchNextPageByFilters();
+                }
+
+                if (isSearchingMovies && searchedMovies?.hasNextPage) {
+                  fetchNextPageByTitle();
+                }
+              }}
+              className="w-fit px-10"
+              isLoading={
+                isFetching ||
+                isFilteredMoviesFetching ||
+                isSearchedMoviesFetching
+              }
+            >
+              Load More
+            </Button>
+          ) : null}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

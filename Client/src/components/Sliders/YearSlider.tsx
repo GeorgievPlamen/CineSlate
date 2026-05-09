@@ -6,15 +6,14 @@ interface Props {
   min?: number;
 }
 
-function YearSlider({ years, setYears, min = 1930 }: Props) {
+function YearSlider({ years, setYears, min = 1950 }: Props) {
   return (
-    <div className="">
-      <div className="flex justify-between">
-        <span>{years[0]}</span>
-        <span>{years[1]}</span>
+    <div className="mb-2 mt-1">
+      <div className="flex justify-between mb-1.5">
+        <span className="text-sm font-extralight">{years[0]}</span>
+        <span className="text-sm font-extralight">{years[1]}</span>
       </div>
       <Slider
-      defaultValue={[1960,2000]}
         value={years}
         onValueChange={setYears}
         min={min}

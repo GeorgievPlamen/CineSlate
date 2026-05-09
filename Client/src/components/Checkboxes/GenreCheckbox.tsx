@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Checkbox } from '../ui/checkbox';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Props {
   name: string;
@@ -38,15 +39,20 @@ function GenreCheckbox({ name, genreId, currentGenreIds }: Props) {
 
   return (
     <button
-      className="flex items-center gap-2 cursor-pointer"
+      className="flex items-center w-fit gap-1.5 cursor-pointer"
       onClick={handleClick}
     >
       <Checkbox
         name="test"
-        className="border-muted-foreground rounded-sm cursor-pointer"
+        className={cn(
+          'border-muted-foreground rounded-sm cursor-pointer',
+          isChecked && 'border-none'
+        )}
         checked={isChecked}
       />
-      <span className="text-sm w-28 text-start">{name}</span>
+      <span className={cn('text-sm text-start', isChecked && 'text-primary')}>
+        {name}
+      </span>
     </button>
   );
 }

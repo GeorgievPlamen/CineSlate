@@ -19,7 +19,7 @@ export default function MovieCard({
 }: Props) {
   return (
     <article
-      className="transition-transform duration-300 hover:scale-105 mx-auto relative flex w-60 flex-col rounded-lg border border-grey bg-panel shadow hover:border-primary active:border-opacity-80 h-full"
+      className="transition-transform duration-300 hover:scale-105 mx-auto relative flex w-60 min-[1800px]:w-80 flex-col rounded-lg border border-grey bg-panel shadow hover:border-primary active:border-opacity-80 h-full"
       id={`${id}`}
     >
       <Link

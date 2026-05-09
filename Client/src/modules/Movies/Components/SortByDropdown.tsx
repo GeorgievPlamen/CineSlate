@@ -12,15 +12,17 @@ function SortByDropdown({ items, moviesBy }: Props) {
   const [isSortByMenuOpened, setIsSortByMenuOpened] = useState(false);
 
   return (
-    <div>
-      <span className="text-xs text-muted-foreground">Sort By: </span>
+    <div className="w-full">
       <Dropdown
         items={items}
-        classNameMenu="w-32"
+        classNameTrigger="w-full"
+        classNameMenu="w-40"
         onOpen={(open) => setIsSortByMenuOpened(open)}
       >
         <div
-          className={cn('flex items-center m-2 h-8 rounded-lg px-2 bg-muted')}
+          className={cn(
+            'flex items-center h-8 rounded-lg px-2 bg-muted justify-between'
+          )}
         >
           <p className="w-24 text-sm">{MoviesByTitleMap[moviesBy]}</p>
           {isSortByMenuOpened ? <ChevronUp /> : <ChevronDown />}
