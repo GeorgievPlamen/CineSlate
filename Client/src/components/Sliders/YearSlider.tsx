@@ -6,6 +6,7 @@ interface Props {
   min?: number;
 }
 
+// TODO: add year ranges to filtering
 function YearSlider({ years, setYears, min = 1950 }: Props) {
   return (
     <div className="mb-2 mt-1">

@@ -31,20 +31,25 @@ export const moviesClient = {
 
   getPagedMoviesSearchByFilters: async (
     genreIds: number[],
-    year: string,
+    yearFrom: string,
+    yearTo: string,
     page: number
   ): Promise<Paged<Movie>> => {
     let genreIdsQuery;
-    let yearQuery = '&year=';
+    let yearFromQuery = '';
+    let yearToQuery = '';
     if (genreIds) {
       genreIdsQuery = genreIds.map((id) => `&genreIds=${id}`).join('');
     }
-    if (yearQuery) {
-      yearQuery = `&year=${year}`;
+    if (yearFrom) {
+      yearFromQuery = `&yearFrom=${yearFrom}`;
+    }
+    if (yearTo) {
+      yearToQuery = `&yearTo=${yearTo}`;
     }
 
     return apiClient.get(
-      `/movies/filter?page=${page}${yearQuery}${genreIdsQuery}`
+      `/movies/filter?page=${page}${genreIdsQuery}${yearFromQuery}${yearToQuery}`
     );
   },
 

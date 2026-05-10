@@ -18,16 +18,20 @@ import { FilterIcon } from 'lucide-react';
 const { useSearch, useNavigate } = getRouteApi('/movies/');
 
 const currentYear = new Date().getFullYear();
+const minYear = 1950;
 
 export default function Movies() {
   const { search, genreIds } = useSearch({ select: (params) => params });
   const navigate = useNavigate();
-  const isDefaultMovies = !search && !genreIds;
-  const isSearchingMovies = search ? search?.length > 0 : false;
-  const isFilteringMovies = genreIds && genreIds.length > 0;
   const [moviesBy, setMoviesBy] = useState<MoviesBy>(MoviesBy.NowPlaying);
-  const [years, setYears] = useState([1950, currentYear]);
+  const [years, setYears] = useState([minYear, currentYear]);
   const [isMobileFiltersShown, setIsMobileFiltersShown] = useState(false);
+
+  const hasChangedYears = !(years[0] == minYear && years[1] == currentYear);
+  const isSearchingMovies = search ? search?.length > 0 : false;
+  const isFilteringMovies =
+    (genreIds && genreIds.length > 0) || hasChangedYears;
+  const isDefaultMovies = !isSearchingMovies && !isFilteringMovies;
 
   const { data, isFetching, isError, fetchNextPage } = useInfiniteQuery({
     queryKey: ['getPagedMovies', moviesBy],
@@ -60,11 +64,12 @@ export default function Movies() {
     isError: isFilteredMoviesError,
     fetchNextPage: fetchNextPageByFilters,
   } = useInfiniteQuery({
-    queryKey: ['getPagedMoviesSearchByFilters', genreIds],
+    queryKey: ['getPagedMoviesSearchByFilters', genreIds, years],
     queryFn: ({ pageParam }) =>
       moviesClient.getPagedMoviesSearchByFilters(
         genreIds ?? [],
-        `${new Date().getFullYear()}`,
+        `${years[0]}`,
+        `${years[1]}`,
         pageParam
       ),
     initialPageParam: 1,
@@ -151,11 +156,10 @@ export default function Movies() {
           <FilterIcon className="m-auto" />
         </button>
         <div
-          className={`
-    fixed left-0 z-40 md:hidden flex flex-row items-center
-    transition-transform duration-300 ease-in-out
-    ${isMobileFiltersShown ? 'translate-x-0' : '-translate-x-full'}
-  `}
+          className={`fixed left-0 z-40 md:hidden flex flex-row items-center
+           transition-transform duration-300 ease-in-out
+           ${isMobileFiltersShown ? 'translate-x-0' : '-translate-x-full'}
+        `}
         >
           <div className="flex flex-col border bg-muted rounded-lg h-fit mt-2 max-h-screen scroll-auto">
             <span className="ml-2 mt-1 text-primary">Genre</span>
