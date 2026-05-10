@@ -38,7 +38,8 @@ function GenreCheckbox({ name, genreId, currentGenreIds }: Props) {
   }
 
   return (
-    <button
+    <div
+      role="button"
       className="flex items-center w-fit gap-1.5 cursor-pointer"
       onClick={handleClick}
     >
@@ -53,7 +54,7 @@ function GenreCheckbox({ name, genreId, currentGenreIds }: Props) {
       <span className={cn('text-sm text-start', isChecked && 'text-primary')}>
         {name}
       </span>
-    </button>
+    </div>
   );
 }
 

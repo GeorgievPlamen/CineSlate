@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useUserStore } from '@/store/userStore';
 import useDebounce from '@/hooks/useDebounce';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { BACKUP_PROFILE } from '@/config';
-import BarsIcon from '@/Icons/BarsIcon';
 import Dropdown from '@/components/Dropdown';
 import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
-import { Search } from 'lucide-react';
+import {
+  Search,
+  TextAlignJustifyIcon,
+} from 'lucide-react';
 import NotificationsBell from '@/components/Notifications/NotificationsBell';
 import HeaderLink from '@/components/HeaderLink';
 
@@ -15,6 +17,9 @@ function Header() {
   const [searchTerm, setSearchTerm] = useState<string>();
   const debouncedSearchTerm = useDebounce(searchTerm);
   const user = useUserStore((state) => state.user);
+  const { pathname } = useLocation();
+
+  console.log(pathname );
 
   const navigate = useNavigate();
 
@@ -104,7 +109,7 @@ function Header() {
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
-            type="search"
+            type="text"
             name="search"
             className="h-8 grow rounded-full bg-foreground pl-2 text-accent focus:outline-none"
             onKeyDown={(e) => {
@@ -112,11 +117,15 @@ function Header() {
               navigateToMovies();
             }}
           />
+          <Search
+            onClick={navigateToMovies}
+            className="absolute right-2 size-6 cursor-pointer rounded-full bg-foreground text-gray-400"
+          />
         </div>
         <NotificationsBell />
         <Dropdown items={getMobileDropdownMenuItems(user)}>
-          <div className='className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full"'>
-            <BarsIcon />
+          <div className="rounded px-2 py-1 hover:bg-primary cursor-pointer">
+            <TextAlignJustifyIcon />
           </div>
         </Dropdown>
       </nav>
@@ -128,6 +137,7 @@ export default Header;
 const DropdownItems = [
   <Link
     to="/my-details"
+    key="/my-details"
     className="text-nowrap hover:underline w-full"
     activeProps={{
       className: 'underline',
@@ -137,6 +147,7 @@ const DropdownItems = [
   </Link>,
   <a
     href="/"
+    key="/"
     className="text-nowrap hover:underline w-full"
     onClick={() => {
       localStorage.clear();
@@ -150,6 +161,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
   const items = [
     <Link
       to="/"
+      key="/"
       className="text-nowrap hover:underline w-full"
       activeProps={{
         className: 'underline',
@@ -159,6 +171,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
     </Link>,
     <Link
       to="/movies"
+      key="/movies"
       className="text-nowrap hover:underline w-full"
       activeProps={{
         className: 'underline',
@@ -168,6 +181,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
     </Link>,
     <Link
       to="/critics"
+      key="/critics"
       className="text-nowrap hover:underline w-full"
       activeProps={{
         className: 'underline',
@@ -177,6 +191,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
     </Link>,
     <Link
       to="/watchlist"
+      key="/watchlist"
       className="text-nowrap hover:underline w-full"
       activeProps={{
         className: 'underline',
@@ -190,6 +205,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
     items.push(
       <Link
         to="/my-details"
+        key="/my-details"
         className="text-nowrap hover:underline w-full"
         activeProps={{
           className: 'underline',
@@ -211,6 +227,7 @@ const getMobileDropdownMenuItems = (user?: User) => {
     items.push(
       <Link
         to="/login"
+        key="/login"
         className="text-nowrap hover:underline w-full"
         activeProps={{
           className: 'underline',

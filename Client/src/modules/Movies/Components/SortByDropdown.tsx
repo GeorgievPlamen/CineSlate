@@ -16,12 +16,12 @@ function SortByDropdown({ items, moviesBy }: Props) {
       <Dropdown
         items={items}
         classNameTrigger="w-full"
-        classNameMenu="w-40"
+        classNameMenu="w-32"
         onOpen={(open) => setIsSortByMenuOpened(open)}
       >
         <div
           className={cn(
-            'flex items-center h-8 rounded-lg px-2 bg-muted justify-between'
+            'flex items-center h-8 rounded-lg px-2 bg-muted justify-between cursor-pointer hover:bg-primary'
           )}
         >
           <p className="w-24 text-sm">{MoviesByTitleMap[moviesBy]}</p>

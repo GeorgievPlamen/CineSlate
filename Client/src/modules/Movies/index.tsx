@@ -106,24 +106,28 @@ export default function Movies() {
 
   const moviesByDropdownItems = [
     <button
+      className="w-full cursor-pointer"
       key={MoviesBy.NowPlaying}
       onClick={() => handleSelectMoviesBy(MoviesBy.NowPlaying)}
     >
       {MoviesByTitleMap[MoviesBy.NowPlaying]}
     </button>,
     <button
+      className="w-full cursor-pointer"
       key={MoviesBy.Popular}
       onClick={() => handleSelectMoviesBy(MoviesBy.Popular)}
     >
       {MoviesByTitleMap[MoviesBy.Popular]}
     </button>,
     <button
+      className="w-full cursor-pointer"
       key={MoviesBy.TopRated}
       onClick={() => handleSelectMoviesBy(MoviesBy.TopRated)}
     >
       {MoviesByTitleMap[MoviesBy.TopRated]}
     </button>,
     <button
+      className="w-full cursor-pointer"
       key={MoviesBy.Upcoming}
       onClick={() => handleSelectMoviesBy(MoviesBy.Upcoming)}
     >
@@ -132,39 +136,46 @@ export default function Movies() {
   ];
 
   return (
-    <section className="flex mt-2">
-      <div className="md:hidden">
-        <button className='fixed' onClick={() => setIsMobileFiltersShown((x) => !x)}>
-          <FilterIcon />
+    <section className="flex flex-col md:flex-row mt-2">
+      <div className="md:hidden flex justify-around">
+        <div className="flex items-center gap-2">
+          <span className="w-full text-sm text-muted-foreground">
+            Sort by:{' '}
+          </span>
+          <SortByDropdown items={moviesByDropdownItems} moviesBy={moviesBy} />
+        </div>
+        <button
+          className="h-12 w-12 rounded-full hover:bg-primary"
+          onClick={() => setIsMobileFiltersShown((x) => !x)}
+        >
+          <FilterIcon className="m-auto" />
         </button>
-        {isMobileFiltersShown && (
-          <div>
-            <div className="z-40 flex flex-col items-center fixed ml-4">
-              <SortByDropdown
-                items={moviesByDropdownItems}
-                moviesBy={moviesBy}
-              />
-              <div className="flex flex-col border bg-muted rounded-lg h-fit mt-2 max-h-screen scroll-auto">
-                <div className="p-1 px-2 flex flex-col flex-wrap gap-2 mb-2">
-                  <span className="text-primary">Genre</span>
-                  {genres?.map((g) => (
-                    <GenreCheckbox
-                      key={g.id}
-                      name={g.name}
-                      genreId={g.id}
-                      currentGenreIds={genreIds}
-                    />
-                  ))}
-                </div>
-                <SectionBreak />
-                <div className="p-1 px-2 w-40">
-                  <span className="text-primary">Year</span>
-                  <YearSlider years={years} setYears={setYears} />
-                </div>
-              </div>
+        <div
+          className={`
+    fixed left-0 z-40 md:hidden flex flex-row items-center
+    transition-transform duration-300 ease-in-out
+    ${isMobileFiltersShown ? 'translate-x-0' : '-translate-x-full'}
+  `}
+        >
+          <div className="flex flex-col border bg-muted rounded-lg h-fit mt-2 max-h-screen scroll-auto">
+            <span className="ml-2 mt-1 text-primary">Genre</span>
+            <div className="p-1 px-2 grid grid-cols-2 flex-wrap gap-2 mb-2 w-60">
+              {genres?.map((g) => (
+                <GenreCheckbox
+                  key={g.id}
+                  name={g.name}
+                  genreId={g.id}
+                  currentGenreIds={genreIds}
+                />
+              ))}
+            </div>
+            <SectionBreak />
+            <div className="p-1 px-2">
+              <span className="text-primary">Year</span>
+              <YearSlider years={years} setYears={setYears} />
             </div>
           </div>
-        )}
+        </div>
       </div>
       <div className="hidden md:flex">
         <div className="w-50" /> {/*Space for the filters*/}
@@ -193,7 +204,7 @@ export default function Movies() {
       <div className="flex flex-col w-full">
         <div
           id="movieSection"
-          className="mt-2 grid grid-cols-1 gap-y-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  2xl:grid-cols-5"
+          className="mt-2 grid grid-cols-2 gap-y-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
         >
           {isDefaultMovies &&
             data?.values.map((m) => (
