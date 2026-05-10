@@ -52,7 +52,7 @@ export default function NotificationsBell() {
   return (
     <Dropdown
       items={notifications}
-      classNameTrigger="rounded hover:bg-primary active:bg-opacity-80 p-1 relative"
+      classNameTrigger="rounded hover:bg-primary active:bg-opacity-80 p-1 relative cursor-pointer"
       classNameMenu="md:max-h-[50vh] md:w-80 w-screen"
       onOpen={(open) => (open ? setAllSeen() : null)}
       triggerDisabled={!hasAnyNotifications}
