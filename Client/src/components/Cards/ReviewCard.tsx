@@ -27,7 +27,7 @@ export default function ReviewCard({ review, authorPicture }: Props) {
         alt="profile-pic"
         className="h-20 w-20 rounded-full object-cover"
       />
-      <div className="mx-4 my-2 w-80">
+      <div className="mx-4 my-2 w-full">
         <div className="mb-2 flex justify-between">
           <p className="text-xl">
             <Link

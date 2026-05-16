@@ -113,7 +113,7 @@ export default function MovieDetails() {
   return (
     <>
       <Backdrop path={data?.backdropPath} />
-      <article className="mt-20">
+      <article className="mt-20 px-4">
         <article className="mx-auto flex w-full flex-col items-center justify-center">
           <div className="flex flex-col sm:flex-row">
             <div className="flex flex-col items-center justify-center">
@@ -180,7 +180,7 @@ export default function MovieDetails() {
               </section>
             </section>
           </div>
-          <section className="my-10 flex flex-col gap-10">
+          <section className="my-10 flex flex-col gap-10 w-full max-w-[700px]">
             {reviews.map((r) => (
               <ReviewCard
                 key={r.authorId}

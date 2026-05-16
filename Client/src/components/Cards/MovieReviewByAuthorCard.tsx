@@ -22,29 +22,26 @@ export default function MovieReviewByAuthorCard({ review }: Props) {
         className="w-28 rounded-l-2xl border-r border-r-grey object-cover"
       />
       <div className="mx-4 my-2 w-full">
-        <div className="mb-2 flex justify-between flex-col md:flex-row">
-          <p className="text-xl">
+        <div className="mb-2 flex justify-between flex-col">
+          <p className="text-xl w-full flex justify-between">
             <Link
               to={'/movies/$id'}
               params={{ id: `${review.movieId}` }}
-              className={'font-heading hover:text-primary'}
+              className={'font-heading hover:text-primary text-semibold'}
             >
               {review.title}
             </Link>
-            <Link
-              to={'/'}
-              className="ml-2 text-lg text-muted-foreground hover:text-primary"
-            >
+            <p className="ml-2 text-lg text-muted-foreground">
               {review.releaseDate.split('-')[0]}
-            </Link>
+            </p>
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Link
               to={'/reviews/$id'}
               params={{
                 id: review.reviewResponse.id ?? '',
               }}
-              className={'hover:text-primary'}
+              className={'hover:text-primary text-sm underline text-muted-foreground'}
             >
               To Review
             </Link>
