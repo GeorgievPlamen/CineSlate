@@ -1,4 +1,3 @@
-import Backdrop from '@/components/Backdrop/Backdrop';
 import MovieCard, { MovieCardSkeleton } from '@/components/Cards/MovieCard';
 import MovieReviewCard, {
   MovieReviewCardSkeleton,
@@ -7,18 +6,20 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel';
 import { useQuery } from '@tanstack/react-query';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import { MoviesBy, moviesClient } from '../Movies/api/moviesClient';
 import { ReviewsBy, reviewsClient } from '../Review/api/reviewsClient';
+import MovieHero from '@/components/Backdrop/MovieHero';
+import Button from '@/components/Buttons/Button';
+import ButtonOutlined from '@/components/Buttons/ButtonOutlined';
+import { useNavigate } from '@tanstack/react-router';
 
 function Home() {
   const { data: movies, isLoading: isMoviesLoading } = useQuery({
     queryKey: ['movies-nowplaying-home'],
-    queryFn: () => moviesClient.getPagedMovies(MoviesBy.NowPlaying, 1),
+    queryFn: () => moviesClient.getPagedMovies(MoviesBy.Popular, 1),
   });
 
   const { data: reviews, isLoading: isReviewsLoading } = useQuery({
@@ -34,49 +35,72 @@ function Home() {
     queryFn: () => moviesClient.getMovieDetails(`${randomMovieId}`),
   });
 
+  const nav = useNavigate();
+
   return (
     <div className="mx-auto">
-      <Backdrop path={randomMovieDetails?.backdropPath} />
-      <div className="flex flex-col items-center justify-center rounded-xl pt-8">
-        <div className="max-w-250 w-80 md:w-full">
-          <h1 className="font-heading text-primary mb-8 text-center text-xl font-bold md:text-2xl">
-            Find Your Next Favorite Movie Instantly! 🍿
-          </h1>
-
-          <section className="mb-8">
-            <p className="text-muted-foreground mb-4">
-              <span className="font-heading text-secondary text-lg font-bold italic">
-                Welcome to CineSlate
-              </span>{' '}
-              , the fastest and easiest way to discover great movies to watch!
-              Whether you’re in the mood for an action-packed thriller, a
-              heartwarming drama, or a mind-bending sci-fi epic, CineSlate helps
-              you find the perfect film in seconds.
-            </p>
-            <ul className="text-muted-foreground ml-6 list-disc space-y-2 mb-6">
-              <li>
-                <span className="text-foreground font-bold">
-                  Effortless Movie Discovery:
-                </span>{' '}
-                Instantly find any movie by title.
-              </li>
-              <li>
-                <span className="text-foreground font-bold">Trending Now:</span>{' '}
-                See the most popular movies everyone’s watching.
-              </li>
-              <li>
-                <span className="text-foreground font-bold">
-                  Filter by Genre:
-                </span>{' '}
-                Find exactly what you're in the mood for.
-              </li>
-              <li>
-                <span className="text-foreground font-bold">
-                  Fast & Responsive:
-                </span>{' '}
-                No waiting, no clutter—just movies!
-              </li>
-            </ul>
+      <MovieHero path={randomMovieDetails?.backdropPath} />
+      <div className="flex flex-col justify-between md:justify-end borde w-full mb-4 md:mb-12 min-h-50 md:min-h-80 lg:min-h-100 xl:min-h-120">
+        <h2 className="line-clamp-2 mb-4 ml-2 text-[2rem] md:text-[3rem] md:text-start lg:text-[4rem] font-heading-stylized text-center max-h-40 lg:max-h-80 max-w-140 xl:max-w-180">
+          {randomMovieDetails?.title}
+        </h2>
+        <div className="flex gap-4 items-center md:justify-start md:ml-6 justify-center">
+          <Button
+            onClick={() =>
+              nav({
+                to: '/register',
+              })
+            }
+            className="px-2 cursor-pointer"
+          >
+            Join the community
+          </Button>
+          <ButtonOutlined
+            onClick={() =>
+              nav({
+                to: '/movies',
+              })
+            }
+            className="px-2 font-light cursor-pointer"
+          >
+            Explore movies
+          </ButtonOutlined>
+        </div>
+      </div>
+      <div className="mb-8">
+        <h2 className="font-heading font-semibold text-li prose ml-6 mb-3 text-xl">
+          RECENT REVIEWS
+        </h2>
+        {isReviewsLoading ? (
+          <Carousel
+            className="w-full"
+            opts={{
+              loop: true,
+              align: 'center',
+              dragFree: true,
+            }}
+            plugins={[
+              AutoScroll({
+                stopOnMouseEnter: true,
+                stopOnInteraction: false,
+                speed: 1,
+              }),
+            ]}
+          >
+            <CarouselContent className="-ml-1">
+              {Array.from({ length: 10 }).map(() => (
+                <CarouselItem
+                  key={crypto.randomUUID()}
+                  className="basis-1/1 min-[600px]:basis-5/6  md:basis-2/3 lg:basis-5/10 xl:basis-4/10 min-[101rem]:basis-3/10"
+                >
+                  <MovieReviewCardSkeleton />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        ) : (
+          reviews &&
+          reviews?.values?.length > 0 && (
             <Carousel
               className="w-full"
               opts={{
@@ -88,101 +112,69 @@ function Home() {
                 AutoScroll({
                   stopOnMouseEnter: true,
                   stopOnInteraction: false,
+                  speed: 1,
                 }),
               ]}
             >
               <CarouselContent className="-ml-1">
-                {isMoviesLoading
-                  ? Array.from({ length: 10 }).map(() => (
-                      <CarouselItem
-                        key={crypto.randomUUID()}
-                        className="basis-1/1 md:basis-1/3"
-                      >
-                        <MovieCardSkeleton />
-                      </CarouselItem>
-                    ))
-                  : movies?.values.map((m) => (
-                      <CarouselItem
-                        key={m.id}
-                        className="basis-1/1 md:basis-1/3"
-                      >
-                        <MovieCard
-                          id={m.id}
-                          posterPath={m.posterPath}
-                          rating={m.rating}
-                          releaseDate={m.releaseDate}
-                          title={m.title}
-                        />
-                      </CarouselItem>
-                    ))}
+                {reviews?.values.map((r) => (
+                  <CarouselItem
+                    key={r.id}
+                    className="basis-4/3 min-[500px]:basis-1/1 min-[600px]:basis-5/6  md:basis-2/3 lg:basis-5/10 xl:basis-4/10 min-[101rem]:basis-3/10"
+                  >
+                    <MovieReviewCard review={r} />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
             </Carousel>
-          </section>
-          <section className="mb-12">
-            <p className="text-muted-foreground mb-4 text">
-              <span className="font-heading text-secondary text-lg font-bold italic">
-                Everyone's a Critic
-              </span>{' '}
-              – Share Your Voice! CineSlate is powered by movie lovers like you!
-              No paid critics, no professional reviewers—just real opinions from
-              real people.
-            </p>
-            <ul className="text-muted-foreground ml-6 list-disc space-y-2 mb-6">
-              <li>
-                <span className="text-foreground font-bold">
-                  Write Reviews:
-                </span>{' '}
-                Share your thoughts on any movie.
-              </li>
-              <li>
-                <span className="text-foreground font-bold">
-                  Rate & Comment:
-                </span>{' '}
-                Engage in discussions and see what others think.
-              </li>
-              <li>
-                <span className="text-foreground font-bold">
-                  Follow Users & Critics:
-                </span>{' '}
-                Keep up with your favorite reviewers and recommendations.
-              </li>
-            </ul>
-            {isReviewsLoading ? (
-              <Carousel className="w-full hidden md:block">
-                <CarouselPrevious />
-                <CarouselNext />
-                <CarouselContent className="-ml-1">
-                  {Array.from({ length: 10 }).map(() => (
-                    <CarouselItem
-                      key={crypto.randomUUID()}
-                      className="lg:basis-6/10 basis-3/4"
-                    >
-                      <MovieReviewCardSkeleton />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            ) : (
-              reviews &&
-              reviews?.values?.length > 0 && (
-                <Carousel className="w-full hidden md:block">
-                  <CarouselPrevious />
-                  <CarouselNext />
-                  <CarouselContent className="-ml-1">
-                    {reviews?.values.map((r) => (
-                      <CarouselItem
-                        key={r.id}
-                        className="lg:basis-6/10 basis-3/4"
-                      >
-                        <MovieReviewCard review={r} />
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                </Carousel>
-              )
-            )}
-          </section>
-        </div>
+          )
+        )}
+      </div>
+      <div>
+        <h2 className="font-heading font-semibold text-li prose ml-6 mb-3 text-xl">
+          TRENDING NOW
+        </h2>
+        <Carousel
+          className="w-full"
+          opts={{
+            loop: true,
+            align: 'center',
+            dragFree: true,
+          }}
+          plugins={[
+            AutoScroll({
+              stopOnMouseEnter: true,
+              stopOnInteraction: false,
+              direction: 'backward',
+            }),
+          ]}
+        >
+          <CarouselContent className="-ml-1">
+            {isMoviesLoading
+              ? Array.from({ length: 10 }).map(() => (
+                  <CarouselItem
+                    key={crypto.randomUUID()}
+                    className="basis-1/1 md:basis-1/3"
+                  >
+                    <MovieCardSkeleton />
+                  </CarouselItem>
+                ))
+              : movies?.values.map((m) => (
+                  <CarouselItem
+                    key={m.id}
+                    className="basis-1/2 md:basis-1/3 lg:basis-2/8  min-[101rem]:basis-2/12"
+                  >
+                    <MovieCard
+                      id={m.id}
+                      posterPath={m.posterPath}
+                      rating={m.rating}
+                      releaseDate={m.releaseDate}
+                      title={m.title}
+                    />
+                  </CarouselItem>
+                ))}
+          </CarouselContent>
+        </Carousel>
       </div>
     </div>
   );

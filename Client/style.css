@@ -3,6 +3,7 @@
 
 @theme inline {
   --font-heading: 'Roboto', sans-serif;
+  --font-heading-stylized: 'Playfair Display', sans-serif;
   --font-primary: 'Inter', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
