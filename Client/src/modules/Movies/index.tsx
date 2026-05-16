@@ -149,12 +149,17 @@ export default function Movies() {
           </span>
           <SortByDropdown items={moviesByDropdownItems} moviesBy={moviesBy} />
         </div>
-        <button
-          className="h-12 w-12 rounded-full hover:bg-primary"
-          onClick={() => setIsMobileFiltersShown((x) => !x)}
-        >
-          <FilterIcon className="m-auto" />
-        </button>
+        <div className='flex items-center'>
+          <span className="w-full text-sm text-muted-foreground">
+            Filter by:{' '}
+          </span>
+          <button
+            className="h-10 w-12 rounded-full p-2 hover:bg-primary cursor-pointer"
+            onClick={() => setIsMobileFiltersShown((x) => !x)}
+          >
+            <FilterIcon className="m-auto" />
+          </button>
+        </div>
         <div
           className={`fixed left-0 z-40 md:hidden flex flex-row items-center
            transition-transform duration-300 ease-in-out

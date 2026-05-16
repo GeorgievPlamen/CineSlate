@@ -119,7 +119,7 @@ export default function AddReview({ onSuccess }: Props) {
 
   return (
     <form
-      className="flex w-full flex-col items-center"
+      className="flex w-fit flex-col items-center"
       onSubmit={handleSubmit(handleOnSubmit)}
     >
       <fieldset

@@ -6,10 +6,7 @@ import { BACKUP_PROFILE } from '@/config';
 import Dropdown from '@/components/Dropdown';
 import { User } from '../Users/Models/userType';
 import { base64ToImage } from '@/lib/utils';
-import {
-  Search,
-  TextAlignJustifyIcon,
-} from 'lucide-react';
+import { Search, TextAlignJustifyIcon } from 'lucide-react';
 import NotificationsBell from '@/components/Notifications/NotificationsBell';
 import HeaderLink from '@/components/HeaderLink';
 
@@ -19,7 +16,7 @@ function Header() {
   const user = useUserStore((state) => state.user);
   const { pathname } = useLocation();
 
-  console.log(pathname );
+  console.log(pathname);
 
   const navigate = useNavigate();
 
@@ -42,14 +39,14 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-50 flex w-full bg-background border-b border-b-border">
-      <nav className="hidden w-full items-center justify-between md:flex min-h-18 px-6">
+      <nav className="hidden w-full items-center justify-between md:flex min-h-18 px-2 lg:px-6">
         <Link to="/" className="flex w-min justify-center">
-          <h1 className="text-2xl font-bold tracking-wider font-heading pl-8">
+          <h1 className="text-sm lg:text-xl pl-2 xl:text-2xl xl:pl-4 font-bold tracking-wider font-heading text-start">
             <span>CINE</span>
             <span className="text-secondary">SLATE</span>
           </h1>
         </Link>
-        <div className="0 relative mx-2 flex w-full max-w-md items-center rounded-full bg-foreground">
+        <div className="0 relative mx-2 flex lg:w-full max-w-md  items-center rounded-full bg-foreground">
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search Movies"
@@ -66,7 +63,7 @@ function Header() {
             className="absolute right-2 size-6 cursor-pointer rounded-full bg-foreground text-gray-400"
           />
         </div>
-        <ul className="flex gap-4 items-center relative h-full">
+        <ul className="flex gap-2 items-center relative h-full">
           <li className="h-full">
             <HeaderLink label="Movies" linkOptions={{ to: '/movies' }} />
           </li>
@@ -82,7 +79,7 @@ function Header() {
           {user?.username?.length > 0 ? (
             <li>
               <Dropdown items={DropdownItems}>
-                <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full">
+                <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full cursor-pointer">
                   {user?.username?.split('#')[0]}
                   <img
                     src={

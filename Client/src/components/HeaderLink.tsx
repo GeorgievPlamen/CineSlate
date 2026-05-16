@@ -21,7 +21,7 @@ function HeaderLink({ label, linkOptions }: HeaderLinkProps) {
       }}
       className={'h-full flex items-center cursor-default'}
     >
-      <span className="rounded px-2 py-1 hover:bg-primary active:bg-opacity-80 cursor-pointer">
+      <span className="text-sm lg:text-base rounded px-2 lg:px-4 py-1 hover:bg-primary active:bg-opacity-80 cursor-pointer">
         {label}
       </span>
     </Link>
