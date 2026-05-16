@@ -136,7 +136,7 @@ function MyDetails() {
                 <TextField
                   defaultValue={user?.bio}
                   register={register('bio')}
-                  className="font-primary text-muted-foreground text-sm"
+                  className="font-primary text-muted-foreground text-sm bg-primary-foreground"
                 />
               ) : (
                 <p className="font-primary text-muted-foreground text-sm">

@@ -13,7 +13,7 @@ function SubmitButton({ text, onClick, className, isLoading = false }: Props) {
       {...(onClick !== undefined ? { onClick: () => onClick() } : null)}
       type="submit"
       className={
-        'flex h-8 w-full items-center justify-center rounded-full bg-primary text-foreground hover:outline hover:outline-foreground active:bg-opacity-80' +
+        'flex h-8 w-full items-center justify-center rounded-sm bg-primary text-foreground hover:outline hover:outline-foreground active:bg-opacity-80' +
         ' ' +
         className
       }

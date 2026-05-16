@@ -3,6 +3,7 @@ import { BACKUP_PROFILE } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { usersClient } from '@/modules/Users/api/usersClient';
+import { base64ToImage } from '@/lib/utils';
 
 interface Props {
   comment: Comment;
@@ -18,9 +19,9 @@ export default function CommentCard({ comment }: Props) {
     <div className="my-5 flex rounded-2xl border border-grey bg-panel p-1">
       <img
         src={
-          usersData?.[0].pictureBase64 &&
-          usersData?.[0].pictureBase64.length > 0
-            ? usersData?.[0].pictureBase64
+          usersData?.[0].pictureBase64?.length &&
+          usersData?.[0].pictureBase64?.length > 0
+            ? base64ToImage(usersData?.[0].pictureBase64)
             : BACKUP_PROFILE
         }
         alt="profile-pic"

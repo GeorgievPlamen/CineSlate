@@ -9,7 +9,7 @@ export default function Backdrop({ path }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="absolute -z-40">
+    <div className="absolute -z-40 right-0">
       <img
         src={`${IMG_PATH}${path}`}
         alt="backdrop"

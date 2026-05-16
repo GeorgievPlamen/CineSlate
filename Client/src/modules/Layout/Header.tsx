@@ -79,7 +79,7 @@ function Header() {
           {user?.username?.length > 0 ? (
             <li>
               <Dropdown items={DropdownItems}>
-                <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full font-semibold cursor-pointer">
+                <div className="flex items-center gap-2 rounded px-2 py-1 text-foreground hover:bg-primary w-full cursor-pointer">
                   {user?.username?.split('#')[0]}
                   <img
                     src={
