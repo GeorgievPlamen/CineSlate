@@ -120,7 +120,7 @@ function Home() {
                 {reviews?.values.map((r) => (
                   <CarouselItem
                     key={r.id}
-                    className="basis-4/3 min-[500px]:basis-1/1 min-[600px]:basis-5/6  md:basis-2/3 lg:basis-5/10 xl:basis-4/10 min-[101rem]:basis-3/10"
+                    className="basis-4/3 min-[500px]:basis-1/1 min-[600px]:basis-5/6  md:basis-2/3 lg:basis-5/10 xl:basis-4/10 min-[101rem]:basis-3/10 min-[130rem]:basis-2/8  min-[152rem]:basis-2/10"
                   >
                     <MovieReviewCard review={r} />
                   </CarouselItem>
