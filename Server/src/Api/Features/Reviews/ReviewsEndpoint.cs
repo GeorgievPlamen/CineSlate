@@ -5,6 +5,7 @@ using Application.Common;
 using Application.Reviews;
 using Application.Reviews.Comments;
 using Application.Reviews.Create;
+using Application.Reviews.Delete;
 using Application.Reviews.Get;
 using Application.Reviews.GetByMovieId;
 using Application.Reviews.GetByUserIdQuery;
@@ -44,8 +45,11 @@ public static class ReviewsEndpoint
 
         reviews.MapPut(Update, UpdateReviewAsync);
 
-        reviews.MapDelete("/{id}", (Guid id) => TypedResults.Ok($"delete {id}")); // TODO
+        reviews.MapDelete("/{id}", DeleteReviewAsync);
     }
+
+    private static async Task<IResult> DeleteReviewAsync(Guid id, ISender mediatr, CancellationToken cancellationToken)
+        => Response<Unit>.Match(await mediatr.Send(new DeleteReviewCommand(ReviewId.Create(id)), cancellationToken));
 
     private static async Task<IResult> CommentReviewAsync(Guid reviewId, [FromBody] string comment, ISender mediatr, CancellationToken cancellationToken)
         => Response<Unit>.Match(await mediatr.Send(new CommentReviewCommand(

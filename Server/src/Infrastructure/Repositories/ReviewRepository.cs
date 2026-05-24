@@ -152,4 +152,19 @@ public class ReviewRepository(CineSlateContext dbContext) : IReviewRepository
 
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
+
+    public async Task<bool> DeleteAsync(ReviewId reviewId, CancellationToken cancellationToken)
+    {
+        var review = await dbContext.Reviews
+            .Include(r => r.Likes)
+            .Include(r => r.Comments)
+            .FirstOrDefaultAsync(r => r.Id == reviewId.Value, cancellationToken);
+
+        if (review is null)
+            return false;
+
+        dbContext.Reviews.Remove(review);
+
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
 }

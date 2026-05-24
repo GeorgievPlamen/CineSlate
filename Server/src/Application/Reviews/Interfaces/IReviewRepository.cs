@@ -17,4 +17,5 @@ public interface IReviewRepository
     public Task<bool> UpdateAsync(ReviewId reviewId, int rating, string text, bool containsSpoilers, CancellationToken cancellationToken);
     public Task<bool> UpdateLikesAsync(ReviewId reviewId, List<Like> likes, CancellationToken cancellationToken);
     public Task<bool> UpdateCommentsAsync(ReviewId reviewId, List<Comment> comments, CancellationToken cancellationToken);
+    public Task<bool> DeleteAsync(ReviewId reviewId, CancellationToken cancellationToken);
 }
