@@ -29,6 +29,14 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Add solution
+        working-directory: ./Server
+        run: dotnet new sln
+
+      - name: Add projects to solution
+        working-directory: ./Server
+        run: dotnet sln add **/**/*.csproj
+        
       - name: Restore dependencies
         working-directory: ./Server
         run: dotnet restore
