@@ -1,19 +1,26 @@
-name: .NET CI
+name: Backend CI/CD
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - 'Server/**'
   pull_request:
     paths:
       - 'Server/**'
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: georgievp/cineslate
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -21,14 +28,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
-
-      - name: Add solution
-        working-directory: ./Server
-        run: dotnet new sln
-
-      - name: Add projects to solution
-        working-directory: ./Server
-        run: dotnet sln add **/**/*.csproj
 
       - name: Restore dependencies
         working-directory: ./Server
@@ -45,38 +44,48 @@ jobs:
   docker_push:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+
+    outputs:
+      image_tag: ${{ steps.version.outputs.image_tag }}
+
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Extract version from Git tag
+        id: version
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "image_tag=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Docker image tag will be: $VERSION"
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3    
+        uses: docker/setup-buildx-action@v3
 
-      - name: Build And Push
+      - name: Build and Push Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./Server
           file: ./Server/Dockerfile
           push: true
-          tags: georgievp/cineslate:latest
-          
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.version.outputs.image_tag }}
+
   deploy:
     needs: docker_push
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+
     steps:
       - name: Deploy to Azure Web App for Containers
         uses: azure/webapps-deploy@v2
         with:
           app-name: cineslate-api
-          images: 'georgievp/cineslate:latest'
+          images: '${{ env.IMAGE_NAME }}:${{ needs.docker_push.outputs.image_tag }}'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

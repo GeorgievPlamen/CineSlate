@@ -1,5 +1,9 @@
 import tmdbLogo from '@/assets/images/tmdbLogo.png';
 
+const appVersion = {
+  version: import.meta.env.VITE_APP_VERSION,
+};
+
 function Footer() {
   return (
     <footer className="sticky bottom-0 flex w-full h-12 items-center justify-between bg-muted-background px-6 py-2 z-50 border-t border-t-border">
@@ -9,7 +13,7 @@ function Footer() {
       <p className="text-xs md:hidden text-muted-foreground">
         Created by <span className="text-secondary">P. Georgiev</span>
       </p>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" id={`${appVersion.version}`}>
         <p className="hidden text-xs md:block  text-muted-foreground">
           © {new Date().getUTCFullYear()} CineSlate. All rights reserved.
         </p>
