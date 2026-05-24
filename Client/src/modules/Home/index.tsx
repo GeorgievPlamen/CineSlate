@@ -14,7 +14,7 @@ import { ReviewsBy, reviewsClient } from '../Review/api/reviewsClient';
 import MovieHero from '@/components/Backdrop/MovieHero';
 import Button from '@/components/Buttons/Button';
 import ButtonOutlined from '@/components/Buttons/ButtonOutlined';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 
 function Home() {
   const { data: movies, isLoading: isMoviesLoading } = useQuery({
@@ -41,9 +41,16 @@ function Home() {
     <div className="mx-auto">
       <MovieHero path={randomMovieDetails?.backdropPath} />
       <div className="flex flex-col justify-between md:justify-end borde w-full mb-4 md:mb-12 min-h-50 md:min-h-80 lg:min-h-100 xl:min-h-120">
-        <h2 className="line-clamp-2 mb-4 ml-2 text-[2rem] md:text-[3rem] md:text-start lg:text-[4rem] font-heading-stylized text-center max-h-40 lg:max-h-80 max-w-140 xl:max-w-180">
-          {randomMovieDetails?.title}
-        </h2>
+        <Link
+          to="/movies/$id"
+          params={{
+            id: `${randomMovieDetails?.id}`,
+          }}
+        >
+          <h2 className="line-clamp-2 mb-4 ml-2 text-[2rem] md:text-[3rem] md:text-start lg:text-[4rem] font-heading-stylized text-center max-h-40 lg:max-h-80 max-w-140 xl:max-w-180 hover:text-primary-hover active:text-primary-active">
+            {randomMovieDetails?.title}
+          </h2>
+        </Link>
         <div className="flex gap-4 items-center md:justify-start md:ml-6 justify-center">
           <Button
             onClick={() =>
