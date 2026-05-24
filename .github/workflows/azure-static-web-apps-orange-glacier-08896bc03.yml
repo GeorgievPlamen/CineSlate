@@ -1,92 +1,45 @@
-name: Frontend CI/CD
+name: Azure Static Web Apps CI/CD
 
 on:
-  workflow_dispatch:
-  pull_request:
-    paths:
-      - 'Client/**'
   push:
     branches:
       - master
-    tags:
-      - 'v*.*.*'
-
-permissions:
-  id-token: write
-  contents: read
-
+    paths:
+      - 'Client/**'
+  workflow_dispatch:
 jobs:
-  build_and_deploy:
+  build_and_deploy_job:
     runs-on: ubuntu-latest
-    name: Build and Deploy
-
-    if: github.event_name == 'push' && github.ref_type == 'tag'
-
+    name: Build and Deploy Job
+    permissions:
+       id-token: write
+       contents: read
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
           lfs: false
-
-      - name: Extract app version
-        id: version
-        shell: bash
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          echo "app_version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Frontend version will be: $VERSION"
-
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
-
       - name: Get Id Token
         uses: actions/github-script@v6
         id: idtoken
         with:
-          script: |
-            const core = require('@actions/core')
-            return await core.getIDToken()
-          result-encoding: string
-
-      - name: Build and Deploy to Azure Static Web Apps
+           script: |
+               const coredemo = require('@actions/core')
+               return await coredemo.getIDToken()
+           result-encoding: string
+      - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ORANGE_GLACIER_08896BC03 }}
           action: "upload"
-          app_location: "./Client"
-          api_location: ""
-          output_location: "dist"
+          app_location: "./Client" 
+          api_location: "" 
+          output_location: "dist" 
           github_id_token: ${{ steps.idtoken.outputs.result }}
         env:
           VITE_CINESLATE_API_URL: ${{ secrets.VITE_CINESLATE_API_URL }}
           VITE_ENABLE_DEBUG_LOGS: ${{ secrets.VITE_ENABLE_DEBUG_LOGS }}
-          VITE_APP_VERSION: ${{ steps.version.outputs.app_version }}
 
-  validate_pull_request:
-    runs-on: ubuntu-latest
-    name: Validate Pull Request
-
-    if: github.event_name == 'pull_request'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: ./Client/package-lock.json
-
-      - name: Install dependencies
-        working-directory: ./Client
-        run: npm i
-
-      - name: Build
-        working-directory: ./Client
-        run: npm run build
-        env:
-          VITE_CINESLATE_API_URL: ${{ secrets.VITE_CINESLATE_API_URL }}
-          VITE_ENABLE_DEBUG_LOGS: ${{ secrets.VITE_ENABLE_DEBUG_LOGS }}
-          VITE_APP_VERSION: pull-request
