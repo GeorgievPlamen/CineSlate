@@ -53,7 +53,7 @@ builder.Services.AddCors(opt =>
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins("http://localhost:3000", "http://localhost:3030", "https://orange-glacier-08896bc03.6.azurestaticapps.net", "https://cineslate.georgievp.com/")
+        .WithOrigins("http://localhost:3000", "http://localhost:3030", "https://orange-glacier-08896bc03.6.azurestaticapps.net", "https://cineslate.georgievp.com")
         .WithExposedHeaders("Location"));
 });
 builder.Services.AddEndpointsApiExplorer();
